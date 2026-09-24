@@ -316,9 +316,18 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Non-Functional Requirements
 
-1.  Should work on any _mainstream OS_ as long as it has Java `25` or above installed.
-2.  Should be able to hold up to 1000 persons without noticeable sluggishness in performance for typical usage.
-3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+1. Environment
+   1. Should work on Windows 10+, macOS 14+ and mainstream Linux distributions, as long as it has Java `25` or above installed.
+2. Performance
+   1. Should be able to hold up to 1000 jobseekers and 100 clients without noticeable sluggishness in performance for typical usage.
+   2. Data operations should not take any more than 2 seconds, or more than the time it takes to type out a command.
+   3. Should not take more than 400 MB of memory while running.
+3. Usability
+   1. A user with above average typing speed for regular English text should be able to accomplish most of the tasks faster using commands than using the mouse.
+4. Compatibility
+   1. Save file format should be backwards-compatible with older versions, optionally compatible with [AddressBook Level 3](https://github.com/se-edu/addressbook-level3).
+5. Security
+   1. The program must not transmit user data outside the machine.
 
 *{More to be added}*
 
