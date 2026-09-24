@@ -335,7 +335,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * **Mainstream OS**: Windows, Linux, Unix, or macOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
-
+* **Clients**: Prospective employers looks for jobseekers that are suitable candidates
+* **Jobseekers** Prospective candidates looking for suitable employers
+* **Duplicate entry** A contact entry that strongly suggests it belongs to the same person as another existing contact entry
+* **Prefix** The unique marker that precedes the details of a specific field in a command, ends with '/'
+* **Index** The position of an entry relative to the displayed person list
+* **Remark** The user's personal notes attached to a specific contact entry
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Instructions for manual testing**
