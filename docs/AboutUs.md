@@ -53,6 +53,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 <img src="images/vutuanlong07.png" width="200px">
 
 [[github](https://github.com/vutuanlong07)]
+[[portfolio](team/johndoe.md)]
 
 * Role: Developer
 * Responsibilities: UI
