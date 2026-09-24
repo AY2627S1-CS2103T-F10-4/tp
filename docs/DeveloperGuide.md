@@ -274,16 +274,42 @@ _{Explain here how the data archiving feature will be implemented}_
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                     | So that I can…​                                                        |
-| -------- | ------------------------------------------ | ------------------------------ | ---------------------------------------------------------------------- |
-| `* * *`  | new user                                   | see usage instructions         | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person               |                                                                        |
-| `* * *`  | user                                       | delete a person                | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name          | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details   | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name           | locate a person easily                                                 |
+| Priority | As a …​                                  | I want to …​                                                                   | So that I can…​                                                                                                 |
+|----------|------------------------------------------|--------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
+| `* * *`  | new user                                 | explore the app with sample data                                               | gain a quick overview and understanding of the App                                                              |
+| `* * *`  | new user                                 | see usage instructions                                                         | understand how to use the App                                                                                   |
+| `* * *`  | user                                     | add a new jobseeker/client                                                     |                                                                                                                 |
+| `* * *`  | user                                     | delete a jobseeker/client                                                      | remove contacts that I no longer need                                                                           |
+| `* * *`  | user                                     | archive/unarchive a jobseeker/client                                           | remove contacts that I likely no longer need from the main contact list, and retrieve them again if I need them |
+| `* * *`  | user                                     | list all the jobseekers/clients in the list                                    |                                                                                                                 |
+| `* * *`  | user                                     | list all the archived jobseekers/clients in the list                           |                                                                                                                 |
+| `* * *`  | user with multiple jobseekers in the App | record interview notes of jobseekers                                           | compare between jobseekers and determine which jobseeker to send to my client                                   |
+| `* * *`  | user with many contacts in the App       | find a jobseeker/client by name/keywords                                       | locate details of jobseekers/clients without having to go through the entire list                               |
+| `* * *`  | user with many contacts in the App       | tag jobseekers/clients by keywords                                             | categorise them                                                                                                 |
+| `* * *`  | user                                     | attach personal notes to jobseekers/clients                                    | remember additional details about them                                                                          |
+| `* * *`  | clumsy user                              | edit details of my jobseekers/clients with ease                                |                                                                                                                 |
+| `* * *`  | user with multiple jobseekers in the App | record down the job postings that each jobseeker has given explicit consent to | avoid accidentally sending my jobseekers' details to my clients without their explicit permission               |
+| `* *`    | intermediate user                        | see summarised usage instructions                                              | quickly refresh my memory when I forget how to use the App                                                      |
+| `* *`    | user with many archived contacts         | delete all the archived contacts from the app                                  | remove unwanted clutter in the App if I do not need the information anymore                                     |
+| `* *`    | user with multiple contacts in the App   | delete all the contacts from the app                                           | reset the data                                                                                                  |
+| `* *`    | user with many contacts in the App       | sort jobseekers/clients by name                                                | locate a jobseeker/client easily                                                                                |
+| `* *`    | user                                     | rank jobseekers according to skills/qualifications                             | determine which jobseeker to interview next and send to my client                                               |
+| `* *`    | user                                     | receive alerts when adding a jobseeker/client with a name that already exists  | avoid creating duplicate jobseekers/clients                                                                     |
+| `* *`    | user                                     | undo the previous action                                                       | undo an accidental action that I made                                                                           |
+| `* *`    | user                                     | access and modify the previous command                                         | rerun the previous command but with slight modifications, after undoing an accidental action                    |
+| `* *`    | user                                     | filter jobseekers according to the types of jobs they want to apply for        | determine which jobseeker to interview/send to my client next for a particular job posting                      |
+| `* *`    | user                                     | customise the colours of my jobseekers/clients by tag                          | spot relevant jobseekers/clients easily when scrolling                                                          |
+| `* *`    | expert user                              | perform frequently used commands instantly                                     | save time                                                                                                       |
+| `* *`    | expert user                              | autocomplete my current command based on the app's recommendations             | save time                                                                                                       |
+| `*`      | frequent user                            | customise the layouts of the contacts                                          | scroll through contacts more efficiently                                                                        |
+| `*`      | user                                     | export my jobseekers' resumes / stored details within the App                  | easily send these details to my clients                                                                         |
+| `*`      | expert user                              | mass copy the details of selected contacts onto my keyboard                    |                                                                                                                 |
+| `*`      | user                                     | determine which jobseekers have given consent to apply to a specified job      | compare between jobseekers and determine which one to send to my client                                         |
+| `*`      | user working with many clients           | flag/rank clients based on urgency of job postings                             | determine which client to prioritise                                                                            |
+| `*`      | expert user                              | modify the keywords of commands                                                | easier to remember and faster to type                                                                           |
+| `*`      | expert user                              | chain, select and modify commands                                              | avoid having to type the same commands over and over again                                                      |
+| `*`      | expert user                              | access the recently most commonly viewed jobseekers/clients                    | work more efficiently, since I would more likely need a contact that I viewed/was working on recently           |
 
-*{More to be added}*
 
 ### Use cases
 
