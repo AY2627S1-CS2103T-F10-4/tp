@@ -287,16 +287,46 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is the `TalentLink` and the **Actor** is the `recruiter`, A contact refers to a job seeker or client, unless specified otherwise)
 
-**Use case: Delete a person**
+**Use case: Add a contact**
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1. Recruiter requests to add a contact into the list, providing the contact's details and specifying whether it is a job seeker or a client
+2. TalentLink adds the contact
+3. TalentLink displays the new contact added
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. The phone number or email already exists in the list.
+
+    * 1a1. TalentLink shows an error message identifying duplicate detail.
+
+      Use case resumes at step 1.
+
+* 1b. Required details are missing or invalid.
+
+    * 1b1. TalentLink shows an error message identifying the missing or invalid details.
+
+      Use case resumes at step 1.
+
+* 1c. Unrecognised parameter command received.
+
+    * 1c1. TalentLink shows an error message.
+
+      Use case resumes at step 1.
+
+**Use case: Delete a contact**
+
+**MSS**
+
+1.  Recruiter requests to list contacts
+2.  TalentLink shows a list of contacts
+3.  Recruiter requests to delete a specific contact in the clients or job seekers' list
+4.  TalentLink deletes the contact
 
     Use case ends.
 
@@ -308,9 +338,33 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 3a. The given index is invalid.
 
-    * 3a1. AddressBook shows an error message.
+    * 3a1. TalentLink shows an error message.
 
       Use case resumes at step 2.
+
+**Use case: List all contacts**
+
+**MSS**
+
+1.  Recruiter requests to list all job seekers or all clients
+2.  TalentLink shows all contacts in the respective list
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. Extra parameters are received.
+
+    * 1a1. TalentLink shows an error message.
+   
+      Use case resumes at step 1.
+
+* 2a. The list is empty.
+
+    * 2a1. TalentLink shows a message indicating empty list.
+
+      Use case ends.
+
 
 *{More to be added}*
 
