@@ -11,9 +11,8 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ### Chen Keying
 
-<img src="images/keying.jpg" width="200px">
+<img src="images/kkyingovo.png" width="200px">
 
-[[homepage](http://www.comp.nus.edu.sg/~damithch)]
 [[github](https://github.com/kkyingovo)]
 [[portfolio](team/johndoe.md)]
 
