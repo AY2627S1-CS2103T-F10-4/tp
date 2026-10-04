@@ -415,12 +415,16 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * **Mainstream OS**: Windows, Linux, Unix, or macOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
-* **Clients**: Prospective employers looks for jobseekers that are suitable candidates
+* **Clients**: Prospective employers look for jobseekers that are suitable candidates
 * **Jobseekers** Prospective candidates looking for suitable employers
 * **Duplicate entry** A contact entry that strongly suggests it belongs to the same person as another existing contact entry
-* **Prefix** The unique marker that precedes the details of a specific field in a command, ends with '/'
+* **Parameter** A value provided to a command that specifies additional information used for execution
+* **Prefix** The unique marker that precedes the details of a specific parameter in a command, ends with '/'
 * **Index** The position of an entry relative to the displayed person list
 * **Remark** The user's personal notes attached to a specific contact entry
+* **Command** The type of task to be executed by the TalentLink app; parameters required differ by command
+* **CLI** Command-Line Interface; a text-based interface users interact with to deliver commands to TalentLink
+* **GUI** Graphical User Interface; a visual interface that allows users to interact with, view, and manage information
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Instructions for manual testing**
