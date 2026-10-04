@@ -415,7 +415,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * **Mainstream OS**: Windows, Linux, Unix, or macOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
-* **Clients**: Prospective employers look for jobseekers that are suitable candidates
+* **Clients**: Prospective employers looking for jobseekers that are suitable candidates
 * **Jobseekers** Prospective candidates looking for suitable employers
 * **Duplicate entry** A contact entry that strongly suggests it belongs to the same person as another existing contact entry
 * **Parameter** A value provided to a command that specifies additional information used for execution
