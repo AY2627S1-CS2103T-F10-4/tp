@@ -300,15 +300,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 1a. Extra parameters are received.
+* 1a. The list is empty.
 
-    * 1a1. TalentLink shows an error message.
-
-      Use case resumes at step 1.
-
-* 1b. The list is empty.
-
-    * 1b1. TalentLink notifies the user the error.
+    * 1a1. TalentLink notifies the user the error.
 
       Use case ends.
 
@@ -335,12 +329,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case resumes at step 1.
 
-* 1c. Unrecognised parameter command received.
-
-    * 1c1. TalentLink notifies user the error.
-
-      Use case resumes at step 1.
-
 **Use case: UC03 - Delete a contact**
 
 **MSS**
@@ -358,7 +346,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
   Use case ends.
 
-* 3a. The given index is invalid.
+* 3a. The contact requested is not within the list of contacts.
 
     * 3a1. TalentLink notifies the user the error.
 
