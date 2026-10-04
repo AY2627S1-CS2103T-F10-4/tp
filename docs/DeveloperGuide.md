@@ -315,13 +315,29 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 (For all use cases below, the **System** is the `TalentLink` and the **Actor** is the `recruiter`, A contact refers to a job seeker or client, unless specified otherwise)
 
-**Use case: Add a contact**
+**Use case: UC01 - List all contacts**
 
 **MSS**
 
-1. Recruiter requests to add a contact into the list, providing the contact's details and specifying whether it is a job seeker or a client
-2. TalentLink adds the contact
-3. TalentLink displays the new contact added
+1.  Recruiter requests to list all job seekers or all clients.
+2.  TalentLink shows all contacts in the respective list.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. The list is empty.
+
+    * 1a1. TalentLink notifies the user the error.
+
+      Use case ends.
+
+**Use case: UC02 - Add a contact**
+
+**MSS**
+
+1. Recruiter requests to add a contact into the list, providing the contact's details and specifying whether it is a job seeker or a client.
+2. TalentLink adds the contact.
 
    Use case ends.
 
@@ -329,68 +345,62 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 1a. The phone number or email already exists in the list.
 
-    * 1a1. TalentLink shows an error message identifying duplicate detail.
+    * 1a1. TalentLink notifies user the error.
 
       Use case resumes at step 1.
 
 * 1b. Required details are missing or invalid.
 
-    * 1b1. TalentLink shows an error message identifying the missing or invalid details.
+    * 1b1. TalentLink notifies user the error.
 
       Use case resumes at step 1.
 
-* 1c. Unrecognised parameter command received.
-
-    * 1c1. TalentLink shows an error message.
-
-      Use case resumes at step 1.
-
-**Use case: Delete a contact**
+**Use case: UC03 - Delete a contact**
 
 **MSS**
 
-1.  Recruiter requests to list contacts
-2.  TalentLink shows a list of contacts
-3.  Recruiter requests to delete a specific contact in the clients or job seekers' list
-4.  TalentLink deletes the contact
+1.  Recruiter requests to <u>list all contacts (UC01)</u>.
+2.  TalentLink shows a list of contacts.
+3.  Recruiter requests to delete a specific contact in the clients or job seekers' list.
+4.  TalentLink deletes the contact.
 
     Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 1a. The list is empty.
 
   Use case ends.
 
-* 3a. The given index is invalid.
+* 3a. The contact requested is not within the list of contacts.
 
-    * 3a1. TalentLink shows an error message.
+    * 3a1. TalentLink notifies the user the error.
 
       Use case resumes at step 2.
 
-**Use case: List all contacts**
+**Use case: UC04 - Search a contact**
 
 **MSS**
 
-1.  Recruiter requests to list all job seekers or all clients
-2.  TalentLink shows all contacts in the respective list
+1.  Recruiter requests to search a contact in the clients or job seekers' list.
+2.  Recruiter enters the information.
+3.  TalentLink returns all contacts that contain the information entered.
 
     Use case ends.
 
 **Extensions**
 
-* 1a. Extra parameters are received.
-
-    * 1a1. TalentLink shows an error message.
-   
-      Use case resumes at step 1.
-
 * 2a. The list is empty.
 
-    * 2a1. TalentLink shows a message indicating empty list.
+    * 2a1. TalentLink notifies the user the error.
 
       Use case ends.
 
+* 2b. There is no contact containing the information.
+
+    * 3a1. TalentLink notifies the user the empty result.
+
+      Use case ends.
 
 *{More to be added}*
 
