@@ -5,6 +5,8 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Jobseeker;
+import seedu.address.model.person.Client;
 import seedu.address.model.person.Person;
 
 /**
@@ -20,7 +22,13 @@ public interface Logic {
      */
     CommandResult execute(String commandText) throws CommandException, ParseException;
 
-    /** Returns an unmodifiable view of the filtered list of persons */
+    /** Returns an unmodifiable view of the filtered list of jobseekers. */
+    ObservableList<Jobseeker> getFilteredJobseekerList();
+
+    /** Returns an unmodifiable view of the filtered list of clients. */
+    ObservableList<Client> getFilteredClientList();
+
+    /** Returns an unmodifiable view of the filtered person list used by commands. */
     ObservableList<Person> getFilteredPersonList();
 
     /**

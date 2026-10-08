@@ -5,6 +5,8 @@ import java.util.function.Predicate;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Jobseeker;
+import seedu.address.model.person.Client;
 
 /**
  * The API of the Model component.
@@ -60,7 +62,13 @@ public interface Model {
      */
     void setPerson(Person target, Person editedPerson);
 
-    /** Returns an unmodifiable view of the filtered person list */
+    /** Returns an unmodifiable view of the filtered list containing only jobseekers. */
+    ObservableList<Jobseeker> getFilteredJobseekerList();
+
+    /** Returns an unmodifiable view of the filtered list containing only clients. */
+    ObservableList<Client> getFilteredClientList();
+
+    /** Returns an unmodifiable view of the general filtered person list used by commands. */
     ObservableList<Person> getFilteredPersonList();
 
     /**
