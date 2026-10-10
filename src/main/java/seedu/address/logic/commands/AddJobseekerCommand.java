@@ -11,16 +11,16 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.person.Person;
+import seedu.address.model.person.Jobseeker;
 
 /**
- * Adds a person to the address book.
+ * Adds a jobseeker to the address book.
  */
-public class AddCommand extends Command {
+public class AddJobseekerCommand extends Command {
 
-    public static final String COMMAND_WORD = "add";
+    public static final String COMMAND_WORD = "addj";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the address book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a jobseeker to the address book. "
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "
@@ -35,28 +35,28 @@ public class AddCommand extends Command {
             + PREFIX_TAG + "friends "
             + PREFIX_TAG + "owesMoney";
 
-    public static final String MESSAGE_SUCCESS = "New person added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
+    public static final String MESSAGE_SUCCESS = "New jobseeker added: %1$s";
+    public static final String MESSAGE_DUPLICATE_JOBSEEKER = "This jobseeker already exists in the address book.";
 
-    private final Person toAdd;
+    private final Jobseeker toAdd;
 
     /**
-     * Creates an AddCommand to add the specified {@code Person}
+     * Creates an AddJobseekerCommand to add the specified {@code Jobseeker}
      */
-    public AddCommand(Person person) {
-        requireNonNull(person);
-        toAdd = person;
+    public AddJobseekerCommand(Jobseeker jobseeker) {
+        requireNonNull(jobseeker);
+        toAdd = jobseeker;
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        if (model.hasPerson(toAdd)) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        if (model.hasJobseeker(toAdd)) {
+            throw new CommandException(MESSAGE_DUPLICATE_JOBSEEKER);
         }
 
-        model.addPerson(toAdd);
+        model.addJobseeker(toAdd);
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
     }
 
@@ -67,7 +67,7 @@ public class AddCommand extends Command {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof AddCommand otherAddCommand)) {
+        if (!(other instanceof AddJobseekerCommand otherAddCommand)) {
             return false;
         }
 

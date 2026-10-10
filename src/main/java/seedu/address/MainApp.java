@@ -75,8 +75,11 @@ public class MainApp extends Application {
             if (addressBookOptional.isEmpty()) {
                 logger.info("Creating a new data file " + storage.getAddressBookFilePath()
                         + " populated with a sample AddressBook.");
+                initialData = SampleDataUtil.getSampleAddressBook();
+                saveInitialAddressBook(storage, initialData);
+            } else {
+                initialData = addressBookOptional.get();
             }
-            initialData = addressBookOptional.orElseGet(SampleDataUtil::getSampleAddressBook);
         } catch (DataLoadingException e) {
             logger.warning("Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
                     + " Will be starting with an empty AddressBook.");
@@ -84,6 +87,17 @@ public class MainApp extends Application {
         }
 
         return new ModelManager(initialData, userPrefs);
+    }
+
+    /**
+     * Saves the sample address book created for a new data file.
+     */
+    private void saveInitialAddressBook(Storage storage, ReadOnlyAddressBook initialData) {
+        try {
+            storage.saveAddressBook(initialData);
+        } catch (IOException e) {
+            logger.warning("Failed to save sample address book: " + StringUtil.getDetails(e));
+        }
     }
 
     /**
