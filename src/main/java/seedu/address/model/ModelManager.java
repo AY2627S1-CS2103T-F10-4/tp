@@ -10,9 +10,8 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.Client;
+import seedu.address.model.person.Jobseeker;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -22,9 +21,8 @@ public class ModelManager implements Model {
 
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
-    private final FilteredList<Person> filteredPersons;
-    private final FilteredList<Person> filteredJobseekers;
-    private final FilteredList<Person> filteredClients;
+    private final FilteredList<Jobseeker> filteredJobseekers;
+    private final FilteredList<Client> filteredClients;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -36,10 +34,10 @@ public class ModelManager implements Model {
 
         this.addressBook = new AddressBook(addressBook);
         this.userPrefs = new UserPrefs(userPrefs);
-        filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
-        filteredJobseekers = new FilteredList<>(this.addressBook.getPersonList());
-        filteredClients = new FilteredList<>(this.addressBook.getPersonList());
-        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        filteredJobseekers = new FilteredList<>(this.addressBook.getJobseekerList());
+        filteredClients = new FilteredList<>(this.addressBook.getClientList());
+        updateFilteredJobseekerList(jobseeker -> true);
+        updateFilteredClientList(client -> true);
     }
 
     public ModelManager() {
@@ -77,38 +75,46 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public boolean hasPerson(Person person) {
-        requireNonNull(person);
-        return addressBook.hasPerson(person);
+    public boolean hasJobseeker(Jobseeker jobseeker) {
+        return addressBook.hasJobseeker(jobseeker);
     }
 
     @Override
-    public void deletePerson(Person target) {
-        addressBook.removePerson(target);
+    public boolean hasClient(Client client) {
+        return addressBook.hasClient(client);
     }
 
     @Override
-    public void addPerson(Person person) {
-        addressBook.addPerson(person);
-        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+    public void deleteJobseeker(Jobseeker target) {
+        addressBook.removeJobseeker(target);
     }
 
     @Override
-    public void setPerson(Person target, Person editedPerson) {
-        requireAllNonNull(target, editedPerson);
+    public void deleteClient(Client target) {
+        addressBook.removeClient(target);
+    }
 
-        addressBook.setPerson(target, editedPerson);
+    @Override
+    public void addJobseeker(Jobseeker jobseeker) {
+        addressBook.addJobseeker(jobseeker);
+    }
+
+    @Override
+    public void addClient(Client client) {
+        addressBook.addClient(client);
+    }
+
+    @Override
+    public void setJobseeker(Jobseeker target, Jobseeker editedJobseeker) {
+        addressBook.setJobseeker(target, editedJobseeker);
+    }
+
+    @Override
+    public void setClient(Client target, Client editedClient) {
+        addressBook.setClient(target, editedClient);
     }
 
     //=========== Filtered Person List Accessors =============================================================
-
-    /**
-     * Returns an unmodifiable view of the general filtered person list backed by the address book.
-     */
-    @Override
-    public ObservableList<Person> getFilteredPersonList() {
-        return filteredPersons;
-    }
 
     /**
      * Returns an unmodifiable view containing only the filtered jobseekers in the address book.
@@ -116,7 +122,7 @@ public class ModelManager implements Model {
     @Override
     @SuppressWarnings("unchecked")
     public ObservableList<Jobseeker> getFilteredJobseekerList() {
-        return (ObservableList<Jobseeker>) (ObservableList<?>) filteredJobseekers;
+        return filteredJobseekers;
     }
 
     /**
@@ -125,15 +131,19 @@ public class ModelManager implements Model {
     @Override
     @SuppressWarnings("unchecked")
     public ObservableList<Client> getFilteredClientList() {
-        return (ObservableList<Client>) (ObservableList<?>) filteredClients;
+        return filteredClients;
     }
 
     @Override
-    public void updateFilteredPersonList(Predicate<Person> predicate) {
+    public void updateFilteredJobseekerList(Predicate<? super Jobseeker> predicate) {
         requireNonNull(predicate);
-        filteredPersons.setPredicate(predicate);
-        filteredJobseekers.setPredicate(person -> person instanceof Jobseeker && predicate.test(person));
-        filteredClients.setPredicate(person -> person instanceof Client && predicate.test(person));
+        filteredJobseekers.setPredicate(predicate);
+    }
+
+    @Override
+    public void updateFilteredClientList(Predicate<? super Client> predicate) {
+        requireNonNull(predicate);
+        filteredClients.setPredicate(predicate);
     }
 
     @Override
@@ -148,10 +158,7 @@ public class ModelManager implements Model {
         }
 
         return addressBook.equals(otherModelManager.addressBook)
-                && userPrefs.equals(otherModelManager.userPrefs)
-                && filteredPersons.equals(otherModelManager.filteredPersons)
-                && filteredJobseekers.equals(otherModelManager.filteredJobseekers)
-                && filteredClients.equals(otherModelManager.filteredClients);
+                && userPrefs.equals(otherModelManager.userPrefs);
     }
 
 }

@@ -6,15 +6,23 @@ import java.util.stream.Collectors;
 
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.person.*;
+import seedu.address.model.person.Address;
+import seedu.address.model.person.Client;
+import seedu.address.model.person.Email;
+import seedu.address.model.person.Jobseeker;
+import seedu.address.model.person.Name;
+import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
 /**
  * Contains utility methods for populating {@code AddressBook} with sample data.
  */
 public class SampleDataUtil {
-    public static Person[] getSamplePersons() {
-        return new Person[] {
+    /**
+     * Returns the sample jobseekers used to populate a new address book.
+     */
+    public static Jobseeker[] getSampleJobseekers() {
+        return new Jobseeker[] {
             new Jobseeker(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new Address("Blk 30 Geylang Street 29, #06-40"),
                 getTagSet("friends")),
@@ -27,6 +35,14 @@ public class SampleDataUtil {
             new Jobseeker(new Name("David Li"), new Phone("91031282"), new Email("lidavid@example.com"),
                 new Address("Blk 436 Serangoon Gardens Street 26, #16-43"),
                 getTagSet("family")),
+        };
+    }
+
+    /**
+     * Returns the sample clients used to populate a new address book.
+     */
+    public static Client[] getSampleClients() {
+        return new Client[] {
             new Client(new Name("Irfan Ibrahim"), new Phone("92492021"), new Email("irfan@example.com"),
                 new Address("Blk 47 Tampines Street 20, #17-35"),
                 getTagSet("classmates")),
@@ -36,10 +52,16 @@ public class SampleDataUtil {
         };
     }
 
+    /**
+     * Returns an address book containing the sample jobseekers and clients.
+     */
     public static ReadOnlyAddressBook getSampleAddressBook() {
         AddressBook sampleAb = new AddressBook();
-        for (Person samplePerson : getSamplePersons()) {
-            sampleAb.addPerson(samplePerson);
+        for (Jobseeker jobseeker : getSampleJobseekers()) {
+            sampleAb.addJobseeker(jobseeker);
+        }
+        for (Client client : getSampleClients()) {
+            sampleAb.addClient(client);
         }
         return sampleAb;
     }
