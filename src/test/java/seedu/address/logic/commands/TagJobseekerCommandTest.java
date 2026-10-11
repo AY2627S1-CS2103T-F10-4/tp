@@ -92,6 +92,15 @@ public class TagJobseekerCommandTest {
     }
 
     @Test
+    public void toStringMethod() {
+        Set<Tag> tags = Set.of(new Tag("java"));
+        TagJobseekerCommand command = new TagJobseekerCommand(INDEX_FIRST_PERSON, tags);
+        String expected = TagJobseekerCommand.class.getCanonicalName()
+                + "{targetIndex=" + INDEX_FIRST_PERSON + ", tagsToAdd=" + tags + "}";
+        assertEquals(expected, command.toString());
+    }
+
+    @Test
     public void equals() {
         Set<Tag> tags = Set.of(new Tag("java"));
         TagJobseekerCommand command = new TagJobseekerCommand(INDEX_FIRST_PERSON, tags);
