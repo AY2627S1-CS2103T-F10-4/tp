@@ -56,7 +56,7 @@ public class AddressBookParser {
         return switch (commandWord) {
             case AddJobseekerCommand.COMMAND_WORD -> new AddCommandParser().parse(arguments);
             case EditJobseekerCommand.COMMAND_WORD -> new EditCommandParser().parse(arguments);
-            case DeleteJobseekerCommand.COMMAND_WORD -> new DeleteCommandParser().parse(arguments);
+            case DeleteJobseekerCommand.COMMAND_WORD -> new DeleteJobseekerCommandParser().parse(arguments);
             case TagJobseekerCommand.COMMAND_WORD -> new TagJobseekerCommandParser().parse(arguments);
             case UntagJobseekerCommand.COMMAND_WORD -> new UntagJobseekerCommandParser().parse(arguments);
             case ClearCommand.COMMAND_WORD -> new ClearCommand();
