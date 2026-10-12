@@ -41,6 +41,12 @@ public class UntagJobseekerCommand extends Command {
         this.tagsToRemove = new HashSet<>(tagsToRemove);
     }
 
+    /**
+     * Removes specified tags from the jobseeker at the displayed index, preserve other tags and ignore missing tags.
+     *
+     * @return Feedback indicating whether tags were removed.
+     * @throws CommandException If the index is outside the currently displayed jobseeker list.
+     */
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);

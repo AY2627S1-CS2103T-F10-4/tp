@@ -54,11 +54,11 @@ public class AddressBookParser {
         logger.fine("Command word: " + commandWord + "; Arguments: " + arguments);
 
         return switch (commandWord) {
-            case TagJobseekerCommand.COMMAND_WORD -> new TagJobseekerCommandParser().parse(arguments);
-            case UntagJobseekerCommand.COMMAND_WORD -> new UntagJobseekerCommandParser().parse(arguments);
             case AddJobseekerCommand.COMMAND_WORD -> new AddCommandParser().parse(arguments);
             case EditJobseekerCommand.COMMAND_WORD -> new EditCommandParser().parse(arguments);
             case DeleteJobseekerCommand.COMMAND_WORD -> new DeleteCommandParser().parse(arguments);
+            case TagJobseekerCommand.COMMAND_WORD -> new TagJobseekerCommandParser().parse(arguments);
+            case UntagJobseekerCommand.COMMAND_WORD -> new UntagJobseekerCommandParser().parse(arguments);
             case ClearCommand.COMMAND_WORD -> new ClearCommand();
             case FindCommand.COMMAND_WORD -> new FindCommandParser().parse(arguments);
             case ListCommand.COMMAND_WORD -> new ListCommand();

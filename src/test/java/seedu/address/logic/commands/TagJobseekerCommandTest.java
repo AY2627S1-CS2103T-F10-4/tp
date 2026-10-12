@@ -79,7 +79,7 @@ public class TagJobseekerCommandTest {
     }
 
     @Test
-    public void constructor_mutatedInputTags_defensiveCopy() throws Exception {
+    public void constructor_inputCleared_retainsTags() throws Exception {
         model.addJobseeker(jobseeker);
         Set<Tag> tags = new HashSet<>(Set.of(new Tag("java")));
         TagJobseekerCommand command = new TagJobseekerCommand(INDEX_FIRST_PERSON, tags);

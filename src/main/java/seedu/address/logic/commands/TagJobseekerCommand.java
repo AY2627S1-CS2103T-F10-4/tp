@@ -41,6 +41,12 @@ public class TagJobseekerCommand extends Command {
         this.tagsToAdd = new HashSet<>(tagsToAdd);
     }
 
+    /**
+     * Adds tags to the jobseeker at the displayed index, preserving existing tags and ignoring duplicates.
+     *
+     * @return Feedback indicating whether tags were added.
+     * @throws CommandException If the index is outside the currently displayed jobseeker list.
+     */
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
