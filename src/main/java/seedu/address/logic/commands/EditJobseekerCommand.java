@@ -55,8 +55,10 @@ public class EditJobseekerCommand extends Command {
     private final EditJobseekerDescriptor editJobseekerDescriptor;
 
     /**
-     * @param index of the jobseeker in the filtered jobseeker list to edit
-     * @param editJobseekerDescriptor details to edit the jobseeker with
+     * Creates a command that edits the jobseeker at the specified index.
+     *
+     * @param index of the jobseeker in the filtered jobseeker list to edit.
+     * @param editJobseekerDescriptor details to edit the jobseeker with.
      */
     public EditJobseekerCommand(Index index, EditJobseekerDescriptor editJobseekerDescriptor) {
         requireNonNull(index);
@@ -143,7 +145,7 @@ public class EditJobseekerCommand extends Command {
         public EditJobseekerDescriptor() {}
 
         /**
-         * Copy constructor.
+         * Creates a copy of {@code toCopy}.
          * A defensive copy of {@code tags} is used internally.
          */
         public EditJobseekerDescriptor(EditJobseekerDescriptor toCopy) {
