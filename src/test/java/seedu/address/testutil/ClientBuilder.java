@@ -8,6 +8,7 @@ import seedu.address.model.person.Client;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 
@@ -25,6 +26,7 @@ public class ClientBuilder {
     private Phone phone;
     private Email email;
     private Address address;
+    private Remark remark;
     private Set<Tag> tags;
 
     /**
@@ -35,6 +37,7 @@ public class ClientBuilder {
         phone = new Phone(DEFAULT_PHONE);
         email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
+        remark = new Remark("");
         tags = new HashSet<>();
     }
 
@@ -46,6 +49,7 @@ public class ClientBuilder {
         phone = clientToCopy.getPhone();
         email = clientToCopy.getEmail();
         address = clientToCopy.getAddress();
+        remark = clientToCopy.getRemark();
         tags = new HashSet<>(clientToCopy.getTags());
     }
 
@@ -89,7 +93,15 @@ public class ClientBuilder {
         return this;
     }
 
+    /**
+     * Sets the remark of the person being built.
+     */
+    public ClientBuilder withRemark(String remark) {
+        this.remark = new Remark(remark);
+        return this;
+    }
+
     public Client build() {
-        return new Client(name, phone, email, address, tags);
+        return new Client(name, phone, email, address, tags, remark);
     }
 }

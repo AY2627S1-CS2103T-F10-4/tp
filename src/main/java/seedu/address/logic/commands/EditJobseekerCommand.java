@@ -102,7 +102,8 @@ public class EditJobseekerCommand extends Command {
         Address updatedAddress = editJobseekerDescriptor.getAddress().orElse(jobseekerToEdit.getAddress());
         Set<Tag> updatedTags = editJobseekerDescriptor.getTags().orElse(jobseekerToEdit.getTags());
 
-        return new Jobseeker(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
+        return new Jobseeker(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags,
+                jobseekerToEdit.getRemark());
     }
 
     @Override
