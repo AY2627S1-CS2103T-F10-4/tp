@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.AddJobseekerCommand;
 import seedu.address.logic.commands.ClearCommand;
+import seedu.address.logic.commands.DeleteClientCommand;
 import seedu.address.logic.commands.DeleteJobseekerCommand;
 import seedu.address.logic.commands.EditJobseekerCommand;
 import seedu.address.logic.commands.EditJobseekerCommand.EditJobseekerDescriptor;
@@ -63,10 +64,17 @@ public class AddressBookParserTest {
     }
 
     @Test
-    public void parseCommand_delete() throws Exception {
+    public void parseCommand_deletej() throws Exception {
         DeleteJobseekerCommand command = (DeleteJobseekerCommand) parser.parseCommand(
                 DeleteJobseekerCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new DeleteJobseekerCommand(INDEX_FIRST_PERSON), command);
+    }
+
+    @Test
+    public void parseCommand_deletec() throws Exception {
+        DeleteClientCommand command = (DeleteClientCommand) parser.parseCommand(
+                DeleteClientCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new DeleteClientCommand(INDEX_FIRST_PERSON), command);
     }
 
     @Test
