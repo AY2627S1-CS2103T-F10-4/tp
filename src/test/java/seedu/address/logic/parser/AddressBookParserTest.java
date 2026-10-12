@@ -8,6 +8,7 @@ import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
@@ -21,9 +22,12 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.TagJobseekerCommand;
+import seedu.address.logic.commands.UntagJobseekerCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.tag.Tag;
 import seedu.address.testutil.EditJobseekerDescriptorBuilder;
 import seedu.address.testutil.JobseekerBuilder;
 import seedu.address.testutil.PersonUtil;
@@ -31,6 +35,18 @@ import seedu.address.testutil.PersonUtil;
 public class AddressBookParserTest {
 
     private final AddressBookParser parser = new AddressBookParser();
+
+    @Test
+    public void parseCommand_untagj() throws Exception {
+        assertEquals(new UntagJobseekerCommand(INDEX_FIRST_PERSON, Set.of(new Tag("java"), new Tag("teamwork"))),
+                parser.parseCommand("untagj 1 java teamwork"));
+    }
+
+    @Test
+    public void parseCommand_tagj() throws Exception {
+        assertEquals(new TagJobseekerCommand(INDEX_FIRST_PERSON, Set.of(new Tag("java"), new Tag("teamwork"))),
+                parser.parseCommand("tagj 1 java teamwork"));
+    }
 
     @Test
     public void parseCommand_add() throws Exception {
