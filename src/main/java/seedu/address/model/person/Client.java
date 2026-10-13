@@ -11,14 +11,15 @@ import seedu.address.model.tag.Tag;
 public class Client extends Person {
 
     /**
-     * Creates a client with the given details.
+     * Creates a client with the given details and remark.
      */
     public Client(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Remark remark) {
+        //nonNull values enforced by the parent class.
         super(name, phone, email, address, tags, remark);
     }
 
     /**
-     * Creates a client with an empty remark.
+     * Creates a client with the given details and an empty remark.
      */
     public Client(Name name, Phone phone, Email email,
             Address address, Set<Tag> tags) {

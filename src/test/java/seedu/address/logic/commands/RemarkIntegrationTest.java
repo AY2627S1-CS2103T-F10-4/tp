@@ -49,7 +49,7 @@ public class RemarkIntegrationTest {
     }
 
     @Test
-    public void parse_duplicateRemarks_rejected() {
+    public void parse_duplicateRemarkPrefixes_rejected() {
         String expected = Messages.getErrorMessageForDuplicatePrefixes(CliSyntax.PREFIX_REMARK);
         assertThrows(ParseException.class, expected, () ->
                 parser.parseCommand("addj" + ADD_DETAILS + " r/First r/Second"));

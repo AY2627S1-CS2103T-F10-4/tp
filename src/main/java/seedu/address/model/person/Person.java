@@ -27,16 +27,8 @@ public abstract class Person {
     private final Set<Tag> tags = new HashSet<>();
 
     /**
-     * Constructs a Person with an empty remark.
-     * Every field must be present and not null.
-     */
-    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
-        this(name, phone, email, address, tags, new Remark(""));
-    }
-
-    /**
-     * Constructs a Person with a remark.
-     * Every argument must be present and not null.
+     * Constructs a Person with the given details and a remark and tag.
+     * Every argument must not be null.
      */
     public Person(Name name, Phone phone, Email email,
             Address address, Set<Tag> tags, Remark remark) {

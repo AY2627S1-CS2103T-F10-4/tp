@@ -87,7 +87,8 @@ Examples:
 * `addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
 * `addj n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
 
-Remarks are optional. Append `r/Available immediately` when adding a jobseeker. Without `r/`, the remark is empty.
+Remarks and tags are optional. Append `r/Available immediately` when adding a jobseeker. Without `r/`, the remark is empty.
+Append `t/urgent` when adding a jobseeker. Without `t/`, the tag is empty.
 
 ### Listing all persons: `list`
 

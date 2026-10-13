@@ -11,10 +11,11 @@ import seedu.address.model.tag.Tag;
 public class Jobseeker extends Person {
 
     /**
-     * Creates a jobseeker with an empty remark.
+     * Creates a jobseeker with the given details and an empty remark.
      */
     public Jobseeker(Name name, Phone phone, Email email,
             Address address, Set<Tag> tags) {
+        //nonNull values enforced by the parent class.
         this(name, phone, email, address, tags, new Remark(""));
     }
 
