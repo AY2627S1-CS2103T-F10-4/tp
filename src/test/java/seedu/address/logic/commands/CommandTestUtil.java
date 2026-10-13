@@ -16,6 +16,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
+import seedu.address.model.person.Client;
 import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.testutil.EditJobseekerDescriptorBuilder;
@@ -120,17 +121,19 @@ public class CommandTestUtil {
      * Executes the given {@code command}, confirms that <br>
      * - a {@code CommandException} is thrown <br>
      * - the CommandException message matches {@code expectedMessage} <br>
-     * - the address book, filtered jobseeker list and selected jobseeker in {@code actualModel} remain unchanged
+     * - the address book, filtered jobseeker list and filtered client list in {@code actualModel} remain unchanged
      */
     public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage) {
         // we are unable to defensively copy the model for comparison later, so we can
         // only do so by copying its components.
         AddressBook expectedAddressBook = new AddressBook(actualModel.getAddressBook());
         List<Jobseeker> expectedFilteredList = new ArrayList<>(actualModel.getFilteredJobseekerList());
+        List<Client> expectedFilteredClients = new ArrayList<>(actualModel.getFilteredClientList());
 
         assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel));
         assertEquals(expectedAddressBook, actualModel.getAddressBook());
         assertEquals(expectedFilteredList, actualModel.getFilteredJobseekerList());
+        assertEquals(expectedFilteredClients, actualModel.getFilteredClientList());
     }
     /**
      * Updates {@code model}'s filtered jobseeker list to show only the jobseeker at the given {@code targetIndex}
