@@ -1,5 +1,5 @@
 {
-  "_comment": "AddressBook save file which contains the same Jobseeker values as in TypicalPersons#getTypicalAddressBook()",
+  "_comment": "AddressBook save file containing the same jobseekers and clients as TypicalPersons#getTypicalAddressBook()",
   "jobseekers" : [ {
     "name" : "Alice Pauline",
     "phone" : "94351253",
@@ -41,6 +41,49 @@
     "phone" : "9482442",
     "email" : "anna@example.com",
     "address" : "4th street",
+    "tags" : [ ]
+  } ],
+  "clients" : [ {
+    "name" : "Adrian Tan",
+    "phone" : "81110001",
+    "email" : "adrian@example.com",
+    "address" : "1 Raffles Place",
+    "tags" : [ "employer" ]
+  }, {
+    "name" : "Brenda Lim",
+    "phone" : "81110002",
+    "email" : "brenda@example.com",
+    "address" : "2 Shenton Way",
+    "tags" : [ "employer", "partner" ]
+  }, {
+    "name" : "Cedric Ng",
+    "phone" : "81110003",
+    "email" : "cedric@example.com",
+    "address" : "3 Robinson Road",
+    "tags" : [ ]
+  }, {
+    "name" : "Diana Lee",
+    "phone" : "81110004",
+    "email" : "diana@example.com",
+    "address" : "4 Cecil Street",
+    "tags" : [ "partner" ]
+  }, {
+    "name" : "Ethan Goh",
+    "phone" : "81110005",
+    "email" : "ethan@example.com",
+    "address" : "5 Orchard Road",
+    "tags" : [ ]
+  }, {
+    "name" : "Felicia Teo",
+    "phone" : "81110006",
+    "email" : "felicia@example.com",
+    "address" : "6 Jurong East Street",
+    "tags" : [ ]
+  }, {
+    "name" : "Gavin Koh",
+    "phone" : "81110007",
+    "email" : "gavin@example.com",
+    "address" : "7 Paya Lebar Road",
     "tags" : [ ]
   } ]
 }
