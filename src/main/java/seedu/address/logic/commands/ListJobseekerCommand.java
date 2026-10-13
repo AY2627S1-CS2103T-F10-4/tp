@@ -7,7 +7,7 @@ import seedu.address.model.Model;
 /**
  * Lists all jobseekers and clients in the address book to the user.
  */
-public class ListJobseekersCommand extends Command {
+public class ListJobseekerCommand extends Command {
 
     public static final String COMMAND_WORD = "listj";
 

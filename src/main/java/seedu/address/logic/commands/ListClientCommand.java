@@ -7,7 +7,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * Lists all jobseekers and clients in the address book to the user.
  */
-public class ListClientsCommand extends Command {
+public class ListClientCommand extends Command {
 
     public static final String COMMAND_WORD = "listc";
 
