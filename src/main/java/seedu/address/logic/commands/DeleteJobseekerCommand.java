@@ -30,7 +30,7 @@ public class DeleteJobseekerCommand extends Command {
     /**
      * Creates a command that deletes the jobseeker at the specified index.
      *
-     * @param targetIndex index of the jobseeker to delete
+     * @param targetIndex index of the jobseeker to delete.
      */
     public DeleteJobseekerCommand(Index targetIndex) {
         this.targetIndex = targetIndex;

@@ -55,8 +55,10 @@ public class EditJobseekerCommand extends Command {
     private final EditJobseekerDescriptor editJobseekerDescriptor;
 
     /**
-     * @param index of the jobseeker in the filtered jobseeker list to edit
-     * @param editJobseekerDescriptor details to edit the jobseeker with
+     * Creates a command that edits the jobseeker at the specified index.
+     *
+     * @param index of the jobseeker in the filtered jobseeker list to edit.
+     * @param editJobseekerDescriptor details to edit the jobseeker with.
      */
     public EditJobseekerCommand(Index index, EditJobseekerDescriptor editJobseekerDescriptor) {
         requireNonNull(index);
@@ -101,8 +103,14 @@ public class EditJobseekerCommand extends Command {
         Email updatedEmail = editJobseekerDescriptor.getEmail().orElse(jobseekerToEdit.getEmail());
         Address updatedAddress = editJobseekerDescriptor.getAddress().orElse(jobseekerToEdit.getAddress());
         Set<Tag> updatedTags = editJobseekerDescriptor.getTags().orElse(jobseekerToEdit.getTags());
+        //Remark updatedRemark = editJobseekerDescriptor.getRemark().orElse(jobseekerToEdit.getRemark());
+        //update editJobseekerDescriptor in the upcoming issue
 
-        return new Jobseeker(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
+        /*return new Jobseeker(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags,
+                updatedRemark);
+         */
+        return new Jobseeker(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags,
+                jobseekerToEdit.getRemark());
     }
 
     @Override
@@ -143,7 +151,7 @@ public class EditJobseekerCommand extends Command {
         public EditJobseekerDescriptor() {}
 
         /**
-         * Copy constructor.
+         * Creates a copy of {@code toCopy}.
          * A defensive copy of {@code tags} is used internally.
          */
         public EditJobseekerDescriptor(EditJobseekerDescriptor toCopy) {
