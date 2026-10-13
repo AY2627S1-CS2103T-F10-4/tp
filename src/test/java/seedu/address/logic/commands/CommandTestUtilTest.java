@@ -16,6 +16,10 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 
+/**
+ * Tests that {@link CommandTestUtil#assertCommandFailure(Command, Model, String)} accepts unchanged
+ * filtered lists and detects changes to visible jobseekers or clients after a command fails.
+ */
 public class CommandTestUtilTest {
 
     private static final String FAILURE_MESSAGE = "Command failed";

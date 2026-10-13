@@ -23,6 +23,9 @@ import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.JobseekerBuilder;
 
+/**
+ * Tests address book initialization, data replacement, person identity and list access for both person types.
+ */
 public class AddressBookTest {
 
     private final AddressBook addressBook = new AddressBook();

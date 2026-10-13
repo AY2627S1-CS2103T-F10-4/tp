@@ -14,6 +14,9 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.person.Email;
 import seedu.address.testutil.TypicalPersons;
 
+/**
+ * Tests loading jobseekers and clients from JSON, including rejection of invalid and duplicate entries.
+ */
 public class JsonSerializableAddressBookTest {
 
     private static final Path TEST_DATA_FOLDER = Paths.get("src", "test", "data", "JsonSerializableAddressBookTest");

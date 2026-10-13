@@ -94,7 +94,8 @@ public class CommandTestUtil {
     /**
      * Executes the given {@code command}, confirms that <br>
      * - the returned {@link CommandResult} matches {@code expectedCommandResult} <br>
-     * - the {@code actualModel} matches {@code expectedModel}
+     * - the {@code actualModel} matches {@code expectedModel} according to its {@code equals} method
+     * <p>Filtered list contents must be asserted separately if they are not included in model equality.
      */
     public static void assertCommandSuccess(Command command, Model actualModel, CommandResult expectedCommandResult,
             Model expectedModel) {
@@ -121,7 +122,10 @@ public class CommandTestUtil {
      * Executes the given {@code command}, confirms that <br>
      * - a {@code CommandException} is thrown <br>
      * - the CommandException message matches {@code expectedMessage} <br>
-     * - the address book, filtered jobseeker list and filtered client list in {@code actualModel} remain unchanged
+     * - the address book and the contents of both filtered lists in {@code actualModel} remain unchanged
+     * <p>Compares visible list contents, not the filter predicates or calls made to update them.
+     *
+     * @throws AssertionError if the expected exception or message does not match, or the checked state changes
      */
     public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage) {
         // we are unable to defensively copy the model for comparison later, so we can
@@ -136,8 +140,9 @@ public class CommandTestUtil {
         assertEquals(expectedFilteredClients, actualModel.getFilteredClientList());
     }
     /**
-     * Updates {@code model}'s filtered jobseeker list to show only the jobseeker at the given {@code targetIndex}
-     * {@code model}'s address book.
+     * Filters jobseekers using the first name token of the jobseeker at {@code targetIndex}
+     * in the current filtered list.
+     * Asserts that the resulting list contains exactly one jobseeker.
      */
     public static void showPersonAtIndex(Model model, Index targetIndex) {
         assertTrue(targetIndex.getZeroBased() < model.getFilteredJobseekerList().size());

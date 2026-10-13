@@ -102,7 +102,8 @@ public class TypicalPersons {
     private TypicalPersons() {} // prevents instantiation
 
     /**
-     * Returns an {@code AddressBook} with all the typical jobseekers and clients.
+     * Returns a new {@code AddressBook} with the seven typical jobseekers and seven typical clients.
+     * Additional fixtures such as {@code AMY}, {@code BOB}, {@code JACK} and {@code KATE} are excluded.
      */
     public static AddressBook getTypicalAddressBook() {
         AddressBook ab = new AddressBook();
