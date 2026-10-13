@@ -101,8 +101,14 @@ public class EditJobseekerCommand extends Command {
         Email updatedEmail = editJobseekerDescriptor.getEmail().orElse(jobseekerToEdit.getEmail());
         Address updatedAddress = editJobseekerDescriptor.getAddress().orElse(jobseekerToEdit.getAddress());
         Set<Tag> updatedTags = editJobseekerDescriptor.getTags().orElse(jobseekerToEdit.getTags());
+        //Remark updatedRemark = editJobseekerDescriptor.getRemark().orElse(jobseekerToEdit.getRemark());
+        //update editJobseekerDescriptor in the upcoming issue
 
-        return new Jobseeker(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
+        /*return new Jobseeker(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags,
+                updatedRemark);
+         */
+        return new Jobseeker(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags,
+                jobseekerToEdit.getRemark());
     }
 
     @Override
