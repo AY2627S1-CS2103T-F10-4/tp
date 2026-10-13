@@ -40,14 +40,22 @@ public class FileUtil {
     /**
      * Returns the content of the given file as a string.
      * Assumes the file exists.
+     *
+     * @param file the text file to read (e.g. a JSON file), encoded in {@code CHARSET} (UTF-8).
+     * @return the content of the file.
+     * @throws IOException if an I/O error occurs while reading the file.
      */
     public static String readFromFile(Path file) throws IOException {
         return new String(Files.readAllBytes(file), CHARSET);
     }
 
     /**
-     * Writes given string to a file.
-     * Will create the file if it does not exist yet.
+     * Writes the given string to a file.
+     * Creates the file if it does not exist yet, or overwrites it if it already exists.
+     *
+     * @param file the text file to write to (e.g. a JSON file), encoded in {@code CHARSET} (UTF-8).
+     * @param content the content to write to the file.
+     * @throws IOException if an I/O error occurs while writing.
      */
     public static void writeToFile(Path file, String content) throws IOException {
         Files.write(file, content.getBytes(CHARSET));
