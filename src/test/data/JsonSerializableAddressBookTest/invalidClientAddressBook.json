@@ -1,0 +1,10 @@
+{
+  "jobseekers": [],
+  "clients": [ {
+    "name": "Adrian Tan",
+    "phone": "81110001",
+    "email": "invalid@email!3e",
+    "address": "1 Raffles Place",
+    "tags": [ "employer" ]
+  } ]
+}

@@ -16,6 +16,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
+import seedu.address.model.person.Client;
 import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.testutil.EditJobseekerDescriptorBuilder;
@@ -36,6 +37,17 @@ public class CommandTestUtil {
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friend";
 
+    public static final String VALID_NAME_JACK = "Jack Tan";
+    public static final String VALID_NAME_KATE = "Kate Lim";
+    public static final String VALID_PHONE_JACK = "81110008";
+    public static final String VALID_PHONE_KATE = "81110009";
+    public static final String VALID_EMAIL_JACK = "jack@example.com";
+    public static final String VALID_EMAIL_KATE = "kate@example.com";
+    public static final String VALID_ADDRESS_JACK = "8 Tampines Avenue";
+    public static final String VALID_ADDRESS_KATE = "9 Bedok Road";
+    public static final String VALID_TAG_EMPLOYER = "employer";
+    public static final String VALID_TAG_PARTNER = "partner";
+
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
     public static final String PHONE_DESC_AMY = " " + PREFIX_PHONE + VALID_PHONE_AMY;
@@ -46,6 +58,17 @@ public class CommandTestUtil {
     public static final String ADDRESS_DESC_BOB = " " + PREFIX_ADDRESS + VALID_ADDRESS_BOB;
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
+
+    public static final String NAME_DESC_JACK = " " + PREFIX_NAME + VALID_NAME_JACK;
+    public static final String NAME_DESC_KATE = " " + PREFIX_NAME + VALID_NAME_KATE;
+    public static final String PHONE_DESC_JACK = " " + PREFIX_PHONE + VALID_PHONE_JACK;
+    public static final String PHONE_DESC_KATE = " " + PREFIX_PHONE + VALID_PHONE_KATE;
+    public static final String EMAIL_DESC_JACK = " " + PREFIX_EMAIL + VALID_EMAIL_JACK;
+    public static final String EMAIL_DESC_KATE = " " + PREFIX_EMAIL + VALID_EMAIL_KATE;
+    public static final String ADDRESS_DESC_JACK = " " + PREFIX_ADDRESS + VALID_ADDRESS_JACK;
+    public static final String ADDRESS_DESC_KATE = " " + PREFIX_ADDRESS + VALID_ADDRESS_KATE;
+    public static final String TAG_DESC_EMPLOYER = " " + PREFIX_TAG + VALID_TAG_EMPLOYER;
+    public static final String TAG_DESC_PARTNER = " " + PREFIX_TAG + VALID_TAG_PARTNER;
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
@@ -71,7 +94,8 @@ public class CommandTestUtil {
     /**
      * Executes the given {@code command}, confirms that <br>
      * - the returned {@link CommandResult} matches {@code expectedCommandResult} <br>
-     * - the {@code actualModel} matches {@code expectedModel}
+     * - the {@code actualModel} matches {@code expectedModel} according to its {@code equals} method
+     * <p>Filtered list contents must be asserted separately if they are not included in model equality.
      */
     public static void assertCommandSuccess(Command command, Model actualModel, CommandResult expectedCommandResult,
             Model expectedModel) {
@@ -98,21 +122,27 @@ public class CommandTestUtil {
      * Executes the given {@code command}, confirms that <br>
      * - a {@code CommandException} is thrown <br>
      * - the CommandException message matches {@code expectedMessage} <br>
-     * - the address book, filtered jobseeker list and selected jobseeker in {@code actualModel} remain unchanged
+     * - the address book and the contents of both filtered lists in {@code actualModel} remain unchanged
+     * <p>Compares visible list contents, not the filter predicates or calls made to update them.
+     *
+     * @throws AssertionError if the expected exception or message does not match, or the checked state changes
      */
     public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage) {
         // we are unable to defensively copy the model for comparison later, so we can
         // only do so by copying its components.
         AddressBook expectedAddressBook = new AddressBook(actualModel.getAddressBook());
         List<Jobseeker> expectedFilteredList = new ArrayList<>(actualModel.getFilteredJobseekerList());
+        List<Client> expectedFilteredClients = new ArrayList<>(actualModel.getFilteredClientList());
 
         assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel));
         assertEquals(expectedAddressBook, actualModel.getAddressBook());
         assertEquals(expectedFilteredList, actualModel.getFilteredJobseekerList());
+        assertEquals(expectedFilteredClients, actualModel.getFilteredClientList());
     }
     /**
-     * Updates {@code model}'s filtered jobseeker list to show only the jobseeker at the given {@code targetIndex}
-     * {@code model}'s address book.
+     * Filters jobseekers using the first name token of the jobseeker at {@code targetIndex}
+     * in the current filtered list.
+     * Asserts that the resulting list contains exactly one jobseeker.
      */
     public static void showPersonAtIndex(Model model, Index targetIndex) {
         assertTrue(targetIndex.getZeroBased() < model.getFilteredJobseekerList().size());
