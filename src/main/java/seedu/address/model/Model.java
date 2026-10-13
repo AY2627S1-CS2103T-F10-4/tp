@@ -11,6 +11,9 @@ import seedu.address.model.person.Jobseeker;
  * The API of the Model component.
  */
 public interface Model {
+    /** {@code Predicate}s that always evaluate to true */
+    Predicate<Jobseeker> PREDICATE_SHOW_ALL_JOBSEEKERS = jobseeker -> true;
+    Predicate<Client> PREDICATE_SHOW_ALL_CLIENTS = client -> true;
     /**
      * Returns the user prefs.
      */

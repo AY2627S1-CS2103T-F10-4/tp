@@ -21,7 +21,7 @@ import seedu.address.logic.commands.EditJobseekerCommand.EditJobseekerDescriptor
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
-import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.ListJobseekersCommand;
 import seedu.address.logic.commands.TagJobseekerCommand;
 import seedu.address.logic.commands.UntagJobseekerCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -102,8 +102,8 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_list() throws Exception {
-        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD) instanceof ListCommand);
-        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3") instanceof ListCommand);
+        assertTrue(parser.parseCommand(ListJobseekersCommand.COMMAND_WORD) instanceof ListJobseekersCommand);
+        assertTrue(parser.parseCommand(ListJobseekersCommand.COMMAND_WORD + " 3") instanceof ListJobseekersCommand);
     }
 
     @Test

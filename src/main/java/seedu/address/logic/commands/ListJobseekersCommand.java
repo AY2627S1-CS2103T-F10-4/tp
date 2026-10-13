@@ -7,18 +7,17 @@ import seedu.address.model.Model;
 /**
  * Lists all jobseekers and clients in the address book to the user.
  */
-public class ListCommand extends Command {
+public class ListJobseekersCommand extends Command {
 
-    public static final String COMMAND_WORD = "list";
+    public static final String COMMAND_WORD = "listj";
 
-    public static final String MESSAGE_SUCCESS = "Listed all jobseekers and clients.";
+    public static final String MESSAGE_SUCCESS = "Listed all jobseekers.";
 
 
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.updateFilteredJobseekerList(jobseeker -> true);
-        model.updateFilteredClientList(client -> true);
+        model.updateFilteredJobseekerList(Model.PREDICATE_SHOW_ALL_JOBSEEKERS);
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }
