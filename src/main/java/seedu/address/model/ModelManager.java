@@ -75,6 +75,16 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public void setJobseekers(java.util.List<Jobseeker> jobseekers) {
+        this.addressBook.setJobseekers(jobseekers);
+    }
+
+    @Override
+    public void setClients(java.util.List<Client> clients) {
+        this.addressBook.setClients(clients);
+    }
+
+    @Override
     public boolean hasJobseeker(Jobseeker jobseeker) {
         return addressBook.hasJobseeker(jobseeker);
     }

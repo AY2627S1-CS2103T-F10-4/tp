@@ -34,6 +34,10 @@ public interface Model {
     /** Returns the AddressBook */
     ReadOnlyAddressBook getAddressBook();
 
+    void setJobseekers(java.util.List<Jobseeker> jobseekers);
+
+    void setClients(java.util.List<Client> clients);
+
     boolean hasJobseeker(Jobseeker jobseeker);
 
     boolean hasClient(Client client);
