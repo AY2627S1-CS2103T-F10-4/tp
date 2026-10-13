@@ -1,7 +1,7 @@
 package seedu.address.logic.commands;
 
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
+import static seedu.address.logic.commands.CommandTestUtil.showJobseekerAtIndex;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
@@ -33,7 +33,7 @@ public class ListJobseekerCommandTest {
 
     @Test
     public void execute_jobseekerListIsFiltered_showsEverything() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+        showJobseekerAtIndex(model, INDEX_FIRST_PERSON);
         assertCommandSuccess(new ListJobseekerCommand(), model, ListJobseekerCommand.MESSAGE_SUCCESS, expectedModel);
     }
 }

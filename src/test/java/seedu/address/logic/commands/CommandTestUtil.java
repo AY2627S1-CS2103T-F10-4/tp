@@ -144,7 +144,7 @@ public class CommandTestUtil {
      * in the current filtered list.
      * Asserts that the resulting list contains exactly one jobseeker.
      */
-    public static void showPersonAtIndex(Model model, Index targetIndex) {
+    public static void showJobseekerAtIndex(Model model, Index targetIndex) {
         assertTrue(targetIndex.getZeroBased() < model.getFilteredJobseekerList().size());
 
         Jobseeker jobseeker = model.getFilteredJobseekerList().get(targetIndex.getZeroBased());
@@ -152,6 +152,21 @@ public class CommandTestUtil {
         model.updateFilteredJobseekerList(new NameContainsKeywordsPredicate(List.of(splitName[0])));
 
         assertEquals(1, model.getFilteredJobseekerList().size());
+    }
+
+    /**
+     * Filters clients using the first name token of the client at {@code targetIndex}
+     * in the current filtered list.
+     * Asserts that the resulting list contains exactly one client.
+     */
+    public static void showClientAtIndex(Model model, Index targetIndex) {
+        assertTrue(targetIndex.getZeroBased() < model.getFilteredClientList().size());
+
+        Client client = model.getFilteredClientList().get(targetIndex.getZeroBased());
+        final String[] splitName = client.getName().fullName.split("\\s+");
+        model.updateFilteredClientList(new NameContainsKeywordsPredicate(List.of(splitName[0])));
+
+        assertEquals(1, model.getFilteredClientList().size());
     }
 
 }
