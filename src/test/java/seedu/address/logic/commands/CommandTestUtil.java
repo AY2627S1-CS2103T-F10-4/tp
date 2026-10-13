@@ -36,6 +36,17 @@ public class CommandTestUtil {
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friend";
 
+    public static final String VALID_NAME_JACK = "Jack Tan";
+    public static final String VALID_NAME_KATE = "Kate Lim";
+    public static final String VALID_PHONE_JACK = "81110008";
+    public static final String VALID_PHONE_KATE = "81110009";
+    public static final String VALID_EMAIL_JACK = "jack@example.com";
+    public static final String VALID_EMAIL_KATE = "kate@example.com";
+    public static final String VALID_ADDRESS_JACK = "8 Tampines Avenue";
+    public static final String VALID_ADDRESS_KATE = "9 Bedok Road";
+    public static final String VALID_TAG_EMPLOYER = "employer";
+    public static final String VALID_TAG_PARTNER = "partner";
+
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
     public static final String PHONE_DESC_AMY = " " + PREFIX_PHONE + VALID_PHONE_AMY;
@@ -46,6 +57,17 @@ public class CommandTestUtil {
     public static final String ADDRESS_DESC_BOB = " " + PREFIX_ADDRESS + VALID_ADDRESS_BOB;
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
+
+    public static final String NAME_DESC_JACK = " " + PREFIX_NAME + VALID_NAME_JACK;
+    public static final String NAME_DESC_KATE = " " + PREFIX_NAME + VALID_NAME_KATE;
+    public static final String PHONE_DESC_JACK = " " + PREFIX_PHONE + VALID_PHONE_JACK;
+    public static final String PHONE_DESC_KATE = " " + PREFIX_PHONE + VALID_PHONE_KATE;
+    public static final String EMAIL_DESC_JACK = " " + PREFIX_EMAIL + VALID_EMAIL_JACK;
+    public static final String EMAIL_DESC_KATE = " " + PREFIX_EMAIL + VALID_EMAIL_KATE;
+    public static final String ADDRESS_DESC_JACK = " " + PREFIX_ADDRESS + VALID_ADDRESS_JACK;
+    public static final String ADDRESS_DESC_KATE = " " + PREFIX_ADDRESS + VALID_ADDRESS_KATE;
+    public static final String TAG_DESC_EMPLOYER = " " + PREFIX_TAG + VALID_TAG_EMPLOYER;
+    public static final String TAG_DESC_PARTNER = " " + PREFIX_TAG + VALID_TAG_PARTNER;
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
