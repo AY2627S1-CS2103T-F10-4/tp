@@ -167,7 +167,7 @@ public class EditJobseekerCommandTest {
         assertFalse(standardCommand.equals(null));
 
         // different types -> returns false
-        assertFalse(standardCommand.equals(new ClearCommand()));
+        assertFalse(standardCommand.equals(new ClearJobseekerCommand()));
 
         // different index -> returns false
         assertFalse(standardCommand.equals(new EditJobseekerCommand(INDEX_SECOND_PERSON, DESC_AMY)));
