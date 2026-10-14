@@ -7,8 +7,9 @@ import java.util.function.Predicate;
 import seedu.address.commons.util.ToStringBuilder;
 
 /**
- * Tests that a {@code Person}'s {@code Name} contains any of the keywords given, ignoring case.
- * For example, the keyword {@code "lic"} matches the name {@code "Alice Tan"}.
+ * Tests that a {@code Person}'s name, phone number or email contains any of the keywords given,
+ * ignoring case. For example, the keyword {@code "lic"} matches the name {@code "Alice Tan"},
+ * and {@code "9435"} matches the phone number {@code "94351253"}.
  */
 public class NameContainsKeywordsPredicate implements Predicate<Person> {
     private final List<String> keywords;
@@ -22,9 +23,14 @@ public class NameContainsKeywordsPredicate implements Predicate<Person> {
         // Locale.ROOT keeps case folding the same on every machine. If this was omitted, under the
         // default locale on a Turkish system for example, "ALICE".toLowerCase() would have given
         // "alıce" (dotless i), which would not match "alice".
-        String lowerCaseName = person.getName().fullName.toLowerCase(Locale.ROOT);
+        // Each field is checked on its own, so a keyword cannot match across two fields.
+        List<String> searchableFields = List.of(
+                person.getName().fullName.toLowerCase(Locale.ROOT),
+                person.getPhone().value,
+                person.getEmail().value.toLowerCase(Locale.ROOT));
         return keywords.stream()
-                .anyMatch(keyword -> lowerCaseName.contains(keyword.toLowerCase(Locale.ROOT)));
+                .map(keyword -> keyword.toLowerCase(Locale.ROOT))
+                .anyMatch(keyword -> searchableFields.stream().anyMatch(field -> field.contains(keyword)));
     }
 
     @Override

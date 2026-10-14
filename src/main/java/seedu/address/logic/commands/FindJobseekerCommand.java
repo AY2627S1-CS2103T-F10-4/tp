@@ -8,17 +8,18 @@ import seedu.address.model.Model;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 
 /**
- * Finds and lists all jobseekers in the address book whose name contains any of the argument keywords.
- * Keyword matching is case insensitive.
+ * Finds and lists all jobseekers in the address book whose name, phone number or email contains
+ * any of the argument keywords. Keyword matching is case insensitive.
  */
 public class FindJobseekerCommand extends Command {
 
     public static final String COMMAND_WORD = "findj";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all jobseekers whose names contain any of "
-            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all jobseekers whose name, "
+            + "phone number or email contains any of the specified keywords (case-insensitive) "
+            + "and displays them as a list with index numbers.\n"
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " alice bob charlie";
+            + "Example: " + COMMAND_WORD + " alice 9435 @gmail";
 
     private final NameContainsKeywordsPredicate predicate;
 

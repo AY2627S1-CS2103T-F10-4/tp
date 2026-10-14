@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_JOBSEEKERS_LISTED_OVERVIEW;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalPersons.CARL;
 import static seedu.address.testutil.TypicalPersons.DANIEL;
@@ -103,6 +104,26 @@ public class FindJobseekerCommandTest {
         FindJobseekerCommand command = new FindJobseekerCommand(preparePredicate("eier"));
         command.execute(model);
         assertFalse(model.getFilteredJobseekerList().contains(ELLE));
+    }
+
+    @Test
+    public void execute_phoneKeyword_personFound() {
+        String expectedMessage = String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, 1);
+        NameContainsKeywordsPredicate predicate = preparePredicate("9435");
+        FindJobseekerCommand command = new FindJobseekerCommand(predicate);
+        expectedModel.updateFilteredJobseekerList(predicate);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertEquals(List.of(ALICE), model.getFilteredJobseekerList());
+    }
+
+    @Test
+    public void execute_emailKeyword_personFound() {
+        String expectedMessage = String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, 1);
+        NameContainsKeywordsPredicate predicate = preparePredicate("cornelia");
+        FindJobseekerCommand command = new FindJobseekerCommand(predicate);
+        expectedModel.updateFilteredJobseekerList(predicate);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertEquals(List.of(DANIEL), model.getFilteredJobseekerList());
     }
 
     @Test

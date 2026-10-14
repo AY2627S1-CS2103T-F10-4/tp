@@ -106,10 +106,40 @@ public class NameContainsKeywordsPredicateTest {
         predicate = new NameContainsKeywordsPredicate(List.of("Alicia"));
         assertFalse(predicate.test(new JobseekerBuilder().withName("Alice Bob").build()));
 
-        // Keywords match phone, email and address, but do not match name
-        predicate = new NameContainsKeywordsPredicate(List.of("12345", "alice@email.com", "Main", "Street"));
+        // Keywords match address only, which is not searched
+        predicate = new NameContainsKeywordsPredicate(List.of("Main", "Street"));
         assertFalse(predicate.test(new JobseekerBuilder().withName("Alice").withPhone("12345")
                 .withEmail("alice@email.com").withAddress("Main Street").build()));
+    }
+
+    @Test
+    public void test_keywordMatchesPhone_returnsTrue() {
+        // Full phone number
+        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(List.of("12345"));
+        assertTrue(predicate.test(new JobseekerBuilder().withName("Alice").withPhone("12345").build()));
+
+        // Part of the phone number
+        predicate = new NameContainsKeywordsPredicate(List.of("234"));
+        assertTrue(predicate.test(new JobseekerBuilder().withName("Alice").withPhone("12345").build()));
+    }
+
+    @Test
+    public void test_keywordMatchesEmail_returnsTrue() {
+        // Part of the email, mixed case
+        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(List.of("EMAIL.com"));
+        assertTrue(predicate.test(new JobseekerBuilder().withName("Bob")
+                .withEmail("alice@email.com").build()));
+    }
+
+    /**
+     * Guards checking each field separately: {@code "Alice12345"} spans the end of the name and the
+     * start of the phone number, so this fails if the fields are joined into one string before matching.
+     */
+    @Test
+    public void test_keywordSpansNameAndPhone_returnsFalse() {
+        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(List.of("Alice12345"));
+        assertFalse(predicate.test(new JobseekerBuilder().withName("Alice").withPhone("12345")
+                .withEmail("bob@email.com").build()));
     }
 
     @Test
