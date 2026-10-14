@@ -1,5 +1,8 @@
 package seedu.address.model.person;
 
+import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.AppUtil.checkArgument;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Predicate;
@@ -12,10 +15,22 @@ import seedu.address.commons.util.ToStringBuilder;
  * and {@code "9435"} matches the phone number {@code "94351253"}.
  */
 public class NameContainsKeywordsPredicate implements Predicate<Person> {
+    public static final String MESSAGE_BLANK_KEYWORD = "Keywords should not be blank";
+
     private final List<String> keywords;
 
+    /**
+     * Creates a predicate that matches any of the given {@code keywords}.
+     * The list is copied, so later changes to it by the caller do not affect this predicate.
+     *
+     * @param keywords Keywords to match; neither the list nor any keyword may be null.
+     * @throws IllegalArgumentException If any keyword is empty or only whitespace.
+     */
     public NameContainsKeywordsPredicate(List<String> keywords) {
-        this.keywords = keywords;
+        requireNonNull(keywords);
+        // List.copyOf also throws NullPointerException if any keyword is null.
+        this.keywords = List.copyOf(keywords);
+        checkArgument(this.keywords.stream().noneMatch(String::isBlank), MESSAGE_BLANK_KEYWORD);
     }
 
     @Override

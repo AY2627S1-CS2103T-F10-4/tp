@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_JOBSEEKERS_LISTED_OVERVIEW;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalPersons.CARL;
@@ -28,6 +29,11 @@ import seedu.address.model.person.NameContainsKeywordsPredicate;
 public class FindJobseekerCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
     private Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+    @Test
+    public void constructor_nullPredicate_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> new FindJobseekerCommand(null));
+    }
 
     @Test
     public void equals() {
@@ -67,7 +73,7 @@ public class FindJobseekerCommandTest {
     }
 
     @Test
-    public void execute_multipleKeywords_multiplePersonsFound() {
+    public void execute_multipleNameKeywords_personsFound() {
         String expectedMessage = String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, 3);
         NameContainsKeywordsPredicate predicate = preparePredicate("Kurz Elle Kunz");
         FindJobseekerCommand command = new FindJobseekerCommand(predicate);
@@ -83,7 +89,7 @@ public class FindJobseekerCommandTest {
      * if {@code findj} reverts to matching whole words only.
      */
     @Test
-    public void execute_partialKeyword_multiplePersonsFound() {
+    public void execute_partialNameKeyword_personsFound() {
         String expectedMessage = String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, 2);
         NameContainsKeywordsPredicate predicate = preparePredicate("eier");
         FindJobseekerCommand command = new FindJobseekerCommand(predicate);
@@ -97,17 +103,17 @@ public class FindJobseekerCommandTest {
      * Elle Meyer is one letter away from "Meier" and does not contain {@code "eier"}, so this test case
      * fails if matching is loosened, for example to fuzzy or typo-tolerant matching.
      * On its own, this test case would also pass if nothing were found, so it relies on
-     * {@link #execute_partialKeyword_multiplePersonsFound()} to check that matching still works.
+     * {@link #execute_partialNameKeyword_personsFound()} to check that matching still works.
      */
     @Test
-    public void execute_partialKeyword_nearMissNotFound() {
+    public void execute_partialNameKeyword_nearMissNotFound() {
         FindJobseekerCommand command = new FindJobseekerCommand(preparePredicate("eier"));
         command.execute(model);
         assertFalse(model.getFilteredJobseekerList().contains(ELLE));
     }
 
     @Test
-    public void execute_phoneKeyword_personFound() {
+    public void execute_partialPhoneKeyword_personFound() {
         String expectedMessage = String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, 1);
         NameContainsKeywordsPredicate predicate = preparePredicate("9435");
         FindJobseekerCommand command = new FindJobseekerCommand(predicate);
@@ -117,7 +123,7 @@ public class FindJobseekerCommandTest {
     }
 
     @Test
-    public void execute_emailKeyword_personFound() {
+    public void execute_partialEmailKeyword_personFound() {
         String expectedMessage = String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, 1);
         NameContainsKeywordsPredicate predicate = preparePredicate("cornelia");
         FindJobseekerCommand command = new FindJobseekerCommand(predicate);

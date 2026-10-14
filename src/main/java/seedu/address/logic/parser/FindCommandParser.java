@@ -27,6 +27,9 @@ public class FindCommandParser implements Parser<FindJobseekerCommand> {
         }
 
         String[] nameKeywords = trimmedArgs.split("\\s+");
+        // trimmedArgs is non-empty and has no leading whitespace, so the split yields at least one
+        // keyword and none of them is blank.
+        assert nameKeywords.length > 0;
 
         return new FindJobseekerCommand(new NameContainsKeywordsPredicate(List.of(nameKeywords)));
     }

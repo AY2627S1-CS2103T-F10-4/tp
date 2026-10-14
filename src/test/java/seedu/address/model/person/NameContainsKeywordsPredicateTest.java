@@ -3,7 +3,11 @@ package seedu.address.model.person;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.model.person.NameContainsKeywordsPredicate.MESSAGE_BLANK_KEYWORD;
+import static seedu.address.testutil.Assert.assertThrows;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -12,6 +16,37 @@ import org.junit.jupiter.api.Test;
 import seedu.address.testutil.JobseekerBuilder;
 
 public class NameContainsKeywordsPredicateTest {
+
+    @Test
+    public void constructor_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> new NameContainsKeywordsPredicate(null));
+        assertThrows(NullPointerException.class, () ->
+                new NameContainsKeywordsPredicate(Arrays.asList("Alice", null)));
+    }
+
+    /**
+     * Checks that an empty or whitespace-only keyword is rejected when the predicate is created.
+     * This fails if the blank-keyword check is removed from the constructor.
+     */
+    @Test
+    public void constructor_blankKeyword_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, MESSAGE_BLANK_KEYWORD, () ->
+                new NameContainsKeywordsPredicate(List.of("")));
+        assertThrows(IllegalArgumentException.class, MESSAGE_BLANK_KEYWORD, () ->
+                new NameContainsKeywordsPredicate(List.of("Alice", " ")));
+    }
+
+    /**
+     * Checks that changing the caller's keyword list after NameContainsKeywordsPredicate construction
+     * does not change what the predicate matches, and that the constructor makes a copy of the list.
+     */
+    @Test
+    public void constructor_listChangedAfterwards_predicateUnaffected() {
+        List<String> keywords = new ArrayList<>(List.of("Alice"));
+        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(keywords);
+        keywords.add("Bob");
+        assertFalse(predicate.test(new JobseekerBuilder().withName("Bob").build()));
+    }
 
     @Test
     public void equals() {
