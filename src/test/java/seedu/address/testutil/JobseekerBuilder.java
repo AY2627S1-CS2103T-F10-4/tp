@@ -8,6 +8,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 
@@ -25,6 +26,7 @@ public class JobseekerBuilder {
     private Phone phone;
     private Email email;
     private Address address;
+    private Remark remark;
     private Set<Tag> tags;
 
     /**
@@ -35,6 +37,7 @@ public class JobseekerBuilder {
         phone = new Phone(DEFAULT_PHONE);
         email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
+        remark = new Remark("");
         tags = new HashSet<>();
     }
 
@@ -46,6 +49,7 @@ public class JobseekerBuilder {
         phone = jobseekerToCopy.getPhone();
         email = jobseekerToCopy.getEmail();
         address = jobseekerToCopy.getAddress();
+        remark = jobseekerToCopy.getRemark();
         tags = new HashSet<>(jobseekerToCopy.getTags());
     }
 
@@ -89,7 +93,15 @@ public class JobseekerBuilder {
         return this;
     }
 
+    /**
+     * Sets the remark of the person being built.
+     */
+    public JobseekerBuilder withRemark(String remark) {
+        this.remark = new Remark(remark);
+        return this;
+    }
+
     public Jobseeker build() {
-        return new Jobseeker(name, phone, email, address, tags);
+        return new Jobseeker(name, phone, email, address, tags, remark);
     }
 }

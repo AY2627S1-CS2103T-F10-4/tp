@@ -65,7 +65,7 @@ public class TagJobseekerCommand extends Command {
         }
 
         Jobseeker updatedJobseeker = new Jobseeker(target.getName(), target.getPhone(), target.getEmail(),
-                target.getAddress(), updatedTags);
+                target.getAddress(), updatedTags, target.getRemark());
         model.setJobseeker(target, updatedJobseeker);
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(updatedJobseeker)));
     }

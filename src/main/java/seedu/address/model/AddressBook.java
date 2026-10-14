@@ -37,6 +37,10 @@ public class AddressBook implements ReadOnlyAddressBook {
         this.jobseekers.setPersons(jobseekers);
     }
 
+    /**
+     * Replaces the contents of the client list with {@code clients}.
+     * {@code clients} must not contain duplicate clients.
+     */
     public void setClients(java.util.List<Client> clients) {
         this.clients.setPersons(clients);
     }
@@ -67,26 +71,52 @@ public class AddressBook implements ReadOnlyAddressBook {
         return clients.contains(client);
     }
 
+    /**
+     * Adds the given jobseeker to the address book.
+     * The jobseeker must not already exist in the address book.
+     */
     public void addJobseeker(Jobseeker jobseeker) {
         jobseekers.add(jobseeker);
     }
 
+    /**
+     * Adds the given client to the address book.
+     * The client must not already exist in the address book.
+     */
     public void addClient(Client client) {
         clients.add(client);
     }
 
+    /**
+     * Replaces the jobseeker {@code target} with {@code editedJobseeker}.
+     * {@code target} must exist in the address book, and {@code editedJobseeker} must not be the same as
+     * another existing jobseeker.
+     */
     public void setJobseeker(Jobseeker target, Jobseeker editedJobseeker) {
         jobseekers.setPerson(target, editedJobseeker);
     }
 
+    /**
+     * Replaces the client {@code target} with {@code editedClient}.
+     * {@code target} must exist in the address book, and {@code editedClient} must not be the same as
+     * another existing client.
+     */
     public void setClient(Client target, Client editedClient) {
         clients.setPerson(target, editedClient);
     }
 
+    /**
+     * Removes the given jobseeker from the address book.
+     * The jobseeker must exist in the address book.
+     */
     public void removeJobseeker(Jobseeker jobseeker) {
         jobseekers.remove(jobseeker);
     }
 
+    /**
+     * Removes the given client from the address book.
+     * The client must exist in the address book.
+     */
     public void removeClient(Client client) {
         clients.remove(client);
     }

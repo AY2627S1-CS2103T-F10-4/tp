@@ -42,7 +42,7 @@ public class JsonAddressBookStorage {
     }
 
     /**
-     * Similar to {@link #readAddressBook()}.
+     * Reads the address book from the given file. Similar to {@link #readAddressBook()}.
      *
      * @param filePath location of the data. Cannot be null.
      * @throws DataLoadingException if loading the data from storage failed.
@@ -66,6 +66,7 @@ public class JsonAddressBookStorage {
 
     /**
      * Saves the given {@link ReadOnlyAddressBook} to the storage.
+     *
      * @param addressBook cannot be null.
      * @throws IOException if there was any problem writing to the file.
      */
@@ -74,7 +75,7 @@ public class JsonAddressBookStorage {
     }
 
     /**
-     * Similar to {@link #saveAddressBook(ReadOnlyAddressBook)}.
+     * Saves the address book to the given file. Similar to {@link #saveAddressBook(ReadOnlyAddressBook)}.
      *
      * @param filePath location of the data. Cannot be null.
      */

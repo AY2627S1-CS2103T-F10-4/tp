@@ -26,7 +26,8 @@ import seedu.address.testutil.JobseekerBuilder;
 public class TagJobseekerCommandTest {
 
     private final Model model = new ModelManager();
-    private final Jobseeker jobseeker = new JobseekerBuilder().withTags("teamwork").build();
+    private final Jobseeker jobseeker = new JobseekerBuilder().withTags("teamwork")
+            .withRemark("Available immediately").build();
 
     @Test
     public void constructor_nullArguments_throwsNullPointerException() {

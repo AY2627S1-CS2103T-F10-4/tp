@@ -45,6 +45,8 @@ public class Messages {
                 .append(jobseeker.getEmail())
                 .append("; Address: ")
                 .append(jobseeker.getAddress())
+                .append("; Remark: ")
+                .append(jobseeker.getRemark())
                 .append("; Tags: ");
         jobseeker.getTags().forEach(builder::append);
         return builder.toString();

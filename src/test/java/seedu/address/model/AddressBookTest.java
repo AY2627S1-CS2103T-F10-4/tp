@@ -3,8 +3,11 @@ package seedu.address.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_JACK;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARTNER;
 import static seedu.address.testutil.Assert.assertThrows;
+import static seedu.address.testutil.TypicalPersons.ADRIAN;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
@@ -17,8 +20,12 @@ import javafx.collections.ObservableList;
 import seedu.address.model.person.Client;
 import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
+import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.JobseekerBuilder;
 
+/**
+ * Tests address book initialization, data replacement, person identity and list access for both person types.
+ */
 public class AddressBookTest {
 
     private final AddressBook addressBook = new AddressBook();
@@ -26,6 +33,7 @@ public class AddressBookTest {
     @Test
     public void constructor() {
         assertEquals(List.of(), addressBook.getJobseekerList());
+        assertEquals(List.of(), addressBook.getClientList());
     }
 
     @Test
@@ -41,12 +49,12 @@ public class AddressBookTest {
     }
 
     @Test
-    public void resetData_withDuplicatePersons_throwsDuplicatePersonException() {
+    public void resetData_withDuplicateJobseekers_throwsDuplicatePersonException() {
         // Two jobseekers with the same identity fields
         Jobseeker editedAlice = new JobseekerBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND)
                 .build();
         List<Jobseeker> newJobseekers = List.of(ALICE, editedAlice);
-        AddressBookStub newData = new AddressBookStub(newJobseekers);
+        AddressBookStub newData = new AddressBookStub(newJobseekers, List.of());
 
         assertThrows(DuplicatePersonException.class, () -> addressBook.resetData(newData));
     }
@@ -57,6 +65,43 @@ public class AddressBookTest {
         Jobseeker editedAlice = new JobseekerBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND)
                 .build();
         assertTrue(addressBook.hasJobseeker(editedAlice));
+    }
+
+    @Test
+    public void resetData_withDuplicateClients_throwsDuplicatePersonException() {
+        // Two clients with the same identity fields
+        Client editedAdrian = new ClientBuilder(ADRIAN).withAddress(VALID_ADDRESS_JACK)
+                .withTags(VALID_TAG_PARTNER).build();
+        AddressBookStub newData = new AddressBookStub(List.of(), List.of(ADRIAN, editedAdrian));
+
+        assertThrows(DuplicatePersonException.class, () -> addressBook.resetData(newData));
+    }
+
+    @Test
+    public void hasClient_clientWithSameIdentityFieldsInAddressBook_returnsTrue() {
+        addressBook.addClient(ADRIAN);
+        Client editedAdrian = new ClientBuilder(ADRIAN).withAddress(VALID_ADDRESS_JACK)
+                .withTags(VALID_TAG_PARTNER).build();
+
+        assertTrue(addressBook.hasClient(editedAdrian));
+    }
+
+    @Test
+    public void addClient_clientWithSameIdentityFields_throwsDuplicatePersonException() {
+        addressBook.addClient(ADRIAN);
+        Client editedAdrian = new ClientBuilder(ADRIAN).withAddress(VALID_ADDRESS_JACK)
+                .withTags(VALID_TAG_PARTNER).build();
+
+        assertThrows(DuplicatePersonException.class, () -> addressBook.addClient(editedAdrian));
+        assertEquals(List.of(ADRIAN), addressBook.getClientList());
+    }
+
+    @Test
+    public void getClientList_modifyList_throwsUnsupportedOperationException() {
+        addressBook.addClient(ADRIAN);
+
+        assertThrows(UnsupportedOperationException.class, () -> addressBook.getClientList().remove(0));
+        assertEquals(List.of(ADRIAN), addressBook.getClientList());
     }
 
     @Test
@@ -72,13 +117,15 @@ public class AddressBookTest {
     }
 
     /**
-     * A stub ReadOnlyAddressBook whose jobseeker list can violate interface constraints.
+     * A stub ReadOnlyAddressBook whose jobseeker and client lists can violate interface constraints.
      */
     private static class AddressBookStub implements ReadOnlyAddressBook {
         private final ObservableList<Jobseeker> jobseekers = FXCollections.observableArrayList();
+        private final ObservableList<Client> clients = FXCollections.observableArrayList();
 
-        AddressBookStub(List<Jobseeker> jobseekers) {
+        AddressBookStub(List<Jobseeker> jobseekers, List<Client> clients) {
             this.jobseekers.addAll(jobseekers);
+            this.clients.addAll(clients);
         }
 
         @Override
@@ -88,7 +135,7 @@ public class AddressBookTest {
 
         @Override
         public ObservableList<Client> getClientList() {
-            return FXCollections.observableArrayList();
+            return clients;
         }
     }
 
