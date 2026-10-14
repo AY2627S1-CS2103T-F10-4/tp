@@ -27,7 +27,7 @@ public class UntagJobseekerCommandTest {
 
     private final Model model = new ModelManager();
     private final Jobseeker jobseeker = new JobseekerBuilder().withTags("java", "teamwork")
-            .withRemark("Available immediately").build();
+            .withRemark("Available immediately").withEmail("unique-email@example.com").build();
 
     @Test
     public void constructor_nullArguments_throwsNullPointerException() {
