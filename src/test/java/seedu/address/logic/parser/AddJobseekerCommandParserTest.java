@@ -45,8 +45,8 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.JobseekerBuilder;
 
-public class AddCommandParserTest {
-    private AddCommandParser parser = new AddCommandParser();
+public class AddJobseekerCommandParserTest {
+    private AddJobseekerCommandParser parser = new AddJobseekerCommandParser();
 
     @Test
     public void parse_allFieldsPresent_success() {
