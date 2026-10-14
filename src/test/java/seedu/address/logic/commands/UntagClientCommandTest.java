@@ -32,7 +32,7 @@ public class UntagClientCommandTest {
             .withRemark("Contact in the morning").build();
 
     @Test
-    public void execute_multipleTags_preservesJobseekersAndOtherTags() {
+    public void execute_multipleTags_updatesClientAndPreservesJobseekers() {
         Jobseeker jobseeker = new JobseekerBuilder().withName(client.getName().fullName)
                 .withTags("priority", "finance").build();
         Client target = new ClientBuilder(client).withTags("priority", "finance", "Priority").build();
@@ -92,6 +92,20 @@ public class UntagClientCommandTest {
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         assertCommandSuccess(new UntagClientCommand(INDEX_FIRST_PERSON, Set.of(new Tag("priority"))), model,
                 UntagClientCommand.MESSAGE_NO_CHANGE, expectedModel);
+    }
+
+    @Test
+    public void execute_noChangeFilteredList_preservesFilterAndAllClients() {
+        Client hiddenPerson = new ClientBuilder().withName("Hidden Person").build();
+        model.addClient(hiddenPerson);
+        model.addClient(client);
+        model.updateFilteredClientList(person -> person.getName().equals(client.getName()));
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+
+        assertCommandSuccess(new UntagClientCommand(INDEX_FIRST_PERSON, Set.of(new Tag("missing"))), model,
+                UntagClientCommand.MESSAGE_NO_CHANGE, expectedModel);
+        assertEquals(List.of(client), model.getFilteredClientList());
+        assertEquals(List.of(hiddenPerson, client), model.getAddressBook().getClientList());
     }
 
     @Test

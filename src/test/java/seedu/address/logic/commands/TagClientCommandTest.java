@@ -32,7 +32,7 @@ public class TagClientCommandTest {
             .withRemark("Contact in the morning").build();
 
     @Test
-    public void execute_multipleNewTags_preservesJobseekers() {
+    public void execute_multipleNewTags_updatesClientAndPreservesJobseekers() {
         Jobseeker jobseeker = new JobseekerBuilder().withName(client.getName().fullName)
                 .withTags("java").build();
         model.addJobseeker(jobseeker);
@@ -92,6 +92,20 @@ public class TagClientCommandTest {
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         assertCommandSuccess(new TagClientCommand(INDEX_FIRST_PERSON, client.getTags()), model,
                 TagClientCommand.MESSAGE_NO_CHANGE, expectedModel);
+    }
+
+    @Test
+    public void execute_noChangeFilteredList_preservesFilterAndAllClients() {
+        Client hiddenPerson = new ClientBuilder().withName("Hidden Person").build();
+        model.addClient(hiddenPerson);
+        model.addClient(client);
+        model.updateFilteredClientList(person -> person.getName().equals(client.getName()));
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+
+        assertCommandSuccess(new TagClientCommand(INDEX_FIRST_PERSON, client.getTags()), model,
+                TagClientCommand.MESSAGE_NO_CHANGE, expectedModel);
+        assertEquals(List.of(client), model.getFilteredClientList());
+        assertEquals(List.of(hiddenPerson, client), model.getAddressBook().getClientList());
     }
 
     @Test
