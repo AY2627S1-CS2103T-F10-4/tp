@@ -19,6 +19,7 @@ import seedu.address.logic.commands.DeleteJobseekerCommand;
 import seedu.address.logic.commands.EditJobseekerCommand;
 import seedu.address.logic.commands.EditJobseekerCommand.EditJobseekerDescriptor;
 import seedu.address.logic.commands.ExitCommand;
+import seedu.address.logic.commands.FindClientCommand;
 import seedu.address.logic.commands.FindJobseekerCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
@@ -92,6 +93,24 @@ public class AddressBookParserTest {
         FindJobseekerCommand command = (FindJobseekerCommand) parser.parseCommand(
                 FindJobseekerCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
         assertEquals(new FindJobseekerCommand(new NameContainsKeywordsPredicate(keywords)), command);
+    }
+
+    @Test
+    public void parseCommand_findc() throws Exception {
+        List<String> keywords = List.of("foo", "bar", "baz");
+        FindClientCommand command = (FindClientCommand) parser.parseCommand(
+                FindClientCommand.COMMAND_WORD + " " + String.join(" ", keywords));
+        assertEquals(new FindClientCommand(new NameContainsKeywordsPredicate(keywords)), command);
+    }
+
+    /**
+     * Types the command words literally, so this fails if either user-facing keyword changes, or if
+     * {@code findc} is wired to the jobseeker command by mistake.
+     */
+    @Test
+    public void parseCommand_findcAndFindjKeywords_dispatchToSeparateCommands() throws Exception {
+        assertTrue(parser.parseCommand("findc adrian") instanceof FindClientCommand);
+        assertTrue(parser.parseCommand("findj adrian") instanceof FindJobseekerCommand);
     }
 
     @Test

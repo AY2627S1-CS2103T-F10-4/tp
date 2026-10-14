@@ -12,7 +12,7 @@ import seedu.address.model.person.NameContainsKeywordsPredicate;
 
 /**
  * Finds and lists all jobseekers in the address book whose name, phone number or email contains
- * any of the argument keywords. Keyword matching is case insensitive.
+ * any of the argument keywords. Keyword matching is case insensitive. Clients are not searched.
  */
 public class FindJobseekerCommand extends Command {
 
@@ -29,7 +29,7 @@ public class FindJobseekerCommand extends Command {
     private final NameContainsKeywordsPredicate predicate;
 
     /**
-     * Creates a command that lists all matching jobseekers {@code predicate}.
+     * Creates a command that lists all jobseekers that match {@code predicate}.
      *
      * @param predicate Predicate that decides which jobseekers are listed; must not be null.
      */
