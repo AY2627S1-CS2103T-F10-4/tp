@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_JOBSEEKERS_LISTED_OVERVIEW;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalPersons.CARL;
+import static seedu.address.testutil.TypicalPersons.DANIEL;
 import static seedu.address.testutil.TypicalPersons.ELLE;
 import static seedu.address.testutil.TypicalPersons.FIONA;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
@@ -71,6 +73,36 @@ public class FindJobseekerCommandTest {
         expectedModel.updateFilteredJobseekerList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(List.of(CARL, ELLE, FIONA), model.getFilteredJobseekerList());
+    }
+
+    /**
+     * Checks that a keyword matching only part of a jobseeker's name still finds those jobseekers.
+     * {@code "eier"} is not a whole word in any name but lies inside "Meier", so exactly
+     * Benson Meier and Daniel Meier are listed. This test case guards substring matching: it fails
+     * if {@code findj} reverts to matching whole words only.
+     */
+    @Test
+    public void execute_partialKeyword_multiplePersonsFound() {
+        String expectedMessage = String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, 2);
+        NameContainsKeywordsPredicate predicate = preparePredicate("eier");
+        FindJobseekerCommand command = new FindJobseekerCommand(predicate);
+        expectedModel.updateFilteredJobseekerList(predicate);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertEquals(List.of(BENSON, DANIEL), model.getFilteredJobseekerList());
+    }
+
+    /**
+     * Checks that a jobseeker whose name is close to the keyword, but does not contain it, is not listed.
+     * Elle Meyer is one letter away from "Meier" and does not contain {@code "eier"}, so this test case
+     * fails if matching is loosened, for example to fuzzy or typo-tolerant matching.
+     * On its own, this test case would also pass if nothing were found, so it relies on
+     * {@link #execute_partialKeyword_multiplePersonsFound()} to check that matching still works.
+     */
+    @Test
+    public void execute_partialKeyword_nearMissNotFound() {
+        FindJobseekerCommand command = new FindJobseekerCommand(preparePredicate("eier"));
+        command.execute(model);
+        assertFalse(model.getFilteredJobseekerList().contains(ELLE));
     }
 
     @Test

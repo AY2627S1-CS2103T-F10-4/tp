@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.junit.jupiter.api.Test;
 
@@ -56,6 +57,41 @@ public class NameContainsKeywordsPredicateTest {
         assertTrue(predicate.test(new JobseekerBuilder().withName("Alice Bob").build()));
     }
 
+    /**
+     * Guards substring matching: each keyword here is only part of a word, so these test cases will fail
+     * if matching by name reverts to whole words only.
+     */
+    @Test
+    public void test_keywordIsSubstringOfName_returnsTrue() {
+        // Middle of a word
+        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(List.of("lic"));
+        assertTrue(predicate.test(new JobseekerBuilder().withName("Alice Bob").build()));
+
+        // Start of the second word
+        predicate = new NameContainsKeywordsPredicate(List.of("Bo"));
+        assertTrue(predicate.test(new JobseekerBuilder().withName("Alice Bob").build()));
+
+        // Mixed-case partial keyword
+        predicate = new NameContainsKeywordsPredicate(List.of("aLI"));
+        assertTrue(predicate.test(new JobseekerBuilder().withName("Alice Bob").build()));
+    }
+
+    /**
+     * Guards the use of {@code Locale.ROOT}: under the Turkish locale, {@code "ALICE".toLowerCase()}
+     * gives a dotless i, so this fails if the predicate lower-cases with the default locale.
+     */
+    @Test
+    public void test_turkishDefaultLocale_stillMatchesIgnoringCase() {
+        Locale originalLocale = Locale.getDefault();
+        try {
+            Locale.setDefault(Locale.forLanguageTag("tr-TR"));
+            NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(List.of("ALICE"));
+            assertTrue(predicate.test(new JobseekerBuilder().withName("Alice Bob").build()));
+        } finally {
+            Locale.setDefault(originalLocale);
+        }
+    }
+
     @Test
     public void test_nameDoesNotContainKeywords_returnsFalse() {
         // Zero keywords
@@ -64,6 +100,10 @@ public class NameContainsKeywordsPredicateTest {
 
         // Non-matching keyword
         predicate = new NameContainsKeywordsPredicate(List.of("Carol"));
+        assertFalse(predicate.test(new JobseekerBuilder().withName("Alice Bob").build()));
+
+        // Keyword is longer than any matching part of the name
+        predicate = new NameContainsKeywordsPredicate(List.of("Alicia"));
         assertFalse(predicate.test(new JobseekerBuilder().withName("Alice Bob").build()));
 
         // Keywords match phone, email and address, but do not match name
