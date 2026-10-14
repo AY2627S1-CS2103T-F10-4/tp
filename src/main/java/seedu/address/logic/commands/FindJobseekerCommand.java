@@ -28,6 +28,11 @@ public class FindJobseekerCommand extends Command {
 
     private final NameContainsKeywordsPredicate predicate;
 
+    /**
+     * Creates a command that lists all matching jobseekers {@code predicate}.
+     *
+     * @param predicate Predicate that decides which jobseekers are listed; must not be null.
+     */
     public FindJobseekerCommand(NameContainsKeywordsPredicate predicate) {
         requireNonNull(predicate);
         this.predicate = predicate;

@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 
 /**
@@ -29,6 +30,20 @@ import seedu.address.model.person.NameContainsKeywordsPredicate;
 public class FindJobseekerCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
     private Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+    /**
+     * Helper method that executes a {@code FindJobseekerCommand} built from {@code userInput} on the
+     * typical jobseekers, and checks that exactly {@code expectedJobseekers} are listed, in that order,
+     * with the matching result message.
+     */
+    private void assertFindSuccess(String userInput, List<Jobseeker> expectedJobseekers) {
+        String expectedMessage = String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, expectedJobseekers.size());
+        NameContainsKeywordsPredicate predicate = preparePredicate(userInput);
+        FindJobseekerCommand command = new FindJobseekerCommand(predicate);
+        expectedModel.updateFilteredJobseekerList(predicate);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertEquals(expectedJobseekers, model.getFilteredJobseekerList());
+    }
 
     @Test
     public void constructor_nullPredicate_throwsNullPointerException() {
@@ -64,22 +79,12 @@ public class FindJobseekerCommandTest {
 
     @Test
     public void execute_zeroKeywords_noPersonFound() {
-        String expectedMessage = String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, 0);
-        NameContainsKeywordsPredicate predicate = preparePredicate(" ");
-        FindJobseekerCommand command = new FindJobseekerCommand(predicate);
-        expectedModel.updateFilteredJobseekerList(predicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(List.of(), model.getFilteredJobseekerList());
+        assertFindSuccess(" ", List.of());
     }
 
     @Test
     public void execute_multipleNameKeywords_personsFound() {
-        String expectedMessage = String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, 3);
-        NameContainsKeywordsPredicate predicate = preparePredicate("Kurz Elle Kunz");
-        FindJobseekerCommand command = new FindJobseekerCommand(predicate);
-        expectedModel.updateFilteredJobseekerList(predicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(List.of(CARL, ELLE, FIONA), model.getFilteredJobseekerList());
+        assertFindSuccess("Kurz Elle Kunz", List.of(CARL, ELLE, FIONA));
     }
 
     /**
@@ -90,12 +95,7 @@ public class FindJobseekerCommandTest {
      */
     @Test
     public void execute_partialNameKeyword_personsFound() {
-        String expectedMessage = String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, 2);
-        NameContainsKeywordsPredicate predicate = preparePredicate("eier");
-        FindJobseekerCommand command = new FindJobseekerCommand(predicate);
-        expectedModel.updateFilteredJobseekerList(predicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(List.of(BENSON, DANIEL), model.getFilteredJobseekerList());
+        assertFindSuccess("eier", List.of(BENSON, DANIEL));
     }
 
     /**
@@ -114,22 +114,12 @@ public class FindJobseekerCommandTest {
 
     @Test
     public void execute_partialPhoneKeyword_personFound() {
-        String expectedMessage = String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, 1);
-        NameContainsKeywordsPredicate predicate = preparePredicate("9435");
-        FindJobseekerCommand command = new FindJobseekerCommand(predicate);
-        expectedModel.updateFilteredJobseekerList(predicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(List.of(ALICE), model.getFilteredJobseekerList());
+        assertFindSuccess("9435", List.of(ALICE));
     }
 
     @Test
     public void execute_partialEmailKeyword_personFound() {
-        String expectedMessage = String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, 1);
-        NameContainsKeywordsPredicate predicate = preparePredicate("cornelia");
-        FindJobseekerCommand command = new FindJobseekerCommand(predicate);
-        expectedModel.updateFilteredJobseekerList(predicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(List.of(DANIEL), model.getFilteredJobseekerList());
+        assertFindSuccess("cornelia", List.of(DANIEL));
     }
 
     @Test
