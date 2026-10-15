@@ -5,7 +5,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import seedu.address.logic.parser.Prefix;
-import seedu.address.model.person.Person;
+import seedu.address.model.person.Client;
+import seedu.address.model.person.Jobseeker;
 
 /**
  * Container for user visible messages.
@@ -50,6 +51,23 @@ public class Messages {
                 .append(person.getRemark())
                 .append("; Tags: ");
         person.getTags().forEach(builder::append);
+        return builder.toString();
+    }
+
+    /**
+     * Formats the {@code client} for display to the user.
+     */
+    public static String format(Client client) {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(client.getName())
+                .append("; Phone: ")
+                .append(client.getPhone())
+                .append("; Email: ")
+                .append(client.getEmail())
+                .append("; Address: ")
+                .append(client.getAddress())
+                .append("; Tags: ");
+        client.getTags().forEach(builder::append);
         return builder.toString();
     }
 

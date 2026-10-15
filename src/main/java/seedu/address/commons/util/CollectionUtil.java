@@ -1,7 +1,6 @@
 package seedu.address.commons.util;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.util.CollectionUtil.getEmptyUnmodifiableList;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -41,8 +40,9 @@ public class CollectionUtil {
 
     /**
      * Returns an empty unmodifiable list of the generic type.
-     * @return an empty unmodifiable list of the generic type.
+     *
      * @param <T> the type of the list element
+     * @return an empty unmodifiable list of the generic type.
      */
     public static <T> List<T> getEmptyUnmodifiableList() {
         return List.of();

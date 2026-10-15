@@ -9,7 +9,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 /**
  * Parses input arguments and creates a new {@link DeleteJobseekerCommand} object.
  */
-public class DeleteCommandParser implements Parser<DeleteJobseekerCommand> {
+public class DeleteJobseekerCommandParser implements Parser<DeleteJobseekerCommand> {
 
     /**
      * Parses the given {@code String} of arguments in the context of the
