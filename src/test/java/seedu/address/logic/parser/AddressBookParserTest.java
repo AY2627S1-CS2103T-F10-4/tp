@@ -21,11 +21,12 @@ import seedu.address.logic.commands.EditJobseekerCommand.EditJobseekerDescriptor
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
-import seedu.address.logic.commands.ListCommand;
-import seedu.address.logic.commands.TagClientCommand;
+import seedu.address.logic.commands.ListClientCommand;
+import seedu.address.logic.commands.ListJobseekerCommand;
 import seedu.address.logic.commands.TagJobseekerCommand;
-import seedu.address.logic.commands.UntagClientCommand;
 import seedu.address.logic.commands.UntagJobseekerCommand;
+import seedu.address.logic.commands.TagClientCommand;
+import seedu.address.logic.commands.UntagClientCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
@@ -115,9 +116,15 @@ public class AddressBookParserTest {
     }
 
     @Test
-    public void parseCommand_list() throws Exception {
-        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD) instanceof ListCommand);
-        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3") instanceof ListCommand);
+    public void parseCommand_listj() throws Exception {
+        assertTrue(parser.parseCommand(ListJobseekerCommand.COMMAND_WORD) instanceof ListJobseekerCommand);
+        assertTrue(parser.parseCommand(ListJobseekerCommand.COMMAND_WORD + " 3") instanceof ListJobseekerCommand);
+    }
+
+    @Test
+    public void parseCommand_listc() throws Exception {
+        assertTrue(parser.parseCommand(ListClientCommand.COMMAND_WORD) instanceof ListClientCommand);
+        assertTrue(parser.parseCommand(ListClientCommand.COMMAND_WORD + " 3") instanceof ListClientCommand);
     }
 
     @Test
