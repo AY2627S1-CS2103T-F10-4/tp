@@ -16,18 +16,21 @@ import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_NON_EMPTY;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
+import static seedu.address.logic.commands.CommandTestUtil.REMARK_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_REMARK_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.TypicalPersons.AMY;
@@ -46,7 +49,29 @@ import seedu.address.model.tag.Tag;
 import seedu.address.testutil.JobseekerBuilder;
 
 public class AddJobseekerCommandParserTest {
-    private AddJobseekerCommandParser parser = new AddJobseekerCommandParser();
+    private static final String REQUIRED_FIELDS = NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY;
+    private final AddJobseekerCommandParser parser = new AddJobseekerCommandParser();
+
+    @Test
+    public void parse_withRemarkAndTags_success() {
+        Jobseeker expectedJobseeker = new JobseekerBuilder(AMY).withRemark(VALID_REMARK_AMY)
+                .withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND).build();
+        assertParseSuccess(parser, REQUIRED_FIELDS + REMARK_DESC_AMY + TAG_DESC_FRIEND + TAG_DESC_HUSBAND,
+                new AddJobseekerCommand(expectedJobseeker));
+    }
+
+    @Test
+    public void parse_emptyRemark_success() {
+        Jobseeker expectedJobseeker = new JobseekerBuilder(AMY).withRemark("").withTags().build();
+        assertParseSuccess(parser, REQUIRED_FIELDS + " " + PREFIX_REMARK,
+                new AddJobseekerCommand(expectedJobseeker));
+    }
+
+    @Test
+    public void parse_repeatedRemark_failure() {
+        assertParseFailure(parser, REQUIRED_FIELDS + REMARK_DESC_AMY + REMARK_DESC_AMY,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_REMARK));
+    }
 
     @Test
     public void parse_allFieldsPresent_success() {
@@ -132,9 +157,9 @@ public class AddJobseekerCommandParserTest {
 
     @Test
     public void parse_optionalFieldsMissing_success() {
-        // zero tags
-        Jobseeker expectedJobseeker = new JobseekerBuilder(AMY).withTags().build();
-        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
+        // omitted remark defaults to empty, with zero tags
+        Jobseeker expectedJobseeker = new JobseekerBuilder(AMY).withRemark("").withTags().build();
+        assertParseSuccess(parser, REQUIRED_FIELDS,
                 new AddJobseekerCommand(expectedJobseeker));
     }
 

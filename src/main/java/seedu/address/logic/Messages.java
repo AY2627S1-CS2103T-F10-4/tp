@@ -5,7 +5,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import seedu.address.logic.parser.Prefix;
-import seedu.address.model.person.Person;
+import seedu.address.model.person.Client;
+import seedu.address.model.person.Jobseeker;
 
 /**
  * Container for user visible messages.
@@ -32,22 +33,43 @@ public class Messages {
     }
 
     /**
-     * Formats the {@code person} for display to the user.
+     * Formats the {@code jobseeker} for display to the user.
      */
-    public static String format(Person person) {
+    public static String format(Jobseeker jobseeker) {
         final StringBuilder builder = new StringBuilder();
-        builder.append(person.getName())
+        builder.append(jobseeker.getName())
                 .append("; Phone: ")
-                .append(person.getPhone())
+                .append(jobseeker.getPhone())
                 .append("; Email: ")
-                .append(person.getEmail())
+                .append(jobseeker.getEmail())
                 .append("; Address: ")
-                .append(person.getAddress())
+                .append(jobseeker.getAddress())
                 .append("; Remark: ")
-                .append(person.getRemark())
+                .append(jobseeker.getRemark())
                 .append("; Tags: ");
-        person.getTags().forEach(builder::append);
+        jobseeker.getTags().forEach(builder::append);
         return builder.toString();
     }
+
+    /**
+     * Formats the {@code client} for display to the user.
+     */
+    public static String format(Client client) {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(client.getName())
+                .append("; Phone: ")
+                .append(client.getPhone())
+                .append("; Email: ")
+                .append(client.getEmail())
+                .append("; Address: ")
+                .append(client.getAddress())
+                .append("; Remark: ")
+                .append(client.getRemark())
+                .append("; Tags: ");
+        client.getTags().forEach(builder::append);
+        return builder.toString();
+    }
+
+
 
 }
