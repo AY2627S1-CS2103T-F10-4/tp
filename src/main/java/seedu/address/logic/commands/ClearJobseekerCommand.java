@@ -1,0 +1,23 @@
+package seedu.address.logic.commands;
+
+import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.CollectionUtil.getEmptyUnmodifiableList;
+
+import seedu.address.model.Model;
+
+/**
+ * Clears the jobseeker list in the address book.
+ */
+public class ClearJobseekerCommand extends Command {
+
+    public static final String COMMAND_WORD = "clearj";
+    public static final String MESSAGE_SUCCESS = "The jobseeker list has been cleared!";
+
+
+    @Override
+    public CommandResult execute(Model model) {
+        requireNonNull(model);
+        model.setJobseekers(getEmptyUnmodifiableList());
+        return new CommandResult(MESSAGE_SUCCESS);
+    }
+}
