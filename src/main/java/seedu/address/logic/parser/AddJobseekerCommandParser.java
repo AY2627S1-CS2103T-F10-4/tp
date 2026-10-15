@@ -29,7 +29,8 @@ public class AddJobseekerCommandParser implements Parser<AddJobseekerCommand> {
     /**
      * Parses the given {@code String} of arguments in the context of the
      * {@link AddJobseekerCommand} and returns a command for execution.
-     * @throws ParseException if the user input does not conform to the expected format
+     *
+     * @throws ParseException if the user input does not conform to the expected format.
      */
     public AddJobseekerCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =

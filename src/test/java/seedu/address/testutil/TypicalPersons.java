@@ -2,24 +2,35 @@ package seedu.address.testutil;
 
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_JACK;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_KATE;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_JACK;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_KATE;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_JACK;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_KATE;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_JACK;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_KATE;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_EMPLOYER;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARTNER;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import seedu.address.model.AddressBook;
+import seedu.address.model.person.Client;
 import seedu.address.model.person.Jobseeker;
 
 /**
- * A utility class containing a list of {@code Jobseeker} objects to be used in tests.
+ * A utility class containing typical {@code Jobseeker} and {@code Client} objects to be used in tests.
  */
 public class TypicalPersons {
 
@@ -55,22 +66,67 @@ public class TypicalPersons {
             .withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND)
             .build();
 
+    public static final Client ADRIAN = new ClientBuilder().withName("Adrian Tan")
+            .withPhone("81110001").withEmail("adrian@example.com")
+            .withAddress("1 Raffles Place").withTags("employer").build();
+    public static final Client BRENDA = new ClientBuilder().withName("Brenda Lim")
+            .withPhone("81110002").withEmail("brenda@example.com")
+            .withAddress("2 Shenton Way").withTags("employer", "partner").build();
+    public static final Client CEDRIC = new ClientBuilder().withName("Cedric Ng")
+            .withPhone("81110003").withEmail("cedric@example.com")
+            .withAddress("3 Robinson Road").build();
+    public static final Client DIANA = new ClientBuilder().withName("Diana Lee")
+            .withPhone("81110004").withEmail("diana@example.com")
+            .withAddress("4 Cecil Street").withTags("partner").build();
+    public static final Client ETHAN = new ClientBuilder().withName("Ethan Goh")
+            .withPhone("81110005").withEmail("ethan@example.com")
+            .withAddress("5 Orchard Road").build();
+    public static final Client FELICIA = new ClientBuilder().withName("Felicia Teo")
+            .withPhone("81110006").withEmail("felicia@example.com")
+            .withAddress("6 Jurong East Street").build();
+    public static final Client GAVIN = new ClientBuilder().withName("Gavin Koh")
+            .withPhone("81110007").withEmail("gavin@example.com")
+            .withAddress("7 Paya Lebar Road").build();
+
+    // Additional clients whose details are defined in CommandTestUtil.
+    // Excluded from the typical client list.
+    public static final Client JACK = new ClientBuilder().withName(VALID_NAME_JACK)
+            .withPhone(VALID_PHONE_JACK).withEmail(VALID_EMAIL_JACK)
+            .withAddress(VALID_ADDRESS_JACK).withTags(VALID_TAG_EMPLOYER).build();
+    public static final Client KATE = new ClientBuilder().withName(VALID_NAME_KATE)
+            .withPhone(VALID_PHONE_KATE).withEmail(VALID_EMAIL_KATE)
+            .withAddress(VALID_ADDRESS_KATE).withTags(VALID_TAG_EMPLOYER, VALID_TAG_PARTNER).build();
+
     public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
 
     private TypicalPersons() {} // prevents instantiation
 
     /**
-     * Returns an {@code AddressBook} with all the typical jobseekers.
+     * Returns a new {@code AddressBook} with the seven typical jobseekers and seven typical clients.
+     * Additional fixtures such as {@code AMY}, {@code BOB}, {@code JACK} and {@code KATE} are excluded.
      */
     public static AddressBook getTypicalAddressBook() {
         AddressBook ab = new AddressBook();
-        for (Jobseeker jobseeker : getTypicalPersons()) {
+        for (Jobseeker jobseeker : getTypicalJobseekers()) {
             ab.addJobseeker(jobseeker);
+        }
+        for (Client client : getTypicalClients()) {
+            ab.addClient(client);
         }
         return ab;
     }
 
-    public static List<Jobseeker> getTypicalPersons() {
+    /**
+     * Returns a new list containing the seven typical jobseekers.
+     */
+    public static List<Jobseeker> getTypicalJobseekers() {
         return new ArrayList<>(Arrays.asList(ALICE, BENSON, CARL, DANIEL, ELLE, FIONA, GEORGE));
+    }
+
+    /**
+     * Returns a new list containing the seven typical clients.
+     */
+    public static List<Client> getTypicalClients() {
+        return new ArrayList<>(Arrays.asList(ADRIAN, BRENDA, CEDRIC, DIANA, ETHAN, FELICIA, GAVIN));
     }
 }

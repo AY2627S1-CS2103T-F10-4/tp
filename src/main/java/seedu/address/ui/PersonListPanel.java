@@ -34,10 +34,10 @@ public class PersonListPanel<T extends Person> extends UiPart<Region> {
      */
     class PersonListViewCell extends ListCell<T> {
         @Override
-        protected void updateItem(T person, boolean empty) {
-            super.updateItem(person, empty);
+        protected void updateItem(T person, boolean isEmpty) {
+            super.updateItem(person, isEmpty);
 
-            if (empty || person == null) {
+            if (isEmpty || person == null) {
                 setGraphic(null);
                 setText(null);
             } else {
