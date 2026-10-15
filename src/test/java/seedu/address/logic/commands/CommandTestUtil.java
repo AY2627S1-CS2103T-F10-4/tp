@@ -142,6 +142,7 @@ public class CommandTestUtil {
         assertEquals(expectedFilteredList, actualModel.getFilteredJobseekerList());
         assertEquals(expectedFilteredClients, actualModel.getFilteredClientList());
     }
+
     /**
      * Filters jobseekers using the first name token of the jobseeker at {@code targetIndex}
      * in the current filtered list.

@@ -116,6 +116,16 @@ public class AddJobseekerCommandTest {
         }
 
         @Override
+        public void setJobseekers(List<Jobseeker> newJobseekers) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setClients(List<Client> newClients) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public boolean hasJobseeker(Jobseeker jobseeker) {
             throw new AssertionError("This method should not be called.");
         }

@@ -61,7 +61,7 @@ public class DeleteJobseekerCommandTest {
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.deleteJobseeker(jobseekerToDelete);
-        showNoPerson(expectedModel);
+        showNoJobseeker(expectedModel);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
     }
@@ -112,7 +112,7 @@ public class DeleteJobseekerCommandTest {
     /**
      * Updates {@code model}'s filtered jobseeker list to show no one.
      */
-    private void showNoPerson(Model model) {
+    private void showNoJobseeker(Model model) {
         model.updateFilteredJobseekerList(p -> false);
 
         assertTrue(model.getFilteredJobseekerList().isEmpty());

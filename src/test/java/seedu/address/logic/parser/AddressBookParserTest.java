@@ -14,7 +14,9 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.AddJobseekerCommand;
-import seedu.address.logic.commands.ClearCommand;
+import seedu.address.logic.commands.ClearClientCommand;
+import seedu.address.logic.commands.ClearJobseekerCommand;
+import seedu.address.logic.commands.DeleteClientCommand;
 import seedu.address.logic.commands.DeleteJobseekerCommand;
 import seedu.address.logic.commands.EditJobseekerCommand;
 import seedu.address.logic.commands.EditJobseekerCommand.EditJobseekerDescriptor;
@@ -58,16 +60,29 @@ public class AddressBookParserTest {
     }
 
     @Test
-    public void parseCommand_clear() throws Exception {
-        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD) instanceof ClearCommand);
-        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD + " 3") instanceof ClearCommand);
+    public void parseCommand_clearj() throws Exception {
+        assertTrue(parser.parseCommand(ClearJobseekerCommand.COMMAND_WORD) instanceof ClearJobseekerCommand);
+        assertTrue(parser.parseCommand(ClearJobseekerCommand.COMMAND_WORD + " 3") instanceof ClearJobseekerCommand);
     }
 
     @Test
-    public void parseCommand_delete() throws Exception {
+    public void parseCommand_clearc() throws Exception {
+        assertTrue(parser.parseCommand(ClearClientCommand.COMMAND_WORD) instanceof ClearClientCommand);
+        assertTrue(parser.parseCommand(ClearClientCommand.COMMAND_WORD + " 3") instanceof ClearClientCommand);
+    }
+
+    @Test
+    public void parseCommand_deletej() throws Exception {
         DeleteJobseekerCommand command = (DeleteJobseekerCommand) parser.parseCommand(
                 DeleteJobseekerCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new DeleteJobseekerCommand(INDEX_FIRST_PERSON), command);
+    }
+
+    @Test
+    public void parseCommand_deletec() throws Exception {
+        DeleteClientCommand command = (DeleteClientCommand) parser.parseCommand(
+                DeleteClientCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new DeleteClientCommand(INDEX_FIRST_PERSON), command);
     }
 
     @Test

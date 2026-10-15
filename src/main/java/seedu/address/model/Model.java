@@ -1,5 +1,6 @@
 package seedu.address.model;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -40,20 +41,54 @@ public interface Model {
     /** Returns the AddressBook */
     ReadOnlyAddressBook getAddressBook();
 
+    /**
+     * @see AddressBook#setJobseekers(List)
+     */
+    void setJobseekers(List<Jobseeker> jobseekers);
+
+    /**
+     * @see AddressBook#setClients(List)
+     */
+    void setClients(List<Client> clients);
+
+    /**
+     * @see AddressBook#hasJobseeker(Jobseeker)
+     */
     boolean hasJobseeker(Jobseeker jobseeker);
 
+    /**
+     * @see AddressBook#hasClient(Client)
+     */
     boolean hasClient(Client client);
 
+    /**
+     * @see AddressBook#addJobseeker(Jobseeker)
+     */
     void addJobseeker(Jobseeker jobseeker);
 
+    /**
+     * @see AddressBook#addClient(Client)
+     */
     void addClient(Client client);
 
+    /**
+     * @see AddressBook#setJobseeker(Jobseeker, Jobseeker)
+     */
     void setJobseeker(Jobseeker target, Jobseeker editedJobseeker);
 
+    /**
+     * @see AddressBook#setClient(Client, Client)
+     */
     void setClient(Client target, Client editedClient);
 
+    /**
+     * @see AddressBook#removeJobseeker(Jobseeker)
+     */
     void deleteJobseeker(Jobseeker target);
 
+    /**
+     * @see AddressBook#removeClient(Client)
+     */
     void deleteClient(Client target);
 
     /** Returns an unmodifiable view of the filtered list containing only jobseekers. */
