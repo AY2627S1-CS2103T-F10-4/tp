@@ -6,7 +6,7 @@ import static java.util.Objects.requireNonNull;
 import seedu.address.model.Model;
 
 /**
- * Clears the address book.
+ * Clears the client list in the address book.
  */
 public class ClearClientCommand extends Command {
 
