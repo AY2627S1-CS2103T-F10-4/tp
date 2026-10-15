@@ -29,7 +29,7 @@ public class TagJobseekerCommandTest {
 
     private final Model model = new ModelManager();
     private final Jobseeker jobseeker = new JobseekerBuilder().withTags("teamwork")
-            .withRemark("Available immediately").build();
+            .withRemark("Available immediately").withEmail("unique-email@example.com").build();
 
     @Test
     public void execute_multipleNewTags_updatesJobseekerAndPreservesClients() {
