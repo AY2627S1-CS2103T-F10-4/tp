@@ -1,7 +1,7 @@
 package seedu.address.logic.commands;
 
-import static seedu.address.commons.util.CollectionUtil.getEmptyUnmodifiableList;
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.CollectionUtil.getEmptyUnmodifiableList;
 
 import seedu.address.model.Model;
 

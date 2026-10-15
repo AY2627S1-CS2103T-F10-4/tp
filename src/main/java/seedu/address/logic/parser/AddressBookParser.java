@@ -12,6 +12,7 @@ import seedu.address.logic.commands.AddJobseekerCommand;
 import seedu.address.logic.commands.ClearClientCommand;
 import seedu.address.logic.commands.ClearJobseekerCommand;
 import seedu.address.logic.commands.Command;
+import seedu.address.logic.commands.DeleteClientCommand;
 import seedu.address.logic.commands.DeleteJobseekerCommand;
 import seedu.address.logic.commands.EditJobseekerCommand;
 import seedu.address.logic.commands.ExitCommand;
@@ -58,7 +59,8 @@ public class AddressBookParser {
         return switch (commandWord) {
             case AddJobseekerCommand.COMMAND_WORD -> new AddCommandParser().parse(arguments);
             case EditJobseekerCommand.COMMAND_WORD -> new EditCommandParser().parse(arguments);
-            case DeleteJobseekerCommand.COMMAND_WORD -> new DeleteCommandParser().parse(arguments);
+            case DeleteJobseekerCommand.COMMAND_WORD -> new DeleteJobseekerCommandParser().parse(arguments);
+            case DeleteClientCommand.COMMAND_WORD -> new DeleteClientCommandParser().parse(arguments);
             case TagJobseekerCommand.COMMAND_WORD -> new TagJobseekerCommandParser().parse(arguments);
             case UntagJobseekerCommand.COMMAND_WORD -> new UntagJobseekerCommandParser().parse(arguments);
             case ClearJobseekerCommand.COMMAND_WORD -> new ClearJobseekerCommand();
