@@ -1,7 +1,7 @@
 package seedu.address.logic.commands;
 
-import static java.util.List.of;
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.CollectionUtil.getEmptyUnmodifiableList;
 
 import seedu.address.model.Model;
 
@@ -17,7 +17,7 @@ public class ClearJobseekerCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.setJobseekers(of());
+        model.setJobseekers(getEmptyUnmodifiableList());
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

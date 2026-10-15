@@ -1,6 +1,6 @@
 package seedu.address.logic.commands;
 
-import static java.util.List.of;
+import static seedu.address.commons.util.CollectionUtil.getEmptyUnmodifiableList;
 import static java.util.Objects.requireNonNull;
 
 import seedu.address.model.Model;
@@ -17,7 +17,7 @@ public class ClearClientCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.setClients(of());
+        model.setClients(getEmptyUnmodifiableList());
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }
