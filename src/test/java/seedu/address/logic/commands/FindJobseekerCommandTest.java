@@ -13,6 +13,7 @@ import static seedu.address.testutil.TypicalPersons.DANIEL;
 import static seedu.address.testutil.TypicalPersons.ELLE;
 import static seedu.address.testutil.TypicalPersons.FIONA;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalPersons.getTypicalClients;
 
 import java.util.List;
 
@@ -120,6 +121,18 @@ public class FindJobseekerCommandTest {
     @Test
     public void execute_partialEmailKeyword_personFound() {
         assertFindSuccess("cornelia", List.of(DANIEL));
+    }
+
+    /**
+     * Checks that {@code findj} leaves the client list alone. {@code ModelManager#equals} does not
+     * compare filtered lists, so {@code assertCommandSuccess} alone would not notice if this command
+     * filtered clients by mistake. {@code "Adrian"} matches a client but no jobseeker, so a mix-up
+     * would also show up as a non-empty jobseeker list.
+     */
+    @Test
+    public void execute_clientKeyword_clientListUnchanged() {
+        assertFindSuccess("Adrian", List.of());
+        assertEquals(getTypicalClients(), model.getFilteredClientList());
     }
 
     @Test
