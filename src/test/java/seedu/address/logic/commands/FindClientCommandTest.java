@@ -79,7 +79,7 @@ public class FindClientCommandTest {
     }
 
     /**
-     * Checks that substring matching applies to clients too: {@code "an"} is only part of
+     * Checks that substring matching applies to clients too: {@code "an"} is part of
      * "Adrian", "Diana" and "Ethan".
      */
     @Test

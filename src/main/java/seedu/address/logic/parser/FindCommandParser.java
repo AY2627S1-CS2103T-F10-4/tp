@@ -12,7 +12,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 
 /**
- * Parses the keywords of a find command and creates that command.
+ * Parses the keywords of a findj/findc command and creates that command.
  * {@code findj} and {@code findc} take the same arguments and differ only in the command they create,
  * so this one parser serves both. Use {@link #forJobseekers()} or {@link #forClients()} to get one.
  *

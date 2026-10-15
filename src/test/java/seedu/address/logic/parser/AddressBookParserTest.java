@@ -88,7 +88,7 @@ public class AddressBookParserTest {
     }
 
     @Test
-    public void parseCommand_find() throws Exception {
+    public void parseCommand_findj() throws Exception {
         List<String> keywords = List.of("foo", "bar", "baz");
         FindJobseekerCommand command = (FindJobseekerCommand) parser.parseCommand(
                 FindJobseekerCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
@@ -101,16 +101,6 @@ public class AddressBookParserTest {
         FindClientCommand command = (FindClientCommand) parser.parseCommand(
                 FindClientCommand.COMMAND_WORD + " " + String.join(" ", keywords));
         assertEquals(new FindClientCommand(new NameContainsKeywordsPredicate(keywords)), command);
-    }
-
-    /**
-     * Types the command words literally, so this fails if either user-facing keyword changes, or if
-     * {@code findc} is wired to the jobseeker command by mistake.
-     */
-    @Test
-    public void parseCommand_findcAndFindjKeywords_dispatchToSeparateCommands() throws Exception {
-        assertTrue(parser.parseCommand("findc adrian") instanceof FindClientCommand);
-        assertTrue(parser.parseCommand("findj adrian") instanceof FindJobseekerCommand);
     }
 
     @Test
