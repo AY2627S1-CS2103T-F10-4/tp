@@ -64,6 +64,8 @@ public class Messages {
                 .append(client.getEmail())
                 .append("; Address: ")
                 .append(client.getAddress())
+                .append("; Remark: ")
+                .append(client.getRemark())
                 .append("; Tags: ");
         client.getTags().forEach(builder::append);
         return builder.toString();

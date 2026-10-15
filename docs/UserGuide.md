@@ -28,7 +28,9 @@ AddressBook Level 3 (AB3) is a **desktop application for managing contacts, opti
 
    * `list` : Lists all contacts.
 
-   * `addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+   * `addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a jobseeker named `John Doe` to the Address Book.
+
+   * `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road r/Hiring engineers t/employer` : Adds a client named `Jane Tan` with a remark and tag.
 
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
@@ -88,7 +90,26 @@ Examples:
 * `addj n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
 
 Remarks and tags are optional. Append `r/Available immediately` when adding a jobseeker. Without `r/`, the remark is empty.
-Append `t/urgent` when adding a jobseeker. Without `t/`, the tag is empty.
+Append `t/urgent` when adding a jobseeker. Without `t/`, no tags are added.
+
+### Adding a client: `addc`
+
+Adds a client to the address book.
+
+Format: `addc n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [r/REMARK] [t/TAG]…`
+
+* Name, phone number, email, and address are required.
+* The remark is optional. Omit `r/` or enter `r/` without text for an empty remark.
+* Tags are optional. Repeat `t/TAG` to add multiple tags; omit it to add no tags. Each tag must be nonempty and alphanumeric.
+* Specify each of `n/`, `p/`, `e/`, `a/`, and `r/` at most once. Repeated prefixes are rejected, except for `t/`.
+* A client with the same name as an existing client is rejected, even if their remark differs. A jobseeker with the same name does not prevent adding the client.
+
+Examples:
+
+* `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road`
+* `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road r/Hiring software engineers t/employer t/technology`
+
+These examples are alternatives; adding both would attempt to add the same client twice.
 
 ### Listing all persons: `list`
 
@@ -192,7 +213,8 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `addj n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `addj n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
+**Add jobseeker** | `addj n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [r/REMARK] [t/TAG]…` <br> e.g., `addj n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 r/Available immediately t/friend t/colleague`
+**Add client** | `addc n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [r/REMARK] [t/TAG]…` <br> e.g., `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road r/Hiring engineers t/employer`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g., `edit 2 n/James Lee e/jameslee@example.com`
