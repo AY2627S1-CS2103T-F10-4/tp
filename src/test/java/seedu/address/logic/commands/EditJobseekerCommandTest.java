@@ -10,7 +10,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
+import static seedu.address.logic.commands.CommandTestUtil.showJobseekerAtIndex;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
@@ -88,7 +88,7 @@ public class EditJobseekerCommandTest {
 
     @Test
     public void execute_filteredList_success() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+        showJobseekerAtIndex(model, INDEX_FIRST_PERSON);
 
         Jobseeker jobseekerInFilteredList = model.getFilteredJobseekerList().get(INDEX_FIRST_PERSON.getZeroBased());
         Jobseeker editedJobseeker = new JobseekerBuilder(jobseekerInFilteredList).withName(VALID_NAME_BOB).build();
@@ -115,7 +115,7 @@ public class EditJobseekerCommandTest {
 
     @Test
     public void execute_duplicateJobseekerFilteredList_failure() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+        showJobseekerAtIndex(model, INDEX_FIRST_PERSON);
 
         // edit jobseeker in filtered list into a duplicate in address book
         Jobseeker jobseekerInList = model.getAddressBook().getJobseekerList().get(INDEX_SECOND_PERSON.getZeroBased());
@@ -140,7 +140,7 @@ public class EditJobseekerCommandTest {
      */
     @Test
     public void execute_invalidJobseekerIndexFilteredList_failure() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+        showJobseekerAtIndex(model, INDEX_FIRST_PERSON);
         Index outOfBoundIndex = INDEX_SECOND_PERSON;
         // ensures that outOfBoundIndex is still in bounds of address book list
         assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getJobseekerList().size());
@@ -167,7 +167,7 @@ public class EditJobseekerCommandTest {
         assertFalse(standardCommand.equals(null));
 
         // different types -> returns false
-        assertFalse(standardCommand.equals(new ClearCommand()));
+        assertFalse(standardCommand.equals(new ClearJobseekerCommand()));
 
         // different index -> returns false
         assertFalse(standardCommand.equals(new EditJobseekerCommand(INDEX_SECOND_PERSON, DESC_AMY)));

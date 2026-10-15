@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.testutil.Assert.assertThrows;
 
@@ -45,6 +46,7 @@ public class CommandTestUtil {
     public static final String VALID_EMAIL_KATE = "kate@example.com";
     public static final String VALID_ADDRESS_JACK = "8 Tampines Avenue";
     public static final String VALID_ADDRESS_KATE = "9 Bedok Road";
+    public static final String VALID_REMARK_AMY = "Hiring software engineers";
     public static final String VALID_TAG_EMPLOYER = "employer";
     public static final String VALID_TAG_PARTNER = "partner";
 
@@ -56,6 +58,7 @@ public class CommandTestUtil {
     public static final String EMAIL_DESC_BOB = " " + PREFIX_EMAIL + VALID_EMAIL_BOB;
     public static final String ADDRESS_DESC_AMY = " " + PREFIX_ADDRESS + VALID_ADDRESS_AMY;
     public static final String ADDRESS_DESC_BOB = " " + PREFIX_ADDRESS + VALID_ADDRESS_BOB;
+    public static final String REMARK_DESC_AMY = " " + PREFIX_REMARK + VALID_REMARK_AMY;
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
 
@@ -139,12 +142,13 @@ public class CommandTestUtil {
         assertEquals(expectedFilteredList, actualModel.getFilteredJobseekerList());
         assertEquals(expectedFilteredClients, actualModel.getFilteredClientList());
     }
+
     /**
      * Filters jobseekers using the first name token of the jobseeker at {@code targetIndex}
      * in the current filtered list.
      * Asserts that the resulting list contains exactly one jobseeker.
      */
-    public static void showPersonAtIndex(Model model, Index targetIndex) {
+    public static void showJobseekerAtIndex(Model model, Index targetIndex) {
         assertTrue(targetIndex.getZeroBased() < model.getFilteredJobseekerList().size());
 
         Jobseeker jobseeker = model.getFilteredJobseekerList().get(targetIndex.getZeroBased());
@@ -152,6 +156,21 @@ public class CommandTestUtil {
         model.updateFilteredJobseekerList(new NameContainsKeywordsPredicate(List.of(splitName[0])));
 
         assertEquals(1, model.getFilteredJobseekerList().size());
+    }
+
+    /**
+     * Filters clients using the first name token of the client at {@code targetIndex}
+     * in the current filtered list.
+     * Asserts that the resulting list contains exactly one client.
+     */
+    public static void showClientAtIndex(Model model, Index targetIndex) {
+        assertTrue(targetIndex.getZeroBased() < model.getFilteredClientList().size());
+
+        Client client = model.getFilteredClientList().get(targetIndex.getZeroBased());
+        final String[] splitName = client.getName().fullName.split("\\s+");
+        model.updateFilteredClientList(new NameContainsKeywordsPredicate(List.of(splitName[0])));
+
+        assertEquals(1, model.getFilteredClientList().size());
     }
 
 }

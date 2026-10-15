@@ -19,15 +19,52 @@ import seedu.address.logic.Messages;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.person.Client;
 import seedu.address.model.person.Jobseeker;
 import seedu.address.model.tag.Tag;
+import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.JobseekerBuilder;
 
 public class TagJobseekerCommandTest {
 
     private final Model model = new ModelManager();
     private final Jobseeker jobseeker = new JobseekerBuilder().withTags("teamwork")
-            .withRemark("Available immediately").build();
+            .withRemark("Available immediately").withEmail("unique-email@example.com").build();
+
+    @Test
+    public void execute_multipleNewTags_updatesJobseekerAndPreservesClients() {
+        Client client = new ClientBuilder().withName(jobseeker.getName().fullName)
+                .withTags("finance").build();
+        model.addClient(client);
+        model.addJobseeker(jobseeker);
+        Jobseeker updated = new JobseekerBuilder(jobseeker).withTags("teamwork", "java", "Java").build();
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.setJobseeker(jobseeker, updated);
+
+        assertCommandSuccess(new TagJobseekerCommand(INDEX_FIRST_PERSON,
+                Set.of(new Tag("java"), new Tag("Java"))), model,
+                String.format(TagJobseekerCommand.MESSAGE_SUCCESS, Messages.format(updated)), expectedModel);
+        assertEquals(List.of(client), model.getAddressBook().getClientList());
+    }
+
+    @Test
+    public void execute_jobseekerWithoutTags_addsTags() {
+        Jobseeker untaggedJobseeker = new JobseekerBuilder(jobseeker).withTags().build();
+        model.addJobseeker(untaggedJobseeker);
+        Jobseeker updated = new JobseekerBuilder(untaggedJobseeker).withTags("java", "teamwork").build();
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.setJobseeker(untaggedJobseeker, updated);
+
+        assertCommandSuccess(new TagJobseekerCommand(INDEX_FIRST_PERSON, updated.getTags()), model,
+                String.format(TagJobseekerCommand.MESSAGE_SUCCESS, Messages.format(updated)), expectedModel);
+    }
+
+    @Test
+    public void execute_invalidIndexUnfilteredList_throwsCommandException() {
+        model.addJobseeker(jobseeker);
+        assertCommandFailure(new TagJobseekerCommand(INDEX_SECOND_PERSON, Set.of(new Tag("java"))), model,
+                Messages.MESSAGE_INVALID_JOBSEEKER_DISPLAYED_INDEX);
+    }
 
     @Test
     public void constructor_nullArguments_throwsNullPointerException() {
@@ -55,6 +92,20 @@ public class TagJobseekerCommandTest {
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         assertCommandSuccess(new TagJobseekerCommand(INDEX_FIRST_PERSON, jobseeker.getTags()), model,
                 TagJobseekerCommand.MESSAGE_NO_CHANGE, expectedModel);
+    }
+
+    @Test
+    public void execute_noChangeFilteredList_preservesFilterAndAllJobseekers() {
+        Jobseeker hiddenPerson = new JobseekerBuilder().withName("Hidden Person").build();
+        model.addJobseeker(hiddenPerson);
+        model.addJobseeker(jobseeker);
+        model.updateFilteredJobseekerList(person -> person.getName().equals(jobseeker.getName()));
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+
+        assertCommandSuccess(new TagJobseekerCommand(INDEX_FIRST_PERSON, jobseeker.getTags()), model,
+                TagJobseekerCommand.MESSAGE_NO_CHANGE, expectedModel);
+        assertEquals(List.of(jobseeker), model.getFilteredJobseekerList());
+        assertEquals(List.of(hiddenPerson, jobseeker), model.getAddressBook().getJobseekerList());
     }
 
     @Test

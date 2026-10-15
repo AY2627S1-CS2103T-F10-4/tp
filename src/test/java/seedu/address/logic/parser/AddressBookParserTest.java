@@ -14,7 +14,9 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.AddJobseekerCommand;
-import seedu.address.logic.commands.ClearCommand;
+import seedu.address.logic.commands.ClearClientCommand;
+import seedu.address.logic.commands.ClearJobseekerCommand;
+import seedu.address.logic.commands.DeleteClientCommand;
 import seedu.address.logic.commands.DeleteJobseekerCommand;
 import seedu.address.logic.commands.EditJobseekerCommand;
 import seedu.address.logic.commands.EditJobseekerCommand.EditJobseekerDescriptor;
@@ -22,8 +24,11 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindClientCommand;
 import seedu.address.logic.commands.FindJobseekerCommand;
 import seedu.address.logic.commands.HelpCommand;
-import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.ListClientCommand;
+import seedu.address.logic.commands.ListJobseekerCommand;
+import seedu.address.logic.commands.TagClientCommand;
 import seedu.address.logic.commands.TagJobseekerCommand;
+import seedu.address.logic.commands.UntagClientCommand;
 import seedu.address.logic.commands.UntagJobseekerCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Jobseeker;
@@ -36,6 +41,18 @@ import seedu.address.testutil.PersonUtil;
 public class AddressBookParserTest {
 
     private final AddressBookParser parser = new AddressBookParser();
+
+    @Test
+    public void parseCommand_tagc() throws Exception {
+        assertEquals(new TagClientCommand(INDEX_FIRST_PERSON, Set.of(new Tag("priority"), new Tag("finance"))),
+                parser.parseCommand("tagc 1 priority finance"));
+    }
+
+    @Test
+    public void parseCommand_untagc() throws Exception {
+        assertEquals(new UntagClientCommand(INDEX_FIRST_PERSON, Set.of(new Tag("priority"), new Tag("finance"))),
+                parser.parseCommand("untagc 1 priority finance"));
+    }
 
     @Test
     public void parseCommand_untagj() throws Exception {
@@ -58,16 +75,29 @@ public class AddressBookParserTest {
     }
 
     @Test
-    public void parseCommand_clear() throws Exception {
-        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD) instanceof ClearCommand);
-        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD + " 3") instanceof ClearCommand);
+    public void parseCommand_clearj() throws Exception {
+        assertTrue(parser.parseCommand(ClearJobseekerCommand.COMMAND_WORD) instanceof ClearJobseekerCommand);
+        assertTrue(parser.parseCommand(ClearJobseekerCommand.COMMAND_WORD + " 3") instanceof ClearJobseekerCommand);
     }
 
     @Test
-    public void parseCommand_delete() throws Exception {
+    public void parseCommand_clearc() throws Exception {
+        assertTrue(parser.parseCommand(ClearClientCommand.COMMAND_WORD) instanceof ClearClientCommand);
+        assertTrue(parser.parseCommand(ClearClientCommand.COMMAND_WORD + " 3") instanceof ClearClientCommand);
+    }
+
+    @Test
+    public void parseCommand_deletej() throws Exception {
         DeleteJobseekerCommand command = (DeleteJobseekerCommand) parser.parseCommand(
                 DeleteJobseekerCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new DeleteJobseekerCommand(INDEX_FIRST_PERSON), command);
+    }
+
+    @Test
+    public void parseCommand_deletec() throws Exception {
+        DeleteClientCommand command = (DeleteClientCommand) parser.parseCommand(
+                DeleteClientCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new DeleteClientCommand(INDEX_FIRST_PERSON), command);
     }
 
     @Test
@@ -110,9 +140,15 @@ public class AddressBookParserTest {
     }
 
     @Test
-    public void parseCommand_list() throws Exception {
-        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD) instanceof ListCommand);
-        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3") instanceof ListCommand);
+    public void parseCommand_listj() throws Exception {
+        assertTrue(parser.parseCommand(ListJobseekerCommand.COMMAND_WORD) instanceof ListJobseekerCommand);
+        assertTrue(parser.parseCommand(ListJobseekerCommand.COMMAND_WORD + " 3") instanceof ListJobseekerCommand);
+    }
+
+    @Test
+    public void parseCommand_listc() throws Exception {
+        assertTrue(parser.parseCommand(ListClientCommand.COMMAND_WORD) instanceof ListClientCommand);
+        assertTrue(parser.parseCommand(ListClientCommand.COMMAND_WORD + " 3") instanceof ListClientCommand);
     }
 
     @Test

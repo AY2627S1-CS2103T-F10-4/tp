@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
+import static seedu.address.logic.commands.CommandTestUtil.showJobseekerAtIndex;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
@@ -51,7 +51,7 @@ public class DeleteJobseekerCommandTest {
 
     @Test
     public void execute_validIndexFilteredList_success() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+        showJobseekerAtIndex(model, INDEX_FIRST_PERSON);
 
         Jobseeker jobseekerToDelete = model.getFilteredJobseekerList().get(INDEX_FIRST_PERSON.getZeroBased());
         DeleteJobseekerCommand deleteCommand = new DeleteJobseekerCommand(INDEX_FIRST_PERSON);
@@ -61,14 +61,14 @@ public class DeleteJobseekerCommandTest {
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.deleteJobseeker(jobseekerToDelete);
-        showNoPerson(expectedModel);
+        showNoJobseeker(expectedModel);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_invalidIndexFilteredList_throwsCommandException() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+        showJobseekerAtIndex(model, INDEX_FIRST_PERSON);
 
         Index outOfBoundIndex = INDEX_SECOND_PERSON;
         // ensures that outOfBoundIndex is still in bounds of address book list
@@ -112,7 +112,7 @@ public class DeleteJobseekerCommandTest {
     /**
      * Updates {@code model}'s filtered jobseeker list to show no one.
      */
-    private void showNoPerson(Model model) {
+    private void showNoJobseeker(Model model) {
         model.updateFilteredJobseekerList(p -> false);
 
         assertTrue(model.getFilteredJobseekerList().isEmpty());

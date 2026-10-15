@@ -36,8 +36,8 @@ public class ModelManager implements Model {
         this.userPrefs = new UserPrefs(userPrefs);
         filteredJobseekers = new FilteredList<>(this.addressBook.getJobseekerList());
         filteredClients = new FilteredList<>(this.addressBook.getClientList());
-        updateFilteredJobseekerList(jobseeker -> true);
-        updateFilteredClientList(client -> true);
+        updateFilteredJobseekerList(Model.PREDICATE_SHOW_ALL_JOBSEEKERS);
+        updateFilteredClientList(Model.PREDICATE_SHOW_ALL_CLIENTS);
     }
 
     public ModelManager() {
@@ -72,6 +72,16 @@ public class ModelManager implements Model {
     @Override
     public ReadOnlyAddressBook getAddressBook() {
         return addressBook;
+    }
+
+    @Override
+    public void setJobseekers(java.util.List<Jobseeker> jobseekers) {
+        this.addressBook.setJobseekers(jobseekers);
+    }
+
+    @Override
+    public void setClients(java.util.List<Client> clients) {
+        this.addressBook.setClients(clients);
     }
 
     @Override

@@ -8,18 +8,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.logic.commands.AddJobseekerCommand;
-import seedu.address.logic.commands.ClearCommand;
-import seedu.address.logic.commands.Command;
-import seedu.address.logic.commands.DeleteJobseekerCommand;
-import seedu.address.logic.commands.EditJobseekerCommand;
-import seedu.address.logic.commands.ExitCommand;
-import seedu.address.logic.commands.FindClientCommand;
-import seedu.address.logic.commands.FindJobseekerCommand;
-import seedu.address.logic.commands.HelpCommand;
-import seedu.address.logic.commands.ListCommand;
-import seedu.address.logic.commands.TagJobseekerCommand;
-import seedu.address.logic.commands.UntagJobseekerCommand;
+import seedu.address.logic.commands.*;
+import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
@@ -55,15 +45,21 @@ public class AddressBookParser {
         logger.fine("Command word: " + commandWord + "; Arguments: " + arguments);
 
         return switch (commandWord) {
-            case AddJobseekerCommand.COMMAND_WORD -> new AddCommandParser().parse(arguments);
+            case AddClientCommand.COMMAND_WORD -> new AddClientCommandParser().parse(arguments);
+            case AddJobseekerCommand.COMMAND_WORD -> new AddJobseekerCommandParser().parse(arguments);
             case EditJobseekerCommand.COMMAND_WORD -> new EditCommandParser().parse(arguments);
-            case DeleteJobseekerCommand.COMMAND_WORD -> new DeleteCommandParser().parse(arguments);
+            case DeleteJobseekerCommand.COMMAND_WORD -> new DeleteJobseekerCommandParser().parse(arguments);
+            case DeleteClientCommand.COMMAND_WORD -> new DeleteClientCommandParser().parse(arguments);
             case TagJobseekerCommand.COMMAND_WORD -> new TagJobseekerCommandParser().parse(arguments);
             case UntagJobseekerCommand.COMMAND_WORD -> new UntagJobseekerCommandParser().parse(arguments);
-            case ClearCommand.COMMAND_WORD -> new ClearCommand();
+            case TagClientCommand.COMMAND_WORD -> new TagClientCommandParser().parse(arguments);
+            case UntagClientCommand.COMMAND_WORD -> new UntagClientCommandParser().parse(arguments);
+            case ClearJobseekerCommand.COMMAND_WORD -> new ClearJobseekerCommand();
+            case ClearClientCommand.COMMAND_WORD -> new ClearClientCommand();
             case FindJobseekerCommand.COMMAND_WORD -> FindCommandParser.forJobseekers().parse(arguments);
             case FindClientCommand.COMMAND_WORD -> FindCommandParser.forClients().parse(arguments);
-            case ListCommand.COMMAND_WORD -> new ListCommand();
+            case ListJobseekerCommand.COMMAND_WORD -> new ListJobseekerCommand();
+            case ListClientCommand.COMMAND_WORD -> new ListClientCommand();
             case ExitCommand.COMMAND_WORD -> new ExitCommand();
             case HelpCommand.COMMAND_WORD -> new HelpCommand();
             default -> {
