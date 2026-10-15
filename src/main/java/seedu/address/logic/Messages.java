@@ -35,22 +35,22 @@ public class Messages {
 
     /**
      * Formats the {@code person} for display to the user.
-     * Accepts the shared {@link Person} type so both clients and jobseekers can use
+     * Accepts the shared {@link Jobseeker} type so both clients and jobseekers can use
      * the same formatting for their common fields.
      */
-    public static String format(Person person) {
+    public static String format(Jobseeker jobseeker) {
         final StringBuilder builder = new StringBuilder();
-        builder.append(person.getName())
+        builder.append(jobseeker.getName())
                 .append("; Phone: ")
-                .append(person.getPhone())
+                .append(jobseeker.getPhone())
                 .append("; Email: ")
-                .append(person.getEmail())
+                .append(jobseeker.getEmail())
                 .append("; Address: ")
-                .append(person.getAddress())
+                .append(jobseeker.getAddress())
                 .append("; Remark: ")
-                .append(person.getRemark())
+                .append(jobseeker.getRemark())
                 .append("; Tags: ");
-        person.getTags().forEach(builder::append);
+        jobseeker.getTags().forEach(builder::append);
         return builder.toString();
     }
 
