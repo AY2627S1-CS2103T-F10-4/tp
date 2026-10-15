@@ -42,7 +42,7 @@ public interface Model {
     ReadOnlyAddressBook getAddressBook();
 
     /**
-     * @see AddressBook#setJobseekers(List) 
+     * @see AddressBook#setJobseekers(List)
      */
     void setJobseekers(List<Jobseeker> jobseekers);
 
@@ -57,37 +57,37 @@ public interface Model {
     boolean hasJobseeker(Jobseeker jobseeker);
 
     /**
-     * @see AddressBook#hasClient(Client) 
+     * @see AddressBook#hasClient(Client)
      */
     boolean hasClient(Client client);
 
     /**
-     * @see AddressBook#addJobseeker(Jobseeker) 
+     * @see AddressBook#addJobseeker(Jobseeker)
      */
     void addJobseeker(Jobseeker jobseeker);
 
     /**
-     * @see AddressBook#addClient(Client) 
+     * @see AddressBook#addClient(Client)
      */
     void addClient(Client client);
 
     /**
-     * @see AddressBook#setJobseeker(Jobseeker, Jobseeker) 
+     * @see AddressBook#setJobseeker(Jobseeker, Jobseeker)
      */
     void setJobseeker(Jobseeker target, Jobseeker editedJobseeker);
 
     /**
-     * @see AddressBook#setClient(Client, Client) 
+     * @see AddressBook#setClient(Client, Client)
      */
     void setClient(Client target, Client editedClient);
 
     /**
-     * @see AddressBook#removeJobseeker(Jobseeker) 
+     * @see AddressBook#removeJobseeker(Jobseeker)
      */
     void deleteJobseeker(Jobseeker target);
 
     /**
-     * @see AddressBook#removeClient(Client) 
+     * @see AddressBook#removeClient(Client)
      */
     void deleteClient(Client target);
 
