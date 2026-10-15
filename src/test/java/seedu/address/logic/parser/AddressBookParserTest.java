@@ -25,7 +25,9 @@ import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListClientCommand;
 import seedu.address.logic.commands.ListJobseekerCommand;
+import seedu.address.logic.commands.TagClientCommand;
 import seedu.address.logic.commands.TagJobseekerCommand;
+import seedu.address.logic.commands.UntagClientCommand;
 import seedu.address.logic.commands.UntagJobseekerCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Jobseeker;
@@ -38,6 +40,18 @@ import seedu.address.testutil.PersonUtil;
 public class AddressBookParserTest {
 
     private final AddressBookParser parser = new AddressBookParser();
+
+    @Test
+    public void parseCommand_tagc() throws Exception {
+        assertEquals(new TagClientCommand(INDEX_FIRST_PERSON, Set.of(new Tag("priority"), new Tag("finance"))),
+                parser.parseCommand("tagc 1 priority finance"));
+    }
+
+    @Test
+    public void parseCommand_untagc() throws Exception {
+        assertEquals(new UntagClientCommand(INDEX_FIRST_PERSON, Set.of(new Tag("priority"), new Tag("finance"))),
+                parser.parseCommand("untagc 1 priority finance"));
+    }
 
     @Test
     public void parseCommand_untagj() throws Exception {
