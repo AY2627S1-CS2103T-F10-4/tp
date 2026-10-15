@@ -33,6 +33,8 @@ public class DeleteClientCommand extends Command {
      * @param targetIndex index of the jobseeker to delete
      */
     public DeleteClientCommand(Index targetIndex) {
+        requireNonNull(targetIndex);
+
         this.targetIndex = targetIndex;
     }
 
