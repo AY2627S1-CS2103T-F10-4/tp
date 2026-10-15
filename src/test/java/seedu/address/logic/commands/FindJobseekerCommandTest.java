@@ -22,7 +22,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Jobseeker;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FindJobseekerCommand}.
@@ -38,7 +38,7 @@ public class FindJobseekerCommandTest {
      */
     private void assertFindSuccess(String userInput, List<Jobseeker> expectedJobseekers) {
         String expectedMessage = String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, expectedJobseekers.size());
-        NameContainsKeywordsPredicate predicate = preparePredicate(userInput);
+        PersonContainsKeywordsPredicate predicate = preparePredicate(userInput);
         FindJobseekerCommand command = new FindJobseekerCommand(predicate);
         expectedModel.updateFilteredJobseekerList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
@@ -52,10 +52,10 @@ public class FindJobseekerCommandTest {
 
     @Test
     public void equals() {
-        NameContainsKeywordsPredicate firstPredicate =
-                new NameContainsKeywordsPredicate(List.of("first"));
-        NameContainsKeywordsPredicate secondPredicate =
-                new NameContainsKeywordsPredicate(List.of("second"));
+        PersonContainsKeywordsPredicate firstPredicate =
+                new PersonContainsKeywordsPredicate(List.of("first"));
+        PersonContainsKeywordsPredicate secondPredicate =
+                new PersonContainsKeywordsPredicate(List.of("second"));
 
         FindJobseekerCommand findFirstCommand = new FindJobseekerCommand(firstPredicate);
         FindJobseekerCommand findSecondCommand = new FindJobseekerCommand(secondPredicate);
@@ -124,16 +124,16 @@ public class FindJobseekerCommandTest {
 
     @Test
     public void toStringMethod() {
-        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(List.of("keyword"));
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(List.of("keyword"));
         FindJobseekerCommand findCommand = new FindJobseekerCommand(predicate);
         String expected = FindJobseekerCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
         assertEquals(expected, findCommand.toString());
     }
 
     /**
-     * Parses {@code userInput} into a {@code NameContainsKeywordsPredicate}.
+     * Parses {@code userInput} into a {@code PersonContainsKeywordsPredicate}.
      */
-    private NameContainsKeywordsPredicate preparePredicate(String userInput) {
-        return new NameContainsKeywordsPredicate(List.of(userInput.split("\\s+")));
+    private PersonContainsKeywordsPredicate preparePredicate(String userInput) {
+        return new PersonContainsKeywordsPredicate(List.of(userInput.split("\\s+")));
     }
 }

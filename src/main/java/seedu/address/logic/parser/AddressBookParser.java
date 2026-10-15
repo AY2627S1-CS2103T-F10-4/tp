@@ -8,8 +8,24 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.logic.commands.*;
-import seedu.address.logic.commands.FindCommand;
+import seedu.address.logic.commands.AddClientCommand;
+import seedu.address.logic.commands.AddJobseekerCommand;
+import seedu.address.logic.commands.ClearClientCommand;
+import seedu.address.logic.commands.ClearJobseekerCommand;
+import seedu.address.logic.commands.Command;
+import seedu.address.logic.commands.DeleteClientCommand;
+import seedu.address.logic.commands.DeleteJobseekerCommand;
+import seedu.address.logic.commands.EditJobseekerCommand;
+import seedu.address.logic.commands.ExitCommand;
+import seedu.address.logic.commands.FindClientCommand;
+import seedu.address.logic.commands.FindJobseekerCommand;
+import seedu.address.logic.commands.HelpCommand;
+import seedu.address.logic.commands.ListClientCommand;
+import seedu.address.logic.commands.ListJobseekerCommand;
+import seedu.address.logic.commands.TagClientCommand;
+import seedu.address.logic.commands.TagJobseekerCommand;
+import seedu.address.logic.commands.UntagClientCommand;
+import seedu.address.logic.commands.UntagJobseekerCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**

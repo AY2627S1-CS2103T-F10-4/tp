@@ -14,7 +14,7 @@ import seedu.address.commons.util.ToStringBuilder;
  * ignoring case. For example, the keyword {@code "lic"} matches the name {@code "Alice Tan"},
  * and {@code "9435"} matches the phone number {@code "94351253"}.
  */
-public class NameContainsKeywordsPredicate implements Predicate<Person> {
+public class PersonContainsKeywordsPredicate implements Predicate<Person> {
     public static final String MESSAGE_BLANK_KEYWORD = "Keywords should not be blank";
 
     private final List<String> keywords;
@@ -26,7 +26,7 @@ public class NameContainsKeywordsPredicate implements Predicate<Person> {
      * @param keywords Keywords to match; neither the list nor any keyword may be null.
      * @throws IllegalArgumentException If any keyword is empty or only whitespace.
      */
-    public NameContainsKeywordsPredicate(List<String> keywords) {
+    public PersonContainsKeywordsPredicate(List<String> keywords) {
         requireNonNull(keywords);
         // List.copyOf also throws NullPointerException if any keyword is null.
         this.keywords = List.copyOf(keywords);
@@ -55,11 +55,11 @@ public class NameContainsKeywordsPredicate implements Predicate<Person> {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof NameContainsKeywordsPredicate otherNameContainsKeywordsPredicate)) {
+        if (!(other instanceof PersonContainsKeywordsPredicate otherPersonContainsKeywordsPredicate)) {
             return false;
         }
 
-        return keywords.equals(otherNameContainsKeywordsPredicate.keywords);
+        return keywords.equals(otherPersonContainsKeywordsPredicate.keywords);
     }
 
     @Override

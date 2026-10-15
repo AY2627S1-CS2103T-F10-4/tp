@@ -3,7 +3,7 @@ package seedu.address.model.person;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.model.person.NameContainsKeywordsPredicate.MESSAGE_BLANK_KEYWORD;
+import static seedu.address.model.person.PersonContainsKeywordsPredicate.MESSAGE_BLANK_KEYWORD;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import java.util.ArrayList;
@@ -15,13 +15,13 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.testutil.JobseekerBuilder;
 
-public class NameContainsKeywordsPredicateTest {
+public class PersonContainsKeywordsPredicateTest {
 
     @Test
     public void constructor_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new NameContainsKeywordsPredicate(null));
+        assertThrows(NullPointerException.class, () -> new PersonContainsKeywordsPredicate(null));
         assertThrows(NullPointerException.class, () ->
-                new NameContainsKeywordsPredicate(Arrays.asList("Alice", null)));
+                new PersonContainsKeywordsPredicate(Arrays.asList("Alice", null)));
     }
 
     /**
@@ -31,19 +31,19 @@ public class NameContainsKeywordsPredicateTest {
     @Test
     public void constructor_blankKeyword_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, MESSAGE_BLANK_KEYWORD, () ->
-                new NameContainsKeywordsPredicate(List.of("")));
+                new PersonContainsKeywordsPredicate(List.of("")));
         assertThrows(IllegalArgumentException.class, MESSAGE_BLANK_KEYWORD, () ->
-                new NameContainsKeywordsPredicate(List.of("Alice", " ")));
+                new PersonContainsKeywordsPredicate(List.of("Alice", " ")));
     }
 
     /**
-     * Checks that changing the caller's keyword list after NameContainsKeywordsPredicate construction
+     * Checks that changing the caller's keyword list after PersonContainsKeywordsPredicate construction
      * does not change what the predicate matches, and that the constructor makes a copy of the list.
      */
     @Test
     public void constructor_listChangedAfterwards_predicateUnaffected() {
         List<String> keywords = new ArrayList<>(List.of("Alice"));
-        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(keywords);
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(keywords);
         keywords.add("Bob");
         assertFalse(predicate.test(new JobseekerBuilder().withName("Bob").build()));
     }
@@ -53,14 +53,17 @@ public class NameContainsKeywordsPredicateTest {
         List<String> firstPredicateKeywordList = List.of("first");
         List<String> secondPredicateKeywordList = List.of("first", "second");
 
-        NameContainsKeywordsPredicate firstPredicate = new NameContainsKeywordsPredicate(firstPredicateKeywordList);
-        NameContainsKeywordsPredicate secondPredicate = new NameContainsKeywordsPredicate(secondPredicateKeywordList);
+        PersonContainsKeywordsPredicate firstPredicate =
+                new PersonContainsKeywordsPredicate(firstPredicateKeywordList);
+        PersonContainsKeywordsPredicate secondPredicate =
+                new PersonContainsKeywordsPredicate(secondPredicateKeywordList);
 
         // same object -> returns true
         assertTrue(firstPredicate.equals(firstPredicate));
 
         // same values -> returns true
-        NameContainsKeywordsPredicate firstPredicateCopy = new NameContainsKeywordsPredicate(firstPredicateKeywordList);
+        PersonContainsKeywordsPredicate firstPredicateCopy =
+                new PersonContainsKeywordsPredicate(firstPredicateKeywordList);
         assertTrue(firstPredicate.equals(firstPredicateCopy));
 
         // different types -> returns false
@@ -76,19 +79,19 @@ public class NameContainsKeywordsPredicateTest {
     @Test
     public void test_nameContainsKeywords_returnsTrue() {
         // One keyword
-        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(List.of("Alice"));
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(List.of("Alice"));
         assertTrue(predicate.test(new JobseekerBuilder().withName("Alice Bob").build()));
 
         // Multiple keywords
-        predicate = new NameContainsKeywordsPredicate(List.of("Alice", "Bob"));
+        predicate = new PersonContainsKeywordsPredicate(List.of("Alice", "Bob"));
         assertTrue(predicate.test(new JobseekerBuilder().withName("Alice Bob").build()));
 
         // Only one matching keyword
-        predicate = new NameContainsKeywordsPredicate(List.of("Bob", "Carol"));
+        predicate = new PersonContainsKeywordsPredicate(List.of("Bob", "Carol"));
         assertTrue(predicate.test(new JobseekerBuilder().withName("Alice Carol").build()));
 
         // Mixed-case keywords
-        predicate = new NameContainsKeywordsPredicate(List.of("aLIce", "bOB"));
+        predicate = new PersonContainsKeywordsPredicate(List.of("aLIce", "bOB"));
         assertTrue(predicate.test(new JobseekerBuilder().withName("Alice Bob").build()));
     }
 
@@ -99,15 +102,15 @@ public class NameContainsKeywordsPredicateTest {
     @Test
     public void test_keywordIsSubstringOfName_returnsTrue() {
         // Middle of a word
-        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(List.of("lic"));
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(List.of("lic"));
         assertTrue(predicate.test(new JobseekerBuilder().withName("Alice Bob").build()));
 
         // Start of the second word
-        predicate = new NameContainsKeywordsPredicate(List.of("Bo"));
+        predicate = new PersonContainsKeywordsPredicate(List.of("Bo"));
         assertTrue(predicate.test(new JobseekerBuilder().withName("Alice Bob").build()));
 
         // Mixed-case partial keyword
-        predicate = new NameContainsKeywordsPredicate(List.of("aLI"));
+        predicate = new PersonContainsKeywordsPredicate(List.of("aLI"));
         assertTrue(predicate.test(new JobseekerBuilder().withName("Alice Bob").build()));
     }
 
@@ -120,7 +123,7 @@ public class NameContainsKeywordsPredicateTest {
         Locale originalLocale = Locale.getDefault();
         try {
             Locale.setDefault(Locale.forLanguageTag("tr-TR"));
-            NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(List.of("ALICE"));
+            PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(List.of("ALICE"));
             assertTrue(predicate.test(new JobseekerBuilder().withName("Alice Bob").build()));
         } finally {
             Locale.setDefault(originalLocale);
@@ -130,19 +133,19 @@ public class NameContainsKeywordsPredicateTest {
     @Test
     public void test_nameDoesNotContainKeywords_returnsFalse() {
         // Zero keywords
-        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(List.of());
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(List.of());
         assertFalse(predicate.test(new JobseekerBuilder().withName("Alice").build()));
 
         // Non-matching keyword
-        predicate = new NameContainsKeywordsPredicate(List.of("Carol"));
+        predicate = new PersonContainsKeywordsPredicate(List.of("Carol"));
         assertFalse(predicate.test(new JobseekerBuilder().withName("Alice Bob").build()));
 
         // Keyword is longer than any matching part of the name
-        predicate = new NameContainsKeywordsPredicate(List.of("Alicia"));
+        predicate = new PersonContainsKeywordsPredicate(List.of("Alicia"));
         assertFalse(predicate.test(new JobseekerBuilder().withName("Alice Bob").build()));
 
         // Keywords match address only, which is not searched
-        predicate = new NameContainsKeywordsPredicate(List.of("Main", "Street"));
+        predicate = new PersonContainsKeywordsPredicate(List.of("Main", "Street"));
         assertFalse(predicate.test(new JobseekerBuilder().withName("Alice").withPhone("12345")
                 .withEmail("alice@email.com").withAddress("Main Street").build()));
     }
@@ -150,18 +153,18 @@ public class NameContainsKeywordsPredicateTest {
     @Test
     public void test_keywordMatchesPhone_returnsTrue() {
         // Full phone number
-        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(List.of("12345"));
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(List.of("12345"));
         assertTrue(predicate.test(new JobseekerBuilder().withName("Alice").withPhone("12345").build()));
 
         // Part of the phone number
-        predicate = new NameContainsKeywordsPredicate(List.of("234"));
+        predicate = new PersonContainsKeywordsPredicate(List.of("234"));
         assertTrue(predicate.test(new JobseekerBuilder().withName("Alice").withPhone("12345").build()));
     }
 
     @Test
     public void test_keywordMatchesEmail_returnsTrue() {
         // Part of the email, mixed case
-        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(List.of("EMAIL.com"));
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(List.of("EMAIL.com"));
         assertTrue(predicate.test(new JobseekerBuilder().withName("Bob")
                 .withEmail("alice@email.com").build()));
     }
@@ -172,7 +175,8 @@ public class NameContainsKeywordsPredicateTest {
      */
     @Test
     public void test_keywordSpansNameAndPhone_returnsFalse() {
-        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(List.of("Alice12345"));
+        PersonContainsKeywordsPredicate predicate =
+                new PersonContainsKeywordsPredicate(List.of("Alice12345"));
         assertFalse(predicate.test(new JobseekerBuilder().withName("Alice").withPhone("12345")
                 .withEmail("bob@email.com").build()));
     }
@@ -180,9 +184,10 @@ public class NameContainsKeywordsPredicateTest {
     @Test
     public void toStringMethod() {
         List<String> keywords = List.of("keyword1", "keyword2");
-        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(keywords);
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(keywords);
 
-        String expected = NameContainsKeywordsPredicate.class.getCanonicalName() + "{keywords=" + keywords + "}";
+        String expected = PersonContainsKeywordsPredicate.class.getCanonicalName()
+                + "{keywords=" + keywords + "}";
         assertEquals(expected, predicate.toString());
     }
 }

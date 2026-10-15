@@ -9,7 +9,7 @@ import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.FindClientCommand;
 import seedu.address.logic.commands.FindJobseekerCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 /**
  * Parses the keywords of a findj/findc command and creates that command.
@@ -21,12 +21,12 @@ import seedu.address.model.person.NameContainsKeywordsPredicate;
 public class FindCommandParser<T extends Command> implements Parser<T> {
 
     /** Creates the command from the parsed keywords, e.g. {@code FindJobseekerCommand::new}. */
-    private final Function<NameContainsKeywordsPredicate, T> commandFactory;
+    private final Function<PersonContainsKeywordsPredicate, T> commandFactory;
 
     /** Usage message of the command, shown when the user gives no keywords. */
     private final String messageUsage;
 
-    private FindCommandParser(Function<NameContainsKeywordsPredicate, T> commandFactory,
+    private FindCommandParser(Function<PersonContainsKeywordsPredicate, T> commandFactory,
             String messageUsage) {
         this.commandFactory = commandFactory;
         this.messageUsage = messageUsage;
@@ -64,7 +64,7 @@ public class FindCommandParser<T extends Command> implements Parser<T> {
         // keyword and none of them is blank.
         assert keywords.length > 0;
 
-        return commandFactory.apply(new NameContainsKeywordsPredicate(List.of(keywords)));
+        return commandFactory.apply(new PersonContainsKeywordsPredicate(List.of(keywords)));
     }
 
 }

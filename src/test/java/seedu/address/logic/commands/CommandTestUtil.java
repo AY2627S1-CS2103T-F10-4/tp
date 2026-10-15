@@ -19,7 +19,7 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.person.Client;
 import seedu.address.model.person.Jobseeker;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.testutil.EditJobseekerDescriptorBuilder;
 
 /**
@@ -153,7 +153,7 @@ public class CommandTestUtil {
 
         Jobseeker jobseeker = model.getFilteredJobseekerList().get(targetIndex.getZeroBased());
         final String[] splitName = jobseeker.getName().fullName.split("\\s+");
-        model.updateFilteredJobseekerList(new NameContainsKeywordsPredicate(List.of(splitName[0])));
+        model.updateFilteredJobseekerList(new PersonContainsKeywordsPredicate(List.of(splitName[0])));
 
         assertEquals(1, model.getFilteredJobseekerList().size());
     }
@@ -168,7 +168,7 @@ public class CommandTestUtil {
 
         Client client = model.getFilteredClientList().get(targetIndex.getZeroBased());
         final String[] splitName = client.getName().fullName.split("\\s+");
-        model.updateFilteredClientList(new NameContainsKeywordsPredicate(List.of(splitName[0])));
+        model.updateFilteredClientList(new PersonContainsKeywordsPredicate(List.of(splitName[0])));
 
         assertEquals(1, model.getFilteredClientList().size());
     }

@@ -8,7 +8,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 /**
  * Finds and lists all jobseekers in the address book whose name, phone number or email contains
@@ -26,14 +26,14 @@ public class FindJobseekerCommand extends Command {
 
     private static final Logger logger = LogsCenter.getLogger(FindJobseekerCommand.class);
 
-    private final NameContainsKeywordsPredicate predicate;
+    private final PersonContainsKeywordsPredicate predicate;
 
     /**
      * Creates a command that lists all jobseekers that match {@code predicate}.
      *
      * @param predicate Predicate that decides which jobseekers are listed; must not be null.
      */
-    public FindJobseekerCommand(NameContainsKeywordsPredicate predicate) {
+    public FindJobseekerCommand(PersonContainsKeywordsPredicate predicate) {
         requireNonNull(predicate);
         this.predicate = predicate;
     }

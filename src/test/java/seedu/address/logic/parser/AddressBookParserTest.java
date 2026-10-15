@@ -32,7 +32,7 @@ import seedu.address.logic.commands.UntagClientCommand;
 import seedu.address.logic.commands.UntagJobseekerCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Jobseeker;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.EditJobseekerDescriptorBuilder;
 import seedu.address.testutil.JobseekerBuilder;
@@ -122,7 +122,7 @@ public class AddressBookParserTest {
         List<String> keywords = List.of("foo", "bar", "baz");
         FindJobseekerCommand command = (FindJobseekerCommand) parser.parseCommand(
                 FindJobseekerCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
-        assertEquals(new FindJobseekerCommand(new NameContainsKeywordsPredicate(keywords)), command);
+        assertEquals(new FindJobseekerCommand(new PersonContainsKeywordsPredicate(keywords)), command);
     }
 
     @Test
@@ -130,7 +130,7 @@ public class AddressBookParserTest {
         List<String> keywords = List.of("foo", "bar", "baz");
         FindClientCommand command = (FindClientCommand) parser.parseCommand(
                 FindClientCommand.COMMAND_WORD + " " + String.join(" ", keywords));
-        assertEquals(new FindClientCommand(new NameContainsKeywordsPredicate(keywords)), command);
+        assertEquals(new FindClientCommand(new PersonContainsKeywordsPredicate(keywords)), command);
     }
 
     @Test
