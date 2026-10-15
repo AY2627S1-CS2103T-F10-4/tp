@@ -20,10 +20,10 @@ import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListClientCommand;
 import seedu.address.logic.commands.ListJobseekerCommand;
-import seedu.address.logic.commands.TagJobseekerCommand;
-import seedu.address.logic.commands.UntagJobseekerCommand;
 import seedu.address.logic.commands.TagClientCommand;
+import seedu.address.logic.commands.TagJobseekerCommand;
 import seedu.address.logic.commands.UntagClientCommand;
+import seedu.address.logic.commands.UntagJobseekerCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
