@@ -3,32 +3,68 @@ package seedu.address.logic.parser;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import java.util.List;
+import java.util.function.Function;
 
-import seedu.address.logic.commands.FindCommand;
+import seedu.address.logic.commands.Command;
+import seedu.address.logic.commands.FindClientCommand;
+import seedu.address.logic.commands.FindJobseekerCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 /**
- * Parses input arguments and creates a new FindCommand object
+ * Parses the keywords of a findj/findc command and creates that command.
+ * {@code findj} and {@code findc} take the same arguments and differ only in the command they create,
+ * so this one parser serves both. Use {@link #forJobseekers()} or {@link #forClients()} to get one.
+ *
+ * @param <T> Type of find command this parser creates.
  */
-public class FindCommandParser implements Parser<FindCommand> {
+public class FindCommandParser<T extends Command> implements Parser<T> {
+
+    /** Creates the command from the parsed keywords, e.g. {@code FindJobseekerCommand::new}. */
+    private final Function<PersonContainsKeywordsPredicate, T> commandFactory;
+
+    /** Usage message of the command, shown when the user gives no keywords. */
+    private final String messageUsage;
+
+    private FindCommandParser(Function<PersonContainsKeywordsPredicate, T> commandFactory,
+            String messageUsage) {
+        this.commandFactory = commandFactory;
+        this.messageUsage = messageUsage;
+    }
 
     /**
-     * Parses the given {@code String} of arguments in the context of the FindCommand
-     * and returns a FindCommand object for execution.
-     *
-     * @throws ParseException if the user input does not conform to the expected format.
+     * Returns a parser that creates a {@code FindJobseekerCommand}.
      */
-    public FindCommand parse(String args) throws ParseException {
+    public static FindCommandParser<FindJobseekerCommand> forJobseekers() {
+        return new FindCommandParser<>(FindJobseekerCommand::new, FindJobseekerCommand.MESSAGE_USAGE);
+    }
+
+    /**
+     * Returns a parser that creates a {@code FindClientCommand}.
+     */
+    public static FindCommandParser<FindClientCommand> forClients() {
+        return new FindCommandParser<>(FindClientCommand::new, FindClientCommand.MESSAGE_USAGE);
+    }
+
+    /**
+     * Parses the given {@code String} of arguments into keywords and returns the find command
+     * for those keywords.
+     *
+     * @throws ParseException If the user input contains no keywords.
+     */
+    @Override
+    public T parse(String args) throws ParseException {
         String trimmedArgs = args.trim();
         if (trimmedArgs.isEmpty()) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, messageUsage));
         }
 
-        String[] nameKeywords = trimmedArgs.split("\\s+");
+        String[] keywords = trimmedArgs.split("\\s+");
+        // trimmedArgs is non-empty and has no leading whitespace, so the split yields at least one
+        // keyword and none of them is blank.
+        assert keywords.length > 0;
 
-        return new FindCommand(new NameContainsKeywordsPredicate(List.of(nameKeywords)));
+        return commandFactory.apply(new PersonContainsKeywordsPredicate(List.of(keywords)));
     }
 
 }

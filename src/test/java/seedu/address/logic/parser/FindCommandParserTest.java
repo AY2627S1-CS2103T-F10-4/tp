@@ -8,27 +8,47 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.logic.commands.FindCommand;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.logic.commands.FindClientCommand;
+import seedu.address.logic.commands.FindJobseekerCommand;
+import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 public class FindCommandParserTest {
 
-    private FindCommandParser parser = new FindCommandParser();
+    private FindCommandParser<FindJobseekerCommand> jobseekerParser = FindCommandParser.forJobseekers();
+    private FindCommandParser<FindClientCommand> clientParser = FindCommandParser.forClients();
 
+    /**
+     * Checks each parser reports its own command's usage, so this fails if a factory method is
+     * given the other command's usage message.
+     */
     @Test
     public void parse_emptyArg_throwsParseException() {
-        assertParseFailure(parser, "     ", String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        assertParseFailure(jobseekerParser, "     ",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindJobseekerCommand.MESSAGE_USAGE));
+        assertParseFailure(clientParser, "     ",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindClientCommand.MESSAGE_USAGE));
     }
 
     @Test
-    public void parse_validArgs_returnsFindCommand() {
+    public void parse_validArgs_returnsFindJobseekerCommand() {
         // no leading and trailing whitespaces
-        FindCommand expectedFindCommand =
-                new FindCommand(new NameContainsKeywordsPredicate(List.of("Alice", "Bob")));
-        assertParseSuccess(parser, "Alice Bob", expectedFindCommand);
+        FindJobseekerCommand expectedFindJobseekerCommand =
+                new FindJobseekerCommand(new PersonContainsKeywordsPredicate(List.of("Alice", "Bob")));
+        assertParseSuccess(jobseekerParser, "Alice Bob", expectedFindJobseekerCommand);
 
         // multiple whitespaces between keywords
-        assertParseSuccess(parser, " \n Alice \n \t Bob  \t", expectedFindCommand);
+        assertParseSuccess(jobseekerParser, " \n Alice \n \t Bob  \t", expectedFindJobseekerCommand);
+    }
+
+    @Test
+    public void parse_validArgs_returnsFindClientCommand() {
+        // no leading and trailing whitespaces
+        FindClientCommand expectedFindClientCommand =
+                new FindClientCommand(new PersonContainsKeywordsPredicate(List.of("Adrian", "Brenda")));
+        assertParseSuccess(clientParser, "Adrian Brenda", expectedFindClientCommand);
+
+        // multiple whitespaces between keywords
+        assertParseSuccess(clientParser, " \n Adrian \n \t Brenda  \t", expectedFindClientCommand);
     }
 
 }
