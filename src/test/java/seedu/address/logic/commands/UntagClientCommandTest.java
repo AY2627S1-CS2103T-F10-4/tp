@@ -96,7 +96,8 @@ public class UntagClientCommandTest {
 
     @Test
     public void execute_noChangeFilteredList_preservesFilterAndAllClients() {
-        Client hiddenPerson = new ClientBuilder().withName("Hidden Person").build();
+        Client hiddenPerson = new ClientBuilder().withName("Hidden Person")
+                .withPhone("91234567").withEmail("hidden@example.com").build();
         model.addClient(hiddenPerson);
         model.addClient(client);
         model.updateFilteredClientList(person -> person.getName().equals(client.getName()));
@@ -110,7 +111,8 @@ public class UntagClientCommandTest {
 
     @Test
     public void execute_filteredList_updatesDisplayedClientAndPreservesFilter() throws Exception {
-        Client hiddenClient = new ClientBuilder().withName("Hidden Person").withTags("priority").build();
+        Client hiddenClient = new ClientBuilder().withName("Hidden Person")
+                .withPhone("91234567").withEmail("hidden@example.com").withTags("priority").build();
         model.addClient(hiddenClient);
         model.addClient(client);
         model.updateFilteredClientList(person -> person.getName().equals(client.getName()));
