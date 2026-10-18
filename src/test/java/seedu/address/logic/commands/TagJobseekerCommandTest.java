@@ -163,4 +163,15 @@ public class TagJobseekerCommandTest {
         assertFalse(command.equals(new TagJobseekerCommand(INDEX_SECOND_PERSON, tags)));
         assertFalse(command.equals(new TagJobseekerCommand(INDEX_FIRST_PERSON, Set.of(new Tag("teamwork")))));
     }
+
+    /**
+     * Tagging rebuilds the jobseeker, so it must carry the hidden status over rather than unhiding them.
+     */
+    @Test
+    public void execute_hiddenJobseeker_staysHidden() throws Exception {
+        Jobseeker hiddenJobseeker = new JobseekerBuilder(jobseeker).withHidden(true).build();
+        model.addJobseeker(hiddenJobseeker);
+        new TagJobseekerCommand(INDEX_FIRST_PERSON, Set.of(new Tag("java"))).execute(model);
+        assertTrue(model.getFilteredJobseekerList().get(0).isHidden());
+    }
 }

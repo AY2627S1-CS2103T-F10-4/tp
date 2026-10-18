@@ -169,4 +169,15 @@ public class UntagJobseekerCommandTest {
                 + ", tagsToRemove=" + tags + "}";
         assertEquals(expected, command.toString());
     }
+
+    /**
+     * Untagging rebuilds the jobseeker, so it must carry the hidden status over rather than unhiding them.
+     */
+    @Test
+    public void execute_hiddenJobseeker_staysHidden() throws Exception {
+        Jobseeker hiddenJobseeker = new JobseekerBuilder(jobseeker).withHidden(true).build();
+        model.addJobseeker(hiddenJobseeker);
+        new UntagJobseekerCommand(INDEX_FIRST_PERSON, Set.of(new Tag("java"))).execute(model);
+        assertTrue(model.getFilteredJobseekerList().get(0).isHidden());
+    }
 }

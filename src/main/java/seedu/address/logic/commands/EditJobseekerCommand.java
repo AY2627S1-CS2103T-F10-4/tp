@@ -110,7 +110,7 @@ public class EditJobseekerCommand extends Command {
                 updatedRemark);
          */
         return new Jobseeker(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags,
-                jobseekerToEdit.getRemark());
+                jobseekerToEdit.getRemark(), jobseekerToEdit.isHidden());
     }
 
     @Override

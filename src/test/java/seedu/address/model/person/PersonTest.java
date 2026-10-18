@@ -52,6 +52,10 @@ public class PersonTest {
                 .withEmail(VALID_EMAIL_BOB).build();
         assertFalse(ALICE.isSamePerson(editedAlice));
 
+        // only hidden status different -> returns true, so a hidden jobseeker still blocks a duplicate
+        Person hiddenAlice = new JobseekerBuilder(ALICE).withHidden(true).build();
+        assertTrue(ALICE.isSamePerson(hiddenAlice));
+
         // no need to check for cases and trailing spaces,
         // email and phone numbers have validation built-in
     }
@@ -93,6 +97,10 @@ public class PersonTest {
         // different tags -> returns false
         editedAlice = new JobseekerBuilder(ALICE).withTags(VALID_TAG_HUSBAND).build();
         assertFalse(ALICE.equals(editedAlice));
+
+        // different hidden status -> returns false
+        editedAlice = new JobseekerBuilder(ALICE).withHidden(true).build();
+        assertFalse(ALICE.equals(editedAlice));
     }
 
     @Test
@@ -100,7 +108,23 @@ public class PersonTest {
         String expected = ALICE.getClass().getCanonicalName() + "{name=" + ALICE.getName()
                 + ", phone=" + ALICE.getPhone() + ", email=" + ALICE.getEmail()
                 + ", address=" + ALICE.getAddress() + ", tags=" + ALICE.getTags()
-                + ", remark=" + ALICE.getRemark() + "}";
+                + ", remark=" + ALICE.getRemark() + ", isHidden=" + ALICE.isHidden() + "}";
         assertEquals(expected, ALICE.toString());
+    }
+
+    /**
+     * Checks both {@code Jobseeker} constructors, so that neither can ignore {@code isHidden} and
+     * hard-code a status.
+     */
+    @Test
+    public void constructor_withHiddenStatus_keepsHiddenStatus() {
+        Jobseeker jobseekerWithoutRemark = new Jobseeker(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
+                ALICE.getAddress(), ALICE.getTags(), true);
+        assertTrue(jobseekerWithoutRemark.isHidden());
+        assertEquals(new Remark(""), jobseekerWithoutRemark.getRemark());
+
+        Jobseeker jobseekerWithRemark = new Jobseeker(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(),
+                ALICE.getAddress(), ALICE.getTags(), ALICE.getRemark(), true);
+        assertTrue(jobseekerWithRemark.isHidden());
     }
 }

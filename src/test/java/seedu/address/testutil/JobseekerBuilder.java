@@ -28,6 +28,7 @@ public class JobseekerBuilder {
     private Address address;
     private Remark remark;
     private Set<Tag> tags;
+    private boolean isHidden;
 
     /**
      * Creates a {@code JobseekerBuilder} with the default details.
@@ -39,6 +40,7 @@ public class JobseekerBuilder {
         address = new Address(DEFAULT_ADDRESS);
         remark = new Remark("");
         tags = new HashSet<>();
+        isHidden = false;
     }
 
     /**
@@ -51,6 +53,7 @@ public class JobseekerBuilder {
         address = jobseekerToCopy.getAddress();
         remark = jobseekerToCopy.getRemark();
         tags = new HashSet<>(jobseekerToCopy.getTags());
+        isHidden = jobseekerToCopy.isHidden();
     }
 
     /**
@@ -101,7 +104,15 @@ public class JobseekerBuilder {
         return this;
     }
 
+    /**
+     * Sets whether the {@code Jobseeker} that we are building is hidden.
+     */
+    public JobseekerBuilder withHidden(boolean isHidden) {
+        this.isHidden = isHidden;
+        return this;
+    }
+
     public Jobseeker build() {
-        return new Jobseeker(name, phone, email, address, tags, remark);
+        return new Jobseeker(name, phone, email, address, tags, remark, isHidden);
     }
 }

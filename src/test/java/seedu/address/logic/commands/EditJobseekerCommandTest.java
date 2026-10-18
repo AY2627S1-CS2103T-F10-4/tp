@@ -186,4 +186,15 @@ public class EditJobseekerCommandTest {
         assertEquals(expected, editCommand.toString());
     }
 
+    /**
+     * Editing rebuilds the jobseeker, so it must carry the hidden status over rather than unhiding them.
+     */
+    @Test
+    public void execute_hiddenJobseeker_staysHidden() throws Exception {
+        Model hiddenModel = new ModelManager();
+        hiddenModel.addJobseeker(new JobseekerBuilder().withHidden(true).build());
+        EditJobseekerDescriptor descriptor = new EditJobseekerDescriptorBuilder().withName(VALID_NAME_BOB).build();
+        new EditJobseekerCommand(INDEX_FIRST_PERSON, descriptor).execute(hiddenModel);
+        assertTrue(hiddenModel.getFilteredJobseekerList().get(0).isHidden());
+    }
 }

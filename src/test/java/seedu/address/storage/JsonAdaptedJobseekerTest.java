@@ -1,6 +1,8 @@
 package seedu.address.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.storage.JsonAdaptedJobseeker.MISSING_FIELD_MESSAGE_FORMAT;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.BENSON;
@@ -12,10 +14,13 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.JsonUtil;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.testutil.JobseekerBuilder;
 
 public class JsonAdaptedJobseekerTest {
     private static final String INVALID_NAME = "R@chel";
@@ -111,4 +116,29 @@ public class JsonAdaptedJobseekerTest {
         assertThrows(IllegalValueException.class, jobseeker::toModelType);
     }
 
+    /**
+     * Goes through real JSON text, not just the adapter object, and checks the key name, because the
+     * save file format promises a "hidden" key, which Jackson would otherwise name after the field.
+     */
+    @Test
+    public void toModelType_hiddenJobseekerThroughJson_staysHidden() throws Exception {
+        Jobseeker hiddenJobseeker = new JobseekerBuilder(BENSON).withHidden(true).build();
+        String json = JsonUtil.toJsonString(new JsonAdaptedJobseeker(hiddenJobseeker));
+        assertTrue(json.contains("\"hidden\""));
+        JsonAdaptedJobseeker readBack = JsonUtil.fromJsonString(json, JsonAdaptedJobseeker.class);
+        assertEquals(hiddenJobseeker, readBack.toModelType());
+    }
+
+    /**
+     * Save files written before hiding existed have no "hidden" field; they must still load,
+     * with everyone unhidden.
+     */
+    @Test
+    public void toModelType_missingHiddenField_unhidden() throws Exception {
+        String json = "{\"name\": \"" + VALID_NAME + "\", \"phone\": \"" + VALID_PHONE
+                + "\", \"email\": \"" + VALID_EMAIL + "\", \"address\": \"" + VALID_ADDRESS
+                + "\", \"tags\": []}";
+        JsonAdaptedJobseeker jobseeker = JsonUtil.fromJsonString(json, JsonAdaptedJobseeker.class);
+        assertFalse(jobseeker.toModelType().isHidden());
+    }
 }

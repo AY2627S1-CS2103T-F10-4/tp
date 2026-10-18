@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_BOB;
@@ -129,5 +130,15 @@ public class AddClientCommandParserTest {
                 .execute(model);
         assertEquals(java.util.List.of(expected), model.getAddressBook().getClientList());
         assertEquals(0, model.getAddressBook().getJobseekerList().size());
+    }
+
+    /**
+     * A newly added client must always start unhidden; only a later hide command may hide them.
+     */
+    @Test
+    public void parse_allFieldsPresent_addsUnhiddenClient() throws Exception {
+        Model model = new ModelManager();
+        parser.parse(REQUIRED_FIELDS + REMARK_DESC_AMY + TAG_DESC_EMPLOYER).execute(model);
+        assertFalse(model.getAddressBook().getClientList().get(0).isHidden());
     }
 }

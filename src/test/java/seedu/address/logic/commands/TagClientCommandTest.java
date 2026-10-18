@@ -165,4 +165,15 @@ public class TagClientCommandTest {
         assertFalse(command.equals(new TagClientCommand(INDEX_SECOND_PERSON, tags)));
         assertFalse(command.equals(new TagClientCommand(INDEX_FIRST_PERSON, Set.of(new Tag("finance")))));
     }
+
+    /**
+     * Tagging rebuilds the client, so it must carry the hidden status over rather than unhiding them.
+     */
+    @Test
+    public void execute_hiddenClient_staysHidden() throws Exception {
+        Client hiddenClient = new ClientBuilder(client).withHidden(true).build();
+        model.addClient(hiddenClient);
+        new TagClientCommand(INDEX_FIRST_PERSON, Set.of(new Tag("priority"))).execute(model);
+        assertTrue(model.getFilteredClientList().get(0).isHidden());
+    }
 }
