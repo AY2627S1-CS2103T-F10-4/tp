@@ -53,8 +53,6 @@ public class HideJobseekerCommand extends Command {
 
         Jobseeker jobseekerToHide = lastShownJobseekerList.get(targetIndex.getZeroBased());
         if (jobseekerToHide.isHidden()) {
-            // Not an error, like tagging a jobseeker with a tag they already have: the jobseeker ends up
-            // hidden either way.
             return new CommandResult(MESSAGE_NO_CHANGE);
         }
 

@@ -80,8 +80,6 @@ public abstract class Person {
     /**
      * Returns true if both persons have the same email and phone number.
      * This defines a weaker notion of equality between two persons.
-     * The hidden status is deliberately ignored: hiding a person does not make them someone else,
-     * so a hidden person still blocks a duplicate from being added.
      */
     public boolean isSamePerson(Person otherPerson) {
         if (otherPerson == this) {

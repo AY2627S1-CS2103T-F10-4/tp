@@ -53,8 +53,6 @@ public class HideClientCommand extends Command {
 
         Client clientToHide = lastShownClientList.get(targetIndex.getZeroBased());
         if (clientToHide.isHidden()) {
-            // Not an error, like tagging a client with a tag they already have: the client ends up
-            // hidden either way.
             return new CommandResult(MESSAGE_NO_CHANGE);
         }
 
