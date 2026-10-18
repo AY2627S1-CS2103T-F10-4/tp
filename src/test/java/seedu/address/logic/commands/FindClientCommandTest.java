@@ -25,6 +25,7 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Client;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
+import seedu.address.testutil.ClientBuilder;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FindClientCommand}.
@@ -136,5 +137,21 @@ public class FindClientCommandTest {
      */
     private PersonContainsKeywordsPredicate preparePredicate(String userInput) {
         return new PersonContainsKeywordsPredicate(List.of(userInput.split("\\s+")));
+    }
+
+    /**
+     * A hidden client must not be found, even though the keywords match them.
+     */
+    @Test
+    public void execute_keywordMatchesHiddenClient_hiddenClientNotFound() {
+        Model hiddenModel = new ModelManager();
+        hiddenModel.addClient(ADRIAN);
+        hiddenModel.addClient(new ClientBuilder(BRENDA).withHidden(true).build());
+
+        CommandResult result = new FindClientCommand(preparePredicate("Adrian Brenda"))
+                .execute(hiddenModel);
+
+        assertEquals(String.format(MESSAGE_CLIENTS_LISTED_OVERVIEW, 1), result.getFeedbackToUser());
+        assertEquals(List.of(ADRIAN), hiddenModel.getFilteredClientList());
     }
 }

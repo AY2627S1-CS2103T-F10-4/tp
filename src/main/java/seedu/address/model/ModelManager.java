@@ -36,8 +36,8 @@ public class ModelManager implements Model {
         this.userPrefs = new UserPrefs(userPrefs);
         filteredJobseekers = new FilteredList<>(this.addressBook.getJobseekerList());
         filteredClients = new FilteredList<>(this.addressBook.getClientList());
-        updateFilteredJobseekerList(Model.PREDICATE_SHOW_ALL_JOBSEEKERS);
-        updateFilteredClientList(Model.PREDICATE_SHOW_ALL_CLIENTS);
+        updateFilteredJobseekerList(Model.PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS);
+        updateFilteredClientList(Model.PREDICATE_SHOW_UNHIDDEN_CLIENTS);
     }
 
     public ModelManager() {

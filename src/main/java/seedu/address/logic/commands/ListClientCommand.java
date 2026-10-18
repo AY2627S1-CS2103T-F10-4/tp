@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import seedu.address.model.Model;
 
 /**
- * Lists all clients in the address book to the user.
+ * Lists all unhidden clients in the address book to the user.
  */
 public class ListClientCommand extends Command {
 
@@ -17,7 +17,7 @@ public class ListClientCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.updateFilteredClientList(Model.PREDICATE_SHOW_ALL_CLIENTS);
+        model.updateFilteredClientList(Model.PREDICATE_SHOW_UNHIDDEN_CLIENTS);
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

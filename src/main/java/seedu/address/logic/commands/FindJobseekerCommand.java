@@ -11,8 +11,9 @@ import seedu.address.model.Model;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 /**
- * Finds and lists all jobseekers in the address book whose name, phone number or email contains
- * any of the argument keywords. Keyword matching is case insensitive. Clients are not searched.
+ * Finds and lists all unhidden jobseekers in the address book whose name, phone number or email
+ * contains any of the argument keywords. Keyword matching is case insensitive. Hidden jobseekers
+ * and clients are not searched.
  */
 public class FindJobseekerCommand extends Command {
 
@@ -41,7 +42,7 @@ public class FindJobseekerCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.updateFilteredJobseekerList(jobseeker -> predicate.test(jobseeker));
+        model.updateFilteredJobseekerList(Model.PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS.and(predicate));
         int matchCount = model.getFilteredJobseekerList().size();
         // FINE, not INFO: LogicManager already logs the command text at INFO, so this only adds detail
         // that is useful when debugging search results.

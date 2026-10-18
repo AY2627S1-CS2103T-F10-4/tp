@@ -1,6 +1,7 @@
 package seedu.address.testutil;
 
 import seedu.address.model.AddressBook;
+import seedu.address.model.person.Client;
 import seedu.address.model.person.Jobseeker;
 
 /**
@@ -25,6 +26,14 @@ public class AddressBookBuilder {
      */
     public AddressBookBuilder withJobseeker(Jobseeker jobseeker) {
         addressBook.addJobseeker(jobseeker);
+        return this;
+    }
+
+    /**
+     * Adds a new {@code Client} to the {@code AddressBook} that we are building.
+     */
+    public AddressBookBuilder withClient(Client client) {
+        addressBook.addClient(client);
         return this;
     }
 

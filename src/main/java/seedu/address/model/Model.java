@@ -12,11 +12,11 @@ import seedu.address.model.person.Jobseeker;
  * The API of the Model component.
  */
 public interface Model {
-    /** {@code Predicate} that always evaluates to true for jobseekers */
-    Predicate<Jobseeker> PREDICATE_SHOW_ALL_JOBSEEKERS = jobseeker -> true;
+    /** {@code Predicate} that keeps only unhidden jobseekers, i.e. the default jobseeker view */
+    Predicate<Jobseeker> PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS = jobseeker -> !jobseeker.isHidden();
 
-    /** {@code Predicate} that always evaluates to true for clients */
-    Predicate<Client> PREDICATE_SHOW_ALL_CLIENTS = client -> true;
+    /** {@code Predicate} that keeps only unhidden clients, i.e. the default client view */
+    Predicate<Client> PREDICATE_SHOW_UNHIDDEN_CLIENTS = client -> !client.isHidden();
 
     /**
      * Returns the user prefs.
