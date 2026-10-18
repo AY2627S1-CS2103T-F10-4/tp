@@ -145,7 +145,7 @@ public class CommandTestUtil {
 
     /**
      * Filters jobseekers using the first name token of the jobseeker at {@code targetIndex}
-     * in the current filtered list.
+     * in the current filtered list, leaving out hidden jobseekers as {@code findj} does.
      * Asserts that the resulting list contains exactly one jobseeker.
      */
     public static void showJobseekerAtIndex(Model model, Index targetIndex) {
@@ -153,14 +153,15 @@ public class CommandTestUtil {
 
         Jobseeker jobseeker = model.getFilteredJobseekerList().get(targetIndex.getZeroBased());
         final String[] splitName = jobseeker.getName().fullName.split("\\s+");
-        model.updateFilteredJobseekerList(new PersonContainsKeywordsPredicate(List.of(splitName[0])));
+        model.updateFilteredJobseekerList(Model.PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS
+                .and(new PersonContainsKeywordsPredicate(List.of(splitName[0]))));
 
         assertEquals(1, model.getFilteredJobseekerList().size());
     }
 
     /**
      * Filters clients using the first name token of the client at {@code targetIndex}
-     * in the current filtered list.
+     * in the current filtered list, leaving out hidden clients as {@code findc} does.
      * Asserts that the resulting list contains exactly one client.
      */
     public static void showClientAtIndex(Model model, Index targetIndex) {
@@ -168,7 +169,8 @@ public class CommandTestUtil {
 
         Client client = model.getFilteredClientList().get(targetIndex.getZeroBased());
         final String[] splitName = client.getName().fullName.split("\\s+");
-        model.updateFilteredClientList(new PersonContainsKeywordsPredicate(List.of(splitName[0])));
+        model.updateFilteredClientList(Model.PREDICATE_SHOW_UNHIDDEN_CLIENTS
+                .and(new PersonContainsKeywordsPredicate(List.of(splitName[0]))));
 
         assertEquals(1, model.getFilteredClientList().size());
     }
