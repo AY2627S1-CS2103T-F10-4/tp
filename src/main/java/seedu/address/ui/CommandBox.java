@@ -3,6 +3,8 @@ package seedu.address.ui;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -17,6 +19,7 @@ public class CommandBox extends UiPart<Region> {
     private static final String FXML = "CommandBox.fxml";
 
     private final CommandExecutor commandExecutor;
+    private final CommandHistory commandHistory = new CommandHistory();
 
     @FXML
     private TextField commandTextField;
@@ -29,6 +32,30 @@ public class CommandBox extends UiPart<Region> {
         this.commandExecutor = commandExecutor;
         // calls #setStyleToDefault() whenever there is a change to the text of the command box.
         commandTextField.textProperty().addListener((unused1, unused2, unused3) -> setStyleToDefault());
+        commandTextField.addEventFilter(KeyEvent.KEY_PRESSED, this::handleHistoryNavigation);
+    }
+
+    /**
+     * Recalls commands using unmodified arrow keys while the command field has focus.
+     */
+    private void handleHistoryNavigation(KeyEvent event) {
+        if (event.isAltDown() || event.isControlDown() || event.isMetaDown() || event.isShiftDown()) {
+            return;
+        }
+        String currentInput = commandTextField.getText();
+        String recalledInput;
+        if (event.getCode() == KeyCode.UP) {
+            recalledInput = commandHistory.previous(currentInput);
+        } else if (event.getCode() == KeyCode.DOWN) {
+            recalledInput = commandHistory.next(currentInput);
+        } else {
+            return;
+        }
+        if (!recalledInput.equals(currentInput)) {
+            commandTextField.setText(recalledInput);
+        }
+        commandTextField.positionCaret(commandTextField.getLength());
+        event.consume();
     }
 
     /**
@@ -41,6 +68,7 @@ public class CommandBox extends UiPart<Region> {
             return;
         }
 
+        commandHistory.add(commandText);
         try {
             commandExecutor.execute(commandText);
             commandTextField.setText("");
