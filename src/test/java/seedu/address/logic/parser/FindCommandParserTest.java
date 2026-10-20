@@ -29,6 +29,30 @@ public class FindCommandParserTest {
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindClientCommand.MESSAGE_USAGE));
     }
 
+    /**
+     * Guards against Unicode whitespace that {@code trim()} keeps: an em space (U+2003) must give
+     * a ParseException, so this fails if the parser goes back to {@code trim()}, where the
+     * predicate would throw IllegalArgumentException instead.
+     */
+    @Test
+    public void parse_unicodeWhitespaceOnlyArg_throwsParseException() {
+        assertParseFailure(jobseekerParser, "    ",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindJobseekerCommand.MESSAGE_USAGE));
+        assertParseFailure(clientParser, " ",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindClientCommand.MESSAGE_USAGE));
+    }
+
+    /**
+     * Checks that an em space separates keywords like an ordinary space, so this fails if the
+     * parser splits on {@code \s}, which would leave "Alice Bob" as one keyword.
+     */
+    @Test
+    public void parse_unicodeWhitespaceBetweenKeywords_splitsKeywords() {
+        FindJobseekerCommand expectedFindJobseekerCommand =
+                new FindJobseekerCommand(new PersonContainsKeywordsPredicate(List.of("Alice", "Bob")));
+        assertParseSuccess(jobseekerParser, " Alice Bob ", expectedFindJobseekerCommand);
+    }
+
     @Test
     public void parse_validArgs_returnsFindJobseekerCommand() {
         // no leading and trailing whitespaces

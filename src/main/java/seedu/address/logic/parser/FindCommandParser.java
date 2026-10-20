@@ -54,12 +54,12 @@ public class FindCommandParser<T extends Command> implements Parser<T> {
      */
     @Override
     public T parse(String args) throws ParseException {
-        String trimmedArgs = args.trim();
+        String trimmedArgs = args.strip();
         if (trimmedArgs.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, messageUsage));
         }
 
-        String[] keywords = trimmedArgs.split("\\s+");
+        String[] keywords = trimmedArgs.split("\\p{javaWhitespace}+");
         // trimmedArgs is non-empty and has no leading whitespace, so the split yields at least one
         // keyword and none of them is blank.
         assert keywords.length > 0;
