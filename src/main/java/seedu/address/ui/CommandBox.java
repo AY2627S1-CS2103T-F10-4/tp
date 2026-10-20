@@ -2,6 +2,7 @@ package seedu.address.ui;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -17,31 +18,140 @@ public class CommandBox extends UiPart<Region> {
 
     public static final String ERROR_STYLE_CLASS = "error";
     private static final String FXML = "CommandBox.fxml";
+    private static final int MAX_VISIBLE_SUGGESTIONS = 5;
+    private static final int SUGGESTION_HEIGHT_PADDING = 2;
 
     private final CommandExecutor commandExecutor;
     private final CommandHistory commandHistory = new CommandHistory();
+    private final CommandSuggestions commandSuggestions;
+    private boolean suppressSuggestions;
 
     @FXML
     private TextField commandTextField;
+
+    @FXML
+    private ListView<String> suggestionList;
 
     /**
      * Creates a {@code CommandBox} with the given {@code CommandExecutor}.
      */
     public CommandBox(CommandExecutor commandExecutor) {
+        this(commandExecutor, new CommandSuggestions());
+    }
+
+    /**
+     * Creates a command box with a supplied suggestion source.
+     */
+    CommandBox(CommandExecutor commandExecutor, CommandSuggestions commandSuggestions) {
         super(FXML);
         this.commandExecutor = commandExecutor;
-        // calls #setStyleToDefault() whenever there is a change to the text of the command box.
-        commandTextField.textProperty().addListener((unused1, unused2, unused3) -> setStyleToDefault());
-        commandTextField.addEventFilter(KeyEvent.KEY_PRESSED, this::handleHistoryNavigation);
+        this.commandSuggestions = commandSuggestions;
+        commandTextField.textProperty().addListener((unused1, unused2, unused3) -> {
+            setStyleToDefault();
+            if (!suppressSuggestions) {
+                updateSuggestions();
+            }
+        });
+        commandTextField.focusedProperty().addListener((observable, oldValue, focused) -> {
+            if (!focused) {
+                hideSuggestions();
+            }
+        });
+        commandTextField.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPressed);
+    }
+
+    /**
+     * Refreshes matches after an input edit and selects the first match.
+     * Limits the list height so longer lists scroll instead of displacing more of the main window.
+     */
+    private void updateSuggestions() {
+        suggestionList.getItems().setAll(commandSuggestions.suggest(commandTextField.getText()));
+        boolean visible = !suggestionList.getItems().isEmpty();
+        suggestionList.setVisible(visible);
+        suggestionList.setManaged(visible);
+        int visibleRows = Math.min(MAX_VISIBLE_SUGGESTIONS, suggestionList.getItems().size());
+        suggestionList.setPrefHeight(visibleRows * suggestionList.getFixedCellSize() + SUGGESTION_HEIGHT_PADDING);
+        suggestionList.getSelectionModel().selectFirst();
+    }
+
+    /**
+     * Hides suggestions and releases their space in the window layout.
+     */
+    private void hideSuggestions() {
+        suggestionList.setVisible(false);
+        suggestionList.setManaged(false);
+    }
+
+    /**
+     * Replaces the incomplete command with the selected suggestion, preserving leading whitespace.
+     * Requires a visible list with a selected match; does not execute or record the completion in history.
+     */
+    private void completeSuggestion() {
+        String selected = suggestionList.getSelectionModel().getSelectedItem();
+        String input = commandTextField.getText();
+        String leadingWhitespace = input.substring(0, input.length() - input.stripLeading().length());
+        replaceInputWithoutSuggestions(leadingWhitespace + selected);
+    }
+
+    /**
+     * Replaces input during completion or history navigation without reopening suggestions.
+     * Places the caret at the end of the replacement.
+     */
+    private void replaceInputWithoutSuggestions(String text) {
+        suppressSuggestions = true;
+        try {
+            commandTextField.setText(text);
+        } finally {
+            suppressSuggestions = false;
+        }
+        hideSuggestions();
+        commandTextField.positionCaret(commandTextField.getLength());
+    }
+
+    /**
+     * Gives visible suggestions priority over history navigation for unmodified keys.
+     * Consumes handled keys to prevent the text field from also acting on them.
+     */
+    private void handleKeyPressed(KeyEvent event) {
+        if (event.isAltDown() || event.isControlDown() || event.isMetaDown() || event.isShiftDown()) {
+            return;
+        }
+        if (suggestionList.isVisible()) {
+            switch (event.getCode()) {
+                case UP:
+                case DOWN:
+                    moveSuggestionSelection(event.getCode() == KeyCode.UP ? -1 : 1);
+                    break;
+                case TAB:
+                case ENTER:
+                    completeSuggestion();
+                    break;
+                case ESCAPE:
+                    hideSuggestions();
+                    break;
+                default:
+                    return;
+            }
+            event.consume();
+            return;
+        }
+        handleHistoryNavigation(event);
+    }
+
+    /**
+     * Moves the selection by {@code offset}, stopping at the list boundaries and keeping the match visible.
+     */
+    private void moveSuggestionSelection(int offset) {
+        int requestedIndex = suggestionList.getSelectionModel().getSelectedIndex() + offset;
+        int selectedIndex = Math.max(0, Math.min(requestedIndex, suggestionList.getItems().size() - 1));
+        suggestionList.getSelectionModel().select(selectedIndex);
+        suggestionList.scrollTo(selectedIndex);
     }
 
     /**
      * Recalls commands using unmodified arrow keys while the command field has focus.
      */
     private void handleHistoryNavigation(KeyEvent event) {
-        if (event.isAltDown() || event.isControlDown() || event.isMetaDown() || event.isShiftDown()) {
-            return;
-        }
         String currentInput = commandTextField.getText();
         String recalledInput;
         if (event.getCode() == KeyCode.UP) {
@@ -51,20 +161,22 @@ public class CommandBox extends UiPart<Region> {
         } else {
             return;
         }
-        if (!recalledInput.equals(currentInput)) {
-            commandTextField.setText(recalledInput);
-        }
-        commandTextField.positionCaret(commandTextField.getLength());
+        replaceInputWithoutSuggestions(recalledInput);
         event.consume();
     }
 
     /**
-     * Handles the Enter button pressed event.
+     * Completes a visible suggestion, or submits the input and records it in session history.
+     * Failed submissions retain their input and receive error styling.
      */
     @FXML
     private void handleCommandEntered() {
+        if (suggestionList.isVisible()) {
+            completeSuggestion();
+            return;
+        }
         String commandText = commandTextField.getText();
-        if (commandText.equals("")) {
+        if (commandText.isEmpty()) {
             return;
         }
 

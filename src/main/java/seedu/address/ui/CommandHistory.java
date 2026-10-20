@@ -14,6 +14,8 @@ class CommandHistory {
     /**
      * Records a nonblank submission and resets browsing to the draft position.
      * Blank submissions reset browsing but are not stored.
+     *
+     * @param command Non-null submitted input, preserved exactly as entered.
      */
     void add(String command) {
         if (!command.isBlank()) {
@@ -26,6 +28,9 @@ class CommandHistory {
     /**
      * Returns the previous command, saving the current input when browsing begins.
      * At the oldest entry, leaves the current input unchanged.
+     *
+     * @param currentInput Non-null input to save as the draft when browsing begins.
+     * @return The older command, or the unchanged input when no older command exists.
      */
     String previous(String currentInput) {
         if (historyIndex == 0) {
@@ -41,6 +46,9 @@ class CommandHistory {
     /**
      * Returns the next command, or restores the draft after the newest command.
      * Outside history browsing, leaves the current input unchanged.
+     *
+     * @param currentInput Non-null input to preserve when not browsing history.
+     * @return The newer command, the saved draft, or the unchanged input.
      */
     String next(String currentInput) {
         if (historyIndex == history.size()) {
