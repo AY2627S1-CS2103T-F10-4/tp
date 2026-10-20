@@ -22,6 +22,8 @@ import seedu.address.logic.commands.EditJobseekerCommand;
 import seedu.address.logic.commands.EditJobseekerCommand.EditJobseekerDescriptor;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindClientCommand;
+import seedu.address.logic.commands.FindHiddenClientCommand;
+import seedu.address.logic.commands.FindHiddenJobseekerCommand;
 import seedu.address.logic.commands.FindJobseekerCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HideClientCommand;
@@ -149,6 +151,22 @@ public class AddressBookParserTest {
         FindClientCommand command = (FindClientCommand) parser.parseCommand(
                 FindClientCommand.COMMAND_WORD + " " + String.join(" ", keywords));
         assertEquals(new FindClientCommand(new PersonContainsKeywordsPredicate(keywords)), command);
+    }
+
+    @Test
+    public void parseCommand_findhj() throws Exception {
+        List<String> keywords = List.of("foo", "bar", "baz");
+        FindHiddenJobseekerCommand command = (FindHiddenJobseekerCommand) parser.parseCommand(
+                FindHiddenJobseekerCommand.COMMAND_WORD + " " + String.join(" ", keywords));
+        assertEquals(new FindHiddenJobseekerCommand(new PersonContainsKeywordsPredicate(keywords)), command);
+    }
+
+    @Test
+    public void parseCommand_findhc() throws Exception {
+        List<String> keywords = List.of("foo", "bar", "baz");
+        FindHiddenClientCommand command = (FindHiddenClientCommand) parser.parseCommand(
+                FindHiddenClientCommand.COMMAND_WORD + " " + String.join(" ", keywords));
+        assertEquals(new FindHiddenClientCommand(new PersonContainsKeywordsPredicate(keywords)), command);
     }
 
     @Test
