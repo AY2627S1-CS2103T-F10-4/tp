@@ -26,12 +26,15 @@ public abstract class Person {
     private final Remark remark;
     private final Set<Tag> tags = new HashSet<>();
 
+    /** Whether this person is hidden, i.e. left out of the default {@code listj}/{@code listc} view */
+    private final boolean isHidden;
+
     /**
-     * Constructs a Person with the given details and a remark and tag.
-     * Every argument must not be null.
+     * Constructs a Person with the given details, remark, tags and hidden status ({@code isHidden}).
+     * Every object argument must not be null.
      */
     public Person(Name name, Phone phone, Email email,
-            Address address, Set<Tag> tags, Remark remark) {
+            Address address, Set<Tag> tags, Remark remark, boolean isHidden) {
         requireAllNonNull(name, phone, email, address, tags, remark);
         this.name = name;
         this.phone = phone;
@@ -39,6 +42,7 @@ public abstract class Person {
         this.address = address;
         this.tags.addAll(tags);
         this.remark = remark;
+        this.isHidden = isHidden;
     }
 
     public Name getName() {
@@ -69,8 +73,12 @@ public abstract class Person {
         return Collections.unmodifiableSet(tags);
     }
 
+    public boolean isHidden() {
+        return isHidden;
+    }
+
     /**
-     * Returns true if both persons have the same name.
+     * Returns true if both persons have the same email and phone number.
      * This defines a weaker notion of equality between two persons.
      */
     public boolean isSamePerson(Person otherPerson) {
@@ -103,13 +111,14 @@ public abstract class Person {
                 && email.equals(otherPerson.email)
                 && address.equals(otherPerson.address)
                 && tags.equals(otherPerson.tags)
-                && remark.equals(otherPerson.remark);
+                && remark.equals(otherPerson.remark)
+                && isHidden == otherPerson.isHidden;
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags, remark);
+        return Objects.hash(name, phone, email, address, tags, remark, isHidden);
     }
 
     @Override
@@ -121,6 +130,7 @@ public abstract class Person {
                 .add("address", address)
                 .add("tags", tags)
                 .add("remark", remark)
+                .add("isHidden", isHidden)
                 .toString();
     }
 

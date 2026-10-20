@@ -1,6 +1,8 @@
 package seedu.address.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.storage.JsonAdaptedClient.MISSING_FIELD_MESSAGE_FORMAT;
 import static seedu.address.testutil.Assert.assertThrows;
 
@@ -11,6 +13,7 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.JsonUtil;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Client;
 import seedu.address.model.person.Email;
@@ -109,4 +112,29 @@ public class JsonAdaptedClientTest {
         assertThrows(IllegalValueException.class, client::toModelType);
     }
 
+    /**
+     * Goes through real JSON text, not just the adapter object, and checks the key name, because the
+     * save file format promises a "hidden" key, which Jackson would otherwise name after the field.
+     */
+    @Test
+    public void toModelType_hiddenClientThroughJson_staysHidden() throws Exception {
+        Client hiddenClient = new ClientBuilder(TYPICAL_CLIENT).withHidden(true).build();
+        String json = JsonUtil.toJsonString(new JsonAdaptedClient(hiddenClient));
+        assertTrue(json.contains("\"hidden\""));
+        JsonAdaptedClient readBack = JsonUtil.fromJsonString(json, JsonAdaptedClient.class);
+        assertEquals(hiddenClient, readBack.toModelType());
+    }
+
+    /**
+     * Save files written before hiding existed have no "hidden" field; they must still load,
+     * with everyone unhidden.
+     */
+    @Test
+    public void toModelType_missingHiddenField_unhidden() throws Exception {
+        String json = "{\"name\": \"" + VALID_NAME + "\", \"phone\": \"" + VALID_PHONE
+                + "\", \"email\": \"" + VALID_EMAIL + "\", \"address\": \"" + VALID_ADDRESS
+                + "\", \"tags\": []}";
+        JsonAdaptedClient client = JsonUtil.fromJsonString(json, JsonAdaptedClient.class);
+        assertFalse(client.toModelType().isHidden());
+    }
 }

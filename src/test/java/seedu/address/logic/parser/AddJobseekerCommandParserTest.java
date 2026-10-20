@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_BOB;
@@ -40,6 +41,8 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.AddJobseekerCommand;
+import seedu.address.model.Model;
+import seedu.address.model.ModelManager;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Jobseeker;
@@ -218,5 +221,15 @@ public class AddJobseekerCommandParserTest {
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddJobseekerCommand.MESSAGE_USAGE));
+    }
+
+    /**
+     * A newly added jobseeker must always start unhidden; only a later hide command may hide them.
+     */
+    @Test
+    public void parse_allFieldsPresent_addsUnhiddenJobseeker() throws Exception {
+        Model model = new ModelManager();
+        parser.parse(REQUIRED_FIELDS + REMARK_DESC_AMY + TAG_DESC_FRIEND).execute(model);
+        assertFalse(model.getAddressBook().getJobseekerList().get(0).isHidden());
     }
 }

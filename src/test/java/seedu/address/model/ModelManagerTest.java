@@ -4,13 +4,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
+import static seedu.address.testutil.TypicalPersons.ADRIAN;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
+import static seedu.address.testutil.TypicalPersons.BRENDA;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.testutil.AddressBookBuilder;
+import seedu.address.testutil.ClientBuilder;
+import seedu.address.testutil.JobseekerBuilder;
 
 public class ModelManagerTest {
 
@@ -80,5 +86,21 @@ public class ModelManagerTest {
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setGuiSettings(new GuiSettings(1, 2, 3, 4));
         assertFalse(modelManager.equals(new ModelManager(addressBook, differentUserPrefs)));
+    }
+
+    /**
+     * The app opens on the default view, so hidden people must be left out from the very start.
+     */
+    @Test
+    public void constructor_hiddenPeople_onlyUnhiddenShown() {
+        AddressBook addressBook = new AddressBookBuilder()
+                .withJobseeker(ALICE).withJobseeker(new JobseekerBuilder(BENSON).withHidden(true).build())
+                .withClient(ADRIAN).withClient(new ClientBuilder(BRENDA).withHidden(true).build())
+                .build();
+
+        ModelManager hiddenModelManager = new ModelManager(addressBook, new UserPrefs());
+
+        assertEquals(List.of(ALICE), hiddenModelManager.getFilteredJobseekerList());
+        assertEquals(List.of(ADRIAN), hiddenModelManager.getFilteredClientList());
     }
 }

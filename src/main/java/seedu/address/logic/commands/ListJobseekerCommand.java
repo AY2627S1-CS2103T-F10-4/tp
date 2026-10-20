@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import seedu.address.model.Model;
 
 /**
- * Lists all jobseekers in the address book to the user.
+ * Lists all unhidden jobseekers in the address book to the user.
  */
 public class ListJobseekerCommand extends Command {
 
@@ -17,7 +17,7 @@ public class ListJobseekerCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.updateFilteredJobseekerList(Model.PREDICATE_SHOW_ALL_JOBSEEKERS);
+        model.updateFilteredJobseekerList(Model.PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS);
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

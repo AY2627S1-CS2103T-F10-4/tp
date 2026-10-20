@@ -47,6 +47,8 @@ public class AddClientCommand extends Command {
      */
     public AddClientCommand(Client client) {
         requireNonNull(client);
+        // A newly added client always starts unhidden; AddClientCommandParser guarantees this.
+        assert !client.isHidden() : "A newly added client must not be hidden";
         toAdd = client;
     }
 

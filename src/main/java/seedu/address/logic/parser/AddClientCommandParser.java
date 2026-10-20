@@ -51,7 +51,9 @@ public class AddClientCommandParser implements Parser<AddClientCommand> {
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
         Remark remark = new Remark(argMultimap.getValue(PREFIX_REMARK).orElse(""));
-        Client client = new Client(name, phone, email, address, tagList, remark);
+        // A newly added client always starts unhidden; only a later hide command can hide them.
+        boolean isHidden = false;
+        Client client = new Client(name, phone, email, address, tagList, remark, isHidden);
 
         return new AddClientCommand(client);
     }

@@ -85,7 +85,7 @@ public class EditJobseekerCommand extends Command {
         }
 
         model.setJobseeker(jobseekerToEdit, editedJobseeker);
-        model.updateFilteredJobseekerList(Model.PREDICATE_SHOW_ALL_JOBSEEKERS);
+        model.updateFilteredJobseekerList(Model.PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS);
         return new CommandResult(String.format(MESSAGE_EDIT_JOBSEEKER_SUCCESS,
                 Messages.format(editedJobseeker)));
     }
@@ -110,7 +110,7 @@ public class EditJobseekerCommand extends Command {
                 updatedRemark);
          */
         return new Jobseeker(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags,
-                jobseekerToEdit.getRemark());
+                jobseekerToEdit.getRemark(), jobseekerToEdit.isHidden());
     }
 
     @Override

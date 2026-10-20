@@ -13,7 +13,11 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showJobseekerAtIndex;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -186,4 +190,36 @@ public class EditJobseekerCommandTest {
         assertEquals(expected, editCommand.toString());
     }
 
+    /**
+     * Editing rebuilds the jobseeker, so it must carry the hidden status over rather than unhiding them.
+     */
+    @Test
+    public void execute_hiddenJobseeker_staysHidden() throws Exception {
+        Model hiddenModel = new ModelManager();
+        hiddenModel.addJobseeker(new JobseekerBuilder().withHidden(true).build());
+        // Hidden people are left out of the default view, so show everyone, as a view of hidden
+        // people would.
+        hiddenModel.updateFilteredJobseekerList(jobseeker -> true);
+        EditJobseekerDescriptor descriptor = new EditJobseekerDescriptorBuilder()
+                .withName(VALID_NAME_BOB).build();
+        new EditJobseekerCommand(INDEX_FIRST_PERSON, descriptor).execute(hiddenModel);
+        assertTrue(hiddenModel.getAddressBook().getJobseekerList().get(0).isHidden());
+    }
+
+    /**
+     * Editing resets the view, and the reset view must still leave out hidden jobseekers.
+     */
+    @Test
+    public void execute_otherJobseekerHidden_hiddenJobseekerStaysOutOfView() throws Exception {
+        Model hiddenModel = new ModelManager();
+        hiddenModel.addJobseeker(ALICE);
+        hiddenModel.addJobseeker(new JobseekerBuilder(BENSON).withHidden(true).build());
+        EditJobseekerDescriptor descriptor = new EditJobseekerDescriptorBuilder()
+                .withName(VALID_NAME_BOB).build();
+
+        new EditJobseekerCommand(INDEX_FIRST_PERSON, descriptor).execute(hiddenModel);
+
+        Jobseeker editedAlice = new JobseekerBuilder(ALICE).withName(VALID_NAME_BOB).build();
+        assertEquals(List.of(editedAlice), hiddenModel.getFilteredJobseekerList());
+    }
 }

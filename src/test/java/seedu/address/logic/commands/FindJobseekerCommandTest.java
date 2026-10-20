@@ -24,6 +24,7 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
+import seedu.address.testutil.JobseekerBuilder;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FindJobseekerCommand}.
@@ -148,5 +149,21 @@ public class FindJobseekerCommandTest {
      */
     private PersonContainsKeywordsPredicate preparePredicate(String userInput) {
         return new PersonContainsKeywordsPredicate(List.of(userInput.split("\\s+")));
+    }
+
+    /**
+     * A hidden jobseeker must not be found, even though the keywords match them.
+     */
+    @Test
+    public void execute_keywordMatchesHiddenJobseeker_hiddenJobseekerNotFound() {
+        Model hiddenModel = new ModelManager();
+        hiddenModel.addJobseeker(ALICE);
+        hiddenModel.addJobseeker(new JobseekerBuilder(BENSON).withHidden(true).build());
+
+        CommandResult result = new FindJobseekerCommand(preparePredicate("Alice Benson"))
+                .execute(hiddenModel);
+
+        assertEquals(String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, 1), result.getFeedbackToUser());
+        assertEquals(List.of(ALICE), hiddenModel.getFilteredJobseekerList());
     }
 }

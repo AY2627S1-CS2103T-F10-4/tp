@@ -47,6 +47,8 @@ public class AddJobseekerCommand extends Command {
      */
     public AddJobseekerCommand(Jobseeker jobseeker) {
         requireNonNull(jobseeker);
+        // A newly added jobseeker always starts unhidden; AddJobseekerCommandParser guarantees this.
+        assert !jobseeker.isHidden() : "A newly added jobseeker must not be hidden";
         toAdd = jobseeker;
     }
 

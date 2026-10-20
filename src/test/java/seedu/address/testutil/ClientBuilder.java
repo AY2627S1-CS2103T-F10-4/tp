@@ -28,6 +28,7 @@ public class ClientBuilder {
     private Address address;
     private Remark remark;
     private Set<Tag> tags;
+    private boolean isHidden;
 
     /**
      * Creates a {@code ClientBuilder} with the default details.
@@ -39,6 +40,7 @@ public class ClientBuilder {
         address = new Address(DEFAULT_ADDRESS);
         remark = new Remark("");
         tags = new HashSet<>();
+        isHidden = false;
     }
 
     /**
@@ -51,6 +53,7 @@ public class ClientBuilder {
         address = clientToCopy.getAddress();
         remark = clientToCopy.getRemark();
         tags = new HashSet<>(clientToCopy.getTags());
+        isHidden = clientToCopy.isHidden();
     }
 
     /**
@@ -101,7 +104,15 @@ public class ClientBuilder {
         return this;
     }
 
+    /**
+     * Sets whether the {@code Client} that we are building is hidden.
+     */
+    public ClientBuilder withHidden(boolean isHidden) {
+        this.isHidden = isHidden;
+        return this;
+    }
+
     public Client build() {
-        return new Client(name, phone, email, address, tags, remark);
+        return new Client(name, phone, email, address, tags, remark, isHidden);
     }
 }

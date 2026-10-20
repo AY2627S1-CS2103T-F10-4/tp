@@ -171,4 +171,18 @@ public class UntagClientCommandTest {
                 + ", tagsToRemove=" + tags + "}";
         assertEquals(expected, command.toString());
     }
+
+    /**
+     * Untagging rebuilds the client, so it must carry the hidden status over rather than unhiding them.
+     */
+    @Test
+    public void execute_hiddenClient_staysHidden() throws Exception {
+        Client hiddenClient = new ClientBuilder(client).withHidden(true).build();
+        model.addClient(hiddenClient);
+        // Hidden people are left out of the default view, so show everyone, as a view of hidden
+        // people would.
+        model.updateFilteredClientList(client -> true);
+        new UntagClientCommand(INDEX_FIRST_PERSON, Set.of(new Tag("priority"))).execute(model);
+        assertTrue(model.getAddressBook().getClientList().get(0).isHidden());
+    }
 }

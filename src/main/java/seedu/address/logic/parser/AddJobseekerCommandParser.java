@@ -52,7 +52,9 @@ public class AddJobseekerCommandParser implements Parser<AddJobseekerCommand> {
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
         Remark remark = new Remark(argMultimap.getValue(PREFIX_REMARK).orElse(""));
-        Jobseeker jobseeker = new Jobseeker(name, phone, email, address, tagList, remark);
+        // A newly added jobseeker always starts unhidden; only a later hide command can hide them.
+        boolean isHidden = false;
+        Jobseeker jobseeker = new Jobseeker(name, phone, email, address, tagList, remark, isHidden);
 
         return new AddJobseekerCommand(jobseeker);
     }

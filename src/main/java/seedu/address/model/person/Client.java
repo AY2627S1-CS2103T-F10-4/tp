@@ -11,18 +11,19 @@ import seedu.address.model.tag.Tag;
 public class Client extends Person {
 
     /**
-     * Creates a client with the given details and remark.
+     * Creates a client with the given details, remark and hidden status ({@code isHidden}).
      */
-    public Client(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Remark remark) {
+    public Client(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Remark remark,
+            boolean isHidden) {
         //nonNull values enforced by the parent class.
-        super(name, phone, email, address, tags, remark);
+        super(name, phone, email, address, tags, remark, isHidden);
     }
 
     /**
-     * Creates a client with the given details and an empty remark.
+     * Creates a client with the given details, hidden status ({@code isHidden}) and an empty remark.
      */
     public Client(Name name, Phone phone, Email email,
-            Address address, Set<Tag> tags) {
-        this(name, phone, email, address, tags, new Remark(""));
+            Address address, Set<Tag> tags, boolean isHidden) {
+        this(name, phone, email, address, tags, new Remark(""), isHidden);
     }
 }
