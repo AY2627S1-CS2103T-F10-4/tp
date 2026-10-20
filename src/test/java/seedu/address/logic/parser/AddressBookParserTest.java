@@ -27,6 +27,8 @@ import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HideClientCommand;
 import seedu.address.logic.commands.HideJobseekerCommand;
 import seedu.address.logic.commands.ListClientCommand;
+import seedu.address.logic.commands.ListHiddenClientCommand;
+import seedu.address.logic.commands.ListHiddenJobseekerCommand;
 import seedu.address.logic.commands.ListJobseekerCommand;
 import seedu.address.logic.commands.TagClientCommand;
 import seedu.address.logic.commands.TagJobseekerCommand;
@@ -165,6 +167,22 @@ public class AddressBookParserTest {
     public void parseCommand_listc() throws Exception {
         assertTrue(parser.parseCommand(ListClientCommand.COMMAND_WORD) instanceof ListClientCommand);
         assertTrue(parser.parseCommand(ListClientCommand.COMMAND_WORD + " 3") instanceof ListClientCommand);
+    }
+
+    @Test
+    public void parseCommand_listhj() throws Exception {
+        assertTrue(parser.parseCommand(ListHiddenJobseekerCommand.COMMAND_WORD)
+                instanceof ListHiddenJobseekerCommand);
+        assertTrue(parser.parseCommand(ListHiddenJobseekerCommand.COMMAND_WORD + " 3")
+                instanceof ListHiddenJobseekerCommand);
+    }
+
+    @Test
+    public void parseCommand_listhc() throws Exception {
+        assertTrue(parser.parseCommand(ListHiddenClientCommand.COMMAND_WORD)
+                instanceof ListHiddenClientCommand);
+        assertTrue(parser.parseCommand(ListHiddenClientCommand.COMMAND_WORD + " 3")
+                instanceof ListHiddenClientCommand);
     }
 
     @Test

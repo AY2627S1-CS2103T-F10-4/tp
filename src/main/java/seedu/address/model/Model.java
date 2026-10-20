@@ -18,6 +18,12 @@ public interface Model {
     /** {@code Predicate} that keeps only unhidden clients, i.e. the default client view */
     Predicate<Client> PREDICATE_SHOW_UNHIDDEN_CLIENTS = client -> !client.isHidden();
 
+    /** {@code Predicate} that keeps only hidden jobseekers */
+    Predicate<Jobseeker> PREDICATE_SHOW_HIDDEN_JOBSEEKERS = Jobseeker::isHidden;
+
+    /** {@code Predicate} that keeps only hidden clients */
+    Predicate<Client> PREDICATE_SHOW_HIDDEN_CLIENTS = Client::isHidden;
+
     /**
      * Returns the user prefs.
      */
