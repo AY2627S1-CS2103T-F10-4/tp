@@ -133,22 +133,38 @@ Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 
-### Locating persons by name: `find`
+### Finding jobseekers: `findj`
 
-Finds persons whose names contain any of the given keywords.
+Finds jobseekers whose name, phone number or email contains any of the given keywords.
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Format: `findj KEYWORD [MORE_KEYWORDS]…​`
 
+* At least one keyword must be given.
 * The search is case-insensitive; for example, `hans` matches `Hans`.
+* Partial words match; for example, `Han` matches `Hans`, and `9435` matches the phone number `94351253`.
 * Keyword order does not matter; for example, `Hans Bo` matches `Bo Hans`.
-* The search considers only names.
-* Only full words match; for example, `Han` does not match `Hans`.
-* Persons matching at least one keyword are returned (an `OR` search); for example, `Hans Bo` returns `Hans Gruber` and `Bo Yang`.
+* Only the name, phone number and email are searched. Addresses, remarks and tags are not.
+* Each keyword must match within a single field; for example, `Yeoh8743` does not match a jobseeker named `Alex Yeoh` whose phone number is `87438807`.
+* Jobseekers matching at least one keyword are returned (an `OR` search); for example, `Hans Bo` returns `Hans Gruber` and `Bo Yang`.
+* Only the jobseeker list is filtered; the client list is left unchanged. Use `listj` to show all jobseekers again.
 
 Examples:
-* `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+* `findj alex david` returns `Alex Yeoh` and `David Li`.
+* `findj li` returns `Charlotte Oliveiro` and `David Li`, since `li` appears inside both names.
+* `findj 9103` returns `David Li`, whose phone number is `91031282`.
+
+### Finding clients: `findc`
+
+Finds clients whose name, phone number or email contains any of the given keywords.
+
+Format: `findc KEYWORD [MORE_KEYWORDS]…​`
+
+* The keywords are matched in the same way as for [`findj`](#finding-jobseekers-findj).
+* Only the client list is filtered; the jobseeker list is left unchanged. Use `listc` to show all clients again.
+
+Examples:
+* `findc roy` returns `Roy Balakrishnan`.
+* `findc irfan@example.com` returns `Irfan Ibrahim`.
 
 ### Deleting a person: `delete`
 
@@ -218,6 +234,7 @@ Action | Format, Examples
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g., `edit 2 n/James Lee e/jameslee@example.com`
-**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**Find jobseekers** | `findj KEYWORD [MORE_KEYWORDS]…`<br> e.g., `findj James 9435 jake@example.com`
+**Find clients** | `findc KEYWORD [MORE_KEYWORDS]…`<br> e.g., `findc Jane 9123`
 **List** | `list`
 **Help** | `help`
