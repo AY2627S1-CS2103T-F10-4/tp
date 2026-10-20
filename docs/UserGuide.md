@@ -205,6 +205,10 @@ If your changes make the data file invalid, AddressBook starts with an empty add
 Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </div>
 
+### Revisit past commands
+
+Use the up and down arrow keys to revisit commands from your command history.
+
 ### Archiving data files `[coming in v2.0]`
 
 _Details coming soon ..._
