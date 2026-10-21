@@ -73,7 +73,7 @@ public class CommandBoxTest {
                 scene.getRoot().layout();
                 ListView<?> suggestions = (ListView<?>) scene.lookup("#suggestionList");
                 assertTrue(suggestions.isVisible());
-                assertTrue(suggestions.getHeight() >= 56, "Both suggestion rows must have space");
+                assertTrue(suggestions.getHeight() >= 112, "All four suggestion rows must have space");
                 assertTrue(suggestions.getWidth() > 0);
                 assertTrue(suggestions.localToScene(suggestions.getBoundsInLocal()).getMinY()
                         >= field.localToScene(field.getBoundsInLocal()).getMaxY());
@@ -81,7 +81,7 @@ public class CommandBoxTest {
                 assertTrue(result.localToScene(result.getBoundsInLocal()).getMinY()
                         >= suggestions.localToScene(suggestions.getBoundsInLocal()).getMaxY(),
                         "Suggestions must not overlap the result panel");
-                assertEquals(2, suggestions.lookupAll(".list-cell").stream()
+                assertEquals(4, suggestions.lookupAll(".list-cell").stream()
                         .map(node -> (ListCell<?>) node)
                         .filter(cell -> !cell.isEmpty() && cell.isVisible()).count());
             } finally {
@@ -204,25 +204,25 @@ public class CommandBoxTest {
             field.setText("list");
             assertTrue(suggestions.isVisible());
             assertTrue(suggestions.isManaged());
-            assertEquals(List.of("listc", "listj"), suggestions.getItems());
+            assertEquals(List.of("listc", "listhc", "listhj", "listj"), suggestions.getItems());
             press(field, KeyCode.UP);
             assertEquals("listc", suggestions.getSelectionModel().getSelectedItem());
             press(field, KeyCode.DOWN);
             press(field, KeyCode.DOWN);
-            assertEquals("listj", suggestions.getSelectionModel().getSelectedItem());
+            assertEquals("listhj", suggestions.getSelectionModel().getSelectedItem());
             press(field, KeyCode.UP);
-            assertEquals("listc", suggestions.getSelectionModel().getSelectedItem());
+            assertEquals("listhc", suggestions.getSelectionModel().getSelectedItem());
             press(field, KeyCode.DOWN);
             press(field, KeyCode.F2);
             assertTrue(suggestions.isVisible());
             press(field, KeyCode.TAB);
-            assertEquals("listj", field.getText());
+            assertEquals("listhj", field.getText());
             assertEquals(field.getLength(), field.getCaretPosition());
             assertFalse(suggestions.isVisible());
             assertFalse(suggestions.isManaged());
             assertTrue(executed.isEmpty());
             submit(field);
-            assertEquals(List.of("listj"), executed);
+            assertEquals(List.of("listhj"), executed);
         });
     }
 
@@ -382,7 +382,7 @@ public class CommandBoxTest {
             press(field, KeyCode.UP);
             assertEquals("help", field.getText());
             press(field, KeyCode.DOWN);
-            assertEquals("listj", field.getText());
+            assertEquals("listhc", field.getText());
         });
     }
 

@@ -13,10 +13,28 @@ public class CommandSuggestionsTest {
 
     @Test
     public void suggest_prefix_returnsSortedMatches() {
-        assertEquals(List.of("listc", "listj"), suggestions.suggest("list"));
-        assertEquals(List.of("listc", "listj"), suggestions.suggest("  list"));
+        assertEquals(List.of("listc", "listhc", "listhj", "listj"), suggestions.suggest("list"));
+        assertEquals(List.of("listc", "listhc", "listhj", "listj"), suggestions.suggest("  list"));
         assertEquals(List.of("editj"), suggestions.suggest("edi"));
         assertEquals(List.of("clearc", "clearj"), suggestions.suggest("c"));
+    }
+
+    /**
+     * Hidden commands are available through both general and hidden-specific prefixes.
+     */
+    @Test
+    public void suggest_hiddenCommandPrefixes_returnsSortedMatches() {
+        assertEquals(List.of("listhc", "listhj"), suggestions.suggest("listh"));
+        assertEquals(List.of("findc", "findhc", "findhj", "findj"), suggestions.suggest("find"));
+        assertEquals(List.of("findhc", "findhj"), suggestions.suggest("  findh"));
+    }
+
+    @Test
+    public void suggest_completeHiddenCommandsOrArguments_returnsEmpty() {
+        for (String command : List.of("listhc", "listhj", "findhc", "findhj")) {
+            assertTrue(suggestions.suggest(command).isEmpty(), command);
+            assertTrue(suggestions.suggest(command + " Alice").isEmpty(), command);
+        }
     }
 
     @Test
