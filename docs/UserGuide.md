@@ -58,7 +58,7 @@ AddressBook Level 3 (AB3) is a **desktop application for managing contacts, opti
   For example, `[t/TAG]…​` may be omitted, or written as `t/friend` or `t/friend t/family`.
 
 * Prefixed parameters can be in any order.<br>
-  For example, if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable. For `tagc`, `untagc`, `tagj`, and `untagj`, the index must come first, followed by the tags.
+  For example, if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable. For `editj`, `editc`, `tagj`, `untagj`, `tagc`, and `untagc`, the index must come first, followed by the tags.
 
 * Extraneous parameters for commands that take no parameters, such as `help`, `list`, `exit`, and `clear`, are ignored.<br>
   For example, `help 123` is interpreted as `help`.
@@ -135,36 +135,6 @@ Examples:
 
 ### Managing Tags
 
-#### Adding client tags: `tagc`
-
-Adds tags to a client while preserving existing tags.
-
-Format: `tagc INDEX TAG [MORE_TAGS]…`
-
-* `INDEX` must be a positive integer referring to the currently displayed client list.
-* Enter the index first, followed by at least one space-separated tag, without `t/`.
-* Tags are case-sensitive and must contain only letters (`A–Z`, `a–z`) and digits (`0–9`).
-* Tags the client already has are ignored.
-
-Examples:
-
-* `tagc 1 priority` adds `priority` to the 1st displayed client.
-* `tagc 2 finance technology` adds `finance` and `technology` to the 2nd displayed client.
-
-#### Removing client tags: `untagc`
-
-Removes specified tags from a client while preserving other tags.
-
-Format: `untagc INDEX TAG [MORE_TAGS]…`
-
-* The index and tag rules are the same as for `tagc`.
-* Tags the client does not have are ignored.
-
-Examples:
-
-* `untagc 1 priority` removes `priority` from the 1st displayed client.
-* `untagc 2 finance technology` removes `finance` and `technology` from the 2nd displayed client.
-
 #### Adding jobseeker tags: `tagj`
 
 Adds tags to a jobseeker while preserving existing tags.
@@ -194,6 +164,37 @@ Examples:
 
 * `untagj 1 java` removes `java` from the 1st displayed jobseeker.
 * `untagj 2 python teamwork` removes `python` and `teamwork` from the 2nd displayed jobseeker.
+
+
+#### Adding client tags: `tagc`
+
+Adds tags to a client while preserving existing tags.
+
+Format: `tagc INDEX TAG [MORE_TAGS]…`
+
+* `INDEX` must be a positive integer referring to the currently displayed client list.
+* Enter the index first, followed by at least one space-separated tag, without `t/`.
+* Tags are case-sensitive and must contain only letters (`A–Z`, `a–z`) and digits (`0–9`).
+* Tags the client already has are ignored.
+
+Examples:
+
+* `tagc 1 priority` adds `priority` to the 1st displayed client.
+* `tagc 2 finance technology` adds `finance` and `technology` to the 2nd displayed client.
+
+#### Removing client tags: `untagc`
+
+Removes specified tags from a client while preserving other tags.
+
+Format: `untagc INDEX TAG [MORE_TAGS]…`
+
+* The index and tag rules are the same as for `tagc`.
+* Tags the client does not have are ignored.
+
+Examples:
+
+* `untagc 1 priority` removes `priority` from the 1st displayed client.
+* `untagc 2 finance technology` removes `finance` and `technology` from the 2nd displayed client.
 
 ### Finding jobseekers: `findj`
 
