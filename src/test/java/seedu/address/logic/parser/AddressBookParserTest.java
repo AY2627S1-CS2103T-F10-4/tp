@@ -34,6 +34,8 @@ import seedu.address.logic.commands.ListHiddenJobseekerCommand;
 import seedu.address.logic.commands.ListJobseekerCommand;
 import seedu.address.logic.commands.TagClientCommand;
 import seedu.address.logic.commands.TagJobseekerCommand;
+import seedu.address.logic.commands.UnhideClientCommand;
+import seedu.address.logic.commands.UnhideJobseekerCommand;
 import seedu.address.logic.commands.UntagClientCommand;
 import seedu.address.logic.commands.UntagJobseekerCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -118,6 +120,20 @@ public class AddressBookParserTest {
         HideClientCommand command = (HideClientCommand) parser.parseCommand(
                 HideClientCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new HideClientCommand(INDEX_FIRST_PERSON), command);
+    }
+
+    @Test
+    public void parseCommand_unhidej() throws Exception {
+        UnhideJobseekerCommand command = (UnhideJobseekerCommand) parser.parseCommand(
+                UnhideJobseekerCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new UnhideJobseekerCommand(INDEX_FIRST_PERSON), command);
+    }
+
+    @Test
+    public void parseCommand_unhidec() throws Exception {
+        UnhideClientCommand command = (UnhideClientCommand) parser.parseCommand(
+                UnhideClientCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new UnhideClientCommand(INDEX_FIRST_PERSON), command);
     }
 
     @Test

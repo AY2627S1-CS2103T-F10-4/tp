@@ -258,6 +258,29 @@ Format: `hidec INDEX`
 Examples:
 * `listc` followed by `hidec 1` hides the 1st client in the client list.
 
+### Unhiding a jobseeker: `unhidej`
+
+Restores a hidden jobseeker to normal lists and searches, preserving all their details.
+
+Format: `unhidej INDEX`
+
+* Use `listhj` or `findhj KEYWORD` first to display hidden jobseekers.
+* The index is a positive integer from the currently displayed jobseeker list.
+* The restored jobseeker disappears from the hidden view. The current filter remains active.
+* Use `listj` to see the restored jobseeker in the normal list.
+* Unhiding an already unhidden jobseeker changes nothing and reports that they are already unhidden.
+
+Example: `listhj` followed by `unhidej 1` restores the first displayed hidden jobseeker.
+
+### Unhiding a client: `unhidec`
+
+Format: `unhidec INDEX`
+
+* Works in the same way as `unhidej`, but on the displayed client list.
+* Use `listhc` or `findhc KEYWORD` first, then `listc` to see the restored client.
+
+Example: `listhc` followed by `unhidec 1` restores the first displayed hidden client.
+
 ### Listing hidden jobseekers: `listhj`
 
 Shows a list of all hidden jobseekers.
@@ -374,6 +397,8 @@ Action | Format, Examples
 **Find hidden clients** | `findhc KEYWORD [MORE_KEYWORDS]…`<br> e.g., `findhc Jane`
 **Hide jobseeker** | `hidej INDEX`<br> e.g., `hidej 2`
 **Hide client** | `hidec INDEX`<br> e.g., `hidec 1`
+**Unhide jobseeker** | `unhidej INDEX`<br> e.g., `unhidej 1`
+**Unhide client** | `unhidec INDEX`<br> e.g., `unhidec 1`
 **Add client tags** | `tagc INDEX TAG [MORE_TAGS]…`<br> e.g., `tagc 1 priority finance`
 **Remove client tags** | `untagc INDEX TAG [MORE_TAGS]…`<br> e.g., `untagc 1 priority finance`
 **Add jobseeker tags** | `tagj INDEX TAG [MORE_TAGS]…`<br> e.g., `tagj 1 java teamwork`
