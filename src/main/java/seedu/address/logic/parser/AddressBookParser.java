@@ -18,11 +18,15 @@ import seedu.address.logic.commands.DeleteJobseekerCommand;
 import seedu.address.logic.commands.EditJobseekerCommand;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindClientCommand;
+import seedu.address.logic.commands.FindHiddenClientCommand;
+import seedu.address.logic.commands.FindHiddenJobseekerCommand;
 import seedu.address.logic.commands.FindJobseekerCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HideClientCommand;
 import seedu.address.logic.commands.HideJobseekerCommand;
 import seedu.address.logic.commands.ListClientCommand;
+import seedu.address.logic.commands.ListHiddenClientCommand;
+import seedu.address.logic.commands.ListHiddenJobseekerCommand;
 import seedu.address.logic.commands.ListJobseekerCommand;
 import seedu.address.logic.commands.TagClientCommand;
 import seedu.address.logic.commands.TagJobseekerCommand;
@@ -78,8 +82,12 @@ public class AddressBookParser {
             case ClearClientCommand.COMMAND_WORD -> new ClearClientCommand();
             case FindJobseekerCommand.COMMAND_WORD -> FindCommandParser.forJobseekers().parse(arguments);
             case FindClientCommand.COMMAND_WORD -> FindCommandParser.forClients().parse(arguments);
+            case FindHiddenJobseekerCommand.COMMAND_WORD -> FindCommandParser.forHiddenJobseekers().parse(arguments);
+            case FindHiddenClientCommand.COMMAND_WORD -> FindCommandParser.forHiddenClients().parse(arguments);
             case ListJobseekerCommand.COMMAND_WORD -> new ListJobseekerCommand();
             case ListClientCommand.COMMAND_WORD -> new ListClientCommand();
+            case ListHiddenJobseekerCommand.COMMAND_WORD -> new ListHiddenJobseekerCommand();
+            case ListHiddenClientCommand.COMMAND_WORD -> new ListHiddenClientCommand();
             case ExitCommand.COMMAND_WORD -> new ExitCommand();
             case HelpCommand.COMMAND_WORD -> new HelpCommand();
             default -> {

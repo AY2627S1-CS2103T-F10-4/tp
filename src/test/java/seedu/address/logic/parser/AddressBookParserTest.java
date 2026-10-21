@@ -22,11 +22,15 @@ import seedu.address.logic.commands.EditJobseekerCommand;
 import seedu.address.logic.commands.EditJobseekerCommand.EditJobseekerDescriptor;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindClientCommand;
+import seedu.address.logic.commands.FindHiddenClientCommand;
+import seedu.address.logic.commands.FindHiddenJobseekerCommand;
 import seedu.address.logic.commands.FindJobseekerCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HideClientCommand;
 import seedu.address.logic.commands.HideJobseekerCommand;
 import seedu.address.logic.commands.ListClientCommand;
+import seedu.address.logic.commands.ListHiddenClientCommand;
+import seedu.address.logic.commands.ListHiddenJobseekerCommand;
 import seedu.address.logic.commands.ListJobseekerCommand;
 import seedu.address.logic.commands.TagClientCommand;
 import seedu.address.logic.commands.TagJobseekerCommand;
@@ -150,6 +154,22 @@ public class AddressBookParserTest {
     }
 
     @Test
+    public void parseCommand_findhj() throws Exception {
+        List<String> keywords = List.of("foo", "bar", "baz");
+        FindHiddenJobseekerCommand command = (FindHiddenJobseekerCommand) parser.parseCommand(
+                FindHiddenJobseekerCommand.COMMAND_WORD + " " + String.join(" ", keywords));
+        assertEquals(new FindHiddenJobseekerCommand(new PersonContainsKeywordsPredicate(keywords)), command);
+    }
+
+    @Test
+    public void parseCommand_findhc() throws Exception {
+        List<String> keywords = List.of("foo", "bar", "baz");
+        FindHiddenClientCommand command = (FindHiddenClientCommand) parser.parseCommand(
+                FindHiddenClientCommand.COMMAND_WORD + " " + String.join(" ", keywords));
+        assertEquals(new FindHiddenClientCommand(new PersonContainsKeywordsPredicate(keywords)), command);
+    }
+
+    @Test
     public void parseCommand_help() throws Exception {
         assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD) instanceof HelpCommand);
         assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD + " 3") instanceof HelpCommand);
@@ -165,6 +185,22 @@ public class AddressBookParserTest {
     public void parseCommand_listc() throws Exception {
         assertTrue(parser.parseCommand(ListClientCommand.COMMAND_WORD) instanceof ListClientCommand);
         assertTrue(parser.parseCommand(ListClientCommand.COMMAND_WORD + " 3") instanceof ListClientCommand);
+    }
+
+    @Test
+    public void parseCommand_listhj() throws Exception {
+        assertTrue(parser.parseCommand(ListHiddenJobseekerCommand.COMMAND_WORD)
+                instanceof ListHiddenJobseekerCommand);
+        assertTrue(parser.parseCommand(ListHiddenJobseekerCommand.COMMAND_WORD + " 3")
+                instanceof ListHiddenJobseekerCommand);
+    }
+
+    @Test
+    public void parseCommand_listhc() throws Exception {
+        assertTrue(parser.parseCommand(ListHiddenClientCommand.COMMAND_WORD)
+                instanceof ListHiddenClientCommand);
+        assertTrue(parser.parseCommand(ListHiddenClientCommand.COMMAND_WORD + " 3")
+                instanceof ListHiddenClientCommand);
     }
 
     @Test

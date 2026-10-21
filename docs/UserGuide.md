@@ -57,8 +57,8 @@ AddressBook Level 3 (AB3) is a **desktop application for managing contacts, opti
 * Items followed by `…`​ can appear zero or more times.<br>
   For example, `[t/TAG]…​` may be omitted, or written as `t/friend` or `t/friend t/family`.
 
-* Parameters can be in any order.<br>
-  For example, if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
+* Prefixed parameters can be in any order.<br>
+  For example, if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable. For `editj`, `editc`, `tagj`, `untagj`, `tagc`, and `untagc`, the index must come first, followed by the tags.
 
 * Extraneous parameters for commands that take no parameters, such as `help`, `list`, `exit`, and `clear`, are ignored.<br>
   For example, `help 123` is interpreted as `help`.
@@ -133,6 +133,69 @@ Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 
+### Managing Tags
+
+#### Adding jobseeker tags: `tagj`
+
+Adds tags to a jobseeker while preserving existing tags.
+
+Format: `tagj INDEX TAG [MORE_TAGS]…`
+
+* `INDEX` must be a positive integer referring to the currently displayed jobseeker list.
+* Enter the index first, followed by at least one space-separated tag, without `t/`.
+* Tags are case-sensitive and must contain only letters (`A–Z`, `a–z`) and digits (`0–9`).
+* Tags the jobseeker already has are ignored.
+
+Examples:
+
+* `tagj 1 java` adds `java` to the 1st displayed jobseeker.
+* `tagj 2 python teamwork` adds `python` and `teamwork` to the 2nd displayed jobseeker.
+
+#### Removing jobseeker tags: `untagj`
+
+Removes specified tags from a jobseeker while preserving other tags.
+
+Format: `untagj INDEX TAG [MORE_TAGS]…`
+
+* The index and tag rules are the same as for `tagj`.
+* Tags the jobseeker does not have are ignored.
+
+Examples:
+
+* `untagj 1 java` removes `java` from the 1st displayed jobseeker.
+* `untagj 2 python teamwork` removes `python` and `teamwork` from the 2nd displayed jobseeker.
+
+
+#### Adding client tags: `tagc`
+
+Adds tags to a client while preserving existing tags.
+
+Format: `tagc INDEX TAG [MORE_TAGS]…`
+
+* `INDEX` must be a positive integer referring to the currently displayed client list.
+* Enter the index first, followed by at least one space-separated tag, without `t/`.
+* Tags are case-sensitive and must contain only letters (`A–Z`, `a–z`) and digits (`0–9`).
+* Tags the client already has are ignored.
+
+Examples:
+
+* `tagc 1 priority` adds `priority` to the 1st displayed client.
+* `tagc 2 finance technology` adds `finance` and `technology` to the 2nd displayed client.
+
+#### Removing client tags: `untagc`
+
+Removes specified tags from a client while preserving other tags.
+
+Format: `untagc INDEX TAG [MORE_TAGS]…`
+
+* The index and tag rules are the same as for `tagc`.
+* Tags the client does not have are ignored.
+
+Examples:
+
+* `untagc 1 priority` removes `priority` from the 1st displayed client.
+* `untagc 2 finance technology` removes `finance` and `technology` from the 2nd displayed client.
+
 ### Finding jobseekers: `findj`
 
 Finds jobseekers whose name, phone number or email contains any of the given keywords.
@@ -146,7 +209,8 @@ Format: `findj KEYWORD [MORE_KEYWORDS]…​`
 * Only the name, phone number and email are searched. Addresses, remarks and tags are not.
 * Each keyword must match within a single field; for example, `Yeoh8743` does not match a jobseeker named `Alex Yeoh` whose phone number is `87438807`.
 * Jobseekers matching at least one keyword are returned (an `OR` search); for example, `Hans Bo` returns `Hans Gruber` and `Bo Yang`.
-* Only the jobseeker list is filtered; the client list is left unchanged. Use `listj` to show all jobseekers again.
+* Hidden jobseekers are not searched. Use [`findhj`](#finding-hidden-jobseekers-findhj) to search them.
+* Only the jobseeker list is filtered; the client list is left unchanged. Use `listj` to show all unhidden jobseekers again.
 
 Examples:
 * `findj alex david` returns `Alex Yeoh` and `David Li`.
@@ -160,11 +224,81 @@ Finds clients whose name, phone number or email contains any of the given keywor
 Format: `findc KEYWORD [MORE_KEYWORDS]…​`
 
 * The keywords are matched in the same way as for [`findj`](#finding-jobseekers-findj).
-* Only the client list is filtered; the jobseeker list is left unchanged. Use `listc` to show all clients again.
+* Hidden clients are not searched. Use [`findhc`](#finding-hidden-clients-findhc) to search them.
+* Only the client list is filtered; the jobseeker list is left unchanged. Use `listc` to show all unhidden clients again.
 
 Examples:
 * `findc roy` returns `Roy Balakrishnan`.
 * `findc irfan@example.com` returns `Irfan Ibrahim`.
+
+### Hiding a jobseeker: `hidej`
+
+Hides the specified jobseeker, so that `listj` and `findj` no longer show them. Unlike deleting, hiding keeps the jobseeker and all their details in the address book.
+
+Format: `hidej INDEX`
+
+* Hides the jobseeker at the specified `INDEX`. The index refers to the index number shown in the displayed jobseeker list. The index **must be a positive integer** 1, 2, 3, …​
+* The jobseeker disappears from the displayed list straight away.
+* Hiding a jobseeker who is already hidden, for example one shown by `listhj`, changes nothing, and the result message says so.
+* To see hidden jobseekers again, use [`listhj`](#listing-hidden-jobseekers-listhj) or [`findhj`](#finding-hidden-jobseekers-findhj).
+
+Examples:
+* `listj` followed by `hidej 2` hides the 2nd jobseeker in the jobseeker list.
+* `findj Betsy` followed by `hidej 1` hides the 1st jobseeker in the results of the `findj` command.
+
+### Hiding a client: `hidec`
+
+Hides the specified client, so that `listc` and `findc` no longer show them. Unlike deleting, hiding keeps the client and all their details in the address book.
+
+Format: `hidec INDEX`
+
+* Works in the same way as [`hidej`](#hiding-a-jobseeker-hidej), but on the displayed client list.
+* To see hidden clients again, use [`listhc`](#listing-hidden-clients-listhc) or [`findhc`](#finding-hidden-clients-findhc).
+
+Examples:
+* `listc` followed by `hidec 1` hides the 1st client in the client list.
+
+### Listing hidden jobseekers: `listhj`
+
+Shows a list of all hidden jobseekers.
+
+Format: `listhj`
+
+* Only the jobseeker list changes; the client list is left unchanged.
+* Use `listj` to go back to the list of jobseekers who are not hidden.
+
+### Listing hidden clients: `listhc`
+
+Shows a list of all hidden clients.
+
+Format: `listhc`
+
+* Only the client list changes; the jobseeker list is left unchanged.
+* Use `listc` to go back to the list of clients who are not hidden.
+
+### Finding hidden jobseekers: `findhj`
+
+Finds hidden jobseekers whose name, phone number or email contains any of the given keywords.
+
+Format: `findhj KEYWORD [MORE_KEYWORDS]…​`
+
+* The keywords are matched in the same way as for [`findj`](#finding-jobseekers-findj).
+* Only hidden jobseekers are searched. Use `findj` to search the others.
+* Only the jobseeker list is filtered; the client list is left unchanged. Use `listhj` to show all hidden jobseekers again.
+
+Examples:
+* `findhj alex` returns `Alex Yeoh`, if `Alex Yeoh` has been hidden.
+
+### Finding hidden clients: `findhc`
+
+Finds hidden clients whose name, phone number or email contains any of the given keywords.
+
+Format: `findhc KEYWORD [MORE_KEYWORDS]…​`
+
+* Works in the same way as [`findhj`](#finding-hidden-jobseekers-findhj), but on hidden clients.
+
+Examples:
+* `findhc irfan` returns `Irfan Ibrahim`, if `Irfan Ibrahim` has been hidden.
 
 ### Deleting a person: `delete`
 
@@ -244,5 +378,15 @@ Action | Format, Examples
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g., `edit 2 n/James Lee e/jameslee@example.com`
 **Find jobseekers** | `findj KEYWORD [MORE_KEYWORDS]…`<br> e.g., `findj James 9435 jake@example.com`
 **Find clients** | `findc KEYWORD [MORE_KEYWORDS]…`<br> e.g., `findc Jane 9123`
+**Find hidden jobseekers** | `findhj KEYWORD [MORE_KEYWORDS]…`<br> e.g., `findhj James 9435`
+**Find hidden clients** | `findhc KEYWORD [MORE_KEYWORDS]…`<br> e.g., `findhc Jane`
+**Hide jobseeker** | `hidej INDEX`<br> e.g., `hidej 2`
+**Hide client** | `hidec INDEX`<br> e.g., `hidec 1`
+**Add client tags** | `tagc INDEX TAG [MORE_TAGS]…`<br> e.g., `tagc 1 priority finance`
+**Remove client tags** | `untagc INDEX TAG [MORE_TAGS]…`<br> e.g., `untagc 1 priority finance`
+**Add jobseeker tags** | `tagj INDEX TAG [MORE_TAGS]…`<br> e.g., `tagj 1 java teamwork`
+**Remove jobseeker tags** | `untagj INDEX TAG [MORE_TAGS]…`<br> e.g., `untagj 1 java teamwork`
 **List** | `list`
+**List hidden jobseekers** | `listhj`
+**List hidden clients** | `listhc`
 **Help** | `help`
