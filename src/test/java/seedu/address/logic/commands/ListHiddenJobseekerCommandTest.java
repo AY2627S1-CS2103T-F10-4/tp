@@ -21,6 +21,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Jobseeker;
+import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.testutil.JobseekerBuilder;
 
 /**
@@ -88,5 +89,26 @@ public class ListHiddenJobseekerCommandTest {
         new ListHiddenJobseekerCommand().execute(model);
 
         assertEquals(List.of(BRENDA), model.getFilteredClientList());
+    }
+
+    /**
+     * Checks that this command replaces a previous search rather than narrowing it: after
+     * {@code findhj} shows one hidden jobseeker, all hidden jobseekers must be listed again.
+     */
+    @Test
+    public void execute_afterFindHiddenJobseekers_listsAllHiddenJobseekers() {
+        Jobseeker hiddenBenson = new JobseekerBuilder(BENSON).withHidden(true).build();
+        Jobseeker hiddenCarl = new JobseekerBuilder(CARL).withHidden(true).build();
+        Model model = new ModelManager();
+        model.addJobseeker(ALICE);
+        model.addJobseeker(hiddenBenson);
+        model.addJobseeker(hiddenCarl);
+        new FindHiddenJobseekerCommand(new PersonContainsKeywordsPredicate(List.of("Benson"))).execute(model);
+        // Without this check, the test would also pass if the search had not narrowed the list.
+        assertEquals(List.of(hiddenBenson), model.getFilteredJobseekerList());
+
+        new ListHiddenJobseekerCommand().execute(model);
+
+        assertEquals(List.of(hiddenBenson, hiddenCarl), model.getFilteredJobseekerList());
     }
 }

@@ -21,6 +21,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Client;
+import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.testutil.ClientBuilder;
 
 /**
@@ -88,5 +89,26 @@ public class ListHiddenClientCommandTest {
         new ListHiddenClientCommand().execute(model);
 
         assertEquals(List.of(BENSON), model.getFilteredJobseekerList());
+    }
+
+    /**
+     * Checks that this command replaces a previous search rather than narrowing it: after
+     * {@code findhc} shows one hidden client, all hidden clients must be listed again.
+     */
+    @Test
+    public void execute_afterFindHiddenClients_listsAllHiddenClients() {
+        Client hiddenBrenda = new ClientBuilder(BRENDA).withHidden(true).build();
+        Client hiddenCedric = new ClientBuilder(CEDRIC).withHidden(true).build();
+        Model model = new ModelManager();
+        model.addClient(ADRIAN);
+        model.addClient(hiddenBrenda);
+        model.addClient(hiddenCedric);
+        new FindHiddenClientCommand(new PersonContainsKeywordsPredicate(List.of("Brenda"))).execute(model);
+        // Without this check, the test would also pass if the search had not narrowed the list.
+        assertEquals(List.of(hiddenBrenda), model.getFilteredClientList());
+
+        new ListHiddenClientCommand().execute(model);
+
+        assertEquals(List.of(hiddenBrenda, hiddenCedric), model.getFilteredClientList());
     }
 }
