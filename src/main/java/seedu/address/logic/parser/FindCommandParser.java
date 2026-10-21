@@ -7,14 +7,17 @@ import java.util.function.Function;
 
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.FindClientCommand;
+import seedu.address.logic.commands.FindHiddenClientCommand;
+import seedu.address.logic.commands.FindHiddenJobseekerCommand;
 import seedu.address.logic.commands.FindJobseekerCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 /**
- * Parses the keywords of a findj/findc command and creates that command.
- * {@code findj} and {@code findc} take the same arguments and differ only in the command they create,
- * so this one parser serves both. Use {@link #forJobseekers()} or {@link #forClients()} to get one.
+ * Parses the keywords of a findj/findc/findhj/findhc command and creates that command.
+ * These commands take the same arguments and differ only in the command they create, so this one
+ * parser serves all of them. Use {@link #forJobseekers()}, {@link #forClients()},
+ * {@link #forHiddenJobseekers()} or {@link #forHiddenClients()} to get one.
  *
  * @param <T> Type of find command this parser creates.
  */
@@ -44,6 +47,22 @@ public class FindCommandParser<T extends Command> implements Parser<T> {
      */
     public static FindCommandParser<FindClientCommand> forClients() {
         return new FindCommandParser<>(FindClientCommand::new, FindClientCommand.MESSAGE_USAGE);
+    }
+
+    /**
+     * Returns a parser that creates a {@code FindHiddenJobseekerCommand}.
+     */
+    public static FindCommandParser<FindHiddenJobseekerCommand> forHiddenJobseekers() {
+        return new FindCommandParser<>(FindHiddenJobseekerCommand::new,
+                FindHiddenJobseekerCommand.MESSAGE_USAGE);
+    }
+
+    /**
+     * Returns a parser that creates a {@code FindHiddenClientCommand}.
+     */
+    public static FindCommandParser<FindHiddenClientCommand> forHiddenClients() {
+        return new FindCommandParser<>(FindHiddenClientCommand::new,
+                FindHiddenClientCommand.MESSAGE_USAGE);
     }
 
     /**
