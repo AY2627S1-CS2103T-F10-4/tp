@@ -57,8 +57,8 @@ AddressBook Level 3 (AB3) is a **desktop application for managing contacts, opti
 * Items followed by `…`​ can appear zero or more times.<br>
   For example, `[t/TAG]…​` may be omitted, or written as `t/friend` or `t/friend t/family`.
 
-* Parameters can be in any order.<br>
-  For example, if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
+* Prefixed parameters can be in any order.<br>
+  For example, if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable. For `editj`, `editc`, `tagj`, `untagj`, `tagc`, and `untagc`, the index must come first, followed by the tags.
 
 * Extraneous parameters for commands that take no parameters, such as `help`, `list`, `exit`, and `clear`, are ignored.<br>
   For example, `help 123` is interpreted as `help`.
@@ -132,6 +132,69 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
 Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+
+### Managing Tags
+
+#### Adding jobseeker tags: `tagj`
+
+Adds tags to a jobseeker while preserving existing tags.
+
+Format: `tagj INDEX TAG [MORE_TAGS]…`
+
+* `INDEX` must be a positive integer referring to the currently displayed jobseeker list.
+* Enter the index first, followed by at least one space-separated tag, without `t/`.
+* Tags are case-sensitive and must contain only letters (`A–Z`, `a–z`) and digits (`0–9`).
+* Tags the jobseeker already has are ignored.
+
+Examples:
+
+* `tagj 1 java` adds `java` to the 1st displayed jobseeker.
+* `tagj 2 python teamwork` adds `python` and `teamwork` to the 2nd displayed jobseeker.
+
+#### Removing jobseeker tags: `untagj`
+
+Removes specified tags from a jobseeker while preserving other tags.
+
+Format: `untagj INDEX TAG [MORE_TAGS]…`
+
+* The index and tag rules are the same as for `tagj`.
+* Tags the jobseeker does not have are ignored.
+
+Examples:
+
+* `untagj 1 java` removes `java` from the 1st displayed jobseeker.
+* `untagj 2 python teamwork` removes `python` and `teamwork` from the 2nd displayed jobseeker.
+
+
+#### Adding client tags: `tagc`
+
+Adds tags to a client while preserving existing tags.
+
+Format: `tagc INDEX TAG [MORE_TAGS]…`
+
+* `INDEX` must be a positive integer referring to the currently displayed client list.
+* Enter the index first, followed by at least one space-separated tag, without `t/`.
+* Tags are case-sensitive and must contain only letters (`A–Z`, `a–z`) and digits (`0–9`).
+* Tags the client already has are ignored.
+
+Examples:
+
+* `tagc 1 priority` adds `priority` to the 1st displayed client.
+* `tagc 2 finance technology` adds `finance` and `technology` to the 2nd displayed client.
+
+#### Removing client tags: `untagc`
+
+Removes specified tags from a client while preserving other tags.
+
+Format: `untagc INDEX TAG [MORE_TAGS]…`
+
+* The index and tag rules are the same as for `tagc`.
+* Tags the client does not have are ignored.
+
+Examples:
+
+* `untagc 1 priority` removes `priority` from the 1st displayed client.
+* `untagc 2 finance technology` removes `finance` and `technology` from the 2nd displayed client.
 
 ### Finding jobseekers: `findj`
 
@@ -236,5 +299,9 @@ Action | Format, Examples
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g., `edit 2 n/James Lee e/jameslee@example.com`
 **Find jobseekers** | `findj KEYWORD [MORE_KEYWORDS]…`<br> e.g., `findj James 9435 jake@example.com`
 **Find clients** | `findc KEYWORD [MORE_KEYWORDS]…`<br> e.g., `findc Jane 9123`
+**Add client tags** | `tagc INDEX TAG [MORE_TAGS]…`<br> e.g., `tagc 1 priority finance`
+**Remove client tags** | `untagc INDEX TAG [MORE_TAGS]…`<br> e.g., `untagc 1 priority finance`
+**Add jobseeker tags** | `tagj INDEX TAG [MORE_TAGS]…`<br> e.g., `tagj 1 java teamwork`
+**Remove jobseeker tags** | `untagj INDEX TAG [MORE_TAGS]…`<br> e.g., `untagj 1 java teamwork`
 **List** | `list`
 **Help** | `help`
