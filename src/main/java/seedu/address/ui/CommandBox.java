@@ -24,7 +24,7 @@ public class CommandBox extends UiPart<Region> {
     private final CommandExecutor commandExecutor;
     private final CommandHistory commandHistory = new CommandHistory();
     private final CommandSuggestions commandSuggestions;
-    private boolean suppressSuggestions;
+    private boolean areSuggestionsSuppressed;
 
     @FXML
     private TextField commandTextField;
@@ -48,12 +48,12 @@ public class CommandBox extends UiPart<Region> {
         this.commandSuggestions = commandSuggestions;
         commandTextField.textProperty().addListener((unused1, unused2, unused3) -> {
             setStyleToDefault();
-            if (!suppressSuggestions) {
+            if (!areSuggestionsSuppressed) {
                 updateSuggestions();
             }
         });
-        commandTextField.focusedProperty().addListener((observable, oldValue, focused) -> {
-            if (!focused) {
+        commandTextField.focusedProperty().addListener((observable, oldValue, isFocused) -> {
+            if (!isFocused) {
                 hideSuggestions();
             }
         });
@@ -66,9 +66,9 @@ public class CommandBox extends UiPart<Region> {
      */
     private void updateSuggestions() {
         suggestionList.getItems().setAll(commandSuggestions.suggest(commandTextField.getText()));
-        boolean visible = !suggestionList.getItems().isEmpty();
-        suggestionList.setVisible(visible);
-        suggestionList.setManaged(visible);
+        boolean isVisible = !suggestionList.getItems().isEmpty();
+        suggestionList.setVisible(isVisible);
+        suggestionList.setManaged(isVisible);
         int visibleRows = Math.min(MAX_VISIBLE_SUGGESTIONS, suggestionList.getItems().size());
         suggestionList.setPrefHeight(visibleRows * suggestionList.getFixedCellSize() + SUGGESTION_HEIGHT_PADDING);
         suggestionList.getSelectionModel().selectFirst();
@@ -98,11 +98,11 @@ public class CommandBox extends UiPart<Region> {
      * Places the caret at the end of the replacement.
      */
     private void replaceInputWithoutSuggestions(String text) {
-        suppressSuggestions = true;
+        areSuggestionsSuppressed = true;
         try {
             commandTextField.setText(text);
         } finally {
-            suppressSuggestions = false;
+            areSuggestionsSuppressed = false;
         }
         hideSuggestions();
         commandTextField.positionCaret(commandTextField.getLength());
