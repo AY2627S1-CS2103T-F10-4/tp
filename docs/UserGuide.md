@@ -26,7 +26,9 @@ AddressBook Level 3 (AB3) is a **desktop application for managing contacts, opti
 1. Type a command in the command box and press Enter to execute it. For example, type **`help`** and press Enter to open the help window.<br>
    Some example commands you can try:
 
-   * `list` : Lists all contacts.
+   * `listj` : Lists all unhidden jobseekers.
+
+   * `listc` : Lists all unhidden clients.
 
    * `addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a jobseeker named `John Doe` to the Address Book.
 
@@ -60,7 +62,7 @@ AddressBook Level 3 (AB3) is a **desktop application for managing contacts, opti
 * Prefixed parameters can be in any order.<br>
   For example, if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable. For `editj`, `editc`, `tagj`, `untagj`, `tagc`, and `untagc`, the index must come first, followed by the tags.
 
-* Extraneous parameters for commands that take no parameters, such as `help`, `list`, `exit`, and `clear`, are ignored.<br>
+* Extraneous parameters for commands that take no parameters, such as `help`, `listj`, `listc`, `exit`, and `clear`, are ignored.<br>
   For example, `help 123` is interpreted as `help`.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
@@ -111,11 +113,49 @@ Examples:
 
 These examples are alternatives; adding both would attempt to add the same client twice.
 
-### Listing all persons: `list`
+### Listing jobseekers: `listj`
 
-Shows a list of all persons in the address book.
+Shows all unhidden jobseekers in the jobseeker list and clears the current jobseeker filter.
 
-Format: `list`
+Format: `listj`
+
+* Only the jobseeker list is changed; the client list is left unchanged.
+* Hidden jobseekers are not shown. Use [`listhj`](#listing-hidden-jobseekers-listhj) to view them.
+
+### Listing clients: `listc`
+
+Shows all unhidden clients in the client list and clears the current client filter.
+
+Format: `listc`
+
+* Only the client list is changed; the jobseeker list is left unchanged.
+* Hidden clients are not shown. Use [`listhc`](#listing-hidden-clients-listhc) to view them.
+
+### Copying displayed jobseekers: `cpj`
+
+Copies the details of all currently displayed jobseekers to the system clipboard.
+
+Format: `cpj`
+
+* The copied details follow the order shown in the jobseeker list.
+* Each jobseeker is copied on a separate line.
+* The command copies whichever jobseekers are currently displayed, including filtered or hidden results.
+* If no jobseekers are displayed, the clipboard is cleared.
+
+Example: `findj java` followed by `cpj` copies the displayed search results.
+
+### Copying displayed clients: `cpc`
+
+Copies the details of all currently displayed clients to the system clipboard.
+
+Format: `cpc`
+
+* The copied details follow the order shown in the client list.
+* Each client is copied on a separate line.
+* The command copies whichever clients are currently displayed, including filtered or hidden results.
+* If no clients are displayed, the clipboard is cleared.
+
+Example: `findc technology` followed by `cpc` copies the displayed search results.
 
 ### Editing a person: `edit`
 
@@ -258,6 +298,29 @@ Format: `hidec INDEX`
 Examples:
 * `listc` followed by `hidec 1` hides the 1st client in the client list.
 
+### Unhiding a jobseeker: `unhidej`
+
+Restores a hidden jobseeker to normal lists and searches, preserving all their details.
+
+Format: `unhidej INDEX`
+
+* Use `listhj` or `findhj KEYWORD` first to display hidden jobseekers.
+* The index is a positive integer from the currently displayed jobseeker list.
+* The restored jobseeker disappears from the hidden view. The current filter remains active.
+* Use `listj` to see the restored jobseeker in the normal list.
+* Unhiding an already unhidden jobseeker changes nothing and reports that they are already unhidden.
+
+Example: `listhj` followed by `unhidej 1` restores the first displayed hidden jobseeker.
+
+### Unhiding a client: `unhidec`
+
+Format: `unhidec INDEX`
+
+* Works in the same way as `unhidej`, but on the displayed client list.
+* Use `listhc` or `findhc KEYWORD` first, then `listc` to see the restored client.
+
+Example: `listhc` followed by `unhidec 1` restores the first displayed hidden client.
+
 ### Listing hidden jobseekers: `listhj`
 
 Shows a list of all hidden jobseekers.
@@ -311,8 +374,8 @@ Format: `delete INDEX`
 * The index **must be a positive integer** 1, 2, 3, …​
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `listj` followed by `deletej 2` deletes the 2nd jobseeker in the address book.
+* `findj Betsy` followed by `deletej 1` deletes the 1st jobseeker in the results of the `findj` command.
 
 ### Clearing all entries: `clear`
 
@@ -382,11 +445,16 @@ Action | Format, Examples
 **Find hidden clients** | `findhc KEYWORD [MORE_KEYWORDS]…`<br> e.g., `findhc Jane`
 **Hide jobseeker** | `hidej INDEX`<br> e.g., `hidej 2`
 **Hide client** | `hidec INDEX`<br> e.g., `hidec 1`
+**Unhide jobseeker** | `unhidej INDEX`<br> e.g., `unhidej 1`
+**Unhide client** | `unhidec INDEX`<br> e.g., `unhidec 1`
 **Add client tags** | `tagc INDEX TAG [MORE_TAGS]…`<br> e.g., `tagc 1 priority finance`
 **Remove client tags** | `untagc INDEX TAG [MORE_TAGS]…`<br> e.g., `untagc 1 priority finance`
 **Add jobseeker tags** | `tagj INDEX TAG [MORE_TAGS]…`<br> e.g., `tagj 1 java teamwork`
 **Remove jobseeker tags** | `untagj INDEX TAG [MORE_TAGS]…`<br> e.g., `untagj 1 java teamwork`
-**List** | `list`
+**List jobseekers** | `listj`
+**List clients** | `listc`
 **List hidden jobseekers** | `listhj`
 **List hidden clients** | `listhc`
+**Copy displayed jobseekers** | `cpj`
+**Copy displayed clients** | `cpc`
 **Help** | `help`
