@@ -1,0 +1,74 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":TagJobseekerCommandParser" as Parser LOGIC_COLOR
+participant "ParserUtil" as ParserUtil LOGIC_COLOR
+participant "command:TagJobseekerCommand" as Command LOGIC_COLOR
+end box
+box Model MODEL_COLOR_T1
+participant "model:Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("tagj 1 java")
+activate LogicManager
+LogicManager -> AddressBookParser : parseCommand("tagj 1 java")
+activate AddressBookParser
+create Parser
+AddressBookParser -> Parser : <<create>>
+AddressBookParser -> Parser : parse(" 1 java")
+activate Parser
+Parser -> ParserUtil : parseIndex("1")
+ParserUtil --> Parser : index
+Parser -> ParserUtil : parseTags(["java"])
+ParserUtil --> Parser : tags
+create Command
+Parser -> Command : TagJobseekerCommand(index, tags)
+Parser --> AddressBookParser : command
+deactivate Parser
+AddressBookParser --> LogicManager : command
+deactivate AddressBookParser
+
+LogicManager -> Command : execute(model)
+activate Command
+Command -> Model : getFilteredJobseekerList()
+Model --> Command : lastShownList
+alt Index outside displayed list
+    Command --> LogicManager : throws CommandException
+else Valid displayed index
+    Command -> Command : target = lastShownList.get(index.getZeroBased())
+    Command -> Command : updatedTags = copy of target.getTags()
+    Command -> Command : hasChanges = updatedTags.addAll(tags)
+    alt No changes
+        note right of Command : All requested tags already exist.
+        Command --> LogicManager : new CommandResult(MESSAGE_NO_CHANGE)
+    else Tags changed
+        Command -> Command : updatedJobseeker = new Jobseeker(...)
+        note right of Command
+          Preserve name, phone, email, address,
+          remark and hidden status.
+        end note
+        Command -> Model : setJobseeker(target, updatedJobseeker)
+        Model --> Command
+        Command --> LogicManager : new CommandResult(formatted MESSAGE_SUCCESS)
+    end
+end
+deactivate Command
+note over LogicManager, Model
+  After a successful command return (including no change),
+  LogicManager saves model.getAddressBook() through Storage.
+  Exceptions propagate; storage interactions are omitted here.
+end note
+[<-- LogicManager : CommandResult or exception
+deactivate LogicManager
+
+note over Command, Model
+  The current filter is retained.
+  The client equivalent is TagClientCommand (tagc),
+  using getFilteredClientList(), new Client(...) and setClient(...).
+  Parsing failures throw ParseException before command execution.
+end note
+@enduml
