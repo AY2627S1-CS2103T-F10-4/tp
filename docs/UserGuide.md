@@ -58,7 +58,7 @@ AddressBook Level 3 (AB3) is a **desktop application for managing contacts, opti
   For example, `[t/TAG]…​` may be omitted, or written as `t/friend` or `t/friend t/family`.
 
 * Prefixed parameters can be in any order.<br>
-  For example, if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable. For `editj`, `editc`, `tagj`, `untagj`, `tagc`, and `untagc`, the index must come first, followed by the tags.
+  For example, if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable. For `editj`, `editc`, `tagj`, `untagj`, `tagc`, and `untagc`, the index must come first, followed by the fields or tags to update.
 
 * Extraneous parameters for commands that take no parameters, such as `help`, `list`, `exit`, and `clear`, are ignored.<br>
   For example, `help 123` is interpreted as `help`.
@@ -117,21 +117,34 @@ Shows a list of all persons in the address book.
 
 Format: `list`
 
-### Editing a person: `edit`
+### Editing a jobseeker: `editj`
 
-Edits an existing person in the address book.
+Edits an existing jobseeker in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+Format: `editj INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/REMARK] [t/TAG]…`
 
-* Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
-* At least one of the optional fields must be provided.
-* Existing values will be updated to the input values.
-* When editing tags, all of the person's existing tags are removed; adding tags is not cumulative.
-* To remove all of a person's tags, enter `t/` without a tag after it.
+* The index is a positive integer from the currently displayed jobseeker list.
+* At least one field must be provided. Fields you omit retain their existing values.
+* Use `r/New remark` to replace a remark, or `r/` to clear it.
+* Each of `n/`, `p/`, `e/`, `a/`, and `r/` may occur at most once.
+* Supplied tags replace all existing tags. Use `t/` alone to clear all tags.
+* Editing preserves hidden status and returns the view to the normal jobseeker list. An edited hidden jobseeker remains hidden.
+* Edits that would duplicate another jobseeker's phone and email are rejected.
 
 Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+* `editj 1 p/91234567 e/johndoe@example.com` updates the first displayed jobseeker's phone and email.
+* `editj 2 r/Available immediately` replaces the second displayed jobseeker's remark.
+* `editj 2 r/ t/` clears the second displayed jobseeker's remark and tags.
+
+### Editing a client: `editc`
+
+Format: `editc INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/REMARK] [t/TAG]…`
+
+Works in the same way as `editj`, using the currently displayed client list. Editing returns the view to the normal client list, preserves hidden status, and rejects duplicate client phone-and-email combinations.
+
+Examples:
+* `editc 1 r/Hiring software engineers` updates the first displayed client's remark.
+* `editc 1 r/` clears that client's remark.
 
 ### Managing Tags
 
@@ -367,7 +380,8 @@ Action | Format, Examples
 **Add client** | `addc n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [r/REMARK] [t/TAG]…` <br> e.g., `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road r/Hiring engineers t/employer`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g., `edit 2 n/James Lee e/jameslee@example.com`
+**Edit jobseeker** | `editj INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/REMARK] [t/TAG]…`<br> e.g., `editj 2 r/Available immediately`
+**Edit client** | `editc INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/REMARK] [t/TAG]…`<br> e.g., `editc 1 r/Hiring engineers`
 **Find jobseekers** | `findj KEYWORD [MORE_KEYWORDS]…`<br> e.g., `findj James 9435 jake@example.com`
 **Find clients** | `findc KEYWORD [MORE_KEYWORDS]…`<br> e.g., `findc Jane 9123`
 **Find hidden jobseekers** | `findhj KEYWORD [MORE_KEYWORDS]…`<br> e.g., `findhj James 9435`

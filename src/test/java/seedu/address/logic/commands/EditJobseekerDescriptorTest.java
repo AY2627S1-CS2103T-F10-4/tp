@@ -14,9 +14,28 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.EditJobseekerCommand.EditJobseekerDescriptor;
+import seedu.address.model.person.Remark;
 import seedu.address.testutil.EditJobseekerDescriptorBuilder;
 
 public class EditJobseekerDescriptorTest {
+
+    @Test
+    public void remark_emptyValueCountsAsEditAndCopyPreservesValue() {
+        EditJobseekerDescriptor descriptor = new EditJobseekerDescriptor();
+        assertTrue(descriptor.getRemark().isEmpty());
+        assertFalse(descriptor.isAnyFieldEdited());
+
+        descriptor.setRemark(new Remark(""));
+        assertTrue(descriptor.isAnyFieldEdited());
+        EditJobseekerDescriptor copy = new EditJobseekerDescriptor(descriptor);
+        assertEquals(new Remark(""), copy.getRemark().orElseThrow());
+        assertEquals(descriptor, copy);
+
+        descriptor.setRemark(null);
+        assertFalse(descriptor.isAnyFieldEdited());
+        assertFalse(descriptor.equals(copy));
+        assertEquals(new Remark(""), copy.getRemark().orElseThrow());
+    }
 
     @Test
     public void equals() {
@@ -39,6 +58,10 @@ public class EditJobseekerDescriptorTest {
         // different name -> returns false
         EditJobseekerDescriptor editedAmy = new EditJobseekerDescriptorBuilder(DESC_AMY)
                 .withName(VALID_NAME_BOB).build();
+        assertFalse(DESC_AMY.equals(editedAmy));
+
+        // different remark -> returns false
+        editedAmy = new EditJobseekerDescriptorBuilder(DESC_AMY).withRemark("Available immediately").build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
         // different phone -> returns false
@@ -66,7 +89,8 @@ public class EditJobseekerDescriptorTest {
                 + editJobseekerDescriptor.getPhone().orElse(null) + ", email="
                 + editJobseekerDescriptor.getEmail().orElse(null) + ", address="
                 + editJobseekerDescriptor.getAddress().orElse(null) + ", tags="
-                + editJobseekerDescriptor.getTags().orElse(null) + "}";
+                + editJobseekerDescriptor.getTags().orElse(null) + ", remark="
+                + editJobseekerDescriptor.getRemark().orElse(null) + "}";
         assertEquals(expected, editJobseekerDescriptor.toString());
     }
 }

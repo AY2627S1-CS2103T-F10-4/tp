@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Collection;
@@ -17,6 +18,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.EditJobseekerCommand;
 import seedu.address.logic.commands.EditJobseekerCommand.EditJobseekerDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -33,7 +35,8 @@ public class EditCommandParser implements Parser<EditJobseekerCommand> {
     public EditJobseekerCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
+                        PREFIX_TAG, PREFIX_REMARK);
 
         Index index;
 
@@ -44,7 +47,8 @@ public class EditCommandParser implements Parser<EditJobseekerCommand> {
                     EditJobseekerCommand.MESSAGE_USAGE), pe);
         }
 
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
+                PREFIX_REMARK);
 
         EditJobseekerDescriptor editJobseekerDescriptor = new EditJobseekerDescriptor();
 
@@ -60,6 +64,7 @@ public class EditCommandParser implements Parser<EditJobseekerCommand> {
         if (argMultimap.getValue(PREFIX_ADDRESS).isPresent()) {
             editJobseekerDescriptor.setAddress(ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get()));
         }
+        argMultimap.getValue(PREFIX_REMARK).map(Remark::new).ifPresent(editJobseekerDescriptor::setRemark);
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editJobseekerDescriptor::setTags);
 
         if (!editJobseekerDescriptor.isAnyFieldEdited()) {

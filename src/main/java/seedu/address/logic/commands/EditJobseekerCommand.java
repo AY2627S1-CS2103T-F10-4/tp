@@ -5,6 +5,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Collections;
@@ -25,6 +26,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -42,6 +44,7 @@ public class EditJobseekerCommand extends Command {
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
+            + "[" + PREFIX_REMARK + "REMARK] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
@@ -103,14 +106,11 @@ public class EditJobseekerCommand extends Command {
         Email updatedEmail = editJobseekerDescriptor.getEmail().orElse(jobseekerToEdit.getEmail());
         Address updatedAddress = editJobseekerDescriptor.getAddress().orElse(jobseekerToEdit.getAddress());
         Set<Tag> updatedTags = editJobseekerDescriptor.getTags().orElse(jobseekerToEdit.getTags());
-        //Remark updatedRemark = editJobseekerDescriptor.getRemark().orElse(jobseekerToEdit.getRemark());
-        //update editJobseekerDescriptor in the upcoming issue
+        Remark updatedRemark = editJobseekerDescriptor.getRemark().orElse(jobseekerToEdit.getRemark());
 
-        /*return new Jobseeker(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags,
-                updatedRemark);
-         */
-        return new Jobseeker(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags,
-                jobseekerToEdit.getRemark(), jobseekerToEdit.isHidden());
+        return new Jobseeker(updatedName, updatedPhone, updatedEmail,
+                updatedAddress, updatedTags, updatedRemark,
+                jobseekerToEdit.isHidden());
     }
 
     @Override
@@ -145,6 +145,7 @@ public class EditJobseekerCommand extends Command {
         private Phone phone;
         private Email email;
         private Address address;
+        private Remark remark;
         private Set<Tag> tags;
 
         /** Creates an empty descriptor. */
@@ -159,6 +160,7 @@ public class EditJobseekerCommand extends Command {
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
             setAddress(toCopy.address);
+            setRemark(toCopy.remark);
             setTags(toCopy.tags);
         }
 
@@ -166,7 +168,7 @@ public class EditJobseekerCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, tags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, tags, remark);
         }
 
         public void setName(Name name) {
@@ -201,6 +203,14 @@ public class EditJobseekerCommand extends Command {
             return Optional.ofNullable(address);
         }
 
+        public void setRemark(Remark remark) {
+            this.remark = remark;
+        }
+
+        public Optional<Remark> getRemark() {
+            return Optional.ofNullable(remark);
+        }
+
         /**
          * Sets {@code tags} to this object's {@code tags}.
          * A defensive copy of {@code tags} is used internally.
@@ -233,6 +243,7 @@ public class EditJobseekerCommand extends Command {
                     && Objects.equals(phone, otherEditJobseekerDescriptor.phone)
                     && Objects.equals(email, otherEditJobseekerDescriptor.email)
                     && Objects.equals(address, otherEditJobseekerDescriptor.address)
+                    && Objects.equals(remark, otherEditJobseekerDescriptor.remark)
                     && Objects.equals(tags, otherEditJobseekerDescriptor.tags);
         }
 
@@ -244,6 +255,7 @@ public class EditJobseekerCommand extends Command {
                     .add("email", email)
                     .add("address", address)
                     .add("tags", tags)
+                    .add("remark", remark)
                     .toString();
         }
     }

@@ -10,6 +10,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -36,6 +37,7 @@ public class EditJobseekerDescriptorBuilder {
         descriptor.setPhone(jobseeker.getPhone());
         descriptor.setEmail(jobseeker.getEmail());
         descriptor.setAddress(jobseeker.getAddress());
+        descriptor.setRemark(jobseeker.getRemark());
         descriptor.setTags(jobseeker.getTags());
     }
 
@@ -83,5 +85,13 @@ public class EditJobseekerDescriptorBuilder {
 
     public EditJobseekerDescriptor build() {
         return descriptor;
+    }
+
+    /**
+     * Sets the remark of the descriptor that we are building.
+     */
+    public EditJobseekerDescriptorBuilder withRemark(String remark) {
+        descriptor.setRemark(new Remark(remark));
+        return this;
     }
 }

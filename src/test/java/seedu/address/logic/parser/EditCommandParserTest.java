@@ -25,6 +25,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
@@ -53,6 +54,22 @@ public class EditCommandParserTest {
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditJobseekerCommand.MESSAGE_USAGE);
 
     private EditCommandParser parser = new EditCommandParser();
+
+    @Test
+    public void parse_remarkOnlyAndEmptyRemark_success() {
+        assertParseSuccess(parser, "1 r/Available immediately", new EditJobseekerCommand(INDEX_FIRST_PERSON,
+                new EditJobseekerDescriptorBuilder().withRemark("Available immediately").build()));
+        assertParseSuccess(parser, "1 r/", new EditJobseekerCommand(INDEX_FIRST_PERSON,
+                new EditJobseekerDescriptorBuilder().withRemark("").build()));
+    }
+
+    @Test
+    public void parse_duplicateRemarks_failure() {
+        assertParseFailure(parser, "1 r/First r/Second",
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_REMARK));
+        assertParseFailure(parser, "1 r/ r/Second",
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_REMARK));
+    }
 
     @Test
     public void parse_missingParts_failure() {
@@ -107,11 +124,11 @@ public class EditCommandParserTest {
     public void parse_allFieldsSpecified_success() {
         Index targetIndex = INDEX_SECOND_PERSON;
         String userInput = targetIndex.getOneBased() + PHONE_DESC_BOB + TAG_DESC_HUSBAND
-                + EMAIL_DESC_AMY + ADDRESS_DESC_AMY + NAME_DESC_AMY + TAG_DESC_FRIEND;
+                + EMAIL_DESC_AMY + ADDRESS_DESC_AMY + NAME_DESC_AMY + TAG_DESC_FRIEND + " r/Available now";
 
         EditJobseekerDescriptor descriptor = new EditJobseekerDescriptorBuilder().withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY).withAddress(VALID_ADDRESS_AMY)
-                .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
+                .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).withRemark("Available now").build();
         EditJobseekerCommand expectedCommand = new EditJobseekerCommand(targetIndex, descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);
