@@ -35,4 +35,11 @@ XYZCommandParser ..> ParserUtil
 ParserUtil .down.> Prefix
 ArgumentTokenizer .down.> Prefix
 XYZCommand -up-|> Command
+note bottom of XYZCommandParser
+  Dependencies vary by parser.
+  Tag/untag parsers split whitespace-separated arguments
+  and call ParserUtil.parseIndex() and parseTags().
+  They do not use ArgumentTokenizer, ArgumentMultimap
+  or CliSyntax.
+end note
 @enduml
