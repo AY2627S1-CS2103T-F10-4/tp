@@ -1,0 +1,70 @@
+@startuml
+!include style.puml
+!pragma layout smetana
+left to right direction
+skinparam nodesep 45
+skinparam ranksep 80
+skinparam arrowColor LOGIC_COLOR_T4
+skinparam classBackgroundColor LOGIC_COLOR
+
+package "Logic" {
+    abstract class Command
+    interface "Parser<T>" as Parser
+    class AddressBookParser
+    class ParserUtil
+    class TagJobseekerCommand
+    class UntagJobseekerCommand
+    class TagClientCommand
+    class UntagClientCommand
+    class TagJobseekerCommandParser
+    class UntagJobseekerCommandParser
+    class TagClientCommandParser
+    class UntagClientCommandParser
+}
+interface Model MODEL_COLOR
+class Tag MODEL_COLOR
+class Index LOGIC_COLOR
+
+TagJobseekerCommand --|> Command
+UntagJobseekerCommand --|> Command
+TagClientCommand --|> Command
+UntagClientCommand --|> Command
+
+TagJobseekerCommandParser ..|> Parser
+UntagJobseekerCommandParser ..|> Parser
+TagClientCommandParser ..|> Parser
+UntagClientCommandParser ..|> Parser
+
+AddressBookParser ..> TagJobseekerCommandParser : <<create>>
+AddressBookParser ..> UntagJobseekerCommandParser : <<create>>
+AddressBookParser ..> TagClientCommandParser : <<create>>
+AddressBookParser ..> UntagClientCommandParser : <<create>>
+
+TagJobseekerCommandParser ..> TagJobseekerCommand : <<create>>
+UntagJobseekerCommandParser ..> UntagJobseekerCommand : <<create>>
+TagClientCommandParser ..> TagClientCommand : <<create>>
+UntagClientCommandParser ..> UntagClientCommand : <<create>>
+
+TagJobseekerCommandParser ..> ParserUtil
+UntagJobseekerCommandParser ..> ParserUtil
+TagClientCommandParser ..> ParserUtil
+UntagClientCommandParser ..> ParserUtil
+ParserUtil ..> Index : <<create>>
+ParserUtil ..> Tag : <<create>>
+
+TagJobseekerCommand ..> Model : execute(model)
+UntagJobseekerCommand ..> Model : execute(model)
+TagClientCommand ..> Model : execute(model)
+UntagClientCommand ..> Model : execute(model)
+
+note bottom of Parser
+  Each parser implements Parser<T>, where T
+  is its corresponding concrete command class.
+end note
+
+note bottom of Command
+  Each tag/untag command stores targetIndex: Index
+  and a defensive copy of a Set<Tag>:
+  tagsToAdd for tag, tagsToRemove for untag.
+end note
+@enduml

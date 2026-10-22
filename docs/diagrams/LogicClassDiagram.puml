@@ -39,7 +39,11 @@ LogicManager --> Storage
 Storage --[hidden] Model
 Command .[hidden]up.> Storage
 Command .right.> Model
-note right of XYZCommand: XYZCommand = AddCommand, \nFindCommand, etc
+note right of XYZCommand
+  XYZCommand represents concrete commands, e.g.
+  TagJobseekerCommand, UntagJobseekerCommand,
+  TagClientCommand and UntagClientCommand.
+end note
 
 Logic ..> CommandResult
 LogicManager .down.> CommandResult
