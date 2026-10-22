@@ -20,6 +20,7 @@ import seedu.address.logic.commands.CopyClientCommand;
 import seedu.address.logic.commands.CopyJobseekerCommand;
 import seedu.address.logic.commands.DeleteClientCommand;
 import seedu.address.logic.commands.DeleteJobseekerCommand;
+import seedu.address.logic.commands.EditClientCommand;
 import seedu.address.logic.commands.EditJobseekerCommand;
 import seedu.address.logic.commands.EditJobseekerCommand.EditJobseekerDescriptor;
 import seedu.address.logic.commands.ExitCommand;
@@ -41,9 +42,13 @@ import seedu.address.logic.commands.UnhideJobseekerCommand;
 import seedu.address.logic.commands.UntagClientCommand;
 import seedu.address.logic.commands.UntagJobseekerCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.Model;
+import seedu.address.model.ModelManager;
 import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.model.tag.Tag;
+import seedu.address.testutil.ClientBuilder;
+import seedu.address.testutil.EditClientDescriptorBuilder;
 import seedu.address.testutil.EditJobseekerDescriptorBuilder;
 import seedu.address.testutil.JobseekerBuilder;
 import seedu.address.testutil.PersonUtil;
@@ -51,6 +56,38 @@ import seedu.address.testutil.PersonUtil;
 public class AddressBookParserTest {
 
     private final AddressBookParser parser = new AddressBookParser();
+
+    @Test
+    public void parseCommand_editc_returnsClientCommand() throws Exception {
+        assertEquals(new EditClientCommand(INDEX_FIRST_PERSON,
+                new EditClientDescriptorBuilder().withRemark("Hiring now").build()),
+                parser.parseCommand("editc 1 r/Hiring now"));
+    }
+
+    @Test
+    public void parseCommand_editMissingArguments_reportsMatchingUsage() {
+        String clientUsage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditClientCommand.MESSAGE_USAGE);
+        String jobseekerUsage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditJobseekerCommand.MESSAGE_USAGE);
+        assertThrows(ParseException.class, clientUsage, () -> parser.parseCommand("editc"));
+        assertThrows(ParseException.class, jobseekerUsage, () -> parser.parseCommand("editj"));
+    }
+
+    @Test
+    public void parseAndExecute_editRemarks_updatesClearsAndPreservesBothTypes() throws Exception {
+        Model model = new ModelManager();
+        model.addClient(new ClientBuilder().withRemark("Old client remark").build());
+        model.addJobseeker(new JobseekerBuilder().withRemark("Old jobseeker remark").build());
+        parser.parseCommand("editc 1 r/Hiring now").execute(model);
+        parser.parseCommand("editj 1 r/Available now").execute(model);
+        parser.parseCommand("editc 1 n/New Client").execute(model);
+        parser.parseCommand("editj 1 n/New Jobseeker").execute(model);
+        assertEquals("Hiring now", model.getFilteredClientList().get(0).getRemark().value);
+        assertEquals("Available now", model.getFilteredJobseekerList().get(0).getRemark().value);
+        parser.parseCommand("editc 1 r/").execute(model);
+        parser.parseCommand("editj 1 r/").execute(model);
+        assertEquals("", model.getFilteredClientList().get(0).getRemark().value);
+        assertEquals("", model.getFilteredJobseekerList().get(0).getRemark().value);
+    }
 
     @Test
     public void parseCommand_tagc() throws Exception {

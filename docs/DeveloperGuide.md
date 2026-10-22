@@ -466,9 +466,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 2a. The list is empty.
+* 1a. The list is empty.
 
-    * 2a1. TalentLink notifies the user the error.
+    * 1a1. TalentLink notifies the user the error.
 
       Use case ends.
 

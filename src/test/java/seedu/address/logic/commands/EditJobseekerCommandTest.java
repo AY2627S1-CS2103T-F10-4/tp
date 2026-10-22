@@ -40,6 +40,38 @@ public class EditJobseekerCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
+    public void execute_remarkEdit_updatesOrClearsRemarkAndPreservesHiddenStatus() throws Exception {
+        for (String remark : List.of("Available immediately", "")) {
+            Model remarkModel = new ModelManager();
+            Jobseeker original = new JobseekerBuilder().withRemark("Old remark").withHidden(true).build();
+            remarkModel.addJobseeker(original);
+            remarkModel.updateFilteredJobseekerList(jobseeker -> true);
+            EditJobseekerDescriptor descriptor = new EditJobseekerDescriptorBuilder().withRemark(remark).build();
+            EditJobseekerCommand command = new EditJobseekerCommand(INDEX_FIRST_PERSON, descriptor);
+            descriptor.setRemark(null);
+
+            command.execute(remarkModel);
+
+            assertEquals(List.of(new JobseekerBuilder(original).withRemark(remark).build()),
+                    remarkModel.getAddressBook().getJobseekerList());
+            assertTrue(remarkModel.getFilteredJobseekerList().isEmpty());
+        }
+    }
+
+    @Test
+    public void execute_remarkOmitted_preservesExistingRemark() throws Exception {
+        Model remarkModel = new ModelManager();
+        Jobseeker original = new JobseekerBuilder().withRemark("Keep this remark").build();
+        remarkModel.addJobseeker(original);
+        EditJobseekerDescriptor descriptor = new EditJobseekerDescriptorBuilder().withName(VALID_NAME_BOB).build();
+
+        new EditJobseekerCommand(INDEX_FIRST_PERSON, descriptor).execute(remarkModel);
+
+        assertEquals(List.of(new JobseekerBuilder(original).withName(VALID_NAME_BOB).build()),
+                remarkModel.getFilteredJobseekerList());
+    }
+
+    @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
         Jobseeker editedJobseeker = new JobseekerBuilder().build();
         EditJobseekerDescriptor descriptor = new EditJobseekerDescriptorBuilder(editedJobseeker).build();
