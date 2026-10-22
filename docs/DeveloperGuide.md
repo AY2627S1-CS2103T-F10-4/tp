@@ -111,8 +111,10 @@ Here are the other classes in `Logic` (omitted from the class diagram above) tha
 <img src="images/ParserClasses.png" width="600"/>
 
 How the parsing works:
-* When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name, e.g., `AddJobseekerCommandParser`). The parser uses the other classes shown above to parse the user command and create an `XYZCommand` object (e.g., `AddCommand`). The `AddressBookParser` returns that object as a `Command` object.
-* All `XYZCommandParser` classes, such as `AddJobseekerCommandParser` and `DeleteCommandParser`, implement the `Parser` interface so they can be treated similarly where appropriate, for example during testing.
+* When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name, e.g., `AddJobseekerCommandParser`). The parser uses the other classes shown above to parse the user command and create an `XYZCommand` object (e.g., `AddJobseekerCommand`). The `AddressBookParser` returns that object as a `Command` object.
+* All `XYZCommandParser` classes, such as `AddJobseekerCommandParser` and `TagJobseekerCommandParser`, implement the `Parser` interface so they can be treated similarly where appropriate, for example during testing.
+
+* Parser dependencies vary by command. Tag/untag parsers split whitespace-separated arguments and use `ParserUtil.parseIndex()` and `ParserUtil.parseTags()` directly; they do not use `ArgumentTokenizer`, `ArgumentMultimap`, or `CliSyntax`.
 
 ### Model component
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
@@ -154,6 +156,55 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 ## **Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
+
+### Tag/untag feature
+
+The tag/untag commands add or remove tags for a jobseeker or client identified by their one-based index in the currently displayed list. Each command accepts `INDEX TAG [MORE_TAGS]...`, with tags separated by whitespace.
+
+| Command | Command class | Parser class |
+| --- | --- | --- |
+| `tagj` | `TagJobseekerCommand` | `TagJobseekerCommandParser` |
+| `untagj` | `UntagJobseekerCommand` | `UntagJobseekerCommandParser` |
+| `tagc` | `TagClientCommand` | `TagClientCommandParser` |
+| `untagc` | `UntagClientCommand` | `UntagClientCommandParser` |
+
+#### Structure and parsing
+
+The following class diagram shows the commands, their parsers, and their dependencies:
+
+![Tag and untag command and parser classes](images/TagUntagClassDiagram.png)
+
+`AddressBookParser` selects the parser using the command word. Each parser splits the arguments into an index and tag names, then uses `ParserUtil.parseIndex()` and `ParserUtil.parseTags()` to validate them. Missing or invalid arguments cause a `ParseException` before command execution. Tags are collected into a `Set<Tag>`, so duplicate inputs are collapsed.
+
+Each command extends `Command` and stores the target `Index` and a defensive copy of the supplied tags. Each parser implements `Parser<T>`, where `T` is its corresponding command class.
+
+#### Adding tags
+
+The sequence diagram below illustrates `tagj 1 java`:
+
+![Sequence for adding a tag to a jobseeker](images/TagSequenceDiagram.png)
+
+1. `LogicManager` obtains a `TagJobseekerCommand` from `AddressBookParser` and calls `execute(model)`.
+2. The command reads `Model.getFilteredJobseekerList()` and checks that the index refers to a displayed jobseeker. An index outside this list causes a `CommandException`.
+3. The command copies the target's existing tags into a `HashSet` and calls `addAll(tagsToAdd)`. Existing tags are retained and duplicate tags are ignored.
+4. If no tags were added, the command returns `MESSAGE_NO_CHANGE` without replacing the jobseeker.
+5. Otherwise, it creates a replacement `Jobseeker` with the updated tags, calls `Model.setJobseeker(target, updatedJobseeker)`, and returns a success `CommandResult` describing the updated jobseeker.
+
+#### Removing tags
+
+The sequence diagram below illustrates `untagj 1 java`:
+
+![Sequence for removing a tag from a jobseeker](images/UntagSequenceDiagram.png)
+
+`UntagJobseekerCommand` follows the same flow, but calls `removeAll(tagsToRemove)` on a copy of the existing tags. Tags that were not requested for removal are retained, and requested tags that are absent are ignored. If none of the requested tags exist, the command returns `MESSAGE_NO_CHANGE` without replacing the jobseeker. Otherwise, it replaces the jobseeker and returns a success `CommandResult`.
+
+#### Client commands, filtering, and persistence
+
+`TagClientCommand` and `UntagClientCommand` follow the same steps using `Model.getFilteredClientList()`, a replacement `Client`, and `Model.setClient()`.
+
+All four commands preserve the target's name, phone, email, address, remark, and hidden status. They retain the current filter, so indices refer to the current view, including search results or a hidden-person list. Tagging or untagging a hidden person does not unhide them.
+
+After a command returns normally, including a no-change result, `LogicManager` saves the address book through `Storage`. Parsing and execution errors propagate without reaching that save step. Storage interactions are omitted from the sequence diagrams to focus on parsing and tag updates.
 
 ### \[Proposed\] Undo/redo feature
 
@@ -319,16 +370,16 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  Recruiter requests to list all job seekers or all clients.
-2.  TalentLink shows all contacts in the respective list.
+1.  Recruiter requests to list all job seekers or all clients, specifying whether to show normal or hidden contacts.
+2.  TalentLink shows all contacts in the respective list with the requested hidden status.
 
     Use case ends.
 
 **Extensions**
 
-* 1a. The list is empty.
+* 2a. The list is empty.
 
-    * 1a1. TalentLink notifies the user the error.
+    * 2a1. TalentLink notifies the user the error.
 
       Use case ends.
 
@@ -382,7 +433,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  Recruiter requests to search a contact in the clients or job seekers' list.
+1.  Recruiter requests to search a contact in the clients or job seekers' list, specifying whether to search normal or hidden contacts.
 2.  Recruiter enters the information.
 3.  TalentLink returns all contacts that contain the information entered.
 
@@ -396,7 +447,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-* 2b. There is no contact containing the information.
+* 3a. There is no contact containing the information.
 
     * 3a1. TalentLink notifies the user the empty result.
 
@@ -411,7 +462,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 3.  Recruiter specifies a contact using its displayed index and provides the details to update.
 4.  TalentLink updates the contact, preserving unspecified details and its hidden status.
 
-    Use case ends.
+   Use case ends.
 
 **Extensions**
 
@@ -433,6 +484,146 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case resumes at step 3.
 
+**Use case: UC06 - Hide a contact**
+
+**MSS**
+
+1.  Recruiter requests to <u>list all contacts (UC01)</u>.
+2.  TalentLink displays the matching jobseekers or clients.
+3.  Recruiter requests to hide a contact using its displayed index.
+4.  TalentLink hides the contact, preserving all its details.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty.
+
+    * 2a1. TalentLink notifies the user the error.
+
+      Use case ends.
+
+* 3a. The index is missing, invalid, or outside the displayed list.
+
+    * 3a1. TalentLink notifies the user the error.
+
+      Use case resumes at step 3.
+
+* 3b. The selected contact is already hidden.
+
+    * 3b1. TalentLink informs the recruiter that the contact is already hidden and makes no changes.
+
+      Use case ends.
+
+**Use case: UC07 - Unhide a contact**
+
+**MSS**
+
+1.  Recruiter requests to <u>list all contacts (UC01)</u>.
+2.  TalentLink displays the matching jobseekers or clients.
+3.  Recruiter requests to unhide a contact using its displayed index.
+4.  TalentLink unhides the contact, preserving all its details.
+
+Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty.
+
+    * 2a1. TalentLink notifies the user the error.
+
+      Use case ends.
+
+* 3a. The index is missing, invalid, or outside the displayed list.
+
+    * 3a1. TalentLink notifies the user the error.
+
+      Use case resumes at step 3.
+
+* 3b. Recruiter targets an already-unhidden contact in a normal list..
+
+    * 3b1. TalentLink informs the recruiter that the contact is already unhidden and makes no changes.
+
+      Use case ends.
+
+**Use case: UC08 - Add tags to a contact**
+
+**MSS**
+
+1.  Recruiter requests to <u>list all contacts (UC01)</u>.
+2.  TalentLink displays the matching jobseekers or clients.
+3.  Recruiter specifies a contact using its displayed index and provides the tags to add.
+4.  TalentLink adds the tags while preserving the contact’s existing tags and other details.
+
+Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty.
+
+    * 2a1. TalentLink notifies the user the error.
+
+      Use case ends.
+
+* 3a. The index is missing, invalid, or outside the displayed list.
+
+    * 3a1. TalentLink notifies the user the error.
+
+      Use case resumes at step 3.
+
+* 3b. No tags are provided, or a supplied tag is invalid.
+
+    * 3b1. TalentLink informs the recruiter about the error without changing any contact.
+
+      Use case resumes at step 3.
+
+**Use case: UC09 - Remove tags from a contact**
+
+**MSS**
+
+1.  Recruiter requests to <u>list all contacts (UC01)</u>.
+2.  TalentLink displays the matching jobseekers or clients.
+3.  Recruiter specifies a contact using its displayed index and provides the tags to remove.
+4.  TalentLink removes the specified tags while preserving the contact’s existing tags and other details.
+
+Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty.
+
+    * 2a1. TalentLink notifies the user the error.
+
+      Use case ends.
+
+* 3a. The index is missing, invalid, or outside the displayed list.
+
+    * 3a1. TalentLink notifies the user the error.
+
+      Use case resumes at step 3.
+
+* 3b. No tags are provided, or a supplied tag is invalid.
+
+    * 3b1. TalentLink informs the recruiter about the error without changing any contact.
+
+      Use case resumes at step 3.
+
+**Use case: UC10 - Clear contacts**
+
+**MSS**
+
+1.  Recruiter requests to clear all jobseekers or all clients.
+2.  TalentLink removes all contacts of the selected type, including hidden contacts and contacts excluded by the current search filter. Contacts of the other type remain unchanged.
+
+Use case ends.
+
+**Extensions**
+
+* 2a. No contacts of the selected type exist.
+
+    * 2a1. TalentLink leaves the data unchanged.
+
+      Use case ends.
 
 *{More to be added}*
 

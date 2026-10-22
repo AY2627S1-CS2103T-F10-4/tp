@@ -7,6 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
@@ -191,6 +193,12 @@ public class MainWindow extends UiPart<Stage> {
             CommandResult commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
+
+            if (commandResult.getClipboardText() != null) {
+                ClipboardContent clipboardContent = new ClipboardContent();
+                clipboardContent.putString(commandResult.getClipboardText());
+                Clipboard.getSystemClipboard().setContent(clipboardContent);
+            }
 
             if (commandResult.isShowHelp()) {
                 handleHelp();
