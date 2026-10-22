@@ -16,6 +16,7 @@ public final class CommandCatalogue {
             EditJobseekerCommand.COMMAND_WORD, ExitCommand.COMMAND_WORD,
             TagClientCommand.COMMAND_WORD, TagJobseekerCommand.COMMAND_WORD,
             UntagClientCommand.COMMAND_WORD, UntagJobseekerCommand.COMMAND_WORD,
+            UnhideClientCommand.COMMAND_WORD, UnhideJobseekerCommand.COMMAND_WORD,
             FindClientCommand.COMMAND_WORD, FindJobseekerCommand.COMMAND_WORD,
             FindHiddenClientCommand.COMMAND_WORD, FindHiddenJobseekerCommand.COMMAND_WORD,
             HelpCommand.COMMAND_WORD, HideClientCommand.COMMAND_WORD, HideJobseekerCommand.COMMAND_WORD,

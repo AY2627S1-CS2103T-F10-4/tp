@@ -29,6 +29,31 @@ public class CommandSuggestionsTest {
         assertEquals(List.of("findhc", "findhj"), suggestions.suggest("  findh"));
     }
 
+    /**
+     * Unhide commands share a prefix with untag commands and retain alphabetical ordering.
+     */
+    @Test
+    public void suggest_unhidePrefixes_returnsSortedMatches() {
+        assertEquals(List.of("unhidec", "unhidej", "untagc", "untagj"), suggestions.suggest("un"));
+        assertEquals(List.of("unhidec", "unhidej"), suggestions.suggest("unh"));
+        assertEquals(List.of("unhidec", "unhidej"), suggestions.suggest("unhide"));
+        assertEquals(List.of("unhidec", "unhidej"), suggestions.suggest("  unhide"));
+        assertEquals(List.of("untagc", "untagj"), suggestions.suggest("unt"));
+    }
+
+    /**
+     * Completed unhide commands and arguments must not reopen command suggestions.
+     */
+    @Test
+    public void suggest_completeUnhideCommandsOrArguments_returnsEmpty() {
+        for (String command : List.of("unhidec", "unhidej")) {
+            assertTrue(suggestions.suggest(command).isEmpty(), command);
+            assertTrue(suggestions.suggest("  " + command).isEmpty(), command);
+            assertTrue(suggestions.suggest(command + " ").isEmpty(), command);
+            assertTrue(suggestions.suggest(command + " 1").isEmpty(), command);
+        }
+    }
+
     @Test
     public void suggest_completeHiddenCommandsOrArguments_returnsEmpty() {
         for (String command : List.of("listhc", "listhj", "findhc", "findhj")) {
