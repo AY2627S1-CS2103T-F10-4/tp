@@ -16,6 +16,8 @@ import org.junit.jupiter.api.Test;
 import seedu.address.logic.commands.AddJobseekerCommand;
 import seedu.address.logic.commands.ClearClientCommand;
 import seedu.address.logic.commands.ClearJobseekerCommand;
+import seedu.address.logic.commands.CopyClientCommand;
+import seedu.address.logic.commands.CopyJobseekerCommand;
 import seedu.address.logic.commands.DeleteClientCommand;
 import seedu.address.logic.commands.DeleteJobseekerCommand;
 import seedu.address.logic.commands.EditClientCommand;
@@ -35,6 +37,8 @@ import seedu.address.logic.commands.ListHiddenJobseekerCommand;
 import seedu.address.logic.commands.ListJobseekerCommand;
 import seedu.address.logic.commands.TagClientCommand;
 import seedu.address.logic.commands.TagJobseekerCommand;
+import seedu.address.logic.commands.UnhideClientCommand;
+import seedu.address.logic.commands.UnhideJobseekerCommand;
 import seedu.address.logic.commands.UntagClientCommand;
 import seedu.address.logic.commands.UntagJobseekerCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -130,6 +134,16 @@ public class AddressBookParserTest {
     }
 
     @Test
+    public void parseCommand_cpc() throws Exception {
+        assertTrue(parser.parseCommand(CopyClientCommand.COMMAND_WORD) instanceof CopyClientCommand);
+    }
+
+    @Test
+    public void parseCommand_cpj() throws Exception {
+        assertTrue(parser.parseCommand(CopyJobseekerCommand.COMMAND_WORD) instanceof CopyJobseekerCommand);
+    }
+
+    @Test
     public void parseCommand_deletej() throws Exception {
         DeleteJobseekerCommand command = (DeleteJobseekerCommand) parser.parseCommand(
                 DeleteJobseekerCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
@@ -155,6 +169,20 @@ public class AddressBookParserTest {
         HideClientCommand command = (HideClientCommand) parser.parseCommand(
                 HideClientCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new HideClientCommand(INDEX_FIRST_PERSON), command);
+    }
+
+    @Test
+    public void parseCommand_unhidej() throws Exception {
+        UnhideJobseekerCommand command = (UnhideJobseekerCommand) parser.parseCommand(
+                UnhideJobseekerCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new UnhideJobseekerCommand(INDEX_FIRST_PERSON), command);
+    }
+
+    @Test
+    public void parseCommand_unhidec() throws Exception {
+        UnhideClientCommand command = (UnhideClientCommand) parser.parseCommand(
+                UnhideClientCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new UnhideClientCommand(INDEX_FIRST_PERSON), command);
     }
 
     @Test

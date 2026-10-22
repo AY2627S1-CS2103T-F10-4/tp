@@ -120,6 +120,11 @@
     -fx-text-fill: white;
 }
 
+#suggestionList .list-cell {
+    -fx-text-fill: white;
+    -fx-padding: 0 8 0 8;
+}
+
 .cell_big_label {
     -fx-font-family: "Segoe UI Semibold";
     -fx-font-size: 16px;

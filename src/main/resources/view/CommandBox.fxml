@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.VBox?>
 
-<StackPane styleClass="stack-pane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<VBox styleClass="stack-pane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
   <TextField fx:id="commandTextField" onAction="#handleCommandEntered" promptText="Enter command here..."/>
-</StackPane>
+  <ListView fx:id="suggestionList" visible="false" managed="false" focusTraversable="false"
+            mouseTransparent="true" fixedCellSize="28" minHeight="-Infinity" maxHeight="-Infinity"
+            accessibleText="Command suggestions"/>
+</VBox>
 
