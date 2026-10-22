@@ -409,15 +409,15 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1.  Recruiter requests to <u>list all contacts (UC01)</u>.
 2.  TalentLink displays the matching jobseekers or clients.
 3.  Recruiter specifies a contact using its displayed index and provides the details to update.
-4. TalentLink updates the contact, preserving unspecified details and its hidden status.
+4.  TalentLink updates the contact, preserving unspecified details and its hidden status.
 
     Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 1a. The list is empty.
 
-    * 2a1. TalentLink notifies the user the error.
+    * 1a1. TalentLink notifies the user the error.
 
       Use case ends.
 
