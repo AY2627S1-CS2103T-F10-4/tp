@@ -93,15 +93,13 @@ applications.
 
 Shows a copy of this help page inside the application.
 
-**Format:** {:#help-format}
-`help`
+**Format:**{: #help-format} `help`
 
 #### Exiting the program: `exit`
 
 Exits the program.
 
-**Format:** {:#exit-format}
-`exit`
+**Format:**{: #exit-format} `exit`
 
 ### Adding and modifying contacts
 
@@ -156,8 +154,7 @@ Adds a jobseeker to the address book.
 Adding duplicate jobseeker contacts is not allowed.
 However, adding an existing _client_ contact to the jobseeker list is allowed
 
-**Format:** {:#addj-format}
-`addj n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag>]...`
+**Format:**{: #addj-format} `addj n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag>]...`
 
 * `<name>`: the name of the jobseeker
 * `<phone number>`: the phone number of the jobseeker
@@ -172,7 +169,7 @@ See [Common info about contacts](#common-info-about-contacts) for
 additional constraints on field values.
 
 **Examples:**
-{:#addj-examples}
+{: #addj-examples}
 
 * `addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
 * `addj n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
@@ -184,13 +181,12 @@ Adds a client to the address book.
 Adding duplicate client contacts is not allowed.
 However, adding an existing _jobseeker_ contact to the client list is allowed
 
-**Format:** {:#addc-format}
-`addc n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag>]...`
+**Format:**{: #addc-format} `addc n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag>]...`
 
 The fields are the same as `addj`. See [Adding a jobseeker: `addj` - Format](#addj-format).
 
 **Examples:**
-{:#addc-examples}
+{: #addc-examples}
 
 * `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road`
 * `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road r/Hiring software engineers t/employer t/technology`
@@ -203,8 +199,7 @@ The command overwrites some of the jobseeker's contact details, while leaving th
 
 Similar to [`addj`](#adding-a-jobseeker-addj), edits that would create duplicate jobseekers are rejected.
 
-**Format:** {:#editj-format}
-`editj <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [r/<remarks>] [t/<tag>]...`
+**Format:**{: #editj-format} `editj <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [r/<remarks>] [t/<tag>]...`
 
 At least one of the fields `<name>`, `<phone number>`, `<email>`, `<address>`, `<remarks>`,
 or `<tag>` must be provided.
@@ -220,7 +215,7 @@ or `<tag>` must be provided.
 * `<tag>`: a tag for this jobseeker
 
 **Notes:**
-{:#editj-notes}
+{: #editj-notes}
 
 * To clear remarks, specify `r/` without any values.
 * Supplied tags replace all existing tags. To clear all tags, specify `t/` without any values.
@@ -228,7 +223,7 @@ or `<tag>` must be provided.
   An edited hidden jobseeker remains hidden.
 
 **Examples:**
-{:#editj-examples}
+{: #editj-examples}
 
 * Update the first displayed jobseeker's phone and email:
   `editj 1 p/91234567 e/johndoe@example.com`
@@ -245,18 +240,17 @@ The command overwrites some of the client's contact details, while leaving the r
 
 Similar to [`addc`](#adding-a-client-addc), edits that would create duplicate clients are rejected.
 
-**Format:** {:#editc-format}
-`editc <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [r/<remarks>] [t/<tag>]...`
+**Format:**{: #editc-format} `editc <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [r/<remarks>] [t/<tag>]...`
 
 The fields are the same as `editj`. See [Editing a jobseeker: `editj` - Format](#editj-format)
 
 **Notes:**
-{:#editc-notes}
+{: #editc-notes}
 
 The notes are the same as `editj`. See [Editing a jobseeker: `editj` - Notes](#editj-notes)
 
 **Examples:**
-{:#editc-examples}
+{: #editc-examples}
 
 * Update the first displayed client's remark:
   `editc 1 r/Hiring software engineers`
@@ -267,15 +261,14 @@ The notes are the same as `editj`. See [Editing a jobseeker: `editj` - Notes](#e
 
 Deletes a jobseeker from the currently displayed jobseeker list.
 
-**Format:** {:#deletej-format}
-`deletej <index>`
+**Format:**{: #deletej-format} `deletej <index>`
 
 * `<index>`: the index of the jobseeker to delete
   * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
     inclusive
 
 **Examples:**
-{:#deletej-examples}
+{: #deletej-examples}
 
 * Delete the second displayed jobseeker: `deletej 2`
 
@@ -283,15 +276,14 @@ Deletes a jobseeker from the currently displayed jobseeker list.
 
 Deletes a client from the currently displayed client list.
 
-**Format:** {:#deletec-format}
-`deletec <index>`
+**Format:**{: #deletec-format} `deletec <index>`
 
 * `<index>`: the index of the client to delete
   * must be a positive integer, from 1 to the size of the currently displayed client list,
     inclusive
 
 **Examples:**
-{:#deletec-examples}
+{: #deletec-examples}
 
 * Delete the third displayed client: `deletec 3`
 
@@ -301,8 +293,7 @@ Clears all contacts from the jobseeker list.
 
 This includes contacts that aren't listed in the currently displayed jobseeker list
 
-**Format:** {:#clearj-format}
-`clearj`
+**Format:**{: #clearj-format} `clearj`
 
 ### Clearing all clients: `clearc`
 
@@ -310,8 +301,7 @@ Clears all contacts from the client list.
 
 This includes contacts that aren't listed in the currently displayed client list
 
-**Format:** {:#clearc-format}
-`clearc`
+**Format:**{: #clearc-format} `clearc`
 
 ### Viewing contacts
 
@@ -327,8 +317,7 @@ For more information on hidden jobseekers, see [Hiding a jobseeker: `hidej`](#hi
 
 To list hidden jobseekers, see [Listing hidden jobseekers: `listhj`](#listing-hidden-jobseekers-listhj).
 
-**Format:** {:#listj-format}
-`listj`
+**Format:**{: #listj-format} `listj`
 
 #### Listing clients: `listc`
 
@@ -339,8 +328,7 @@ For more information on hidden clients, see [Hiding a client: `hidec`](#hiding-a
 
 To list hidden clients, see [Listing hidden clients: `listhc`](#listing-hidden-clients-listhc).
 
-**Format:** {:#listc-format}
-`listc`
+**Format:**{: #listc-format} `listc`
 
 ### Finding jobseekers: `findj`
 
@@ -355,14 +343,13 @@ For more information on hidden jobseekers, see [Hiding a jobseekers: `hidej`](#h
 
 To search among hidden jobseekers, see [Finding hidden jobseekers: `findhj`](#finding-hidden-jobseekers-findhj).
 
-**Format:** {:#findj-format}
-`findj <keyword>...`
+**Format:**{: #findj-format} `findj <keyword>...`
 
 * `<keyword>`: a keyword to search for
   * At least one keyword must be given.
 
 **Notes:**
-{:#findj-notes}
+{: #findj-notes}
 
 * Partial words match.
 
@@ -377,7 +364,7 @@ To search among hidden jobseekers, see [Finding hidden jobseekers: `findhj`](#fi
   whose phone number is `87438807`.
 
 **Examples:**
-{:#findj-examples}
+{: #findj-examples}
 
 * `findj alex david` returns `Alex Yeoh` and `David Li`.
 * `findj li` returns `Charlotte Oliveiro` and `David Li`, since `li` appears inside both names.
@@ -393,19 +380,18 @@ For more information on hidden clients, see [Hiding a client: `hidec`](#hiding-a
 
 To search among hidden clients, see [Finding hidden clients: `findhc`](#finding-hidden-clients-findhc).
 
-**Format:** {:#findc-format}
-`findc <keyword>...`
+**Format:**{: #findc-format} `findc <keyword>...`
 
 * `<keyword>`: a keyword to search for
   * At least one keyword must be given.
 
 **Notes:**
-{:#findc-notes}
+{: #findc-notes}
 
 The notes are the same as `findj`. See [Finding jobseekers: `findj` - Notes](#findj-notes).
 
 **Examples:**
-{:#findc-examples}
+{: #findc-examples}
 
 * `findc roy` returns `Roy Balakrishnan`.
 * `findc irfan@example.com` returns `Irfan Ibrahim`.
@@ -423,15 +409,14 @@ see [Listing hidden jobseekers: `listhj`](#listing-hidden-jobseekers-listhj).
 To search among hidden jobseekers,
 see [Finding hidden jobseekers: `findhj`](#finding-hidden-jobseekers-findhj).
 
-**Format:** {:#hidej-format}
-`hidej <index>`
+**Format:**{: #hidej-format} `hidej <index>`
 
 * `<index>`: the index of the jobseeker to hide
   * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
     inclusive
 
 **Examples:**
-{:#hidej-examples}
+{: #hidej-examples}
 
 * `listj` followed by `hidej 2` hides the 2nd jobseeker in the jobseeker list.
 * `findj Betsy` followed by `hidej 1` hides the 1st jobseeker in the results of the `findj` command.
@@ -449,15 +434,14 @@ see [Listing hidden clients: `listhc`](#listing-hidden-clients-listhc).
 To search among hidden clients,
 see [Finding hidden clients: `findhc`](#finding-hidden-clients-findhc).
 
-**Format:** {:#hidec-format}
-`hidec <index>`
+**Format:**{: #hidec-format} `hidec <index>`
 
 * `<index>`: the index of the client to hide
   * must be a positive integer, from 1 to the size of the currently displayed client list,
     inclusive
 
 **Examples:**
-{:#hidec-examples}
+{: #hidec-examples}
 
 * `listc` followed by `hidec 1` hides the 1st client in the client list.
 
@@ -468,15 +452,14 @@ and [`findj`](#finding-jobseekers-findj) again.
 
 For more information on hidden jobseekers, see [Hiding a jobseekers: `hidej`](#hiding-a-jobseeker-hidej).
 
-**Format:** {:#unhidej-format}
-`unhidej <index>`
+**Format:**{: #unhidej-format} `unhidej <index>`
 
 * `<index>`: the index of the jobseeker to unhide
   * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
     inclusive
 
 **Examples:**
-{:#unhidej-examples}
+{: #unhidej-examples}
 
 * `listhj` followed by `unhidej 1` restores the first displayed hidden jobseeker.
 
@@ -487,15 +470,14 @@ and [`findc`](#finding-clients-findc) again.
 
 For more information on hidden clients, see [Hiding a clients: `hidej`](#hiding-a-client-hidec).
 
-**Format:** {:#unhidec-format}
-`unhidec <index>`
+**Format:**{: #unhidec-format} `unhidec <index>`
 
 * `<index>`: the index of the client to unhide
   * must be a positive integer, from 1 to the size of the currently displayed client list,
       inclusive
 
 **Examples:**
-{:#unhidec-examples}
+{: #unhidec-examples}
 
 * `listhc` followed by `unhidec 1` restores the first displayed hidden client.
 
@@ -506,8 +488,7 @@ and clears the current jobseeker filter.
 
 For more information on hidden jobseekers, see [Hiding a jobseeker: `hidej`](#hiding-a-jobseeker-hidej).
 
-**Format:** {:#listhj-format}
-`listhj`
+**Format:**{: #listhj-format} `listhj`
 
 ### Listing hidden clients: `listhc`
 
@@ -516,8 +497,7 @@ and clears the current clients filter.
 
 For more information on hidden clients, see [Hiding a client: `hidec`](#hiding-a-client-hidec).
 
-**Format:** {:#listhc-format}
-`listhc`
+**Format:**{: #listhc-format} `listhc`
 
 ### Finding hidden jobseekers: `findhj`
 
@@ -526,14 +506,13 @@ Finds _hidden_ jobseekers whose name, phone number or email contains any of the 
 The search logic is the same as `findj`.
 See [Finding jobseekers: `findj`](#finding-jobseekers-findj) for more details.
 
-**Format:** {:#findhj-format}
-`findhj <keyword>...`
+**Format:**{: #findhj-format} `findhj <keyword>...`
 
 * `<keyword>`: a keyword to search for
   * At least one keyword must be given.
 
 **Examples:**
-{:#findhj-examples}
+{: #findhj-examples}
 
 * `findhj alex` returns `Alex Yeoh`, if `Alex Yeoh` has been hidden.
 
@@ -544,14 +523,13 @@ Finds _hidden_ clients whose name, phone number or email contains any of the giv
 The search logic is the same as `findc`.
 See [Finding clients: `findc`](#finding-clients-findc) for more details.
 
-**Format:** {:#findhc-format}
-`findhc <keyword>...`
+**Format:**{: #findhc-format} `findhc <keyword>...`
 
 * `<keyword>`: a keyword to search for
   * At least one keyword must be given.
 
 **Examples:**
-{:#findhc-examples}
+{: #findhc-examples}
 
 * `findhc irfan` returns `Irfan Ibrahim`, if `Irfan Ibrahim` has been hidden.
 
@@ -569,8 +547,7 @@ Tags contains the following attributes, and their corresponding constraints:
 
 Adds tags to a jobseeker while preserving existing tags.
 
-**Format:** {:#tagj-format}
-`tagj <index> <tag>...`
+**Format:**{: #tagj-format} `tagj <index> <tag>...`
 
 * `<index>`: the index of the jobseeker to unhide
   * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
@@ -579,13 +556,13 @@ Adds tags to a jobseeker while preserving existing tags.
   * At least one tag name must be given.
 
 **Notes:**
-{:#tagj-notes}
+{: #tagj-notes}
 
 * Tag names are _case-sensitive_.
 * Tags the jobseeker already has are ignored _silently_.
 
 **Examples:**
-{:#tagj-examples}
+{: #tagj-examples}
 
 * `tagj 1 java` adds `java` to the 1st displayed jobseeker.
 * `tagj 2 python teamwork` adds `python` and `teamwork` to the 2nd displayed jobseeker.
@@ -594,8 +571,7 @@ Adds tags to a jobseeker while preserving existing tags.
 
 Adds tags to a client while preserving existing tags.
 
-**Format:** {:#tagc-format}
-`tagc <index> <tag>...`
+**Format:**{: #tagc-format} `tagc <index> <tag>...`
 
 * `<index>`: the index of the client to unhide
   * must be a positive integer, from 1 to the size of the currently displayed client list,
@@ -604,13 +580,13 @@ Adds tags to a client while preserving existing tags.
   * At least one tag name must be given.
 
 **Notes:**
-{:#tagc-notes}
+{: #tagc-notes}
 
 * Tag names are _case-sensitive_.
 * Tags the client already has are ignored _silently_.
 
 **Examples:**
-{:#tagc-examples}
+{: #tagc-examples}
 
 * `tagc 1 priority` adds `priority` to the 1st displayed client.
 * `tagc 2 finance technology` adds `finance` and `technology` to the 2nd displayed client.
@@ -619,8 +595,7 @@ Adds tags to a client while preserving existing tags.
 
 Removes specified tags from a jobseeker while preserving other tags.
 
-**Format:** {:#untagj-format}
-`untagj <index> <tag>...`
+**Format:**{: #untagj-format} `untagj <index> <tag>...`
 
 * `<index>`: the index of the jobseeker to unhide
   * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
@@ -629,13 +604,13 @@ Removes specified tags from a jobseeker while preserving other tags.
   * At least one tag name must be given.
 
 **Notes:**
-{:#untagj-notes}
+{: #untagj-notes}
 
 * Tag names are _case-sensitive_.
 * Tags the client doesn't have are ignored _silently_.
 
 **Examples:**
-{:#untagj-examples}
+{: #untagj-examples}
 
 * `untagj 1 java` removes `java` from the 1st displayed jobseeker.
 * `untagj 2 python teamwork` removes `python` and `teamwork` from the 2nd displayed jobseeker.
@@ -645,8 +620,7 @@ Removes specified tags from a jobseeker while preserving other tags.
 
 Removes specified tags from a client while preserving other tags.
 
-**Format:** {:#untagc-format}
-`untagc <index> <tag>...`
+**Format:**{: #untagc-format} `untagc <index> <tag>...`
 
 * `<index>`: the index of the client to unhide 
   * must be a positive integer, from 1 to the size of the currently displayed client list,
@@ -655,13 +629,13 @@ Removes specified tags from a client while preserving other tags.
   * At least one tag name must be given.
 
 **Notes:**
-{:#untagc-notes}
+{: #untagc-notes}
 
 * Tag names are _case-sensitive_.
 * Tags the client doesn't have are ignored _silently_.
 
 **Examples:**
-{:#untagc-examples}
+{: #untagc-examples}
 
 * `untagc 1 priority` removes `priority` from the 1st displayed client.
 * `untagc 2 finance technology` removes `finance` and `technology` from the 2nd displayed client.
@@ -670,11 +644,10 @@ Removes specified tags from a client while preserving other tags.
 
 Copies the details of all currently displayed jobseekers to the system clipboard.
 
-**Format:** {:#cpj-format}
-`cpj`
+**Format:**{: #cpj-format} `cpj`
 
 **Notes:**
-{:#cpj-notes}
+{: #cpj-notes}
 
 * The copied details follow the order shown in the jobseeker list.
 * Each jobseeker is copied on a separate line.
@@ -682,7 +655,7 @@ Copies the details of all currently displayed jobseekers to the system clipboard
   If no jobseekers are displayed, the clipboard is cleared.
 
 **Examples:**
-{:#cpj-examples}
+{: #cpj-examples}
 
 * `findj java` followed by `cpj` copies the displayed search results.
 
@@ -690,17 +663,16 @@ Copies the details of all currently displayed jobseekers to the system clipboard
 
 Copies the details of all currently displayed clients to the system clipboard.
 
-**Format:** {:#cpj-format}
-`cpj`
+**Format:**{: #cpj-format} `cpj`
 
 **Notes:**
-{:#cpj-notes}
+{: #cpj-notes}
 
 The notes are the same as `cpj`.
 See [Copying displayed jobseekers: `cpj` - Notes](#cpj-notes) for notes.
 
 **Examples:**
-{:#cpj-examples}
+{: #cpj-examples}
 
 * `findc technology` followed by `cpc` copies the displayed search results.
 
