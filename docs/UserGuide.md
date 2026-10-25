@@ -56,7 +56,7 @@ applications.
 
 <div markdown="block" class="alert alert-info">
 
-:**information_source: Notes about the command format:**
+**:information_source: Notes about the command format:**
 
 * Words inside angle bracket `<field name>` are the parameters to be supplied by the user,
   hereby called _fields_.
