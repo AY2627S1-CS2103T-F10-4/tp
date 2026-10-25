@@ -99,6 +99,14 @@ public class FindClientCommandTest {
     }
 
     /**
+     * Checks that tags are searched for clients too: only Brenda and Diana are tagged "partner".
+     */
+    @Test
+    public void execute_tagKeyword_clientsFound() {
+        assertFindSuccess("partner", List.of(BRENDA, DIANA));
+    }
+
+    /**
      * Checks that {@code findc} leaves the jobseeker list alone. {@code ModelManager#equals} does not
      * compare filtered lists, so {@code assertCommandSuccess} alone would not notice if this command
      * filtered jobseekers by mistake. {@code "Alice"} matches a jobseeker but no client, so a mix-up

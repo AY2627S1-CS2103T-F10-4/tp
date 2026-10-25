@@ -251,7 +251,7 @@ Examples:
 
 ### Finding jobseekers: `findj`
 
-Finds jobseekers whose name, phone number or email contains any of the given keywords.
+Finds jobseekers whose name, phone number, email or tags contain any of the given keywords.
 
 Format: `findj KEYWORD [MORE_KEYWORDS]…​`
 
@@ -259,7 +259,7 @@ Format: `findj KEYWORD [MORE_KEYWORDS]…​`
 * The search is case-insensitive; for example, `hans` matches `Hans`.
 * Partial words match; for example, `Han` matches `Hans`, and `9435` matches the phone number `94351253`.
 * Keyword order does not matter; for example, `Hans Bo` matches `Bo Hans`.
-* Only the name, phone number and email are searched. Addresses, remarks and tags are not.
+* Only the name, phone number, email and tags are searched. Addresses and remarks are not.
 * Each keyword must match within a single field; for example, `Yeoh8743` does not match a jobseeker named `Alex Yeoh` whose phone number is `87438807`.
 * Jobseekers matching at least one keyword are returned (an `OR` search); for example, `Hans Bo` returns `Hans Gruber` and `Bo Yang`.
 * Hidden jobseekers are not searched. Use [`findhj`](#finding-hidden-jobseekers-findhj) to search them.
@@ -269,10 +269,11 @@ Examples:
 * `findj alex david` returns `Alex Yeoh` and `David Li`.
 * `findj li` returns `Charlotte Oliveiro` and `David Li`, since `li` appears inside both names.
 * `findj 9103` returns `David Li`, whose phone number is `91031282`.
+* `findj friends` returns `Alex Yeoh` and `Bernice Yu`, who are both tagged `friends`.
 
 ### Finding clients: `findc`
 
-Finds clients whose name, phone number or email contains any of the given keywords.
+Finds clients whose name, phone number, email or tags contain any of the given keywords.
 
 Format: `findc KEYWORD [MORE_KEYWORDS]…​`
 
@@ -283,6 +284,7 @@ Format: `findc KEYWORD [MORE_KEYWORDS]…​`
 Examples:
 * `findc roy` returns `Roy Balakrishnan`.
 * `findc irfan@example.com` returns `Irfan Ibrahim`.
+* `findc colleagues` returns `Roy Balakrishnan`, who is tagged `colleagues`.
 
 ### Hiding a jobseeker: `hidej`
 
@@ -354,7 +356,7 @@ Format: `listhc`
 
 ### Finding hidden jobseekers: `findhj`
 
-Finds hidden jobseekers whose name, phone number or email contains any of the given keywords.
+Finds hidden jobseekers whose name, phone number, email or tags contain any of the given keywords.
 
 Format: `findhj KEYWORD [MORE_KEYWORDS]…​`
 
@@ -367,7 +369,7 @@ Examples:
 
 ### Finding hidden clients: `findhc`
 
-Finds hidden clients whose name, phone number or email contains any of the given keywords.
+Finds hidden clients whose name, phone number, email or tags contain any of the given keywords.
 
 Format: `findhc KEYWORD [MORE_KEYWORDS]…​`
 

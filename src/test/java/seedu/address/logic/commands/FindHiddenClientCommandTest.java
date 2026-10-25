@@ -87,6 +87,15 @@ public class FindHiddenClientCommandTest {
         assertFindSuccess(prepareModel(), "Adrian Brenda", List.of(hiddenBrenda));
     }
 
+    /**
+     * Adrian and Brenda are both tagged "employer", but only Brenda is hidden, so a tag search must
+     * still leave out unhidden clients.
+     */
+    @Test
+    public void execute_tagMatchesHiddenAndUnhidden_onlyHiddenFound() {
+        assertFindSuccess(prepareModel(), "employer", List.of(hiddenBrenda));
+    }
+
     @Test
     public void execute_multipleKeywords_allMatchingHiddenClientsFound() {
         assertFindSuccess(prepareModel(), "Brenda Cedric", List.of(hiddenBrenda, hiddenCedric));

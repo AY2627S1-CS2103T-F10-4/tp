@@ -6,13 +6,15 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import seedu.address.commons.util.ToStringBuilder;
 
 /**
- * Tests that a {@code Person}'s name, phone number or email contains any of the keywords given,
- * ignoring case. For example, the keyword {@code "lic"} matches the name {@code "Alice Tan"},
- * and {@code "9435"} matches the phone number {@code "94351253"}.
+ * Tests that a {@code Person}'s name, phone number, email or any of their tags contains any of the
+ * keywords given, ignoring case. For example, the keyword {@code "lic"} matches the name
+ * {@code "Alice Tan"}, {@code "9435"} matches the phone number {@code "94351253"}, and
+ * {@code "friend"} matches the tag {@code "friends"}.
  */
 public class PersonContainsKeywordsPredicate implements Predicate<Person> {
     public static final String MESSAGE_BLANK_KEYWORD = "Keywords should not be blank";
@@ -38,11 +40,15 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
         // Locale.ROOT keeps case folding the same on every machine. If this was omitted, under the
         // default locale on a Turkish system for example, "ALICE".toLowerCase() would have given
         // "alıce" (dotless i), which would not match "alice".
-        // Each field is checked on its own, so a keyword cannot match across two fields.
-        List<String> searchableFields = List.of(
+        // Each field is checked on its own, so a keyword cannot match across two fields. Each tag
+        // counts as a field of its own too, so a keyword cannot match across two tags either.
+        Stream<String> contactFields = Stream.of(
                 person.getName().fullName.toLowerCase(Locale.ROOT),
                 person.getPhone().value,
                 person.getEmail().value.toLowerCase(Locale.ROOT));
+        Stream<String> tagNames = person.getTags().stream()
+                .map(tag -> tag.tagName.toLowerCase(Locale.ROOT));
+        List<String> searchableFields = Stream.concat(contactFields, tagNames).toList();
         return keywords.stream()
                 .map(keyword -> keyword.toLowerCase(Locale.ROOT))
                 .anyMatch(keyword -> searchableFields.stream().anyMatch(field -> field.contains(keyword)));
