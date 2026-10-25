@@ -26,14 +26,6 @@ applications.
 
 1.  Open a terminal at the application home folder, and run the following command:
 
-    #### Windows
-
-    ```bat
-    java -jar addressbook.jar
-    ```
-
-    #### Linux & macOS
-
     ```bash
     java -jar addressbook.jar
     ```
