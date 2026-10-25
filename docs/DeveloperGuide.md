@@ -157,6 +157,28 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Edit jobseeker feature
+
+The `editj` command updates a jobseeker identified by their one-based index in the currently displayed jobseeker list. `AddressBookParser` delegates to `EditCommandParser`, which creates an `EditJobseekerCommand` containing an `Index` and a defensive copy of an `EditJobseekerDescriptor`.
+
+The following sequence diagram focuses on successful execution of `editj 1 n/Alice r/Available`, after parsing has created the command. Local aliases `target` and `edited` represent the original and replacement jobseekers. Parsing, error paths, and storage details are explained below; `...` indicates omitted parameters.
+
+![Sequence for editing a jobseeker](images/EditJobseekerSequenceDiagram.png)
+
+#### Parsing and optional fields
+
+`EditCommandParser` tokenizes the arguments using `ArgumentTokenizer`, parses the index with `ParserUtil.parseIndex()`, and rejects repeated `n/`, `p/`, `e/`, `a/`, or `r/` prefixes. It validates the supplied fields and populates `EditJobseekerDescriptor`. Invalid input or a descriptor with no supplied fields causes a `ParseException` before execution.
+
+Unspecified fields remain unchanged. For remarks, an omitted `r/` leaves the descriptor's remark unset, while an empty `r/` supplies `new Remark("")` to clear the existing remark. Supplied tags replace the existing set; `t/` alone supplies an empty set to clear all tags.
+
+#### Execution, filtering, and persistence
+
+1. `EditJobseekerCommand` reads `Model.getFilteredJobseekerList()` and rejects an index outside the displayed list with a `CommandException`.
+2. `createEditedJobseeker()` combines supplied values with the original jobseeker's unchanged fields and preserves `isHidden()`.
+3. If the edited jobseeker has a different identity according to `isSamePerson()`, the command calls `Model.hasJobseeker()` and rejects a duplicate before modifying the model.
+4. The command calls `Model.setJobseeker()` and resets the filter using `Model.PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS`. Editing a hidden jobseeker therefore keeps that jobseeker hidden and returns the view to the normal list.
+5. After the command returns, `LogicManager` saves the address book through `Storage`. Parsing or execution failures skip saving; a storage failure is reported as a `CommandException` after the model has been updated.
+
 ### Tag/untag feature
 
 The tag/untag commands add or remove tags for a jobseeker or client identified by their one-based index in the currently displayed list. Each command accepts `INDEX TAG [MORE_TAGS]...`, with tags separated by whitespace.
