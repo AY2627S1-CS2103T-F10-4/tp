@@ -686,7 +686,9 @@ Use the up and down arrow keys to revisit commands from your command history.
 
 ### Autocomplete commands
 
-Type part of a command (e.g. `list`) to see suggestions. Use **Up/Down** to select one, then **Tab** or **Enter** to complete it. Press **Enter** again to run the command, or **Escape** to dismiss suggestions.
+Type part of a command (e.g. `list`) to see suggestions. Use `Up`/`Down` to select one,
+then `Tab` or `Enter` to complete it.
+Press `Enter` again to run the command, or `Escape` to dismiss suggestions.
 
 ### Editing the data file
 
