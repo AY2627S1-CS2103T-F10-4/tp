@@ -24,9 +24,20 @@ applications.
 
 1.  Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
 
-1.  Open a terminal at the application home folder, and run the following command:
+1.  Open your terminal and run the following commands,
+    replacing `HOME` with the path to your application home folder:
+
+    **Windows**
+
+    ```bat
+    cd /D HOME
+    java -jar addressbook.jar
+    ```
+
+    **Linux and macOS**
 
     ```bash
+    cd HOME
     java -jar addressbook.jar
     ```
 
@@ -39,14 +50,16 @@ applications.
 
     Some example commands you can try:
 
-    * `listj` : Lists all unhidden jobseekers.
-    * `listc` : Lists all unhidden clients.
-    * `clearj` : Deletes all jobseekers.
-    * `clearc` : Deletes all clients.
-    * `addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a jobseeker named `John Doe` to the Address Book.
-    * `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road r/Hiring engineers t/employer` : Adds a client named `Jane Tan` with a remark and tag.
-    * `deletej 3` : Deletes the third jobseeker shown in the current list.
-    * `exit` : Exits the app.
+    * `listj`: Lists all unhidden jobseekers.
+    * `listc`: Lists all unhidden clients.
+    * `clearj`: Deletes all jobseekers.
+    * `clearc`: Deletes all clients.
+    * `addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`:
+      Adds a jobseeker named `John Doe` to the Address Book.
+    * `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road r/Hiring engineers t/employer`:
+      Adds a client named `Jane Tan` with a remark and tag.
+    * `deletej 3`: Deletes the third jobseeker shown in the current list.
+    * `exit`: Exits the app.
 
 1.  Refer to the [Features](#features) section below for details of each command.
 
@@ -75,10 +88,10 @@ applications.
   For example, if the command specifies `n/<name> p/<phone number>`, `p/<phone number> n/<name>`
   is also acceptable.
 
-  For `editj`, `editc`, `tagj`, `untagj`, `tagc`, and `untagc`, 
+  For `editj`, `editc`, `tagj`, `tagc`, `untagj`, and `untagc`, 
   the index must come first, followed by the fields or tags to update.
 * Extraneous parameters for commands that take no parameters,
-  such as `help`, `listj`, `listc`, `exit`, and `clear`, are ignored.
+  such as `help`, `exit`, `listj`, `listc`, `clearj`, and `clearc`, are ignored.
 
   For example, `help 123` is interpreted as `help`.
 * If you are using a PDF version of this document, be careful when copying and pasting commands
@@ -120,6 +133,7 @@ Jobseeker contacts contains the following values, and their corresponding constr
 * Remarks about the individual
   * can be any value
 * Tags
+  * can have multiple unique tags
   * See [Managing tags](#managing-tags) for more details about tags.
 
 Client contacts contains the following values, and their corresponding constraints:
@@ -137,6 +151,7 @@ Client contacts contains the following values, and their corresponding constrain
 * Remarks about the individual
   * can be any value
 * Tags
+  * can have multiple unique tags
   * See [Managing tags](#managing-tags) for more details about tags.
 
 Contacts are identified by their phone number **and** their email address.
@@ -144,7 +159,7 @@ Contacts are identified by their phone number **and** their email address.
 * Contacts with the same phone number and email address are treated as the same contacts,
   even if their other fields differs.
 
-* If contacts only have the same phone number or email address,
+* If contacts only have **either** the same phone number or email address,
   they are treated as different contacts.
 
 #### Adding a jobseeker: `addj`
@@ -372,7 +387,7 @@ To search among hidden jobseekers, see [Finding hidden jobseekers: `findhj`](#fi
 
 #### Finding clients: `findc`
 
-Finds jobseekers whose name, phone number or email contains any of the given keywords.
+Finds clients whose name, phone number or email contains any of the given keywords.
 
 The search is case-insensitive and is inclusive.
 
@@ -450,7 +465,10 @@ see [Finding hidden clients: `findhc`](#finding-hidden-clients-findhc).
 Make a hidden jobseeker visible to [`listj`](#listing-jobseekers-listj)
 and [`findj`](#finding-jobseekers-findj) again.
 
-For more information on hidden jobseekers, see [Hiding a jobseekers: `hidej`](#hiding-a-jobseeker-hidej).
+This command must be used while [`listhj`](#listing-hidden-jobseekers-listhj)
+or [`findhj`](#finding-hidden-jobseekers-findhj) is in effect.
+
+For more information on hidden jobseekers, see [Hiding a jobseeker: `hidej`](#hiding-a-jobseeker-hidej).
 
 **Format:**{: #unhidej-format} `unhidej <index>`
 
@@ -468,7 +486,10 @@ For more information on hidden jobseekers, see [Hiding a jobseekers: `hidej`](#h
 Make a hidden client visible to [`listc`](#listing-clients-listc)
 and [`findc`](#finding-clients-findc) again.
 
-For more information on hidden clients, see [Hiding a clients: `hidej`](#hiding-a-client-hidec).
+This command must be used while [`listhc`](#listing-hidden-clients-listhc)
+or [`findhc`](#finding-hidden-clients-findhc) is in effect.
+
+For more information on hidden clients, see [Hiding a client: `hidec`](#hiding-a-client-hidec).
 
 **Format:**{: #unhidec-format} `unhidec <index>`
 
@@ -542,6 +563,12 @@ Tags contains the following attributes, and their corresponding constraints:
 
 * Name
   * must contain only alphanumeric characters
+  * is _case-sensitive_, unlike the parameters to `findj` and `findc`
+
+Tags are identified by their names, i.e. 2 tags with the same name,
+_case-sensitive_, are considered the same tags.
+
+A jobseeker or client contact can have multiple tags, or no tags at all.
 
 #### Adding jobseeker tags: `tagj`
 
@@ -549,17 +576,11 @@ Adds tags to a jobseeker while preserving existing tags.
 
 **Format:**{: #tagj-format} `tagj <index> <tag>...`
 
-* `<index>`: the index of the jobseeker to unhide
+* `<index>`: the index of the jobseeker to add the tag to
   * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
     inclusive
 * `<tag>`: the name of a tag to add
   * At least one tag name must be given.
-
-**Notes:**
-{: #tagj-notes}
-
-* Tag names are _case-sensitive_.
-* Tags the jobseeker already has are ignored _silently_.
 
 **Examples:**
 {: #tagj-examples}
@@ -573,17 +594,11 @@ Adds tags to a client while preserving existing tags.
 
 **Format:**{: #tagc-format} `tagc <index> <tag>...`
 
-* `<index>`: the index of the client to unhide
+* `<index>`: the index of the client to add the tag to
   * must be a positive integer, from 1 to the size of the currently displayed client list,
     inclusive
 * `<tag>`: the name of a tag to add
   * At least one tag name must be given.
-
-**Notes:**
-{: #tagc-notes}
-
-* Tag names are _case-sensitive_.
-* Tags the client already has are ignored _silently_.
 
 **Examples:**
 {: #tagc-examples}
@@ -597,17 +612,11 @@ Removes specified tags from a jobseeker while preserving other tags.
 
 **Format:**{: #untagj-format} `untagj <index> <tag>...`
 
-* `<index>`: the index of the jobseeker to unhide
+* `<index>`: the index of the jobseeker to remove the tag from
   * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
     inclusive
-* `<tag>`: the name of a tag to add
-  * At least one tag name must be given.
-
-**Notes:**
-{: #untagj-notes}
-
-* Tag names are _case-sensitive_.
-* Tags the client doesn't have are ignored _silently_.
+  * `<tag>`: the name of a tag to add
+    * At least one tag name must be given.
 
 **Examples:**
 {: #untagj-examples}
@@ -622,23 +631,19 @@ Removes specified tags from a client while preserving other tags.
 
 **Format:**{: #untagc-format} `untagc <index> <tag>...`
 
-* `<index>`: the index of the client to unhide 
+* `<index>`: the index of the client to remove the tag from 
   * must be a positive integer, from 1 to the size of the currently displayed client list,
     inclusive
 * `<tag>`: the name of a tag to add
   * At least one tag name must be given.
-
-**Notes:**
-{: #untagc-notes}
-
-* Tag names are _case-sensitive_.
-* Tags the client doesn't have are ignored _silently_.
 
 **Examples:**
 {: #untagc-examples}
 
 * `untagc 1 priority` removes `priority` from the 1st displayed client.
 * `untagc 2 finance technology` removes `finance` and `technology` from the 2nd displayed client.
+
+### Miscellaneous commands
 
 #### Copying displayed jobseekers: `cpj`
 
@@ -663,16 +668,16 @@ Copies the details of all currently displayed jobseekers to the system clipboard
 
 Copies the details of all currently displayed clients to the system clipboard.
 
-**Format:**{: #cpj-format} `cpj`
+**Format:**{: #cpc-format} `cpc`
 
 **Notes:**
-{: #cpj-notes}
+{: #cpc-notes}
 
 The notes are the same as `cpj`.
 See [Copying displayed jobseekers: `cpj` - Notes](#cpj-notes) for notes.
 
 **Examples:**
-{: #cpj-examples}
+{: #cpc-examples}
 
 * `findc technology` followed by `cpc` copies the displayed search results.
 
@@ -732,34 +737,33 @@ _Details coming soon ..._
 
 ## Command summary
 
-| Action                                                         | Format                                                                                             |
-|----------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
-| [Help](#viewing-help-help)                                     | `help`                                                                                             |
-| [Exit](#exiting-the-program-exit)                              | `exit`                                                                                             |
-| [Add jobseeker](#adding-a-jobseeker-addj)                      | `addj n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag>]...`                  |
-| [Add client](#adding-a-client-addc)                            | `addc n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag>]...`                  |
-| [Edit jobseeker](#editing-a-jobseeker-editj)                   | `editj <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [r/<remarks>] [t/<tag>]...` |
-| [Edit client](#editing-a-client-editc)                         | `editc <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [r/<remarks>] [t/<tag>]...` |
-| [Clear jobseekers](#clearing-all-jobseekers-clearj)            | `clearj`                                                                                           |
-| [Clear clients](#clearing-all-clients-clearc)                  | `clearc`                                                                                           |
-| [Delete jobseekers](#deleting-a-jobseeker-deletej)             | `deletej <index>`                                                                                  |
-| [Delete clients](#deleting-a-client-deletec)                   | `deletec <index>`                                                                                  |
-| [List jobseekers](#listing-jobseekers-listj)                   | `listj`                                                                                            |
-| [List clients](#listing-clients-listc)                         | `listc`                                                                                            |
-| [Find jobseekers](#finding-jobseekers-findj)                   | `findj <keyword>...`                                                                               |
-| [Find clients](#finding-clients-findc)                         | `findc <keyword>...`                                                                               |
-| [Find hidden jobseekers](#finding-hidden-jobseekers-findhj)    | `findhj <keyword>...`                                                                              |
-| [Find hidden clients](#finding-hidden-clients-findhc)          | `findhc <keyword>...`                                                                              |
-| [Hide jobseeker](#hiding-a-jobseeker-hidej)                    | `hidej <index>`                                                                                    |
-| [Hide client](#hiding-a-client-hidec)                          | `hidec <index>`                                                                                    |
-| [Unhide jobseeker](#unhiding-a-jobseeker-unhidej)              | `unhidej <index>`                                                                                  |
-| [Unhide client](#unhiding-a-client-unhidec)                    | `unhidec <index>`                                                                                  |
-| [List hidden jobseekers](#listing-hidden-jobseekers-listhj)    | `listhj`                                                                                           |
-| [List hidden clients](#listing-hidden-clients-listhc)          | `listhc`                                                                                           |
-| [Copy displayed jobseekers](#copying-displayed-jobseekers-cpj) | `cpj`                                                                                              |
-| [Copy displayed clients](#copying-displayed-clients-cpc)       | `cpc`                                                                                              |
-| [Add jobseeker tags](#adding-jobseeker-tags-tagj)              | `tagj <index> <tag>...`                                                                            |
-| [Add client tags](#adding-client-tags-tagc)                    | `tagc <index> <tag>...`                                                                            |
-| [Remove jobseeker tags](#removing-jobseeker-tags-untagj)       | `untagj <index>...`                                                                                |
-| [Remove client tags](#removing-client-tags-untagc)             | `untagc <index> <tag>...`                                                                          |
-
+| Action                                                         | Format                                                                                                  |
+|----------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| [Help](#viewing-help-help)                                     | `help`                                                                                                  |
+| [Exit](#exiting-the-program-exit)                              | `exit`                                                                                                  |
+| [Add jobseeker](#adding-a-jobseeker-addj)                      | `addj n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag>]...`                       |
+| [Add client](#adding-a-client-addc)                            | `addc n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag>]...`                       |
+| [Edit jobseeker](#editing-a-jobseeker-editj)                   | `editj <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [r/<remarks>] [t/<tag>]...`      |
+| [Edit client](#editing-a-client-editc)                         | `editc <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [r/<remarks>] [t/<tag>]...`      |
+| [Clear jobseekers](#clearing-all-jobseekers-clearj)            | `clearj`                                                                                                |
+| [Clear clients](#clearing-all-clients-clearc)                  | `clearc`                                                                                                |
+| [Delete jobseekers](#deleting-a-jobseeker-deletej)             | `deletej <index>`                                                                                       |
+| [Delete clients](#deleting-a-client-deletec)                   | `deletec <index>`                                                                                       |
+| [List jobseekers](#listing-jobseekers-listj)                   | `listj`                                                                                                 |
+| [List clients](#listing-clients-listc)                         | `listc`                                                                                                 |
+| [Find jobseekers](#finding-jobseekers-findj)                   | `findj <keyword>...`                                                                                    |
+| [Find clients](#finding-clients-findc)                         | `findc <keyword>...`                                                                                    |
+| [Find hidden jobseekers](#finding-hidden-jobseekers-findhj)    | `findhj <keyword>...`                                                                                   |
+| [Find hidden clients](#finding-hidden-clients-findhc)          | `findhc <keyword>...`                                                                                   |
+| [Hide jobseeker](#hiding-a-jobseeker-hidej)                    | `hidej <index>`                                                                                         |
+| [Hide client](#hiding-a-client-hidec)                          | `hidec <index>`                                                                                         |
+| [Unhide jobseeker](#unhiding-a-jobseeker-unhidej)              | `unhidej <index>`                                                                                       |
+| [Unhide client](#unhiding-a-client-unhidec)                    | `unhidec <index>`                                                                                       |
+| [List hidden jobseekers](#listing-hidden-jobseekers-listhj)    | `listhj`                                                                                                |
+| [List hidden clients](#listing-hidden-clients-listhc)          | `listhc`                                                                                                |
+| [Add jobseeker tags](#adding-jobseeker-tags-tagj)              | `tagj <index> <tag>...`                                                                                 |
+| [Add client tags](#adding-client-tags-tagc)                    | `tagc <index> <tag>...`                                                                                 |
+| [Remove jobseeker tags](#removing-jobseeker-tags-untagj)       | `untagj <index> <tag>...`                                                                               |
+| [Remove client tags](#removing-client-tags-untagc)             | `untagc <index> <tag>...`                                                                               |
+| [Copy displayed jobseekers](#copying-displayed-jobseekers-cpj) | `cpj`                                                                                                   |
+| [Copy displayed clients](#copying-displayed-clients-cpc)       | `cpc`                                                                                                   |
