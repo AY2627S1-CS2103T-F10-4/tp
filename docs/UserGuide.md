@@ -191,7 +191,7 @@ The fields are the same as `addj`. See [Adding a jobseeker: `addj` - Format](#ad
 * `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road`
 * `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road r/Hiring software engineers t/employer t/technology`
 
-### Editing a jobseeker: `editj`
+#### Editing a jobseeker: `editj`
 
 Edits an existing jobseeker in the currently displayed jobseeker list.
 
@@ -232,7 +232,7 @@ or `<tag>` must be provided.
 * Clear the second displayed jobseeker's remark and tags:
   `editj 2 r/ t/`
 
-### Editing a client: `editc`
+#### Editing a client: `editc`
 
 Edits an existing client in the currently displayed client list.
 
@@ -257,7 +257,7 @@ The notes are the same as `editj`. See [Editing a jobseeker: `editj` - Notes](#e
 * Clear that client's remark:
   `editc 1 r/`
 
-### Deleting a jobseeker: `deletej`
+#### Deleting a jobseeker: `deletej`
 
 Deletes a jobseeker from the currently displayed jobseeker list.
 
@@ -272,7 +272,7 @@ Deletes a jobseeker from the currently displayed jobseeker list.
 
 * Delete the second displayed jobseeker: `deletej 2`
 
-### Deleting a client: `deletec`
+#### Deleting a client: `deletec`
 
 Deletes a client from the currently displayed client list.
 
@@ -287,7 +287,7 @@ Deletes a client from the currently displayed client list.
 
 * Delete the third displayed client: `deletec 3`
 
-### Clearing all jobseekers: `clearj`
+#### Clearing all jobseekers: `clearj`
 
 Clears all contacts from the jobseeker list.
 
@@ -295,7 +295,7 @@ This includes contacts that aren't listed in the currently displayed jobseeker l
 
 **Format:**{: #clearj-format} `clearj`
 
-### Clearing all clients: `clearc`
+#### Clearing all clients: `clearc`
 
 Clears all contacts from the client list.
 
@@ -330,7 +330,7 @@ To list hidden clients, see [Listing hidden clients: `listhc`](#listing-hidden-c
 
 **Format:**{: #listc-format} `listc`
 
-### Finding jobseekers: `findj`
+#### Finding jobseekers: `findj`
 
 Finds jobseekers whose name, phone number or email contains any of the given keywords.
 
@@ -370,7 +370,7 @@ To search among hidden jobseekers, see [Finding hidden jobseekers: `findhj`](#fi
 * `findj li` returns `Charlotte Oliveiro` and `David Li`, since `li` appears inside both names.
 * `findj 9103` returns `David Li`, whose phone number is `91031282`.
 
-### Finding clients: `findc`
+#### Finding clients: `findc`
 
 Finds jobseekers whose name, phone number or email contains any of the given keywords.
 
@@ -396,7 +396,7 @@ The notes are the same as `findj`. See [Finding jobseekers: `findj` - Notes](#fi
 * `findc roy` returns `Roy Balakrishnan`.
 * `findc irfan@example.com` returns `Irfan Ibrahim`.
 
-### Hiding a jobseeker: `hidej`
+#### Hiding a jobseeker: `hidej`
 
 Hides the specified jobseeker, so that [`listj`](#listing-jobseekers-listj)
 and [`findj`](#finding-jobseekers-findj) no longer show them.
@@ -421,7 +421,7 @@ see [Finding hidden jobseekers: `findhj`](#finding-hidden-jobseekers-findhj).
 * `listj` followed by `hidej 2` hides the 2nd jobseeker in the jobseeker list.
 * `findj Betsy` followed by `hidej 1` hides the 1st jobseeker in the results of the `findj` command.
 
-### Hiding a client: `hidec`
+#### Hiding a client: `hidec`
 
 Hides the specified client, so that [`listc`](#listing-clients-listc)
 and [`findc`](#finding-clients-findc) no longer show them.
@@ -445,7 +445,7 @@ see [Finding hidden clients: `findhc`](#finding-hidden-clients-findhc).
 
 * `listc` followed by `hidec 1` hides the 1st client in the client list.
 
-### Unhiding a jobseeker: `unhidej`
+#### Unhiding a jobseeker: `unhidej`
 
 Make a hidden jobseeker visible to [`listj`](#listing-jobseekers-listj)
 and [`findj`](#finding-jobseekers-findj) again.
@@ -463,7 +463,7 @@ For more information on hidden jobseekers, see [Hiding a jobseekers: `hidej`](#h
 
 * `listhj` followed by `unhidej 1` restores the first displayed hidden jobseeker.
 
-### Unhiding a client: `unhidec`
+#### Unhiding a client: `unhidec`
 
 Make a hidden client visible to [`listc`](#listing-clients-listc)
 and [`findc`](#finding-clients-findc) again.
@@ -481,7 +481,7 @@ For more information on hidden clients, see [Hiding a clients: `hidej`](#hiding-
 
 * `listhc` followed by `unhidec 1` restores the first displayed hidden client.
 
-### Listing hidden jobseekers: `listhj`
+#### Listing hidden jobseekers: `listhj`
 
 Shows all _hidden_ jobseekers in the jobseeker list,
 and clears the current jobseeker filter.
@@ -490,7 +490,7 @@ For more information on hidden jobseekers, see [Hiding a jobseeker: `hidej`](#hi
 
 **Format:**{: #listhj-format} `listhj`
 
-### Listing hidden clients: `listhc`
+#### Listing hidden clients: `listhc`
 
 Shows all _hidden_ clients in the client list,
 and clears the current clients filter.
@@ -499,7 +499,7 @@ For more information on hidden clients, see [Hiding a client: `hidec`](#hiding-a
 
 **Format:**{: #listhc-format} `listhc`
 
-### Finding hidden jobseekers: `findhj`
+#### Finding hidden jobseekers: `findhj`
 
 Finds _hidden_ jobseekers whose name, phone number or email contains any of the given keywords.
 
@@ -516,7 +516,7 @@ See [Finding jobseekers: `findj`](#finding-jobseekers-findj) for more details.
 
 * `findhj alex` returns `Alex Yeoh`, if `Alex Yeoh` has been hidden.
 
-### Finding hidden clients: `findhc`
+#### Finding hidden clients: `findhc`
 
 Finds _hidden_ clients whose name, phone number or email contains any of the given keywords.
 
