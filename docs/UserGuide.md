@@ -139,6 +139,9 @@ Format: `cpj [INDEX]`
 
 * Without `INDEX`, copies all displayed jobseekers. With `INDEX`, copies only the specified displayed jobseeker.
 * The index is one-based and refers to the current displayed list.
+* The copied details follow the order shown in the jobseeker list, with each jobseeker on a separate line.
+* The command copies whichever jobseekers are currently displayed, including filtered or hidden results.
+* If no jobseekers are displayed and no `INDEX` is specified, the clipboard is cleared.
 
 Example: `findj java` followed by `cpj 2` copies the second displayed jobseeker.
 
@@ -150,6 +153,9 @@ Format: `cpc [INDEX]`
 
 * Without `INDEX`, copies all displayed clients. With `INDEX`, copies only the specified displayed client.
 * The index is one-based and refers to the current displayed list.
+* The copied details follow the order shown in the client list, with each client on a separate line.
+* The command copies whichever clients are currently displayed, including filtered or hidden results.
+* If no clients are displayed and no `INDEX` is specified, the clipboard is cleared.
 
 Example: `findc technology` followed by `cpc 1` copies the first displayed client.
 
