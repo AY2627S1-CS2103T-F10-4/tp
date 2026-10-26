@@ -92,6 +92,15 @@ public class FindHiddenJobseekerCommandTest {
         assertFindSuccess(prepareModel(), "Benson Carl", List.of(hiddenBenson, hiddenCarl));
     }
 
+    /**
+     * Alice and Benson are both tagged "friends", but only Benson is hidden, so a tag search must
+     * still leave out unhidden jobseekers.
+     */
+    @Test
+    public void execute_tagMatchesHiddenAndUnhidden_onlyHiddenFound() {
+        assertFindSuccess(prepareModel(), "friends", List.of(hiddenBenson));
+    }
+
     @Test
     public void execute_keywordMatchesOnlyUnhidden_noJobseekerFound() {
         assertFindSuccess(prepareModel(), "Alice", List.of());
