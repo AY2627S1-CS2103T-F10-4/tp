@@ -29,14 +29,17 @@ public class CopyClientCommand extends Command {
 
     private final Optional<Index> targetIndex;
 
+    /** Creates a command that copies all currently displayed clients. */
     public CopyClientCommand() {
         this(Optional.empty());
     }
 
+    /** Creates a command that copies the client at the specified displayed index. */
     public CopyClientCommand(Index targetIndex) {
         this(Optional.of(requireNonNull(targetIndex)));
     }
 
+    /** Stores the optional displayed index; an empty value means copy all displayed clients. */
     private CopyClientCommand(Optional<Index> targetIndex) {
         this.targetIndex = requireNonNull(targetIndex);
     }

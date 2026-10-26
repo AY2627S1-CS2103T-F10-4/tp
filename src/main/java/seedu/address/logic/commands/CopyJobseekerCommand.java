@@ -29,14 +29,17 @@ public class CopyJobseekerCommand extends Command {
 
     private final Optional<Index> targetIndex;
 
+    /** Creates a command that copies all currently displayed jobseekers. */
     public CopyJobseekerCommand() {
         this(Optional.empty());
     }
 
+    /** Creates a command that copies the jobseeker at the specified displayed index. */
     public CopyJobseekerCommand(Index targetIndex) {
         this(Optional.of(requireNonNull(targetIndex)));
     }
 
+    /** Stores the optional displayed index; an empty value means copy all displayed jobseekers. */
     private CopyJobseekerCommand(Optional<Index> targetIndex) {
         this.targetIndex = requireNonNull(targetIndex);
     }
