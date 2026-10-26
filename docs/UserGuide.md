@@ -347,7 +347,7 @@ To list hidden clients, see [Listing hidden clients: `listhc`](#listing-hidden-c
 
 #### Finding jobseekers: `findj`
 
-Finds jobseekers whose name, phone number or email contains any of the given keywords.
+Finds jobseekers whose name, phone number, email or tags contain any of the given keywords.
 
 The search is case-insensitive and is inclusive, as in:
 
@@ -372,7 +372,7 @@ To search among hidden jobseekers, see [Finding hidden jobseekers: `findhj`](#fi
 * Keyword order does not matter.
 
   For example, `Hans Bo` is equivalent to `Bo Hans`.
-* Only the name, phone number and email are searched. Addresses, remarks and tags are not.
+* Only the name, phone number, email and tags are searched. Addresses and remarks are not.
 * Each keyword must match within a single field.
 
   For example, `Yeoh8743` does not match a jobseeker named `Alex Yeoh`
@@ -384,10 +384,11 @@ To search among hidden jobseekers, see [Finding hidden jobseekers: `findhj`](#fi
 * `findj alex david` returns `Alex Yeoh` and `David Li`.
 * `findj li` returns `Charlotte Oliveiro` and `David Li`, since `li` appears inside both names.
 * `findj 9103` returns `David Li`, whose phone number is `91031282`.
+* `findj friends` returns `Alex Yeoh` and `Bernice Yu`, who are both tagged `friends`.
 
 #### Finding clients: `findc`
 
-Finds clients whose name, phone number or email contains any of the given keywords.
+Finds clients whose name, phone number, email or tags contain any of the given keywords.
 
 The search is case-insensitive and is inclusive.
 
@@ -410,6 +411,7 @@ The notes are the same as `findj`. See [Finding jobseekers: `findj` - Notes](#fi
 
 * `findc roy` returns `Roy Balakrishnan`.
 * `findc irfan@example.com` returns `Irfan Ibrahim`.
+* `findc colleagues` returns `Roy Balakrishnan`, who is tagged `colleagues`.
 
 #### Hiding a jobseeker: `hidej`
 
@@ -522,7 +524,7 @@ For more information on hidden clients, see [Hiding a client: `hidec`](#hiding-a
 
 #### Finding hidden jobseekers: `findhj`
 
-Finds _hidden_ jobseekers whose name, phone number or email contains any of the given keywords.
+Finds _hidden_ jobseekers whose name, phone number, email or tags contain any of the given keywords.
 
 The search logic is the same as `findj`.
 See [Finding jobseekers: `findj`](#finding-jobseekers-findj) for more details.
@@ -539,7 +541,7 @@ See [Finding jobseekers: `findj`](#finding-jobseekers-findj) for more details.
 
 #### Finding hidden clients: `findhc`
 
-Finds _hidden_ clients whose name, phone number or email contains any of the given keywords.
+Finds _hidden_ clients whose name, phone number, email or tags contain any of the given keywords.
 
 The search logic is the same as `findc`.
 See [Finding clients: `findc`](#finding-clients-findc) for more details.
