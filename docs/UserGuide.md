@@ -133,29 +133,25 @@ Format: `listc`
 
 ### Copying displayed jobseekers: `cpj`
 
-Copies the details of all currently displayed jobseekers to the system clipboard.
+Copies the details of displayed jobseekers to the system clipboard.
 
-Format: `cpj`
+Format: `cpj [INDEX]`
 
-* The copied details follow the order shown in the jobseeker list.
-* Each jobseeker is copied on a separate line.
-* The command copies whichever jobseekers are currently displayed, including filtered or hidden results.
-* If no jobseekers are displayed, the clipboard is cleared.
+* Without `INDEX`, copies all displayed jobseekers. With `INDEX`, copies only the specified displayed jobseeker.
+* The index is one-based and refers to the current displayed list.
 
-Example: `findj java` followed by `cpj` copies the displayed search results.
+Example: `findj java` followed by `cpj 2` copies the second displayed jobseeker.
 
 ### Copying displayed clients: `cpc`
 
-Copies the details of all currently displayed clients to the system clipboard.
+Copies the details of displayed clients to the system clipboard.
 
-Format: `cpc`
+Format: `cpc [INDEX]`
 
-* The copied details follow the order shown in the client list.
-* Each client is copied on a separate line.
-* The command copies whichever clients are currently displayed, including filtered or hidden results.
-* If no clients are displayed, the clipboard is cleared.
+* Without `INDEX`, copies all displayed clients. With `INDEX`, copies only the specified displayed client.
+* The index is one-based and refers to the current displayed list.
 
-Example: `findc technology` followed by `cpc` copies the displayed search results.
+Example: `findc technology` followed by `cpc 1` copies the first displayed client.
 
 ### Editing a jobseeker: `editj`
 
@@ -469,6 +465,6 @@ Action | Format, Examples
 **List clients** | `listc`
 **List hidden jobseekers** | `listhj`
 **List hidden clients** | `listhc`
-**Copy displayed jobseekers** | `cpj`
-**Copy displayed clients** | `cpc`
+**Copy displayed jobseekers** | `cpj [INDEX]`
+**Copy displayed clients** | `cpc [INDEX]`
 **Help** | `help`
