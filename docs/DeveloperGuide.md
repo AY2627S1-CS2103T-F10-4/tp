@@ -206,6 +206,19 @@ All four commands preserve the target's name, phone, email, address, remark, and
 
 After a command returns normally, including a no-change result, `LogicManager` saves the address book through `Storage`. Parsing and execution errors propagate without reaching that save step. Storage interactions are omitted from the sequence diagrams to focus on parsing and tag updates.
 
+### Clipboard feature
+
+The `cpc` and `cpj` commands copy client and jobseeker details to the system clipboard.
+
+| Command | Command class | Parser class |
+| --- | --- | --- |
+| `cpc` | `CopyClientCommand` | `CopyClientCommandParser` |
+| `cpj` | `CopyJobseekerCommand` | `CopyJobseekerCommandParser` |
+
+Without an index, the command copies all persons in the corresponding currently displayed list. With an index, it copies only the indexed person. The index is one-based and refers to the filtered displayed list; an index outside the displayed list causes a `CommandException`.
+
+The command returns the clipboard text through `CommandResult`, and `MainWindow` performs the actual system clipboard update.
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
@@ -354,7 +367,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* *`    | expert user                              | autocomplete my current command based on the app's recommendations               | save time from having to type out the entire command                                                            |
 | `*`      | frequent user                            | customise the layouts of my contacts                                             | scroll through my contacts more efficiently                                                                     |
 | `*`      | user                                     | export my jobseekers' resumes / stored details within the App                    | send these details to my clients easily                                                                         |
-| `*`      | expert user                              | mass copy the details of selected contacts onto my keyboard                      |                                                                                                                 |
+| `*`      | expert user                              | copy the details of all displayed or one selected contact to the clipboard      |                                                                                                                 |
 | `*`      | user                                     | determine which jobseekers have given consent to apply to a specified job        | compare between jobseekers and determine which one to send to my client                                         |
 | `*`      | user working with many clients           | flag/rank clients based on urgency of job postings                               | determine which client to prioritise                                                                            |
 | `*`      | expert user                              | modify the keywords of commands                                                  | easier to remember and faster to type                                                                           |
