@@ -49,6 +49,12 @@ deactivate AddressBookParser
 LogicManager -> DeleteClientCommand : execute(m)
 activate DeleteClientCommand
 
+DeleteClientCommand -> Model : getFilteredClientList()
+activate Model
+
+Model --> DeleteClientCommand
+deactivate Model
+
 DeleteClientCommand -> Model : deleteClient(client)
 activate Model
 

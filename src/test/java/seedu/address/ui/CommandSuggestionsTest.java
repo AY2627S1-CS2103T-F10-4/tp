@@ -15,8 +15,9 @@ public class CommandSuggestionsTest {
     public void suggest_prefix_returnsSortedMatches() {
         assertEquals(List.of("listc", "listhc", "listhj", "listj"), suggestions.suggest("list"));
         assertEquals(List.of("listc", "listhc", "listhj", "listj"), suggestions.suggest("  list"));
-        assertEquals(List.of("editj"), suggestions.suggest("edi"));
-        assertEquals(List.of("clearc", "clearj"), suggestions.suggest("c"));
+        assertEquals(List.of("editc", "editj"), suggestions.suggest("edi"));
+        assertEquals(List.of("clearc", "clearj", "cpc", "cpj"), suggestions.suggest("c"));
+        assertEquals(List.of("cpc", "cpj"), suggestions.suggest("cp"));
     }
 
     /**
