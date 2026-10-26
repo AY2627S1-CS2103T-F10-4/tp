@@ -22,7 +22,7 @@ public class HideClientCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Hides the client identified by the index number used in the displayed client list.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
+            + "Parameters: <index> (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_HIDE_CLIENT_SUCCESS = "Hidden client: %1$s";

@@ -22,7 +22,7 @@ public class UntagJobseekerCommand extends Command {
     public static final String COMMAND_WORD = "untagj";
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Removes tags from the jobseeker identified by their displayed index.\n"
-            + "Parameters: INDEX TAG [MORE_TAGS]...\n"
+            + "Parameters: <index> <tag>...\n"
             + "Example: " + COMMAND_WORD + " 1 java teamwork";
     public static final String MESSAGE_SUCCESS = "Updated jobseeker tags: %1$s";
     public static final String MESSAGE_NO_CHANGE = "This jobseeker does not have any of the specified tags.";

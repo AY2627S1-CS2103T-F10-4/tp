@@ -22,7 +22,7 @@ public class TagClientCommand extends Command {
     public static final String COMMAND_WORD = "tagc";
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Adds tags to the client identified by their displayed index.\n"
-            + "Parameters: INDEX TAG [MORE_TAGS]...\n"
+            + "Parameters: <index> <tag>...\n"
             + "Example: " + COMMAND_WORD + " 1 priority finance";
     public static final String MESSAGE_SUCCESS = "Updated client tags: %1$s";
     public static final String MESSAGE_NO_CHANGE = "This client already has all the specified tags.";
