@@ -13,6 +13,7 @@ public final class CommandCatalogue {
             AddClientCommand.COMMAND_WORD, AddJobseekerCommand.COMMAND_WORD,
             ClearClientCommand.COMMAND_WORD, ClearJobseekerCommand.COMMAND_WORD,
             DeleteClientCommand.COMMAND_WORD, DeleteJobseekerCommand.COMMAND_WORD,
+            CopyClientCommand.COMMAND_WORD, CopyJobseekerCommand.COMMAND_WORD,
             EditJobseekerCommand.COMMAND_WORD, ExitCommand.COMMAND_WORD,
             TagClientCommand.COMMAND_WORD, TagJobseekerCommand.COMMAND_WORD,
             UntagClientCommand.COMMAND_WORD, UntagJobseekerCommand.COMMAND_WORD,

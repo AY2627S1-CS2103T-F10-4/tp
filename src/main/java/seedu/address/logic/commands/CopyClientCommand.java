@@ -2,33 +2,62 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.person.Client;
 
 /**
- * Copies the currently displayed clients to the system clipboard.
+ * Copies the currently displayed clients, or a selected displayed client, to the system clipboard.
  */
 public class CopyClientCommand extends Command {
 
     public static final String COMMAND_WORD = "cpc";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Copies all currently displayed clients to the "
-            + "clipboard.\n"
-            + "Example: " + COMMAND_WORD;
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Copies the currently displayed clients, or the "
+            + "client at the specified index, to the clipboard.\n"
+            + "Parameters: [INDEX] (must be a positive integer)\n"
+            + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_SUCCESS = "Copied %1$d client(s) to clipboard.";
+    public static final String MESSAGE_SUCCESS_SINGLE = "Copied client to clipboard.";
+
+    private final Optional<Index> targetIndex;
+
+    public CopyClientCommand() {
+        this(Optional.empty());
+    }
+
+    public CopyClientCommand(Index targetIndex) {
+        this(Optional.of(requireNonNull(targetIndex)));
+    }
+
+    private CopyClientCommand(Optional<Index> targetIndex) {
+        this.targetIndex = requireNonNull(targetIndex);
+    }
 
     @Override
-    public CommandResult execute(Model model) {
+    public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        String copiedText = model.getFilteredClientList().stream()
+        List<Client> displayedClients = model.getFilteredClientList();
+        if (targetIndex.isPresent()) {
+            int zeroBasedIndex = targetIndex.get().getZeroBased();
+            if (zeroBasedIndex >= displayedClients.size()) {
+                throw new CommandException(Messages.MESSAGE_INVALID_CLIENT_DISPLAYED_INDEX);
+            }
+            return new CommandResult(MESSAGE_SUCCESS_SINGLE, Messages.format(displayedClients.get(zeroBasedIndex)));
+        }
+
+        String copiedText = displayedClients.stream()
                 .map(Messages::format)
                 .collect(Collectors.joining(System.lineSeparator()));
-        int copiedClientCount = model.getFilteredClientList().size();
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS, copiedClientCount), copiedText);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, displayedClients.size()), copiedText);
     }
 }
