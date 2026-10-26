@@ -136,11 +136,22 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_cpc() throws Exception {
         assertTrue(parser.parseCommand(CopyClientCommand.COMMAND_WORD) instanceof CopyClientCommand);
+        assertTrue(parser.parseCommand(CopyClientCommand.COMMAND_WORD + " 1") instanceof CopyClientCommand);
     }
 
     @Test
     public void parseCommand_cpj() throws Exception {
         assertTrue(parser.parseCommand(CopyJobseekerCommand.COMMAND_WORD) instanceof CopyJobseekerCommand);
+        assertTrue(parser.parseCommand(CopyJobseekerCommand.COMMAND_WORD + " 1") instanceof CopyJobseekerCommand);
+    }
+
+    @Test
+    public void parseCommand_copyInvalidIndex_reportsMatchingUsage() {
+        String clientUsage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, CopyClientCommand.MESSAGE_USAGE);
+        String jobseekerUsage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, CopyJobseekerCommand.MESSAGE_USAGE);
+
+        assertThrows(ParseException.class, clientUsage, () -> parser.parseCommand("cpc -1"));
+        assertThrows(ParseException.class, jobseekerUsage, () -> parser.parseCommand("cpj 1 2"));
     }
 
     @Test

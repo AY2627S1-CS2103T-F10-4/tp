@@ -16,7 +16,7 @@ public class CommandSuggestionsTest {
         assertEquals(List.of("listc", "listhc", "listhj", "listj"), suggestions.suggest("list"));
         assertEquals(List.of("listc", "listhc", "listhj", "listj"), suggestions.suggest("  list"));
         assertEquals(List.of("editj"), suggestions.suggest("edi"));
-        assertEquals(List.of("clearc", "clearj"), suggestions.suggest("c"));
+        assertEquals(List.of("clearc", "clearj", "cpc", "cpj"), suggestions.suggest("c"));
     }
 
     /**
