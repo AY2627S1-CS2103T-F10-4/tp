@@ -134,7 +134,6 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        assert false : "Testing that assertions are enabled";
         logger.info("Starting AddressBook " + MainApp.VERSION);
         ui.start(primaryStage);
     }
