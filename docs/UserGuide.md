@@ -413,6 +413,32 @@ The notes are the same as `findj`. See [Finding jobseekers: `findj` - Notes](#fi
 * `findc irfan@example.com` returns `Irfan Ibrahim`.
 * `findc colleagues` returns `Roy Balakrishnan`, who is tagged `colleagues`.
 
+#### Finding jobseekers and clients: `find`
+
+Finds jobseekers and clients whose name, phone number, email or tags contain any of the given keywords.
+
+This does the same as running [`findj`](#finding-jobseekers-findj) and [`findc`](#finding-clients-findc)
+with the same keywords, so both lists are filtered at once.
+This is useful for finding every contact with a certain tag, such as an industry.
+
+Hidden jobseekers and clients are not searched.
+
+**Format:**{: #find-format} `find <keyword>...`
+
+* `<keyword>`: a keyword to search for
+  * At least one keyword must be given.
+
+**Notes:**
+{: #find-notes}
+
+The notes are the same as `findj`. See [Finding jobseekers: `findj` - Notes](#findj-notes).
+
+**Examples:**
+{: #find-examples}
+
+* `find colleagues` returns the jobseeker `Bernice Yu` and the client `Roy Balakrishnan`, who are both tagged `colleagues`.
+* `find alex roy` returns the jobseeker `Alex Yeoh` and the client `Roy Balakrishnan`.
+
 #### Hiding a jobseeker: `hidej`
 
 Hides the specified jobseeker, so that [`listj`](#listing-jobseekers-listj)
@@ -755,6 +781,7 @@ _Details coming soon ..._
 | [List clients](#listing-clients-listc)                         | `listc`                                                                                                 |
 | [Find jobseekers](#finding-jobseekers-findj)                   | `findj <keyword>...`                                                                                    |
 | [Find clients](#finding-clients-findc)                         | `findc <keyword>...`                                                                                    |
+| [Find jobseekers and clients](#finding-jobseekers-and-clients-find) | `find <keyword>...` |
 | [Find hidden jobseekers](#finding-hidden-jobseekers-findhj)    | `findhj <keyword>...`                                                                                   |
 | [Find hidden clients](#finding-hidden-clients-findhc)          | `findhc <keyword>...`                                                                                   |
 | [Hide jobseeker](#hiding-a-jobseeker-hidej)                    | `hidej <index>`                                                                                         |
