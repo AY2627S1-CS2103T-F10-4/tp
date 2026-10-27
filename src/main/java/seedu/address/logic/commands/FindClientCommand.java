@@ -22,7 +22,7 @@ public class FindClientCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all clients whose name, "
             + "phone number, email or tags contain any of the specified keywords (case-insensitive) "
             + "and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
+            + "Parameters: <keyword>...\n"
             + "Example: " + COMMAND_WORD + " adrian 81110001 adrian@example.com";
 
     private static final Logger logger = LogsCenter.getLogger(FindClientCommand.class);

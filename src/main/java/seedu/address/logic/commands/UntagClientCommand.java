@@ -22,7 +22,7 @@ public class UntagClientCommand extends Command {
     public static final String COMMAND_WORD = "untagc";
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Removes tags from the client identified by their displayed index.\n"
-            + "Parameters: INDEX TAG [MORE_TAGS]...\n"
+            + "Parameters: <index> <tag>...\n"
             + "Example: " + COMMAND_WORD + " 1 priority finance";
     public static final String MESSAGE_SUCCESS = "Updated client tags: %1$s";
     public static final String MESSAGE_NO_CHANGE = "This client does not have any of the specified tags.";

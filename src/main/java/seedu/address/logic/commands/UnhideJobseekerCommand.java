@@ -21,7 +21,7 @@ public class UnhideJobseekerCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Unhides the jobseeker identified by the index number used in the displayed jobseeker list.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
+            + "Parameters: <index> (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_UNHIDE_JOBSEEKER_SUCCESS = "Unhidden jobseeker: %1$s";

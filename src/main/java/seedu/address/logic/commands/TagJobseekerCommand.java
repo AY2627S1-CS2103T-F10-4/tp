@@ -22,7 +22,7 @@ public class TagJobseekerCommand extends Command {
     public static final String COMMAND_WORD = "tagj";
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Adds tags to the jobseeker identified by their displayed index.\n"
-            + "Parameters: INDEX TAG [MORE_TAGS]...\n"
+            + "Parameters: <index> <tag>...\n"
             + "Example: " + COMMAND_WORD + " 1 java teamwork";
     public static final String MESSAGE_SUCCESS = "Updated jobseeker tags: %1$s";
     public static final String MESSAGE_NO_CHANGE = "This jobseeker already has all the specified tags.";

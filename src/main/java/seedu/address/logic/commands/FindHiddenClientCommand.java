@@ -22,7 +22,7 @@ public class FindHiddenClientCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all hidden clients whose name, "
             + "phone number, email or tags contain any of the specified keywords (case-insensitive) "
             + "and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
+            + "Parameters: <keyword>...\n"
             + "Example: " + COMMAND_WORD + " adrian 81110001 adrian@example.com";
 
     private static final Logger logger = LogsCenter.getLogger(FindHiddenClientCommand.class);
