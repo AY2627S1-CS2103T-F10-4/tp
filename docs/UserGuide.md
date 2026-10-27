@@ -26,6 +26,8 @@ AddressBook Level 3 (AB3) is a **desktop application for managing contacts, opti
 1. Type a command in the command box and press Enter to execute it. For example, type **`help`** and press Enter to open the help window.<br>
    Some example commands you can try:
 
+   * `list` : Lists all unhidden jobseekers and clients.
+
    * `listj` : Lists all unhidden jobseekers.
 
    * `listc` : Lists all unhidden clients.
@@ -62,7 +64,7 @@ AddressBook Level 3 (AB3) is a **desktop application for managing contacts, opti
 * Prefixed parameters can be in any order.<br>
   For example, if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable. For `editj`, `editc`, `tagj`, `untagj`, `tagc`, and `untagc`, the index must come first, followed by the fields or tags to update.
 
-* Extraneous parameters for commands that take no parameters, such as `help`, `listj`, `listc`, `exit`, and `clear`, are ignored.<br>
+* Extraneous parameters for commands that take no parameters, such as `help`, `list`, `listj`, `listc`, `exit`, and `clear`, are ignored.<br>
   For example, `help 123` is interpreted as `help`.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
@@ -112,6 +114,16 @@ Examples:
 * `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road r/Hiring software engineers t/employer t/technology`
 
 These examples are alternatives; adding both would attempt to add the same client twice.
+
+### Listing jobseekers and clients: `list`
+
+Shows all unhidden jobseekers and clients and clears the current filters in both lists.
+
+Format: `list`
+
+* Use this to reset both lists after searching or viewing hidden records.
+* Hidden records remain hidden and are not shown. No records are modified.
+* For example, after running `listhj` and `listhc`, run `list` to return both lists to their unhidden views.
 
 ### Listing jobseekers: `listj`
 
@@ -465,6 +477,7 @@ Action | Format, Examples
 **Remove client tags** | `untagc INDEX TAG [MORE_TAGS]…`<br> e.g., `untagc 1 priority finance`
 **Add jobseeker tags** | `tagj INDEX TAG [MORE_TAGS]…`<br> e.g., `tagj 1 java teamwork`
 **Remove jobseeker tags** | `untagj INDEX TAG [MORE_TAGS]…`<br> e.g., `untagj 1 java teamwork`
+**List jobseekers and clients** | `list`
 **List jobseekers** | `listj`
 **List clients** | `listc`
 **List hidden jobseekers** | `listhj`
