@@ -135,8 +135,8 @@
                                                             <graphic>
                                                                <TextFlow>
                                                                   <children>
-                                                                     <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Editing a person: " />
-                                                                     <Label text="edit">
+                                                                     <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Editing a jobseeker or client: " />
+                                                                     <Label text="editj / editc">
                                                                         <styleClass>
                                                                            <String fx:value="code" />
                                                                         </styleClass>
@@ -451,7 +451,7 @@
                                  <TextFlow styleClass="p">
                                     <children>
                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Format: " />
-                                       <Label fx:id="addj_format" styleClass="code" text="addj n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [r/REMARK] [t/TAG]…​" wrapText="true" />
+                                       <Label fx:id="addj_format" styleClass="code" text="addj n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [q/QUALIFICATION] [r/REMARK] [t/TAG]…​" wrapText="true" />
                                        <CopyButton target="${addj_format}" />
                                     </children>
                                  </TextFlow>
@@ -492,7 +492,7 @@
                                              <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
                                              <VBox styleClass="body">
                                                 <children>
-                                                   <Label fx:id="addj_ex1" styleClass="code" text="addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01" wrapText="true" />
+                                                   <Label fx:id="addj_ex1" styleClass="code" text="addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 q/Diploma in IT" wrapText="true" />
                                                    <CopyButton target="${addj_ex1}" />
                                                 </children>
                                              </VBox>
@@ -534,7 +534,7 @@
                                  <TextFlow styleClass="p">
                                     <children>
                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Format: " />
-                                       <Label fx:id="addc_format" styleClass="code" text="addc n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [r/REMARK] [t/TAG]…" wrapText="true" />
+                                       <Label fx:id="addc_format" styleClass="code" text="addc n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [j/JOB]… [r/REMARK] [t/TAG]…" wrapText="true" />
                                        <CopyButton target="${addc_format}" />
                                     </children>
                                  </TextFlow>
@@ -546,7 +546,7 @@
                                              <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
                                              <TextFlow styleClass="body">
                                                 <children>
-                                                   <Label fx:id="addc_ex1" styleClass="code" text="addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road r/Hiring software engineers t/employer t/technology" wrapText="true" />
+                                                   <Label fx:id="addc_ex1" styleClass="code" text="addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road j/Software Engineer j/QA Tester t/employer t/technology" wrapText="true" />
                                                    <CopyButton target="${addc_ex1}" />
                                                 </children>
                                              </TextFlow>
@@ -579,15 +579,19 @@
                                  <TextFlow fx:id="edit" styleClass="h3">
                                     <children>
                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Editing a person: " />
-                                       <Label styleClass="code" text="edit" />
+                                       <Label styleClass="code" text="editj / editc" />
                                     </children>
                                  </TextFlow>
-                                 <Label styleClass="p" text="Edits an existing person in the address book." wrapText="true" />
+                                 <Label styleClass="p" text="Use editj for the displayed jobseeker list and editc for the displayed client list. Omitted fields keep their current values." wrapText="true" />
+                                 <Label styleClass="p" wrapText="true" text="Qualifications and jobs are optional. Use q/QUALIFICATION with addj or editj, at most once. Use j/JOB with addc or editc, repeating j/ for multiple jobs. Identical job titles are stored once; titles are case-sensitive. Both fields allow spaces and punctuation." />
+                                 <Label styleClass="p" wrapText="true" text="Use editj 1 q/Diploma in IT to replace a qualification, or editj 1 q/ to clear it. Use editc 1 j/Engineer j/QA Tester to replace all jobs, or editc 1 j/ to clear them. Do not combine an empty j/ with other j/ entries. Omit q/ or j/ to keep the existing values when editing." />
                                  <TextFlow styleClass="p">
                                     <children>
                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Format: " />
-                                       <Label fx:id="edit_format" styleClass="code" text="edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​" wrapText="true" />
+                                       <Label fx:id="edit_format" styleClass="code" text="editj INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [q/QUALIFICATION] [r/REMARK] [t/TAG]…" wrapText="true" />
                                        <CopyButton target="${edit_format}" />
+                                       <Label fx:id="editc_format" styleClass="code" text="editc INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [j/JOB]… [r/REMARK] [t/TAG]…" wrapText="true" />
+                                       <CopyButton target="${editc_format}" />
                                     </children>
                                  </TextFlow>
                                  <VBox spacing="3.0" styleClass="p">
@@ -668,7 +672,7 @@
                                              <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
                                              <TextFlow styleClass="body">
                                                 <children>
-                                                   <Label fx:id="edit_ex1" styleClass="code" text="edit 1 p/91234567 e/johndoe@example.com" wrapText="true" />
+                                                   <Label fx:id="edit_ex1" styleClass="code" text="editj 1 p/91234567 e/johndoe@example.com" wrapText="true" />
                                                    <CopyButton target="${edit_ex1}" />
                                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" Edits the phone number and email address of the 1st person to be " />
                                                    <Label layoutX="10.0" layoutY="12.0" text="91234567" wrapText="true">
@@ -694,7 +698,7 @@
                                              <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
                                              <TextFlow styleClass="body">
                                                 <children>
-                                                   <Label fx:id="edit_ex2" styleClass="code" text="edit 1 p/91234567 e/johndoe@example.com" wrapText="true" />
+                                                   <Label fx:id="edit_ex2" styleClass="code" text="editj 1 p/91234567 e/johndoe@example.com" wrapText="true" />
                                                    <CopyButton target="${edit_ex2}" />
                                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" Edits the phone number and email address of the 1st person to be " />
                                                    <Label layoutX="10.0" layoutY="12.0" text="91234567" wrapText="true">

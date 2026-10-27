@@ -2,10 +2,13 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_JOB_FIELD_NOT_ALLOWED;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_JOB;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_QUALIFICATION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
@@ -36,7 +39,11 @@ public class EditCommandParser implements Parser<EditJobseekerCommand> {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                        PREFIX_TAG, PREFIX_REMARK);
+                        PREFIX_TAG, PREFIX_REMARK, PREFIX_QUALIFICATION, PREFIX_JOB);
+
+        if (argMultimap.getValue(PREFIX_JOB).isPresent()) {
+            throw new ParseException(MESSAGE_JOB_FIELD_NOT_ALLOWED);
+        }
 
         Index index;
 
@@ -48,7 +55,7 @@ public class EditCommandParser implements Parser<EditJobseekerCommand> {
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                PREFIX_REMARK);
+                PREFIX_REMARK, PREFIX_QUALIFICATION);
 
         EditJobseekerDescriptor editJobseekerDescriptor = new EditJobseekerDescriptor();
 
@@ -66,6 +73,8 @@ public class EditCommandParser implements Parser<EditJobseekerCommand> {
         }
         argMultimap.getValue(PREFIX_REMARK).map(Remark::new).ifPresent(editJobseekerDescriptor::setRemark);
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editJobseekerDescriptor::setTags);
+        argMultimap.getValue(PREFIX_QUALIFICATION).map(ParserUtil::parseQualification)
+                .ifPresent(editJobseekerDescriptor::setHighestQualification);
 
         if (!editJobseekerDescriptor.isAnyFieldEdited()) {
             throw new ParseException(EditJobseekerCommand.MESSAGE_NOT_EDITED);

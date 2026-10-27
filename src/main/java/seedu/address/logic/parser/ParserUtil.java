@@ -9,10 +9,12 @@ import java.util.Set;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.job.Job;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Qualification;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -21,6 +23,36 @@ import seedu.address.model.tag.Tag;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index must be a positive integer.";
+
+    /**
+     * Parses an optional qualification, trimming surrounding whitespace. Empty text clears the qualification.
+     */
+    public static Qualification parseQualification(String qualification) {
+        requireNonNull(qualification);
+        return new Qualification(qualification.trim());
+    }
+
+    /**
+     * Parses job names into a set, trimming whitespace and collapsing duplicates.
+     * No values or a single empty value represent no jobs. Empty values mixed with other jobs are invalid.
+     *
+     * @throws ParseException if a job name is blank, unless it is the sole value used to clear jobs.
+     */
+    public static Set<Job> parseJobs(Collection<String> jobs) throws ParseException {
+        requireNonNull(jobs);
+        if (jobs.size() == 1 && jobs.iterator().next().isBlank()) {
+            return Set.of();
+        }
+        Set<Job> result = new HashSet<>();
+        for (String name : jobs) {
+            String trimmedName = name.trim();
+            if (!Job.isValidJobName(trimmedName)) {
+                throw new ParseException(Job.MESSAGE_CONSTRAINTS);
+            }
+            result.add(new Job(trimmedName));
+        }
+        return result;
+    }
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be

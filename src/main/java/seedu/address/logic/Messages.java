@@ -15,6 +15,10 @@ public class Messages {
 
     public static final String MESSAGE_UNKNOWN_COMMAND = "Unknown command.";
     public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format!\n%1$s";
+    public static final String MESSAGE_JOB_FIELD_NOT_ALLOWED =
+            "The j/ field is only supported for clients (addc/editc), not jobseekers.";
+    public static final String MESSAGE_QUALIFICATION_FIELD_NOT_ALLOWED =
+            "The q/ field is only supported for jobseekers (addj/editj), not clients.";
     public static final String MESSAGE_INVALID_JOBSEEKER_DISPLAYED_INDEX = "The jobseeker index provided is invalid.";
     public static final String MESSAGE_INVALID_CLIENT_DISPLAYED_INDEX = "The client index provided is invalid.";
     public static final String MESSAGE_JOBSEEKERS_LISTED_OVERVIEW = "%1$d jobseeker(s) listed!";
@@ -52,6 +56,9 @@ public class Messages {
                 .append(jobseeker.getRemark())
                 .append("; Tags: ");
         jobseeker.getTags().forEach(builder::append);
+        if (!jobseeker.getHighestQualification().value.isEmpty()) {
+            builder.append("; Highest qualification: ").append(jobseeker.getHighestQualification());
+        }
         return builder.toString();
     }
 
@@ -71,6 +78,10 @@ public class Messages {
                 .append(client.getRemark())
                 .append("; Tags: ");
         client.getTags().forEach(builder::append);
+        if (!client.getAvailableJobs().isEmpty()) {
+            builder.append("; Available jobs: ").append(client.getAvailableJobs().stream()
+                    .map(job -> job.jobName).sorted().collect(Collectors.joining(", ")));
+        }
         return builder.toString();
     }
 

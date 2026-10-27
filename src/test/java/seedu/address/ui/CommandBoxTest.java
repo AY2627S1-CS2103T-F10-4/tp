@@ -45,10 +45,15 @@ public class CommandBoxTest {
     @BeforeAll
     public static void startJavaFx() throws Exception {
         CountDownLatch started = new CountDownLatch(1);
-        Platform.startup(() -> {
-            Platform.setImplicitExit(false);
-            started.countDown();
-        });
+        try {
+            Platform.startup(() -> {
+                Platform.setImplicitExit(false);
+                started.countDown();
+            });
+        } catch (IllegalStateException e) {
+            // Another UI test has already started the shared toolkit.
+            Platform.runLater(started::countDown);
+        }
         assertTrue(started.await(10, TimeUnit.SECONDS), "JavaFX startup timed out");
     }
 

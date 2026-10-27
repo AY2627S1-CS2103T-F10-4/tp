@@ -57,7 +57,7 @@ public class UnhideJobseekerCommand extends Command {
 
         Jobseeker unhiddenJobseeker = new Jobseeker(jobseekerToUnhide.getName(), jobseekerToUnhide.getPhone(),
                 jobseekerToUnhide.getEmail(), jobseekerToUnhide.getAddress(), jobseekerToUnhide.getTags(),
-                jobseekerToUnhide.getRemark(), false);
+                jobseekerToUnhide.getRemark(), jobseekerToUnhide.getHighestQualification(), false);
         // Preserve the current filter; restored jobseekers drop out of hidden lists and searches.
         model.setJobseeker(jobseekerToUnhide, unhiddenJobseeker);
         return new CommandResult(String.format(MESSAGE_UNHIDE_JOBSEEKER_SUCCESS,
