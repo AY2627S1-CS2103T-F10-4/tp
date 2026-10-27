@@ -21,7 +21,7 @@ public class CopyClientCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Copies the currently displayed clients, or the "
             + "client at the specified index, to the clipboard.\n"
-            + "Parameters: [INDEX] (must be a positive integer)\n"
+            + "Parameters: [<index>] (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_SUCCESS = "Copied %1$d client(s) to clipboard.";
