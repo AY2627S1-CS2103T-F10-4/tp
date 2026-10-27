@@ -170,6 +170,35 @@ public class PersonContainsKeywordsPredicateTest {
     }
 
     /**
+     * Checks that tags are searched. Each keyword here matches nothing but a tag, so this fails if tags
+     * are dropped from the searched fields.
+     */
+    @Test
+    public void test_keywordMatchesTag_returnsTrue() {
+        // Full tag name
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(List.of("friends"));
+        assertTrue(predicate.test(new JobseekerBuilder().withName("Alice").withTags("friends").build()));
+
+        // Part of a tag name, mixed case
+        predicate = new PersonContainsKeywordsPredicate(List.of("MONEY"));
+        assertTrue(predicate.test(new JobseekerBuilder().withName("Alice")
+                .withTags("friends", "owesMoney").build()));
+    }
+
+    /**
+     * Guards checking each tag separately: each keyword spans the end of one tag name and the start of
+     * the other, so this fails if the tag names are joined into one string before matching. Tags are
+     * held in a set with no fixed order, so there is one keyword for each order they could be joined in.
+     */
+    @Test
+    public void test_keywordSpansTwoTags_returnsFalse() {
+        PersonContainsKeywordsPredicate predicate =
+                new PersonContainsKeywordsPredicate(List.of("friendsowes", "moneyfriends"));
+        assertFalse(predicate.test(new JobseekerBuilder().withName("Alice")
+                .withTags("friends", "owesMoney").build()));
+    }
+
+    /**
      * Guards checking each field separately: {@code "Alice12345"} spans the end of the name and the
      * start of the phone number, so this fails if the fields are joined into one string before matching.
      */
