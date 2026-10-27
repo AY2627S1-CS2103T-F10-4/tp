@@ -22,6 +22,7 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Client;
 import seedu.address.model.person.Jobseeker;
+import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.JobseekerBuilder;
 
@@ -40,14 +41,14 @@ public class ListCommandTest {
     }
 
     @Test
-    public void execute_listsAreNotFiltered_showsSameLists() {
+    public void execute_unfiltered_showsUnhidden() {
         assertCommandSuccess(new ListCommand(), model, ListCommand.MESSAGE_SUCCESS, expectedModel);
         assertEquals(expectedModel.getFilteredJobseekerList(), model.getFilteredJobseekerList());
         assertEquals(expectedModel.getFilteredClientList(), model.getFilteredClientList());
     }
 
     @Test
-    public void execute_bothListsAreFiltered_showsAllUnhiddenRecords() {
+    public void execute_filtered_showsUnhidden() {
         showJobseekerAtIndex(model, INDEX_FIRST_PERSON);
         showClientAtIndex(model, INDEX_FIRST_PERSON);
         assertCommandSuccess(new ListCommand(), model, ListCommand.MESSAGE_SUCCESS, expectedModel);
@@ -56,7 +57,7 @@ public class ListCommandTest {
     }
 
     @Test
-    public void execute_bothListsShowHiddenRecords_restoresUnhiddenViewsWithoutChangingData() {
+    public void execute_hiddenViews_showsUnhidden() {
         Jobseeker hiddenJobseeker = new JobseekerBuilder(BENSON).withHidden(true).build();
         Client hiddenClient = new ClientBuilder(BRENDA).withHidden(true).build();
         Model hiddenModel = new ModelManager();
@@ -79,7 +80,43 @@ public class ListCommandTest {
     }
 
     @Test
-    public void execute_emptyAddressBook_success() {
+    public void execute_noMatches_showsUnhidden() {
+        PersonContainsKeywordsPredicate predicate =
+                new PersonContainsKeywordsPredicate(List.of("nonexistentcontact"));
+        new FindJobseekerCommand(predicate).execute(model);
+        new FindClientCommand(predicate).execute(model);
+        assertEquals(List.of(), model.getFilteredJobseekerList());
+        assertEquals(List.of(), model.getFilteredClientList());
+
+        assertCommandSuccess(new ListCommand(), model, ListCommand.MESSAGE_SUCCESS, expectedModel);
+
+        assertEquals(expectedModel.getFilteredJobseekerList(), model.getFilteredJobseekerList());
+        assertEquals(expectedModel.getFilteredClientList(), model.getFilteredClientList());
+    }
+
+    @Test
+    public void execute_allHidden_showsEmptyLists() {
+        Jobseeker hiddenJobseeker = new JobseekerBuilder(BENSON).withHidden(true).build();
+        Client hiddenClient = new ClientBuilder(BRENDA).withHidden(true).build();
+        Model hiddenModel = new ModelManager();
+        hiddenModel.addJobseeker(hiddenJobseeker);
+        hiddenModel.addClient(hiddenClient);
+        new ListHiddenJobseekerCommand().execute(hiddenModel);
+        new ListHiddenClientCommand().execute(hiddenModel);
+        assertEquals(List.of(hiddenJobseeker), hiddenModel.getFilteredJobseekerList());
+        assertEquals(List.of(hiddenClient), hiddenModel.getFilteredClientList());
+
+        CommandResult result = new ListCommand().execute(hiddenModel);
+
+        assertEquals(new CommandResult(ListCommand.MESSAGE_SUCCESS), result);
+        assertEquals(List.of(), hiddenModel.getFilteredJobseekerList());
+        assertEquals(List.of(), hiddenModel.getFilteredClientList());
+        assertEquals(List.of(hiddenJobseeker), hiddenModel.getAddressBook().getJobseekerList());
+        assertEquals(List.of(hiddenClient), hiddenModel.getAddressBook().getClientList());
+    }
+
+    @Test
+    public void execute_emptyBook_success() {
         assertCommandSuccess(new ListCommand(), new ModelManager(), ListCommand.MESSAGE_SUCCESS, new ModelManager());
     }
 
