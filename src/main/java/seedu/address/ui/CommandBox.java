@@ -1,7 +1,9 @@
 package seedu.address.ui;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -34,6 +36,9 @@ public class CommandBox extends UiPart<Region> {
     @FXML
     private StackPane suggestionOverlay;
 
+    @FXML
+    private Label commandHint;
+
     /**
      * Creates a {@code CommandBox} with the given {@code CommandExecutor}.
      */
@@ -48,6 +53,9 @@ public class CommandBox extends UiPart<Region> {
         super(FXML);
         this.commandExecutor = commandExecutor;
         this.commandSuggestions = commandSuggestions;
+        commandHint.textProperty().bind(Bindings.when(suggestionList.visibleProperty())
+                .then("Suggestions: ↑/↓ select • Tab complete • Esc dismiss")
+                .otherwise("↑/↓ command history • Type to see suggestions"));
         suggestionOverlay.visibleProperty().bind(suggestionList.visibleProperty());
         suggestionOverlay.layoutYProperty().bind(commandTextField.layoutYProperty()
                 .add(commandTextField.heightProperty()));
