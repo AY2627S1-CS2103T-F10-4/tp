@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -18,8 +19,6 @@ public class CommandBox extends UiPart<Region> {
 
     public static final String ERROR_STYLE_CLASS = "error";
     private static final String FXML = "CommandBox.fxml";
-    private static final int MAX_VISIBLE_SUGGESTIONS = 5;
-    private static final int SUGGESTION_HEIGHT_PADDING = 2;
 
     private final CommandExecutor commandExecutor;
     private final CommandHistory commandHistory = new CommandHistory();
@@ -31,6 +30,9 @@ public class CommandBox extends UiPart<Region> {
 
     @FXML
     private ListView<String> suggestionList;
+
+    @FXML
+    private StackPane suggestionOverlay;
 
     /**
      * Creates a {@code CommandBox} with the given {@code CommandExecutor}.
@@ -46,6 +48,11 @@ public class CommandBox extends UiPart<Region> {
         super(FXML);
         this.commandExecutor = commandExecutor;
         this.commandSuggestions = commandSuggestions;
+        suggestionOverlay.visibleProperty().bind(suggestionList.visibleProperty());
+        suggestionOverlay.layoutYProperty().bind(commandTextField.layoutYProperty()
+                .add(commandTextField.heightProperty()));
+        getRoot().widthProperty().addListener((observable, oldWidth, newWidth) ->
+                suggestionOverlay.resize(newWidth.doubleValue(), suggestionOverlay.getPrefHeight()));
         commandTextField.textProperty().addListener((unused1, unused2, unused3) -> {
             setStyleToDefault();
             if (!areSuggestionsSuppressed) {
@@ -62,20 +69,18 @@ public class CommandBox extends UiPart<Region> {
 
     /**
      * Refreshes matches after an input edit and selects the first match.
-     * Limits the list height so longer lists scroll instead of displacing more of the main window.
+     * Shows up to three rows over the output area without occupying space in the window layout.
      */
     private void updateSuggestions() {
         suggestionList.getItems().setAll(commandSuggestions.suggest(commandTextField.getText()));
         boolean isVisible = !suggestionList.getItems().isEmpty();
         suggestionList.setVisible(isVisible);
         suggestionList.setManaged(isVisible);
-        int visibleRows = Math.min(MAX_VISIBLE_SUGGESTIONS, suggestionList.getItems().size());
-        suggestionList.setPrefHeight(visibleRows * suggestionList.getFixedCellSize() + SUGGESTION_HEIGHT_PADDING);
         suggestionList.getSelectionModel().selectFirst();
     }
 
     /**
-     * Hides suggestions and releases their space in the window layout.
+     * Dismisses the overlay without changing the window layout.
      */
     private void hideSuggestions() {
         suggestionList.setVisible(false);
