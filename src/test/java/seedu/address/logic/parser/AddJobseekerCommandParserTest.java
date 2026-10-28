@@ -20,10 +20,6 @@ import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
 import static seedu.address.logic.commands.CommandTestUtil.REMARK_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_REMARK_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
@@ -187,28 +183,48 @@ public class AddJobseekerCommandParserTest {
     }
 
     @Test
-    public void parse_compulsoryFieldMissing_failure() {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddJobseekerCommand.MESSAGE_USAGE);
+    public void parse_singleRequiredFieldMissing_listsOnlyMissingField() {
+        assertParseFailure(parser, PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
+                "Missing required fields: n/ (name).");
+        assertParseFailure(parser, NAME_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
+                "Missing required fields: p/ (phone).");
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY,
+                "Missing required fields: e/ (email).");
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY,
+                "Missing required fields: a/ (address).");
+    }
 
-        // missing name prefix
-        assertParseFailure(parser, VALID_NAME_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB,
-                expectedMessage);
+    @Test
+    public void parse_multipleRequiredFieldsMissing_listsMissingFieldsInOrder() {
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY,
+                "Missing required fields: e/ (email), a/ (address).");
+        assertParseFailure(parser, ADDRESS_DESC_AMY + EMAIL_DESC_AMY + REMARK_DESC_AMY,
+                "Missing required fields: n/ (name), p/ (phone).");
+        for (String args : new String[]{"", "   ", " r/Available t/intern"}) {
+            assertParseFailure(parser, args,
+                    "Missing required fields: n/ (name), p/ (phone), e/ (email), a/ (address).");
+        }
+    }
 
-        // missing phone prefix
-        assertParseFailure(parser, NAME_DESC_BOB + VALID_PHONE_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB,
-                expectedMessage);
+    @Test
+    public void parse_emptyRequiredField_reportsValueError() {
+        assertParseFailure(parser, " n/" + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
+                Name.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, NAME_DESC_AMY + " p/" + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
+                Phone.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + " e/" + ADDRESS_DESC_AMY,
+                Email.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + " a/",
+                Address.MESSAGE_CONSTRAINTS);
+        // A supplied but empty email is not a missing prefix; only address is missing here.
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + " e/",
+                "Missing required fields: a/ (address).");
+    }
 
-        // missing email prefix
-        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + VALID_EMAIL_BOB + ADDRESS_DESC_BOB,
-                expectedMessage);
-
-        // missing address prefix
-        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + VALID_ADDRESS_BOB,
-                expectedMessage);
-
-        // all prefixes missing
-        assertParseFailure(parser, VALID_NAME_BOB + VALID_PHONE_BOB + VALID_EMAIL_BOB + VALID_ADDRESS_BOB,
-                expectedMessage);
+    @Test
+    public void parse_nonEmptyPreambleWithMissingFields_reportsInvalidFormat() {
+        assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_AMY,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddJobseekerCommand.MESSAGE_USAGE));
     }
 
     @Test

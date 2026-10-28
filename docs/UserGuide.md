@@ -163,6 +163,11 @@ Contacts are identified by their phone number **and** their email address.
 * If contacts only have **either** the same phone number or email address,
   they are treated as different contacts.
 
+For `addj` and `addc`, omitting required fields produces an error listing only the missing fields.
+For example, `addj n/Alice Tan p/91234567` reports `Missing required fields: e/ (email), a/ (address).`
+A supplied field with an empty or invalid value instead produces its field-specific validation error
+once all required prefixes are present.
+
 #### Adding a jobseeker: `addj`
 
 Adds a jobseeker to the address book.

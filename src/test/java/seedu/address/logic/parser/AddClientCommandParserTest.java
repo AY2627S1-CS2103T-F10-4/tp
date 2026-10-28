@@ -100,11 +100,48 @@ public class AddClientCommandParserTest {
     }
 
     @Test
-    public void parse_missingRequiredFields_failure() {
-        for (String prefix : new String[]{"n/", "p/", "e/", "a/"}) {
-            assertParseFailure(parser, REQUIRED_FIELDS.replace(prefix, ""),
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddClientCommand.MESSAGE_USAGE));
+    public void parse_singleRequiredFieldMissing_listsOnlyMissingField() {
+        assertParseFailure(parser, PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
+                "Missing required fields: n/ (name).");
+        assertParseFailure(parser, NAME_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
+                "Missing required fields: p/ (phone).");
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY,
+                "Missing required fields: e/ (email).");
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY,
+                "Missing required fields: a/ (address).");
+    }
+
+    @Test
+    public void parse_multipleRequiredFieldsMissing_listsMissingFieldsInOrder() {
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY,
+                "Missing required fields: e/ (email), a/ (address).");
+        assertParseFailure(parser, ADDRESS_DESC_AMY + EMAIL_DESC_AMY + REMARK_DESC_AMY,
+                "Missing required fields: n/ (name), p/ (phone).");
+        for (String args : new String[]{"", "   ", " r/Available t/intern"}) {
+            assertParseFailure(parser, args,
+                    "Missing required fields: n/ (name), p/ (phone), e/ (email), a/ (address).");
         }
+    }
+
+    @Test
+    public void parse_emptyRequiredField_reportsValueError() {
+        assertParseFailure(parser, " n/" + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
+                Name.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, NAME_DESC_AMY + " p/" + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
+                Phone.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + " e/" + ADDRESS_DESC_AMY,
+                Email.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + " a/",
+                Address.MESSAGE_CONSTRAINTS);
+        // A supplied but empty email is not a missing prefix; only address is missing here.
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + " e/",
+                "Missing required fields: a/ (address).");
+    }
+
+    @Test
+    public void parse_nonEmptyPreambleWithMissingFields_reportsInvalidFormat() {
+        assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_AMY,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddClientCommand.MESSAGE_USAGE));
     }
 
     @Test
