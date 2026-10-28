@@ -28,14 +28,14 @@ public class AddClientCommand extends Command {
             + PREFIX_EMAIL + "<email> "
             + PREFIX_ADDRESS + "<address> "
             + "[" + PREFIX_REMARK + "<remarks>] "
-            + "[" + PREFIX_TAG + "<tag>]...\n"
+            + "[" + PREFIX_TAG + "<tag> [<more tags>]...]\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "Irfan Ibrahim "
             + PREFIX_PHONE + "92492021 "
             + PREFIX_EMAIL + "irfan@example.com "
             + PREFIX_ADDRESS + "Blk 47 Tampines Street 20, #17-35 "
             + PREFIX_REMARK + "immediate "
-            + PREFIX_TAG + "classmates";
+            + PREFIX_TAG + "classmates employer";
 
     public static final String MESSAGE_SUCCESS = "New client added: %1$s";
     public static final String MESSAGE_DUPLICATE_CLIENT = "This client already exists in the address book.";

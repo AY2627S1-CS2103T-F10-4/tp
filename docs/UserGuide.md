@@ -169,7 +169,7 @@ Adds a jobseeker to the address book.
 Adding duplicate jobseeker contacts is not allowed.
 However, adding an existing _client_ contact to the jobseeker list is allowed
 
-**Format:**{: #addj-format} `addj n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag>]...`
+**Format:**{: #addj-format} `addj n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag> [<more tags>]...]`
 
 * `<name>`: the name of the jobseeker
 * `<phone number>`: the phone number of the jobseeker
@@ -179,6 +179,10 @@ However, adding an existing _client_ contact to the jobseeker list is allowed
   * Optional. When omitted, the remarks value is treated as empty.
 * `<tag>`: a tag for this jobseeker
   * Optional. When omitted, no tags are added.
+  * Separate multiple tags with spaces after one `t/`, e.g. `t/friend colleague`.
+  * Repeated prefixes such as `t/friend t/colleague` are also accepted.
+  * Each tag must be alphanumeric. Duplicate tags are stored once; tags are case-sensitive.
+  * An empty `t/` is rejected when adding a contact. Omit it if no tags are needed.
 
 See [Common info about contacts](#common-info-about-contacts) for
 additional constraints on field values.
@@ -187,7 +191,7 @@ additional constraints on field values.
 {: #addj-examples}
 
 * `addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `addj n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+* `addj n/Betsy Crowe t/friend colleague e/betsycrowe@example.com a/Newgate Prison p/1234567`
 
 #### Adding a client: `addc`
 
@@ -196,7 +200,7 @@ Adds a client to the address book.
 Adding duplicate client contacts is not allowed.
 However, adding an existing _jobseeker_ contact to the client list is allowed
 
-**Format:**{: #addc-format} `addc n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag>]...`
+**Format:**{: #addc-format} `addc n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag> [<more tags>]...]`
 
 The fields are the same as `addj`. See [Adding a jobseeker: `addj` - Format](#addj-format).
 
@@ -204,7 +208,7 @@ The fields are the same as `addj`. See [Adding a jobseeker: `addj` - Format](#ad
 {: #addc-examples}
 
 * `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road`
-* `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road r/Hiring software engineers t/employer t/technology`
+* `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road r/Hiring software engineers t/employer technology`
 
 #### Editing a jobseeker: `editj`
 
@@ -743,8 +747,8 @@ _Details coming soon ..._
 |----------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
 | [Help](#viewing-help-help)                                     | `help`                                                                                                  |
 | [Exit](#exiting-the-program-exit)                              | `exit`                                                                                                  |
-| [Add jobseeker](#adding-a-jobseeker-addj)                      | `addj n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag>]...`                       |
-| [Add client](#adding-a-client-addc)                            | `addc n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag>]...`                       |
+| [Add jobseeker](#adding-a-jobseeker-addj)                      | `addj n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag> [<more tags>]...]`                       |
+| [Add client](#adding-a-client-addc)                            | `addc n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag> [<more tags>]...]`                       |
 | [Edit jobseeker](#editing-a-jobseeker-editj)                   | `editj <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [r/<remarks>] [t/<tag>]...`      |
 | [Edit client](#editing-a-client-editc)                         | `editc <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [r/<remarks>] [t/<tag>]...`      |
 | [Clear jobseekers](#clearing-all-jobseekers-clearj)            | `clearj`                                                                                                |
