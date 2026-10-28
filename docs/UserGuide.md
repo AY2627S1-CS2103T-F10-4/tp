@@ -50,6 +50,7 @@ applications.
 
     Some example commands you can try:
 
+    * `list`: Lists all unhidden jobseekers and clients.
     * `listj`: Lists all unhidden jobseekers.
     * `listc`: Lists all unhidden clients.
     * `clearj`: Deletes all jobseekers.
@@ -91,7 +92,7 @@ applications.
   For `editj`, `editc`, `tagj`, `tagc`, `untagj`, and `untagc`, 
   the index must come first, followed by the fields or tags to update.
 * Extraneous parameters for commands that take no parameters,
-  such as `help`, `exit`, `listj`, `listc`, `clearj`, and `clearc`, are ignored.
+  such as `help`, `exit`, `list`, `listj`, `listc`, `clearj`, and `clearc`, are ignored.
 
   For example, `help 123` is interpreted as `help`.
 * If you are using a PDF version of this document, be careful when copying and pasting commands
@@ -320,8 +321,30 @@ This includes contacts that aren't listed in the currently displayed client list
 
 ### Viewing contacts
 
-There are 2 contact lists that operate independently:
-the jobseeker list (on the right) and the client list (on the left)
+There are 2 contact lists: the jobseeker list (on the right) and the client list (on the left).
+Commands such as `listj` and `listc` update their respective lists independently,
+while `list` updates both lists together.
+
+#### Listing jobseekers and clients: `list`
+
+Shows all visible (not hidden) jobseekers and clients,
+and clears the current filters in both lists.
+
+**Format:**{: #list-format} `list`
+
+**Notes:**
+{: #list-notes}
+
+* Use this command to return both lists to their normal views after searching or viewing hidden contacts.
+* Hidden contacts remain hidden. No contact details are changed.
+* To update only one list, use [Listing jobseekers: `listj`](#listing-jobseekers-listj)
+  or [Listing clients: `listc`](#listing-clients-listc).
+
+**Examples:**
+{: #list-examples}
+
+* `listhj` followed by `listhc`, then `list`, shows all visible jobseekers and clients again.
+* `findj alex` followed by `findc roy`, then `list`, clears both search filters.
 
 #### Listing jobseekers: `listj`
 
@@ -513,6 +536,9 @@ For more information on hidden jobseekers, see [Hiding a jobseeker: `hidej`](#hi
 
 **Format:**{: #listhj-format} `listhj`
 
+To return both lists to their visible contacts, use
+[Listing jobseekers and clients: `list`](#listing-jobseekers-and-clients-list).
+
 #### Listing hidden clients: `listhc`
 
 Shows all _hidden_ clients in the client list,
@@ -521,6 +547,9 @@ and clears the current clients filter.
 For more information on hidden clients, see [Hiding a client: `hidec`](#hiding-a-client-hidec).
 
 **Format:**{: #listhc-format} `listhc`
+
+To return both lists to their visible contacts, use
+[Listing jobseekers and clients: `list`](#listing-jobseekers-and-clients-list).
 
 #### Finding hidden jobseekers: `findhj`
 
@@ -751,6 +780,7 @@ _Details coming soon ..._
 | [Clear clients](#clearing-all-clients-clearc)                  | `clearc`                                                                                                |
 | [Delete jobseekers](#deleting-a-jobseeker-deletej)             | `deletej <index>`                                                                                       |
 | [Delete clients](#deleting-a-client-deletec)                   | `deletec <index>`                                                                                       |
+| [List jobseekers and clients](#listing-jobseekers-and-clients-list) | `list`                                                                                               |
 | [List jobseekers](#listing-jobseekers-listj)                   | `listj`                                                                                                 |
 | [List clients](#listing-clients-listc)                         | `listc`                                                                                                 |
 | [Find jobseekers](#finding-jobseekers-findj)                   | `findj <keyword>...`                                                                                    |
