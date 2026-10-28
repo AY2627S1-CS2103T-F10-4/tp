@@ -32,6 +32,9 @@ public class PersonCard extends UiPart<Region> {
     private Label name;
     @FXML
     private Label id;
+    /** Badge that marks the person as hidden; shown only when {@code person.isHidden()} */
+    @FXML
+    private Label hiddenIndicator;
     @FXML
     private Label phone;
     @FXML
@@ -51,6 +54,9 @@ public class PersonCard extends UiPart<Region> {
         this.person = person;
         id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
+        // Unmanaged when invisible, so unhidden cards leave no gap after the name
+        hiddenIndicator.setVisible(person.isHidden());
+        hiddenIndicator.setManaged(hiddenIndicator.isVisible());
         phone.setText(person.getPhone().value);
         address.setText(person.getAddress().value);
         email.setText(person.getEmail().value);
