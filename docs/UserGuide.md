@@ -121,7 +121,7 @@ Exits the program.
 Jobseeker contacts contains the following values, and their corresponding constraints:
 
 * Name
-  * contains only alphanumeric characters and spaces
+  * can contain any characters except `/` (e.g. `Beyoncé` and `Zoë` are allowed)
   * must not be blank
 * Phone number
   * contains only digits
@@ -139,7 +139,7 @@ Jobseeker contacts contains the following values, and their corresponding constr
 Client contacts contains the following values, and their corresponding constraints:
 
 * Name
-  * contains only alphanumeric characters and spaces
+  * can contain any characters except `/` (e.g. `Ben & Jerry's`, `Pokémon` and `7-Eleven` are allowed)
   * must not be blank
 * Phone number
   * contains only digits
