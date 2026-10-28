@@ -60,15 +60,8 @@ public class ListCommandTest {
     public void execute_hiddenViews_showsUnhidden() {
         Jobseeker hiddenJobseeker = new JobseekerBuilder(BENSON).withHidden(true).build();
         Client hiddenClient = new ClientBuilder(BRENDA).withHidden(true).build();
-        Model hiddenModel = new ModelManager();
-        hiddenModel.addJobseeker(ALICE);
-        hiddenModel.addJobseeker(hiddenJobseeker);
-        hiddenModel.addClient(ADRIAN);
-        hiddenModel.addClient(hiddenClient);
-        new ListHiddenJobseekerCommand().execute(hiddenModel);
-        new ListHiddenClientCommand().execute(hiddenModel);
-        assertEquals(List.of(hiddenJobseeker), hiddenModel.getFilteredJobseekerList());
-        assertEquals(List.of(hiddenClient), hiddenModel.getFilteredClientList());
+        Model hiddenModel = createModelWithHiddenViews(
+                List.of(ALICE, hiddenJobseeker), List.of(ADRIAN, hiddenClient));
 
         CommandResult result = new ListCommand().execute(hiddenModel);
 
@@ -98,13 +91,7 @@ public class ListCommandTest {
     public void execute_allHidden_showsEmptyLists() {
         Jobseeker hiddenJobseeker = new JobseekerBuilder(BENSON).withHidden(true).build();
         Client hiddenClient = new ClientBuilder(BRENDA).withHidden(true).build();
-        Model hiddenModel = new ModelManager();
-        hiddenModel.addJobseeker(hiddenJobseeker);
-        hiddenModel.addClient(hiddenClient);
-        new ListHiddenJobseekerCommand().execute(hiddenModel);
-        new ListHiddenClientCommand().execute(hiddenModel);
-        assertEquals(List.of(hiddenJobseeker), hiddenModel.getFilteredJobseekerList());
-        assertEquals(List.of(hiddenClient), hiddenModel.getFilteredClientList());
+        Model hiddenModel = createModelWithHiddenViews(List.of(hiddenJobseeker), List.of(hiddenClient));
 
         CommandResult result = new ListCommand().execute(hiddenModel);
 
@@ -124,4 +111,19 @@ public class ListCommandTest {
     public void execute_nullModel_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> new ListCommand().execute(null));
     }
+
+    /**
+     * Creates a model containing the given contacts and verifies that both lists show only hidden contacts.
+     */
+    private Model createModelWithHiddenViews(List<Jobseeker> jobseekers, List<Client> clients) {
+        Model hiddenModel = new ModelManager();
+        jobseekers.forEach(hiddenModel::addJobseeker);
+        clients.forEach(hiddenModel::addClient);
+        new ListHiddenJobseekerCommand().execute(hiddenModel);
+        new ListHiddenClientCommand().execute(hiddenModel);
+        assertEquals(jobseekers.stream().filter(Jobseeker::isHidden).toList(), hiddenModel.getFilteredJobseekerList());
+        assertEquals(clients.stream().filter(Client::isHidden).toList(), hiddenModel.getFilteredClientList());
+        return hiddenModel;
+    }
+
 }
