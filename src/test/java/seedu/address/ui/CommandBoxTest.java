@@ -75,7 +75,8 @@ public class CommandBoxTest {
                 scene.getRoot().layout();
                 ListView<?> suggestions = (ListView<?>) scene.lookup("#suggestionList");
                 assertTrue(suggestions.isVisible());
-                assertEquals(74, suggestions.getHeight());
+                assertEquals(74, suggestions.getHeight(), 1.0,
+                        "Allow pixel snapping at fractional display scales");
                 assertTrue(suggestions.getWidth() > 0);
                 assertTrue(suggestions.localToScene(suggestions.getLayoutBounds()).getMinY()
                         >= field.localToScene(field.getLayoutBounds()).getMaxY());
@@ -345,7 +346,8 @@ public class CommandBoxTest {
             field.setText("list");
             scene.getRoot().applyCss();
             scene.getRoot().layout();
-            assertEquals(74, suggestions.getHeight());
+            assertEquals(74, suggestions.getHeight(), 1.0,
+                    "Allow pixel snapping at fractional display scales");
             for (int i = 0; i < 8; i++) {
                 press(field, KeyCode.DOWN);
             }
