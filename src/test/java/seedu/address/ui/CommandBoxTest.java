@@ -70,7 +70,7 @@ public class CommandBoxTest {
                 TextField field = (TextField) scene.lookup("#commandTextField");
                 Node result = scene.lookup("#resultDisplayPlaceholder");
                 double resultY = result.localToScene(result.getBoundsInLocal()).getMinY();
-                field.setText("list");
+                field.setText("lis");
                 scene.getRoot().applyCss();
                 scene.getRoot().layout();
                 ListView<?> suggestions = (ListView<?>) scene.lookup("#suggestionList");
@@ -93,7 +93,7 @@ public class CommandBoxTest {
                     assertEquals(resultY, result.localToScene(result.getBoundsInLocal()).getMinY(),
                             "Suggestion count must not move the result panel");
                 }
-                field.setText("list");
+                field.setText("lis");
                 press(field, KeyCode.ESCAPE);
                 scene.getRoot().layout();
                 assertFalse(suggestions.isVisible());
@@ -216,12 +216,13 @@ public class CommandBoxTest {
             });
             TextField field = (TextField) box.getRoot().lookup("#commandTextField");
             ListView<?> suggestions = (ListView<?>) box.getRoot().lookup("#suggestionList");
-            field.setText("list");
+            field.setText("lis");
             assertTrue(suggestions.isVisible());
             assertTrue(suggestions.isManaged());
-            assertEquals(List.of("listc", "listhc", "listhj", "listj"), suggestions.getItems());
+            assertEquals(List.of("list", "listc", "listhc", "listhj", "listj"), suggestions.getItems());
             press(field, KeyCode.UP);
-            assertEquals("listc", suggestions.getSelectionModel().getSelectedItem());
+            assertEquals("list", suggestions.getSelectionModel().getSelectedItem());
+            press(field, KeyCode.DOWN);
             press(field, KeyCode.DOWN);
             press(field, KeyCode.DOWN);
             assertEquals("listhj", suggestions.getSelectionModel().getSelectedItem());
@@ -249,12 +250,12 @@ public class CommandBoxTest {
                 executed.add(command);
                 return new CommandResult("Success");
             });
-            field.setText("  list");
+            field.setText("  lis");
             press(field, KeyCode.ENTER);
-            assertEquals("  listc", field.getText());
+            assertEquals("  list", field.getText());
             assertTrue(executed.isEmpty());
             submit(field);
-            assertEquals(List.of("  listc"), executed);
+            assertEquals(List.of("  list"), executed);
             field.setText("hel");
             submit(field);
             assertEquals("help", field.getText());
@@ -270,19 +271,19 @@ public class CommandBoxTest {
             ListView<?> suggestions = (ListView<?>) box.getRoot().lookup("#suggestionList");
             field.setText("help");
             submit(field);
-            field.setText("list");
+            field.setText("lis");
             field.fireEvent(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.DOWN,
                     false, true, false, false));
-            assertEquals("listc", suggestions.getSelectionModel().getSelectedItem());
+            assertEquals("list", suggestions.getSelectionModel().getSelectedItem());
             press(field, KeyCode.ESCAPE);
             assertFalse(suggestions.isVisible());
-            assertEquals("list", field.getText());
+            assertEquals("lis", field.getText());
             press(field, KeyCode.UP);
             assertEquals("help", field.getText());
             press(field, KeyCode.DOWN);
-            assertEquals("list", field.getText());
+            assertEquals("lis", field.getText());
             assertFalse(suggestions.isVisible());
-            field.setText("lis");
+            field.setText("li");
             assertTrue(suggestions.isVisible());
             field.setText("listc ");
             assertFalse(suggestions.isVisible());
@@ -316,7 +317,7 @@ public class CommandBoxTest {
                 ListView<?> suggestions = (ListView<?>) scene.lookup("#suggestionList");
                 field.requestFocus();
                 assertTrue(field.isFocused());
-                field.setText("list");
+                field.setText("lis");
                 assertTrue(suggestions.isVisible());
                 scene.lookup("#otherField").requestFocus();
                 assertFalse(suggestions.isVisible());
@@ -372,13 +373,13 @@ public class CommandBoxTest {
             CommandBox box = new CommandBox(command -> new CommandResult("Success"));
             TextField field = (TextField) box.getRoot().lookup("#commandTextField");
             ListView<?> suggestions = (ListView<?>) box.getRoot().lookup("#suggestionList");
-            field.setText("list");
+            field.setText("lis");
             press(field, KeyCode.DOWN);
             field.setText("add");
             assertEquals(List.of("addc", "addj"), suggestions.getItems());
             assertEquals("addc", suggestions.getSelectionModel().getSelectedItem());
-            for (String input : List.of("xyz", "", "listc", "addj n/Alice")) {
-                field.setText("list");
+            for (String input : List.of("xyz", "", "list", "listc", "addj n/Alice")) {
+                field.setText("lis");
                 field.setText(input);
                 assertFalse(suggestions.isVisible());
                 assertFalse(suggestions.isManaged());
@@ -392,13 +393,13 @@ public class CommandBoxTest {
             TextField field = createField(command -> new CommandResult("Success"));
             field.setText("help");
             submit(field);
-            field.setText("list");
+            field.setText("lis");
             press(field, KeyCode.DOWN);
             press(field, KeyCode.TAB);
             press(field, KeyCode.UP);
             assertEquals("help", field.getText());
             press(field, KeyCode.DOWN);
-            assertEquals("listhc", field.getText());
+            assertEquals("listc", field.getText());
         });
     }
 
@@ -412,13 +413,13 @@ public class CommandBoxTest {
             });
             TextField field = (TextField) box.getRoot().lookup("#commandTextField");
             ListView<?> suggestions = (ListView<?>) box.getRoot().lookup("#suggestionList");
-            field.setText("list");
+            field.setText("lis");
             for (KeyCode code : List.of(KeyCode.UP, KeyCode.DOWN, KeyCode.TAB, KeyCode.ESCAPE)) {
                 for (int modifier = 0; modifier < 4; modifier++) {
                     field.fireEvent(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", code,
                             modifier == 0, modifier == 1, modifier == 2, modifier == 3));
-                    assertEquals("list", field.getText());
-                    assertEquals("listc", suggestions.getSelectionModel().getSelectedItem());
+                    assertEquals("lis", field.getText());
+                    assertEquals("list", suggestions.getSelectionModel().getSelectedItem());
                     assertTrue(suggestions.isVisible());
                 }
             }

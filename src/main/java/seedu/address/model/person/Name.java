@@ -10,13 +10,15 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Name {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Names should only contain alphanumeric characters and spaces, and should not be blank";
+            "Names can contain any characters except '/', and should not be blank";
 
     /*
+     * Any character is allowed except '/', which is reserved for command prefixes (e.g. n/).
+     * This lets names such as "Hershey's", "X Æ A-Xii" and "Zoë" be stored as written.
      * The first character of the name must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.
      */
-    public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} ]*";
+    public static final String VALIDATION_REGEX = "[^\\s/][^/]*";
 
     public final String fullName;
 
