@@ -3,10 +3,13 @@ layout: page
 title: User Guide
 ---
 
-AddressBook Level 3 (AB3) is a **desktop application for managing contacts, optimized for use
-through a Command Line Interface (CLI)** while retaining the benefits of a Graphical User Interface
-(GUI). If you type quickly, AB3 can help you manage contacts faster than traditional GUI
-applications.
+TalentLink is a **desktop application that HR recruiters in recruitment agencies use to manage 
+their contacts, optimized for use through a Command Line Interface (CLI)** while retaining the 
+benefits of a Graphical User Interface (GUI). If you type quickly, TalentLink can help you 
+manage your jobseeker/client contacts faster than traditional GUI applications. Additionally, 
+TalentLink also provides support for many tasks that recruiters often do on a daily basis, 
+such as recording notes on various jobseekers/clients, searching for jobseekers with particular 
+educational qualifications and determine which jobseekers to link up with each client's job opening.
 
 * Table of Contents
 {:toc}
@@ -20,9 +23,9 @@ applications.
     **Mac users:** Ensure you have the precise JDK version prescribed
     [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-1.  Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
+1.  Download the latest `.jar` file from [here](https://github.com/AY2627S1-CS2103T-F10-4/tp/releases).
 
-1.  Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+1.  Copy the file to the folder you want to use as the _home folder_ for TalentLink.
 
 1.  Open your terminal and run the following commands,
     replacing `HOME` with the path to your application home folder:
@@ -56,7 +59,7 @@ applications.
     * `clearj`: Deletes all jobseekers.
     * `clearc`: Deletes all clients.
     * `addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 q/Diploma in IT`:
-      Adds a jobseeker named `John Doe` to the Address Book.
+      Adds a jobseeker named `John Doe` to TalentLink.
     * `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road r/Hiring engineers t/employer`:
       Adds a client named `Jane Tan` with a remark and tag.
     * `deletej 3`: Deletes the third jobseeker shown in the current list.
@@ -168,7 +171,7 @@ Using either field with the wrong contact type is rejected, even when its value 
 
 #### Adding a jobseeker: `addj`
 
-Adds a jobseeker to the address book.
+Adds a jobseeker to TalentLink.
 
 Adding duplicate jobseeker contacts is not allowed.
 However, adding an existing _client_ contact to the jobseeker list is allowed
@@ -201,7 +204,7 @@ additional constraints on field values.
 
 #### Adding a client: `addc`
 
-Adds a client to the address book.
+Adds a client to TalentLink.
 
 Adding duplicate client contacts is not allowed.
 However, adding an existing _jobseeker_ contact to the client list is allowed
@@ -496,7 +499,7 @@ The notes are the same as `findj`. See [Finding jobseekers: `findj` - Notes](#fi
 Hides the specified jobseeker, so that [`listj`](#listing-jobseekers-listj)
 and [`findj`](#finding-jobseekers-findj) no longer show them.
 
-Unlike deleting, hiding keeps the jobseeker and all their details in the address book.
+Unlike deleting, hiding keeps the jobseeker and all their details in TalentLink.
 
 To list hidden jobseekers,
 see [Listing hidden jobseekers: `listhj`](#listing-hidden-jobseekers-listhj).
@@ -521,7 +524,7 @@ see [Finding hidden jobseekers: `findhj`](#finding-hidden-jobseekers-findhj).
 Hides the specified client, so that [`listc`](#listing-clients-listc)
 and [`findc`](#finding-clients-findc) no longer show them.
 
-Unlike deleting, hiding keeps the client and all their details in the address book.
+Unlike deleting, hiding keeps the client and all their details in TalentLink.
 
 To list hidden clients,
 see [Listing hidden clients: `listhc`](#listing-hidden-clients-listhc).
@@ -769,7 +772,7 @@ See [Copying displayed jobseekers: `cpj` - Notes](#cpj-notes) for notes.
 
 ### Saving the data
 
-AddressBook automatically saves data after every command. You do not need to save manually.
+TalentLink automatically saves data after every command. You do not need to save manually.
 
 ### Revisit past commands
 
@@ -783,19 +786,19 @@ Press `Enter` again to run the command, or `Escape` to dismiss suggestions.
 
 ### Editing the data file
 
-AddressBook data is saved automatically as a JSON file `[JAR file location]/data/addressbook.json`.
+TalentLink data is saved automatically as a JSON file `[JAR file location]/data/addressbook.json`.
 Advanced users are welcome to update data directly by editing that data file.
 
 <div markdown="span" class="alert alert-warning">
 
 **:exclamation: Caution:**
 
-If your changes make the data file invalid, AddressBook starts with an
-empty address book at the next run.
-The invalid file remains on disk until you run a command (AddressBook saves after every command).
+If your changes make the data file invalid, TalentLink starts with
+empty jobseeker and client lists at the next run.
+The invalid file remains on disk until you run a command (TalentLink saves after every command).
 Still, we recommend backing up the file before editing it.
 
-Furthermore, certain edits can cause the AddressBook to behave in unexpected ways
+Furthermore, certain edits can cause TalentLink to behave in unexpected ways
 (e.g., if a value entered is outside the acceptable range).
 Therefore, edit the data file only if you are confident that you can update it correctly.
 
@@ -810,7 +813,7 @@ _Details coming soon ..._
 ## FAQ
 
 **Q:** How do I transfer my data to another computer?<br>
-**A:** Install the app on the other computer and overwrite the data file it creates with the data file from your previous AddressBook home folder.
+**A:** Install the app on the other computer and overwrite the data file it creates with the data file from your previous TalentLink home folder.
 
 ---------------------------------------------------------------------------------------------------
 
