@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Scene?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 <?import javafx.stage.Stage?>
-<?import seedu.address.ui.CopyButton?>
 <?import seedu.address.ui.SectionHyperlink?>
-<?import seedu.address.ui.SectionScrollPane?>
 
 <fx:root title="Help" type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
   <icons>
-    <Image url="@/images/help_icon.png" />
+    <Image url="@../images/help_icon.png" />
   </icons>
   <scene>
     <Scene>
@@ -29,771 +28,222 @@
       </stylesheets>
          <AnchorPane prefHeight="600.0" prefWidth="800.0">
             <children>
-               <SectionScrollPane fitToWidth="true" vvalue="0.79" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                  <content>
-                     <VBox>
-                        <children>
-                           <Label contentDisplay="TEXT_ONLY" styleClass="h1" text="User Guide" />
-                           <VBox styleClass="p">
+               <SplitPane dividerPositions="0.4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <items>
+                     <ScrollPane fitToWidth="true">
+                        <content>
+                           <VBox styleClass="body">
                               <children>
-                                 <HBox alignment="TOP_LEFT" spacing="5.0">
-                                    <children>
-                                       <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                       <VBox>
+                                 <Label style="-fx-text-fill: -text-color-1;" styleClass="h2" text="Table of Contents" />
+                                 <Separator prefWidth="200.0">
+                                    <padding>
+                                       <Insets bottom="15.0" />
+                                    </padding>
+                                 </Separator>
+                                 <TitledPane>
+                                    <graphic>
+                                       <Label minHeight="-Infinity" text="Basic commands" wrapText="true" />
+                                    </graphic>
+                                    <content>
+                                       <VBox styleClass="body">
                                           <children>
-                                             <SectionHyperlink contentDisplay="GRAPHIC_ONLY" target="${features}" wrapText="true">
-                                                <graphic>
-                                                   <TextFlow styleClass="body">
-                                                      <children>
-                                                         <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Features" />
-                                                      </children>
-                                                   </TextFlow>
-                                                </graphic>
-                                             </SectionHyperlink>
-                                             <VBox spacing="5.0" styleClass="body">
+                                             <HBox alignment="BASELINE_LEFT">
                                                 <children>
-                                                   <HBox alignment="TOP_LEFT" spacing="5.0">
-                                                      <children>
-                                                         <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="◦" />
-                                                         <SectionHyperlink contentDisplay="GRAPHIC_ONLY" target="${help}" wrapText="true">
-                                                            <graphic>
-                                                               <TextFlow>
-                                                                  <children>
-                                                                     <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Viewing help: " />
-                                                                     <Label text="help">
-                                                                        <styleClass>
-                                                                           <String fx:value="code" />
-                                                                        </styleClass>
-                                                                     </Label>
-                                                                  </children>
-                                                               </TextFlow>
-                                                            </graphic>
-                                                         </SectionHyperlink>
-                                                      </children>
-                                                   </HBox>
-                                                   <HBox alignment="TOP_LEFT" spacing="5.0">
-                                                      <children>
-                                                         <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="◦" />
-                                                         <SectionHyperlink contentDisplay="GRAPHIC_ONLY" target="${addj}" wrapText="true">
-                                                            <graphic>
-                                                               <TextFlow>
-                                                                  <children>
-                                                                     <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Adding a jobseeker: " />
-                                                                     <Label text="addj">
-                                                                        <styleClass>
-                                                                           <String fx:value="code" />
-                                                                        </styleClass>
-                                                                     </Label>
-                                                                  </children>
-                                                               </TextFlow>
-                                                            </graphic>
-                                                         </SectionHyperlink>
-                                                      </children>
-                                                   </HBox>
-                                                   <HBox alignment="TOP_LEFT" spacing="5.0">
-                                                      <children>
-                                                         <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="◦" />
-                                                         <SectionHyperlink contentDisplay="GRAPHIC_ONLY" target="${addc}" wrapText="true">
-                                                            <graphic>
-                                                               <TextFlow>
-                                                                  <children>
-                                                                     <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Adding a client: " />
-                                                                     <Label text="addc">
-                                                                        <styleClass>
-                                                                           <String fx:value="code" />
-                                                                        </styleClass>
-                                                                     </Label>
-                                                                  </children>
-                                                               </TextFlow>
-                                                            </graphic>
-                                                         </SectionHyperlink>
-                                                      </children>
-                                                   </HBox>
-                                                   <HBox alignment="TOP_LEFT" spacing="5.0">
-                                                      <children>
-                                                         <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="◦" />
-                                                         <SectionHyperlink contentDisplay="GRAPHIC_ONLY" target="${list}" wrapText="true">
-                                                            <graphic>
-                                                               <TextFlow>
-                                                                  <children>
-                                                                     <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Listing all persons: " />
-                                                                     <Label text="list">
-                                                                        <styleClass>
-                                                                           <String fx:value="code" />
-                                                                        </styleClass>
-                                                                     </Label>
-                                                                  </children>
-                                                               </TextFlow>
-                                                            </graphic>
-                                                         </SectionHyperlink>
-                                                      </children>
-                                                   </HBox>
-                                                   <HBox alignment="TOP_LEFT" layoutX="10.0" layoutY="91.0" spacing="5.0">
-                                                      <children>
-                                                         <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="◦" />
-                                                         <SectionHyperlink contentDisplay="GRAPHIC_ONLY" target="${edit}" wrapText="true">
-                                                            <graphic>
-                                                               <TextFlow>
-                                                                  <children>
-                                                                     <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Editing a person: " />
-                                                                     <Label text="edit">
-                                                                        <styleClass>
-                                                                           <String fx:value="code" />
-                                                                        </styleClass>
-                                                                     </Label>
-                                                                  </children>
-                                                               </TextFlow>
-                                                            </graphic>
-                                                         </SectionHyperlink>
-                                                      </children>
-                                                   </HBox>
-                                                   <HBox alignment="TOP_LEFT" layoutX="10.0" layoutY="118.0" spacing="5.0">
-                                                      <children>
-                                                         <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="◦" />
-                                                         <SectionHyperlink contentDisplay="GRAPHIC_ONLY" target="${addc}" wrapText="true">
-                                                            <graphic>
-                                                               <TextFlow>
-                                                                  <children>
-                                                                     <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Locating persons by name: " />
-                                                                     <Label text="find">
-                                                                        <styleClass>
-                                                                           <String fx:value="code" />
-                                                                        </styleClass>
-                                                                     </Label>
-                                                                  </children>
-                                                               </TextFlow>
-                                                            </graphic>
-                                                         </SectionHyperlink>
-                                                      </children>
-                                                   </HBox>
-                                                   <HBox alignment="TOP_LEFT" layoutX="10.0" layoutY="145.0" spacing="5.0">
-                                                      <children>
-                                                         <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="◦" />
-                                                         <SectionHyperlink contentDisplay="GRAPHIC_ONLY" target="${addc}" wrapText="true">
-                                                            <graphic>
-                                                               <TextFlow>
-                                                                  <children>
-                                                                     <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Deleting a person: " />
-                                                                     <Label text="delete">
-                                                                        <styleClass>
-                                                                           <String fx:value="code" />
-                                                                        </styleClass>
-                                                                     </Label>
-                                                                  </children>
-                                                               </TextFlow>
-                                                            </graphic>
-                                                         </SectionHyperlink>
-                                                      </children>
-                                                   </HBox>
-                                                   <HBox alignment="TOP_LEFT" layoutX="10.0" layoutY="172.0" spacing="5.0">
-                                                      <children>
-                                                         <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="◦" />
-                                                         <SectionHyperlink contentDisplay="GRAPHIC_ONLY" target="${addc}" wrapText="true">
-                                                            <graphic>
-                                                               <TextFlow>
-                                                                  <children>
-                                                                     <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Clearing all entries: " />
-                                                                     <Label text="clear">
-                                                                        <styleClass>
-                                                                           <String fx:value="code" />
-                                                                        </styleClass>
-                                                                     </Label>
-                                                                  </children>
-                                                               </TextFlow>
-                                                            </graphic>
-                                                         </SectionHyperlink>
-                                                      </children>
-                                                   </HBox>
-                                                   <HBox alignment="TOP_LEFT" layoutX="10.0" layoutY="199.0" spacing="5.0">
-                                                      <children>
-                                                         <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="◦" />
-                                                         <SectionHyperlink contentDisplay="GRAPHIC_ONLY" target="${addc}" wrapText="true">
-                                                            <graphic>
-                                                               <TextFlow>
-                                                                  <children>
-                                                                     <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Exiting the program: " />
-                                                                     <Label text="exit">
-                                                                        <styleClass>
-                                                                           <String fx:value="code" />
-                                                                        </styleClass>
-                                                                     </Label>
-                                                                  </children>
-                                                               </TextFlow>
-                                                            </graphic>
-                                                         </SectionHyperlink>
-                                                      </children>
-                                                   </HBox>
-                                                   <HBox alignment="TOP_LEFT" layoutX="10.0" layoutY="226.0" spacing="5.0">
-                                                      <children>
-                                                         <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="◦" />
-                                                         <SectionHyperlink contentDisplay="GRAPHIC_ONLY" target="${addc}" wrapText="true">
-                                                            <graphic>
-                                                               <TextFlow>
-                                                                  <children>
-                                                                     <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Saving the data" />
-                                                                  </children>
-                                                               </TextFlow>
-                                                            </graphic>
-                                                         </SectionHyperlink>
-                                                      </children>
-                                                   </HBox>
-                                                   <HBox alignment="TOP_LEFT" layoutX="10.0" layoutY="253.0" spacing="5.0">
-                                                      <children>
-                                                         <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="◦" />
-                                                         <SectionHyperlink contentDisplay="GRAPHIC_ONLY" target="${addc}" wrapText="true">
-                                                            <graphic>
-                                                               <TextFlow>
-                                                                  <children>
-                                                                     <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Editing the data file" />
-                                                                  </children>
-                                                               </TextFlow>
-                                                            </graphic>
-                                                         </SectionHyperlink>
-                                                      </children>
-                                                   </HBox>
+                                                   <Label styleClass="bullet" text="◦" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Viewing help" wrapText="true" />
                                                 </children>
-                                             </VBox>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Exiting the application" wrapText="true" />
+                                                </children>
+                                             </HBox>
                                           </children>
                                        </VBox>
-                                    </children>
-                                 </HBox>
-                                 <HBox alignment="TOP_LEFT" spacing="5.0">
-                                    <children>
-                                       <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                       <SectionHyperlink contentDisplay="GRAPHIC_ONLY" target="${faq}" wrapText="true">
-                                          <graphic>
-                                             <TextFlow>
+                                    </content>
+                                 </TitledPane>
+                                 <TitledPane>
+                                    <graphic>
+                                       <Label minHeight="-Infinity" text="Adding and modifying contacts" wrapText="true" />
+                                    </graphic>
+                                    <content>
+                                       <VBox styleClass="body">
+                                          <children>
+                                             <HBox alignment="BASELINE_LEFT">
                                                 <children>
-                                                   <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="FAQ" />
+                                                   <Label styleClass="bullet" text="◦" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Common info about contacts" wrapText="true" />
                                                 </children>
-                                             </TextFlow>
-                                          </graphic>
-                                       </SectionHyperlink>
-                                    </children>
-                                 </HBox>
-                                 <HBox alignment="TOP_LEFT" spacing="5.0">
-                                    <children>
-                                       <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                       <SectionHyperlink contentDisplay="GRAPHIC_ONLY" target="${issues}" wrapText="true">
-                                          <graphic>
-                                             <TextFlow>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
                                                 <children>
-                                                   <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Known issues" />
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Adding a jobseeker" wrapText="true" />
                                                 </children>
-                                             </TextFlow>
-                                          </graphic>
-                                       </SectionHyperlink>
-                                    </children>
-                                 </HBox>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Adding a client" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Editing a jobseeker" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Editing a client" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Deleting a jobseeker" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Deleting a client" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                          </children>
+                                       </VBox>
+                                    </content>
+                                 </TitledPane>
+                                 <TitledPane>
+                                    <content>
+                                       <VBox styleClass="body">
+                                          <children>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Listing jobseekers and clients" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Listing jobseekers" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Listing clients" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Finding jobseekers and clients" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Finding jobseekers" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Finding client" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Hiding a jobseeker" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Hiding a client" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Unhiding a jobseeker" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Unhiding a client" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Listing hidden jobseekers" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Listing hidden clients" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Finding hidden jobseekers" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                             <HBox alignment="BASELINE_LEFT">
+                                                <children>
+                                                   <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                   <SectionHyperlink minHeight="-Infinity" text="Finding hidden client" wrapText="true" />
+                                                </children>
+                                             </HBox>
+                                          </children>
+                                       </VBox>
+                                    </content>
+                                    <graphic>
+                                       <Label minHeight="-Infinity" text="Viewing contacts" wrapText="true" />
+                                    </graphic>
+                                 </TitledPane>
                               </children>
-                           </VBox>
-                           <Separator prefWidth="200.0" />
-                           <Label fx:id="features" contentDisplay="TEXT_ONLY" styleClass="h2" text="Features" />
-                           <VBox>
-                              <children>
-                                 <HBox spacing="5.0">
-                                    <children>
-                                       <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                          <image>
-                                             <Image url="@../images/emoji-info.png" />
-                                          </image>
-                                       </ImageView>
-                                       <Label text="Notes about the command format:" wrapText="true">
-                                          <styleClass>
-                                             <String fx:value="bold" />
-                                             <String fx:value="p" />
-                                          </styleClass>
-                                       </Label>
-                                    </children>
-                                 </HBox>
-                                 <HBox alignment="TOP_LEFT" spacing="5.0">
-                                    <children>
-                                       <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                       <TextFlow styleClass="p">
-                                          <children>
-                                             <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Words in " />
-                                             <Label styleClass="code" text="UPPER_CASE" />
-                                             <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=" are the parameters to be supplied by the user." />
-                                             <Text layoutX="171.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="&#10;" />
-                                             <Text layoutX="171.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="For example, in " />
-                                             <Label layoutX="78.0" layoutY="10.0" styleClass="code" text="addj n/NAME" />
-                                             <Text layoutX="10.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=", replace " />
-                                             <Label layoutX="122.0" layoutY="29.0" styleClass="code" text="NAME" />
-                                             <Text layoutX="223.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=" with a value such as " />
-                                             <Label layoutX="286.0" layoutY="29.0" styleClass="code" text="John Doe" />
-                                             <Text layoutX="329.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="." />
-                                          </children>
-                                       </TextFlow>
-                                    </children>
-                                 </HBox>
-                                 <HBox alignment="TOP_LEFT" spacing="5.0">
-                                    <children>
-                                       <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                       <TextFlow styleClass="p">
-                                          <children>
-                                             <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Items in square brackets are optional." />
-                                             <Text layoutX="171.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="&#10;" />
-                                             <Text layoutX="171.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="For example, " />
-                                             <Label layoutX="78.0" layoutY="10.0" styleClass="code" text="n/NAME [t/TAG]" />
-                                             <Text layoutX="10.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=" can be used as " />
-                                             <Label layoutX="122.0" layoutY="29.0" styleClass="code" text="n/John Doe t/friend" />
-                                             <Text layoutX="223.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=" or as " />
-                                             <Label layoutX="286.0" layoutY="29.0" styleClass="code" text="n/John Doe" />
-                                             <Text layoutX="329.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="." />
-                                          </children>
-                                       </TextFlow>
-                                    </children>
-                                 </HBox>
-                                 <HBox alignment="TOP_LEFT" spacing="5.0">
-                                    <children>
-                                       <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                       <TextFlow styleClass="p">
-                                          <children>
-                                             <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Items followed by " />
-                                             <Label styleClass="code" text="…" />
-                                             <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="​ can appear zero or more times." />
-                                             <Text layoutX="171.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="&#10;" />
-                                             <Text layoutX="171.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="For example, " />
-                                             <Label layoutX="78.0" layoutY="10.0" styleClass="code" text="[t/TAG]…" />
-                                             <Text layoutX="10.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=" may be omitted, or written as " />
-                                             <Label layoutX="122.0" layoutY="29.0" styleClass="code" text="t/friend" />
-                                             <Text layoutX="223.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=" or " />
-                                             <Label layoutX="286.0" layoutY="29.0" styleClass="code" text="t/friend t/family" />
-                                             <Text layoutX="329.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="." />
-                                          </children>
-                                       </TextFlow>
-                                    </children>
-                                 </HBox>
-                                 <HBox alignment="TOP_LEFT" spacing="5.0">
-                                    <children>
-                                       <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                       <TextFlow styleClass="p">
-                                          <children>
-                                             <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Parameters can be in any order." />
-                                             <Text layoutX="171.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="&#10;" />
-                                             <Text layoutX="171.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="For example, if the command specifies " />
-                                             <Label layoutX="78.0" layoutY="10.0" styleClass="code" text="n/NAME p/PHONE_NUMBER" />
-                                             <Text layoutX="10.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=", " />
-                                             <Label layoutX="122.0" layoutY="29.0" styleClass="code" text="p/PHONE_NUMBER n/NAME" />
-                                             <Text layoutX="223.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=" is also acceptable." />
-                                          </children>
-                                       </TextFlow>
-                                    </children>
-                                 </HBox>
-                                 <HBox alignment="TOP_LEFT" spacing="5.0">
-                                    <children>
-                                       <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                       <TextFlow styleClass="p">
-                                          <children>
-                                             <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Extraneous parameters for commands that take no parameters, such as " />
-                                             <Label styleClass="code" text="help" />
-                                             <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=", " />
-                                             <Label styleClass="code" text="list" />
-                                             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="." />
-                                             <Label styleClass="code" text="exit" />
-                                             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=", and " />
-                                             <Label styleClass="code" text="clear" />
-                                             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=" are ignored." />
-                                             <Text layoutX="171.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="&#10;" />
-                                             <Text layoutX="171.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="For example, " />
-                                             <Label layoutX="78.0" layoutY="10.0" styleClass="code" text="help 123" />
-                                             <Text layoutX="10.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=" is interpreted as " />
-                                             <Label layoutX="122.0" layoutY="29.0" styleClass="code" text="help" />
-                                             <Text layoutX="223.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="." />
-                                          </children>
-                                       </TextFlow>
-                                    </children>
-                                 </HBox>
-                                 <HBox alignment="TOP_LEFT" layoutX="31.0" layoutY="248.0" spacing="5.0">
-                                    <children>
-                                       <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                       <TextFlow styleClass="p">
-                                          <children>
-                                             <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="The texts in the in-app user guide cannot be copied due to technological limitations of JavaFX. Some areas have a dedicated copy button for your convenience." />
-                                          </children>
-                                       </TextFlow>
-                                    </children>
-                                 </HBox>
-                              </children>
-                              <styleClass>
-                                 <String fx:value="alert" />
-                                 <String fx:value="alert-info" />
-                                 <String fx:value="p" />
-                              </styleClass>
-                           </VBox>
-                           <VBox>
-                              <children>
-                                 <TextFlow fx:id="help" styleClass="h3">
-                                    <children>
-                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Viewing help: " />
-                                       <Label styleClass="code" text="help" />
-                                    </children>
-                                 </TextFlow>
-                                 <Label styleClass="p" text="Shows this help window" wrapText="true" />
-                                 <TextFlow styleClass="p">
-                                    <children>
-                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Format: " />
-                                       <Label fx:id="help_format" styleClass="code" text="help" />
-                                       <CopyButton target="${help_format}" />
-                                    </children>
-                                 </TextFlow>
-                              </children>
-                           </VBox>
-                           <VBox>
-                              <children>
-                                 <TextFlow fx:id="addj" styleClass="h3">
-                                    <children>
-                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Adding a jobseeker: " />
-                                       <Label styleClass="code" text="addj" />
-                                    </children>
-                                 </TextFlow>
-                                 <Label styleClass="p" text="Adds a jobseeker to the address book." wrapText="true" />
-                                 <TextFlow styleClass="p">
-                                    <children>
-                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Format: " />
-                                       <Label fx:id="addj_format" styleClass="code" text="addj n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [r/REMARK] [t/TAG]…​" wrapText="true" />
-                                       <CopyButton target="${addj_format}" />
-                                    </children>
-                                 </TextFlow>
-                                 <VBox>
-                                    <children>
-                                       <HBox spacing="5.0" style="-fx-border-radius: 0.25em;">
-                                          <children>
-                                             <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                                <image>
-                                                   <Image url="@../images/emoji-bulb.png" />
-                                                </image>
-                                             </ImageView>
-                                             <TextFlow styleClass="p">
-                                                <children>
-                                                   <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tip: ">
-                                                      <styleClass>
-                                                         <String fx:value="text" />
-                                                         <String fx:value="bold" />
-                                                      </styleClass>
-                                                   </Text>
-                                                   <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="A person can have any number of tags, including zero." />
-                                                </children>
-                                             </TextFlow>
-                                          </children>
-                                       </HBox>
-                                    </children>
-                                    <styleClass>
-                                       <String fx:value="alert" />
-                                       <String fx:value="alert-primary" />
-                                       <String fx:value="p" />
-                                    </styleClass>
-                                 </VBox>
-                                 <Label styleClass="body" text="Examples:" />
-                                 <VBox styleClass="p">
-                                    <children>
-                                       <HBox alignment="TOP_LEFT" spacing="5.0">
-                                          <children>
-                                             <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                             <VBox styleClass="body">
-                                                <children>
-                                                   <Label fx:id="addj_ex1" styleClass="code" text="addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01" wrapText="true" />
-                                                   <CopyButton target="${addj_ex1}" />
-                                                </children>
-                                             </VBox>
-                                          </children>
-                                       </HBox>
-                                       <HBox alignment="TOP_LEFT" spacing="5.0">
-                                          <children>
-                                             <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                             <VBox styleClass="body">
-                                                <children>
-                                                   <Label fx:id="addj_ex2" styleClass="code" text="addj n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal" wrapText="true" />
-                                                   <CopyButton target="${addj_ex2}" />
-                                                </children>
-                                             </VBox>
-                                          </children>
-                                       </HBox>
-                                    </children>
-                                 </VBox>
-                                 <TextFlow styleClass="p">
-                                    <children>
-                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Remarks and tags are optional. Without " />
-                                       <Label styleClass="code" text="r/" />
-                                       <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=", the remark is empty. Without " />
-                                       <Label layoutX="293.0" layoutY="12.0" styleClass="code" text="t/" />
-                                       <Text layoutX="319.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=", no tags are added." />
-                                    </children>
-                                 </TextFlow>
-                              </children>
-                           </VBox>
-                           <VBox>
-                              <children>
-                                 <TextFlow fx:id="addc" styleClass="h3">
-                                    <children>
-                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Adding a client: " />
-                                       <Label styleClass="code" text="addc" />
-                                    </children>
-                                 </TextFlow>
-                                 <Label styleClass="p" text="Adds a client to the address book." wrapText="true" />
-                                 <TextFlow styleClass="p">
-                                    <children>
-                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Format: " />
-                                       <Label fx:id="addc_format" styleClass="code" text="addc n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [r/REMARK] [t/TAG]…" wrapText="true" />
-                                       <CopyButton target="${addc_format}" />
-                                    </children>
-                                 </TextFlow>
-                                 <Label styleClass="p" text="Examples:" />
-                                 <VBox spacing="3.0" styleClass="p">
-                                    <children>
-                                       <HBox alignment="TOP_LEFT" layoutX="10.0" layoutY="10.0" spacing="5.0">
-                                          <children>
-                                             <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                             <TextFlow styleClass="body">
-                                                <children>
-                                                   <Label fx:id="addc_ex1" styleClass="code" text="addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road r/Hiring software engineers t/employer t/technology" wrapText="true" />
-                                                   <CopyButton target="${addc_ex1}" />
-                                                </children>
-                                             </TextFlow>
-                                          </children>
-                                       </HBox>
-                                    </children>
-                                 </VBox>
-                              </children>
-                           </VBox>
-                           <VBox>
-                              <children>
-                                 <TextFlow fx:id="list" styleClass="h3">
-                                    <children>
-                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Listing all persons: " />
-                                       <Label styleClass="code" text="list" />
-                                    </children>
-                                 </TextFlow>
-                                 <Label styleClass="p" text="Shows a list of all persons in the address book." wrapText="true" />
-                                 <TextFlow styleClass="p">
-                                    <children>
-                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Format: " />
-                                       <Label fx:id="list_format" styleClass="code" text="list" />
-                                       <CopyButton target="${list_format}" />
-                                    </children>
-                                 </TextFlow>
-                              </children>
-                           </VBox>
-                           <VBox>
-                              <children>
-                                 <TextFlow fx:id="edit" styleClass="h3">
-                                    <children>
-                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Editing a person: " />
-                                       <Label styleClass="code" text="edit" />
-                                    </children>
-                                 </TextFlow>
-                                 <Label styleClass="p" text="Edits an existing person in the address book." wrapText="true" />
-                                 <TextFlow styleClass="p">
-                                    <children>
-                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Format: " />
-                                       <Label fx:id="edit_format" styleClass="code" text="edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​" wrapText="true" />
-                                       <CopyButton target="${edit_format}" />
-                                    </children>
-                                 </TextFlow>
-                                 <VBox spacing="3.0" styleClass="p">
-                                    <children>
-                                       <HBox alignment="TOP_LEFT" layoutX="10.0" layoutY="10.0" spacing="5.0">
-                                          <children>
-                                             <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                             <TextFlow styleClass="body">
-                                                <children>
-                                                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Edits the person at the specified " />
-                                                   <Label text="INDEX" wrapText="true">
-                                                      <styleClass>
-                                                         <String fx:value="code" />
-                                                         <String fx:value="body" />
-                                                      </styleClass>
-                                                   </Label>
-                                                   <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=". The index refers to the index number shown in the displayed person list. The index " />
-                                                   <Text layoutX="10.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bold" text="must be a positive integer" />
-                                                   <Text layoutX="10.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" 1, 2, 3, …​" />
-                                                </children>
-                                             </TextFlow>
-                                          </children>
-                                       </HBox>
-                                       <HBox alignment="TOP_LEFT" spacing="5.0">
-                                          <children>
-                                             <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                             <TextFlow styleClass="body">
-                                                <children>
-                                                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="At least one of the optional fields must be provided." />
-                                                </children>
-                                             </TextFlow>
-                                          </children>
-                                       </HBox>
-                                       <HBox alignment="TOP_LEFT" spacing="5.0">
-                                          <children>
-                                             <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                             <TextFlow styleClass="body">
-                                                <children>
-                                                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Existing values will be updated to the input values." />
-                                                </children>
-                                             </TextFlow>
-                                          </children>
-                                       </HBox>
-                                       <HBox alignment="TOP_LEFT" layoutX="10.0" layoutY="95.0" spacing="5.0">
-                                          <children>
-                                             <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                             <TextFlow styleClass="body">
-                                                <children>
-                                                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="When editing tags, all of the person’s existing tags are removed; adding tags is not cumulative." />
-                                                </children>
-                                             </TextFlow>
-                                          </children>
-                                       </HBox>
-                                       <HBox alignment="TOP_LEFT" layoutX="10.0" layoutY="10.0" spacing="5.0">
-                                          <children>
-                                             <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                             <TextFlow styleClass="body">
-                                                <children>
-                                                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="To remove all of a person’s tags, enter " />
-                                                   <Label text="t/" wrapText="true">
-                                                      <styleClass>
-                                                         <String fx:value="code" />
-                                                         <String fx:value="body" />
-                                                      </styleClass>
-                                                   </Label>
-                                                   <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" without a tag after it." />
-                                                </children>
-                                             </TextFlow>
-                                          </children>
-                                       </HBox>
-                                    </children>
-                                 </VBox>
-                                 <Label styleClass="p" text="Examples:" />
-                                 <VBox spacing="3.0" styleClass="p">
-                                    <children>
-                                       <HBox alignment="TOP_LEFT" layoutX="10.0" layoutY="10.0" spacing="5.0">
-                                          <children>
-                                             <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                             <TextFlow styleClass="body">
-                                                <children>
-                                                   <Label fx:id="edit_ex1" styleClass="code" text="edit 1 p/91234567 e/johndoe@example.com" wrapText="true" />
-                                                   <CopyButton target="${edit_ex1}" />
-                                                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" Edits the phone number and email address of the 1st person to be " />
-                                                   <Label layoutX="10.0" layoutY="12.0" text="91234567" wrapText="true">
-                                                      <styleClass>
-                                                         <String fx:value="code" />
-                                                         <String fx:value="body" />
-                                                      </styleClass>
-                                                   </Label>
-                                                   <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" and " />
-                                                   <Label layoutX="104.0" layoutY="38.0" text="johndoe@example.com" wrapText="true">
-                                                      <styleClass>
-                                                         <String fx:value="code" />
-                                                         <String fx:value="body" />
-                                                      </styleClass>
-                                                   </Label>
-                                                   <Text layoutX="180.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" respectively." />
-                                                </children>
-                                             </TextFlow>
-                                          </children>
-                                       </HBox>
-                                       <HBox alignment="TOP_LEFT" layoutX="10.0" layoutY="10.0" spacing="5.0">
-                                          <children>
-                                             <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
-                                             <TextFlow styleClass="body">
-                                                <children>
-                                                   <Label fx:id="edit_ex2" styleClass="code" text="edit 1 p/91234567 e/johndoe@example.com" wrapText="true" />
-                                                   <CopyButton target="${edit_ex2}" />
-                                                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" Edits the phone number and email address of the 1st person to be " />
-                                                   <Label layoutX="10.0" layoutY="12.0" text="91234567" wrapText="true">
-                                                      <styleClass>
-                                                         <String fx:value="code" />
-                                                         <String fx:value="body" />
-                                                      </styleClass>
-                                                   </Label>
-                                                   <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" and " />
-                                                   <Label layoutX="104.0" layoutY="38.0" text="johndoe@example.com" wrapText="true">
-                                                      <styleClass>
-                                                         <String fx:value="code" />
-                                                         <String fx:value="body" />
-                                                      </styleClass>
-                                                   </Label>
-                                                   <Text layoutX="180.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" respectively." />
-                                                </children>
-                                             </TextFlow>
-                                          </children>
-                                       </HBox>
-                                    </children>
-                                 </VBox>
-                              </children>
-                           </VBox>
-                           <Separator prefWidth="200.0" />
-                           <Label fx:id="faq" contentDisplay="TEXT_ONLY" styleClass="h2" text="FAQ" />
-                           <TextFlow styleClass="p">
-                              <children>
-                                 <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Q">
-                                    <styleClass>
-                                       <String fx:value="bold" />
-                                       <String fx:value="text" />
-                                    </styleClass></Text>
-                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=": How do I transfer my data to another computer?" />
-                                 <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="&#10;" />
-                                 <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A">
-                                    <styleClass>
-                                       <String fx:value="bold" />
-                                       <String fx:value="text" />
-                                    </styleClass></Text>
-                                 <Text layoutX="22.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=": Install the app on the other computer and overwrite the data file it creates with the data file from your previous AddressBook home folder." />
-                              </children>
-                           </TextFlow>
-                           <Separator prefWidth="200.0" />
-                           <Label fx:id="issues" contentDisplay="TEXT_ONLY" styleClass="h2" text="Known issues" />
-                           <VBox styleClass="p">
-                              <children>
-                                 <HBox alignment="TOP_LEFT" spacing="5.0">
-                                    <children>
-                                       <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" text="1." />
-                                       <TextFlow styleClass="body">
-                                          <children>
-                                             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="When using multiple screens">
-                                                <styleClass>
-                                                   <String fx:value="bold" />
-                                                   <String fx:value="text" />
-                                                </styleClass></Text>
-                                             <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=", if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the " />
-                                             <Label styleClass="code" text="preferences.json" />
-                                             <Text layoutX="33.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=" file created by the application before running the application again." />
-                                          </children>
-                                       </TextFlow>
-                                    </children>
-                                 </HBox>
-                                 <HBox alignment="TOP_LEFT" spacing="5.0">
-                                    <children>
-                                       <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" text="2." />
-                                       <TextFlow styleClass="body">
-                                          <children>
-                                             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="If you minimize the Help Window">
-                                                <styleClass>
-                                                   <String fx:value="bold" />
-                                                   <String fx:value="text" />
-                                                </styleClass></Text>
-                                             <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=" and then run the " />
-                                             <Label styleClass="code" text="help" />
-                                             <Text layoutX="33.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=" command (or use the " />
-                                             <Label styleClass="code" text="Help" />
-                                             <Text layoutX="431.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=" menu, or the keyboard shortcut " />
-                                             <Label layoutX="591.0" layoutY="11.0" styleClass="code" text="F1" />
-                                             <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=") again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window." />
-                                          </children>
-                                       </TextFlow>
-                                    </children>
-                                 </HBox>
-                              </children>
-                           </VBox>
-                           <Separator prefWidth="200.0">
                               <padding>
-                                 <Insets bottom="30.0" top="15.0" />
+                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                               </padding>
-                           </Separator>
-                        </children>
-                        <padding>
-                           <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                        </padding>
-                     </VBox>
-                  </content>
-               </SectionScrollPane>
+                           </VBox>
+                        </content>
+                     </ScrollPane>
+                     <ScrollPane fx:id="content" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
+                        <content>
+                           <VBox styleClass="document">
+                              <children>
+                                 <Label minHeight="-Infinity" styleClass="h1" text="User Guide" wrapText="true" />
+                                 <Separator prefWidth="200.0">
+                                    <padding>
+                                       <Insets bottom="15.0" />
+                                    </padding>
+                                 </Separator>
+                                 <TextFlow prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="TalentLink is a " />
+                                       <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bold" text="desktop application that HR recruiters in recruitment agencies use to manage their contacts, optimized for use through a Command Line Interface (CLI)" />
+                                       <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" while retaining the benefits of a Graphical User Interface (GUI). If you type quickly, TalentLink can help you manage your jobseeker/client contacts faster than traditional GUI applications. Additionally, TalentLink also provides support for many tasks that recruiters often do on a daily basis, such as recording notes on various jobseekers/clients, searching for jobseekers with particular educational qualifications and determine which jobseekers to link up with each client’s job opening." />
+                                    </children>
+                                    <VBox.margin>
+                                       <Insets bottom="15.0" />
+                                    </VBox.margin>
+                                 </TextFlow>
+                                 <Label minHeight="-Infinity" text="Select a help page on the left to start." wrapText="true" />
+                              </children>
+                           </VBox>
+                        </content></ScrollPane>
+                  </items>
+               </SplitPane>
             </children>
          </AnchorPane>
     </Scene>

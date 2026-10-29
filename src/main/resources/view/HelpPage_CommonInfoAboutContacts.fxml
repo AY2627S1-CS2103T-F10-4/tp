@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import seedu.address.ui.SectionHyperlink?>
+
+<VBox styleClass="document" stylesheets="@HelpWindow.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label styleClass="h2" text="Common info about contacts" />
+      <Label minHeight="-Infinity" text="Jobseeker contacts contains the following values, and their corresponding constraints:" wrapText="true" />
+      <VBox styleClass="body">
+         <children>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <Label minHeight="-Infinity" text="Name" wrapText="true" />
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <TextFlow styleClass="body">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="can contain any characters except " />
+                                    <Label styleClass="code" text="/" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" (e.g. " />
+                                    <Label styleClass="code" text="Beyoncé" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" and " />
+                                    <Label styleClass="code" text="Zoë" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" are allowed)" />
+                                 </children>
+                              </TextFlow>
+                           </children>
+                        </HBox>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="must not be blank" wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <Label minHeight="-Infinity" text="Phone number" wrapText="true" />
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="contains only digits" wrapText="true" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="33.0">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="must be at least 3 digits long" wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="33.0">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <Label minHeight="-Infinity" text="Email address" wrapText="true" />
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="must follow the conventional format of email address" wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="56.0">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <Label minHeight="-Infinity" text="Physical address" wrapText="true" />
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="must not be empty" wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <Label minHeight="-Infinity" text="Qualification" wrapText="true" />
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="no restrictions" wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="79.0">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <Label minHeight="-Infinity" text="Remarks about the individual" wrapText="true" />
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="no restrictions" wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <Label minHeight="-Infinity" text="Tags" wrapText="true" />
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label layoutX="10.0" layoutY="10.0" minHeight="-Infinity" text="each jobseeker can have multiple unique tags" wrapText="true" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <TextFlow styleClass="body">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="See " />
+                                    <SectionHyperlink text="Tag details" />
+                                    <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" for more details about tags. " />
+                                 </children>
+                              </TextFlow>
+                              <Label text="can have multiple unique tags" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Label layoutX="40.0" layoutY="94.0" minHeight="-Infinity" text="Client contacts contains the following values, and their corresponding constraints:" wrapText="true" />
+      <VBox styleClass="body">
+         <children>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <Label minHeight="-Infinity" text="Name" wrapText="true" />
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <TextFlow styleClass="body">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="can contain any characters except " />
+                                    <Label styleClass="code" text="/" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" (e.g. " />
+                                    <Label styleClass="code" text="Ben &amp; Jerry's" />
+                                    <Text layoutX="421.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=", " />
+                                    <Label layoutX="457.0" layoutY="14.0" styleClass="code" text="Pokémon" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" and " />
+                                    <Label styleClass="code" text="7-Eleven" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" are allowed)" />
+                                 </children>
+                              </TextFlow>
+                           </children>
+                        </HBox>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="must not be blank" wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <Label minHeight="-Infinity" text="Phone number" wrapText="true" />
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="contains only digits" wrapText="true" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="33.0">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="must be at least 3 digits long" wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="33.0">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <Label minHeight="-Infinity" text="Email address" wrapText="true" />
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="must follow the conventional format of email address" wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="56.0">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <Label minHeight="-Infinity" text="Physical address" wrapText="true" />
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="must not be empty" wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="79.0">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <Label minHeight="-Infinity" text="Remarks about the individual" wrapText="true" />
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="no restrictions" wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <Label minHeight="-Infinity" text="Available job positions" wrapText="true" />
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="no restrictions" wrapText="true" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="each client can have multiple available positions" wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="102.0">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <Label minHeight="-Infinity" text="Tags" wrapText="true" />
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label layoutX="10.0" layoutY="10.0" minHeight="-Infinity" text="each client can have multiple unique tags" wrapText="true" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <TextFlow styleClass="body">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="See " />
+                                    <SectionHyperlink text="Tag details" />
+                                    <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" for more details about tags. " />
+                                 </children>
+                              </TextFlow>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <TextFlow styleClass="body">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Contacts are identified by their phone number " />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bold" text="and" />
+            <Text layoutX="421.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" their email address." />
+         </children>
+      </TextFlow>
+   </children>
+</VBox>

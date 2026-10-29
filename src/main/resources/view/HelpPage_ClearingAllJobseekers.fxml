@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import seedu.address.ui.ExampleCode?>
+
+<VBox styleClass="document" stylesheets="@HelpWindow.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextFlow styleClass="h2">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Clearing all jobseekers: " />
+            <Label styleClass="code" text="clearj" />
+         </children>
+      </TextFlow>
+      <Label minHeight="-Infinity" text="Clears all contacts from the jobseeker list." wrapText="true" />
+      <Label minHeight="-Infinity" text="This includes contacts that aren’t listed in the currently displayed jobseeker list" wrapText="true" />
+      <HBox alignment="BASELINE_LEFT">
+         <children>
+            <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="bold" text="Format: " />
+            <ExampleCode code="clearj" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
