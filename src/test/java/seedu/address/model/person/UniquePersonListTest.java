@@ -10,6 +10,7 @@ import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BOB;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.junit.jupiter.api.Test;
 
@@ -54,6 +55,15 @@ public class UniquePersonListTest {
     public void add_duplicatePerson_throwsDuplicatePersonException() {
         uniquePersonList.add(ALICE);
         assertThrows(DuplicatePersonException.class, () -> uniquePersonList.add(ALICE));
+    }
+
+    /** Typing the same email in a different case must not let a duplicate contact through. */
+    @Test
+    public void add_duplicatePersonWithEmailInDifferentCase_throwsDuplicatePersonException() {
+        uniquePersonList.add(ALICE);
+        Person upperCaseEmailAlice = new JobseekerBuilder(ALICE)
+                .withEmail(ALICE.getEmail().value.toUpperCase(Locale.ROOT)).build();
+        assertThrows(DuplicatePersonException.class, () -> uniquePersonList.add(upperCaseEmailAlice));
     }
 
     @Test

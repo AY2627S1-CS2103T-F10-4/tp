@@ -19,7 +19,7 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
 public class ParserUtilTest {
-    private static final String INVALID_NAME = "R@chel";
+    private static final String INVALID_NAME = "R/chel";
     private static final String INVALID_PHONE = "+651234";
     private static final String INVALID_ADDRESS = " ";
     private static final String INVALID_EMAIL = "example.com";
@@ -172,6 +172,37 @@ public class ParserUtilTest {
     @Test
     public void parseTags_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseTags(null));
+    }
+
+    @Test
+    public void parseSpaceSeparatedTags_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseSpaceSeparatedTags(null));
+    }
+
+    @Test
+    public void parseSpaceSeparatedTags_emptyCollection_returnsEmptySet() throws Exception {
+        assertTrue(ParserUtil.parseSpaceSeparatedTags(List.of()).isEmpty());
+    }
+
+    @Test
+    public void parseSpaceSeparatedTags_multipleValuesWithWhitespaceAndDuplicates_returnsUniqueTags() throws Exception {
+        assertEquals(Set.of(new Tag("friend"), new Tag("colleague"), new Tag("Friend")),
+                ParserUtil.parseSpaceSeparatedTags(List.of(" friend  colleague\tfriend ", "\nFriend\r\ncolleague")));
+    }
+
+    @Test
+    public void parseSpaceSeparatedTags_emptyOrInvalidValue_throwsParseException() {
+        for (String value : List.of("", " \t ", "friend invalid!", "invalid! friend")) {
+            assertThrows(ParseException.class, Tag.MESSAGE_CONSTRAINTS, () ->
+                    ParserUtil.parseSpaceSeparatedTags(List.of(value)));
+        }
+        assertThrows(ParseException.class, Tag.MESSAGE_CONSTRAINTS, () ->
+                ParserUtil.parseSpaceSeparatedTags(List.of("friend", "")));
+    }
+
+    @Test
+    public void parseTags_spaceSeparatedValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseTags(List.of("friend colleague")));
     }
 
     @Test

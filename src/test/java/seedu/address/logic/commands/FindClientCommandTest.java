@@ -99,6 +99,33 @@ public class FindClientCommandTest {
     }
 
     /**
+     * Checks that tags are searched for clients too: only Brenda and Diana are tagged "partner".
+     */
+    @Test
+    public void execute_tagKeyword_clientsFound() {
+        assertFindSuccess("partner", List.of(BRENDA, DIANA));
+    }
+
+    /**
+     * Checks that job openings are searched for clients: {@code "tester"} matches only Cedric's job
+     * opening, and {@code "chef"} matches only Diana's.
+     */
+    @Test
+    public void execute_jobKeywords_clientsFound() {
+        Client cedricWithJob = new ClientBuilder(CEDRIC).withAvailableJobs("QA Tester").build();
+        Client dianaWithJob = new ClientBuilder(DIANA).withAvailableJobs("Head Chef").build();
+        Model jobModel = new ModelManager();
+        jobModel.addClient(ADRIAN);
+        jobModel.addClient(cedricWithJob);
+        jobModel.addClient(dianaWithJob);
+
+        CommandResult result = new FindClientCommand(preparePredicate("tester chef")).execute(jobModel);
+
+        assertEquals(String.format(MESSAGE_CLIENTS_LISTED_OVERVIEW, 2), result.getFeedbackToUser());
+        assertEquals(List.of(cedricWithJob, dianaWithJob), jobModel.getFilteredClientList());
+    }
+
+    /**
      * Checks that {@code findc} leaves the jobseeker list alone. {@code ModelManager#equals} does not
      * compare filtered lists, so {@code assertCommandSuccess} alone would not notice if this command
      * filtered jobseekers by mistake. {@code "Alice"} matches a jobseeker but no client, so a mix-up

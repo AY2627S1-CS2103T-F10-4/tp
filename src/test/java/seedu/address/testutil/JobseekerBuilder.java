@@ -8,6 +8,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Qualification;
 import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
@@ -27,6 +28,7 @@ public class JobseekerBuilder {
     private Email email;
     private Address address;
     private Remark remark;
+    private Qualification highestQualification;
     private Set<Tag> tags;
     private boolean isHidden;
 
@@ -39,6 +41,7 @@ public class JobseekerBuilder {
         email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
         remark = new Remark("");
+        highestQualification = new Qualification("");
         tags = new HashSet<>();
         isHidden = false;
     }
@@ -52,6 +55,7 @@ public class JobseekerBuilder {
         email = jobseekerToCopy.getEmail();
         address = jobseekerToCopy.getAddress();
         remark = jobseekerToCopy.getRemark();
+        highestQualification = jobseekerToCopy.getHighestQualification();
         tags = new HashSet<>(jobseekerToCopy.getTags());
         isHidden = jobseekerToCopy.isHidden();
     }
@@ -112,7 +116,15 @@ public class JobseekerBuilder {
         return this;
     }
 
+    /**
+     * Sets the optional highest qualification.
+     */
+    public JobseekerBuilder withHighestQualification(String qualification) {
+        highestQualification = new Qualification(qualification);
+        return this;
+    }
+
     public Jobseeker build() {
-        return new Jobseeker(name, phone, email, address, tags, remark, isHidden);
+        return new Jobseeker(name, phone, email, address, tags, remark, highestQualification, isHidden);
     }
 }

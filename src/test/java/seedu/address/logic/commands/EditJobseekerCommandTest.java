@@ -20,6 +20,8 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
@@ -29,6 +31,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Jobseeker;
+import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.testutil.EditJobseekerDescriptorBuilder;
 import seedu.address.testutil.JobseekerBuilder;
 
@@ -54,7 +57,8 @@ public class EditJobseekerCommandTest {
 
             assertEquals(List.of(new JobseekerBuilder(original).withRemark(remark).build()),
                     remarkModel.getAddressBook().getJobseekerList());
-            assertTrue(remarkModel.getFilteredJobseekerList().isEmpty());
+            assertEquals(remarkModel.getAddressBook().getJobseekerList(),
+                    remarkModel.getFilteredJobseekerList());
         }
     }
 
@@ -229,9 +233,7 @@ public class EditJobseekerCommandTest {
     public void execute_hiddenJobseeker_staysHidden() throws Exception {
         Model hiddenModel = new ModelManager();
         hiddenModel.addJobseeker(new JobseekerBuilder().withHidden(true).build());
-        // Hidden people are left out of the default view, so show everyone, as a view of hidden
-        // people would.
-        hiddenModel.updateFilteredJobseekerList(jobseeker -> true);
+        hiddenModel.updateFilteredJobseekerList(Model.PREDICATE_SHOW_HIDDEN_JOBSEEKERS);
         EditJobseekerDescriptor descriptor = new EditJobseekerDescriptorBuilder()
                 .withName(VALID_NAME_BOB).build();
         new EditJobseekerCommand(INDEX_FIRST_PERSON, descriptor).execute(hiddenModel);
@@ -239,7 +241,7 @@ public class EditJobseekerCommandTest {
     }
 
     /**
-     * Editing resets the view, and the reset view must still leave out hidden jobseekers.
+     * Editing preserves the unhidden view, which must still leave out hidden jobseekers.
      */
     @Test
     public void execute_otherJobseekerHidden_hiddenJobseekerStaysOutOfView() throws Exception {
@@ -253,5 +255,41 @@ public class EditJobseekerCommandTest {
 
         Jobseeker editedAlice = new JobseekerBuilder(ALICE).withName(VALID_NAME_BOB).build();
         assertEquals(List.of(editedAlice), hiddenModel.getFilteredJobseekerList());
+    }
+
+    @ParameterizedTest(name = "hidden={0}, filtered={1}, newName={2}")
+    @CsvSource({
+        "false, false, Alice Updated",
+        "false, false, Bob Updated",
+        "false, true,  Alice Updated",
+        "false, true,  Bob Updated",
+        "true,  false, Alice Updated",
+        "true,  false, Bob Updated",
+        "true,  true,  Alice Updated",
+        "true,  true,  Bob Updated"
+    })
+    public void execute_preservesVisibilityAndSearchFilter(
+            boolean hidden, boolean filtered, String newName) throws Exception {
+        Model viewModel = new ModelManager();
+        Jobseeker target = new JobseekerBuilder().withName("Alice Original").withHidden(hidden).build();
+        Jobseeker other = new JobseekerBuilder().withName("Charlie Other")
+                .withPhone("91234567").withEmail("other@example.com").withHidden(hidden).build();
+        Jobseeker opposite = new JobseekerBuilder().withName("Alice Opposite")
+                .withPhone("87654321").withEmail("opposite@example.com").withHidden(!hidden).build();
+        viewModel.addJobseeker(target);
+        viewModel.addJobseeker(other);
+        viewModel.addJobseeker(opposite);
+        viewModel.updateFilteredJobseekerList(person -> person.isHidden() == hidden
+                && (!filtered || new PersonContainsKeywordsPredicate(List.of("Alice")).test(person)));
+        EditJobseekerDescriptor descriptor = new EditJobseekerDescriptor();
+        Jobseeker edited = new JobseekerBuilder(target).withName(newName).build();
+        descriptor.setName(edited.getName());
+
+        new EditJobseekerCommand(INDEX_FIRST_PERSON, descriptor).execute(viewModel);
+
+        List<Jobseeker> expected = filtered
+                ? (newName.startsWith("Alice") ? List.of(edited) : List.of()) : List.of(edited, other);
+        assertEquals(expected, viewModel.getFilteredJobseekerList());
+        assertEquals(List.of(edited, other, opposite), viewModel.getAddressBook().getJobseekerList());
     }
 }

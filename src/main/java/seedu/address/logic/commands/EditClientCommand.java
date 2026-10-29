@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_JOB;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
@@ -21,6 +22,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.job.Job;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Client;
 import seedu.address.model.person.Email;
@@ -39,20 +41,21 @@ public class EditClientCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the client identified "
             + "by the index number used in the displayed client list. "
             + "Existing values will be overwritten by the input values.\n"
-            + "Parameters: INDEX (must be a positive integer) "
-            + "[" + PREFIX_NAME + "NAME] "
-            + "[" + PREFIX_PHONE + "PHONE] "
-            + "[" + PREFIX_EMAIL + "EMAIL] "
-            + "[" + PREFIX_ADDRESS + "ADDRESS] "
-            + "[" + PREFIX_REMARK + "REMARK] "
-            + "[" + PREFIX_TAG + "TAG]...\n"
+            + "Parameters: <index> (must be a positive integer) "
+            + "[" + PREFIX_NAME + "<name>] "
+            + "[" + PREFIX_PHONE + "<phone number>] "
+            + "[" + PREFIX_EMAIL + "<email>] "
+            + "[" + PREFIX_ADDRESS + "<address>] "
+            + "[" + PREFIX_REMARK + "<remarks>] "
+            + "[" + PREFIX_JOB + "<job title>]... "
+            + "[" + PREFIX_TAG + "<tag> [<more tags>]...]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com";
 
     public static final String MESSAGE_EDIT_CLIENT_SUCCESS = "Edited client: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_CLIENT = "This client already exists in the address book.";
+    public static final String MESSAGE_DUPLICATE_CLIENT = "This client already exists in TalentLink.";
 
     private final Index index;
     private final EditClientDescriptor editClientDescriptor;
@@ -88,7 +91,6 @@ public class EditClientCommand extends Command {
         }
 
         model.setClient(clientToEdit, editedClient);
-        model.updateFilteredClientList(Model.PREDICATE_SHOW_UNHIDDEN_CLIENTS);
         return new CommandResult(String.format(MESSAGE_EDIT_CLIENT_SUCCESS,
                 Messages.format(editedClient)));
     }
@@ -107,9 +109,11 @@ public class EditClientCommand extends Command {
         Address updatedAddress = editClientDescriptor.getAddress().orElse(clientToEdit.getAddress());
         Set<Tag> updatedTags = editClientDescriptor.getTags().orElse(clientToEdit.getTags());
         Remark updatedRemark = editClientDescriptor.getRemark().orElse(clientToEdit.getRemark());
+        Set<Job> updatedAvailableJobs = editClientDescriptor.getAvailableJobs()
+                .orElse(clientToEdit.getAvailableJobs());
 
         return new Client(updatedName, updatedPhone, updatedEmail,
-                updatedAddress, updatedTags, updatedRemark,
+                updatedAddress, updatedTags, updatedRemark, updatedAvailableJobs,
                 clientToEdit.isHidden());
     }
 
@@ -137,7 +141,7 @@ public class EditClientCommand extends Command {
     }
 
     /**
-     * Stores the details to edit the client with. Each non-empty field value will replace the
+     * Stores the details to edit the client with. Each supplied field value will replace the
      * corresponding field value of the client.
      */
     public static class EditClientDescriptor {
@@ -146,6 +150,7 @@ public class EditClientCommand extends Command {
         private Email email;
         private Address address;
         private Remark remark;
+        private Set<Job> availableJobs;
         private Set<Tag> tags;
 
         /** Creates an empty descriptor. */
@@ -161,6 +166,7 @@ public class EditClientCommand extends Command {
             setEmail(toCopy.email);
             setAddress(toCopy.address);
             setRemark(toCopy.remark);
+            setAvailableJobs(toCopy.availableJobs);
             setTags(toCopy.tags);
         }
 
@@ -168,7 +174,7 @@ public class EditClientCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, tags, remark);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, tags, remark, availableJobs);
         }
 
         public void setName(Name name) {
@@ -212,6 +218,17 @@ public class EditClientCommand extends Command {
         }
 
         /**
+         * Sets the replacement jobs using an immutable defensive copy, or null to leave jobs unchanged.
+         */
+        public void setAvailableJobs(Set<Job> availableJobs) {
+            this.availableJobs = availableJobs == null ? null : Set.copyOf(availableJobs);
+        }
+
+        public Optional<Set<Job>> getAvailableJobs() {
+            return Optional.ofNullable(availableJobs);
+        }
+
+        /**
          * Sets {@code tags} to this object's {@code tags}.
          * A defensive copy of {@code tags} is used internally.
          */
@@ -244,6 +261,7 @@ public class EditClientCommand extends Command {
                     && Objects.equals(email, otherEditClientDescriptor.email)
                     && Objects.equals(address, otherEditClientDescriptor.address)
                     && Objects.equals(remark, otherEditClientDescriptor.remark)
+                    && Objects.equals(availableJobs, otherEditClientDescriptor.availableJobs)
                     && Objects.equals(tags, otherEditClientDescriptor.tags);
         }
 
@@ -256,6 +274,7 @@ public class EditClientCommand extends Command {
                     .add("address", address)
                     .add("tags", tags)
                     .add("remark", remark)
+                    .add("availableJobs", availableJobs)
                     .toString();
         }
     }

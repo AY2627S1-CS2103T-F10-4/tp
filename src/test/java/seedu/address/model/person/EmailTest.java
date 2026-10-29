@@ -1,5 +1,6 @@
 package seedu.address.model.person;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -51,15 +52,24 @@ public class EmailTest {
         assertFalse(Email.isValidEmail("peterjack@-example.com")); // domain name starts with a hyphen
         assertFalse(Email.isValidEmail("peterjack@example.com-")); // domain name ends with a hyphen
         assertFalse(Email.isValidEmail("peterjack@example.c")); // top level domain has less than two chars
+        assertFalse(Email.isValidEmail("peterjack@example..com")); // domain name has two consecutive periods
+
+        // domain name without a top-level domain
+        assertFalse(Email.isValidEmail("irfan@example")); // no period in domain name
+        assertFalse(Email.isValidEmail("test@localhost")); // single-label domain name
+        assertFalse(Email.isValidEmail("a@bc")); // single-label domain name, even though it is 2 chars long
+        assertFalse(Email.isValidEmail("123@145")); // numeric single-label domain name
+        assertFalse(Email.isValidEmail("peterjack@example.c0m")); // digit in top-level domain
+        assertFalse(Email.isValidEmail("peterjack@example.123")); // numeric top-level domain
 
         // valid email
         assertTrue(Email.isValidEmail("PeterJack_1190@example.com")); // underscore in local part
         assertTrue(Email.isValidEmail("PeterJack.1190@example.com")); // period in local part
         assertTrue(Email.isValidEmail("PeterJack+1190@example.com")); // '+' symbol in local part
         assertTrue(Email.isValidEmail("PeterJack-1190@example.com")); // hyphen in local part
-        assertTrue(Email.isValidEmail("a@bc")); // minimal
-        assertTrue(Email.isValidEmail("test@localhost")); // alphabets only
-        assertTrue(Email.isValidEmail("123@145")); // numeric local part and domain name
+        assertTrue(Email.isValidEmail("a@b.co")); // minimal
+        assertTrue(Email.isValidEmail("123@145.com")); // numeric local part and domain label
+        assertTrue(Email.isValidEmail("peterjack@EXAMPLE.COM")); // upper case domain name
         assertTrue(Email.isValidEmail("a1+be.d@example1.com")); // mixture of alphanumeric and special characters
         assertTrue(Email.isValidEmail("peter_jack@very-very-very-long-example.com")); // long domain name
         assertTrue(Email.isValidEmail("if.you.dream.it_you.can.do.it@example.com")); // long local part
@@ -68,10 +78,10 @@ public class EmailTest {
 
     @Test
     public void equals() {
-        Email email = new Email("valid@email");
+        Email email = new Email("valid@email.com");
 
         // same values -> returns true
-        assertTrue(email.equals(new Email("valid@email")));
+        assertTrue(email.equals(new Email("valid@email.com")));
 
         // same object -> returns true
         assertTrue(email.equals(email));
@@ -83,6 +93,36 @@ public class EmailTest {
         assertFalse(email.equals(5.0f));
 
         // different values -> returns false
-        assertFalse(email.equals(new Email("other.valid@email")));
+        assertFalse(email.equals(new Email("other.valid@email.com")));
+    }
+
+    /**
+     * Guards the decision to treat emails differing only in letter case as the same email,
+     * since {@code Person#isSamePerson} relies on it to block duplicate contacts.
+     */
+    @Test
+    public void equals_differentCase_returnsTrue() {
+        Email email = new Email("valid@email.com");
+
+        // different case in local part -> returns true
+        assertTrue(email.equals(new Email("VALID@email.com")));
+
+        // different case in domain -> returns true
+        assertTrue(email.equals(new Email("valid@EMAIL.COM")));
+
+        // mixed case -> returns true
+        assertTrue(email.equals(new Email("VaLiD@EmAiL.cOm")));
+    }
+
+    /** Equal objects must have equal hash codes, or HashSet/HashMap lookups would miss them. */
+    @Test
+    public void hashCode_differentCase_sameHashCode() {
+        assertEquals(new Email("valid@email.com").hashCode(), new Email("VALID@Email.COM").hashCode());
+    }
+
+    /** Comparison ignores case, but the casing the user typed must still be shown as-is. */
+    @Test
+    public void toString_mixedCase_preservesOriginalCase() {
+        assertEquals("John.Doe@Example.com", new Email("John.Doe@Example.com").toString());
     }
 }

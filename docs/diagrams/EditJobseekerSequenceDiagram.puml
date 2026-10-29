@@ -1,0 +1,53 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+skinparam defaultFontSize 14
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as Logic LOGIC_COLOR
+participant "command:\nEditJobseekerCommand" as Command LOGIC_COLOR
+end box
+box Model MODEL_COLOR_T1
+participant "model:Model" as Model MODEL_COLOR
+end box
+
+note over Logic, Command
+  After parsing editj 1 n/Alice r/Available,
+  LogicManager receives an EditJobseekerCommand.
+  This diagram shows successful execution.
+end note
+activate Logic
+Logic -> Command : execute(model)
+activate Command
+Command -> Model : getFilteredJobseekerList()
+Model --> Command : displayed jobseekers
+Command -> Command : select target by index
+Command -> Command : edited = createEditedJobseeker(...)
+note over Command, Model
+  Apply supplied values, preserving
+  unspecified fields and hidden status.
+end note
+opt Identity changed (!target.isSamePerson(edited))
+    Command -> Model : hasJobseeker(edited)
+    Model --> Command : false (no duplicate)
+end
+note over Command, Model
+  An invalid index or duplicate causes
+  CommandException before updating the model.
+end note
+Command -> Model : setJobseeker(target, edited)
+Model --> Command
+Command -> Model : updateFilteredJobseekerList(...)
+Model --> Command
+note over Command, Model
+  Show unhidden jobseekers.
+  An edited hidden jobseeker stays hidden.
+end note
+Command --> Logic : success result
+deactivate Command
+note over Logic, Model
+  LogicManager saves through Storage before returning the result.
+  Parsing and storage interactions are omitted here.
+end note
+deactivate Logic
+@enduml

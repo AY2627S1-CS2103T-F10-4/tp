@@ -10,6 +10,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Qualification;
 import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 
@@ -38,6 +39,7 @@ public class EditJobseekerDescriptorBuilder {
         descriptor.setEmail(jobseeker.getEmail());
         descriptor.setAddress(jobseeker.getAddress());
         descriptor.setRemark(jobseeker.getRemark());
+        descriptor.setHighestQualification(jobseeker.getHighestQualification());
         descriptor.setTags(jobseeker.getTags());
     }
 
@@ -80,6 +82,14 @@ public class EditJobseekerDescriptorBuilder {
     public EditJobseekerDescriptorBuilder withTags(String... tags) {
         Set<Tag> tagSet = Stream.of(tags).map(Tag::new).collect(Collectors.toSet());
         descriptor.setTags(tagSet);
+        return this;
+    }
+
+    /**
+     * Sets the optional highest qualification.
+     */
+    public EditJobseekerDescriptorBuilder withHighestQualification(String qualification) {
+        descriptor.setHighestQualification(new Qualification(qualification));
         return this;
     }
 

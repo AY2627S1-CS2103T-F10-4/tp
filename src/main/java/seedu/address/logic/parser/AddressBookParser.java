@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.logic.Messages.MESSAGE_COMMAND_TOO_LONG;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 
@@ -7,6 +8,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import seedu.address.commons.core.InputLimits;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.AddClientCommand;
 import seedu.address.logic.commands.AddJobseekerCommand;
@@ -21,6 +23,7 @@ import seedu.address.logic.commands.EditClientCommand;
 import seedu.address.logic.commands.EditJobseekerCommand;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindClientCommand;
+import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.FindHiddenClientCommand;
 import seedu.address.logic.commands.FindHiddenJobseekerCommand;
 import seedu.address.logic.commands.FindJobseekerCommand;
@@ -28,6 +31,7 @@ import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HideClientCommand;
 import seedu.address.logic.commands.HideJobseekerCommand;
 import seedu.address.logic.commands.ListClientCommand;
+import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.ListHiddenClientCommand;
 import seedu.address.logic.commands.ListHiddenJobseekerCommand;
 import seedu.address.logic.commands.ListJobseekerCommand;
@@ -58,6 +62,9 @@ public class AddressBookParser {
      * @throws ParseException if the user input does not conform to the expected format.
      */
     public Command parseCommand(String userInput) throws ParseException {
+        if (userInput.length() > InputLimits.MAX_COMMAND_LENGTH) {
+            throw new ParseException(MESSAGE_COMMAND_TOO_LONG);
+        }
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
         if (!matcher.matches()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
@@ -88,12 +95,14 @@ public class AddressBookParser {
             case UntagClientCommand.COMMAND_WORD -> new UntagClientCommandParser().parse(arguments);
             case ClearJobseekerCommand.COMMAND_WORD -> new ClearJobseekerCommand();
             case ClearClientCommand.COMMAND_WORD -> new ClearClientCommand();
-            case CopyJobseekerCommand.COMMAND_WORD -> new CopyJobseekerCommand();
-            case CopyClientCommand.COMMAND_WORD -> new CopyClientCommand();
+            case CopyJobseekerCommand.COMMAND_WORD -> new CopyJobseekerCommandParser().parse(arguments);
+            case CopyClientCommand.COMMAND_WORD -> new CopyClientCommandParser().parse(arguments);
+            case FindCommand.COMMAND_WORD -> FindCommandParser.forAll().parse(arguments);
             case FindJobseekerCommand.COMMAND_WORD -> FindCommandParser.forJobseekers().parse(arguments);
             case FindClientCommand.COMMAND_WORD -> FindCommandParser.forClients().parse(arguments);
             case FindHiddenJobseekerCommand.COMMAND_WORD -> FindCommandParser.forHiddenJobseekers().parse(arguments);
             case FindHiddenClientCommand.COMMAND_WORD -> FindCommandParser.forHiddenClients().parse(arguments);
+            case ListCommand.COMMAND_WORD -> new ListCommand();
             case ListJobseekerCommand.COMMAND_WORD -> new ListJobseekerCommand();
             case ListClientCommand.COMMAND_WORD -> new ListClientCommand();
             case ListHiddenJobseekerCommand.COMMAND_WORD -> new ListHiddenJobseekerCommand();

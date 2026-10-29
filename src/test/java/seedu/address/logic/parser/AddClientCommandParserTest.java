@@ -52,6 +52,26 @@ public class AddClientCommandParserTest {
     private final AddClientCommandParser parser = new AddClientCommandParser();
 
     @Test
+    public void parse_spaceSeparatedTags_success() {
+        Client expected = new ClientBuilder(AMY).withRemark(VALID_REMARK_AMY)
+                .withTags("friend", "colleague").build();
+        for (String tags : new String[]{" t/friend colleague", " t/ friend   colleague ",
+            " t/friend\tcolleague", " t/friend colleague friend", " t/friend t/colleague",
+            " t/friend colleague t/friend"}) {
+            assertParseSuccess(parser, REQUIRED_FIELDS + tags + REMARK_DESC_AMY, new AddClientCommand(expected));
+            assertParseSuccess(parser, tags + REQUIRED_FIELDS + REMARK_DESC_AMY, new AddClientCommand(expected));
+        }
+    }
+
+    @Test
+    public void parse_emptyOrInvalidTagInGroup_failure() {
+        for (String tags : new String[]{" t/", " t/   ", " t/friend invalid!", " t/invalid! friend",
+            " t/friend t/", " t/ t/friend"}) {
+            assertParseFailure(parser, REQUIRED_FIELDS + tags, Tag.MESSAGE_CONSTRAINTS);
+        }
+    }
+
+    @Test
     public void parse_withRemarkAndTags_success() {
         Client expected = new ClientBuilder(AMY).withRemark(VALID_REMARK_AMY)
                 .withTags(VALID_TAG_EMPLOYER, VALID_TAG_PARTNER).build();
@@ -80,11 +100,48 @@ public class AddClientCommandParserTest {
     }
 
     @Test
-    public void parse_missingRequiredFields_failure() {
-        for (String prefix : new String[]{"n/", "p/", "e/", "a/"}) {
-            assertParseFailure(parser, REQUIRED_FIELDS.replace(prefix, ""),
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddClientCommand.MESSAGE_USAGE));
+    public void parse_singleRequiredFieldMissing_listsOnlyMissingField() {
+        assertParseFailure(parser, PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
+                "Missing required fields: n/ (name).");
+        assertParseFailure(parser, NAME_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
+                "Missing required fields: p/ (phone).");
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY,
+                "Missing required fields: e/ (email).");
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY,
+                "Missing required fields: a/ (address).");
+    }
+
+    @Test
+    public void parse_multipleRequiredFieldsMissing_listsMissingFieldsInOrder() {
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY,
+                "Missing required fields: e/ (email), a/ (address).");
+        assertParseFailure(parser, ADDRESS_DESC_AMY + EMAIL_DESC_AMY + REMARK_DESC_AMY,
+                "Missing required fields: n/ (name), p/ (phone).");
+        for (String args : new String[]{"", "   ", " r/Available t/intern"}) {
+            assertParseFailure(parser, args,
+                    "Missing required fields: n/ (name), p/ (phone), e/ (email), a/ (address).");
         }
+    }
+
+    @Test
+    public void parse_emptyRequiredField_reportsValueError() {
+        assertParseFailure(parser, " n/" + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
+                Name.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, NAME_DESC_AMY + " p/" + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
+                Phone.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + " e/" + ADDRESS_DESC_AMY,
+                Email.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + " a/",
+                Address.MESSAGE_CONSTRAINTS);
+        // A supplied but empty email is not a missing prefix; only address is missing here.
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + " e/",
+                "Missing required fields: a/ (address).");
+    }
+
+    @Test
+    public void parse_nonEmptyPreambleWithMissingFields_reportsInvalidFormat() {
+        assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_AMY,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddClientCommand.MESSAGE_USAGE));
     }
 
     @Test
