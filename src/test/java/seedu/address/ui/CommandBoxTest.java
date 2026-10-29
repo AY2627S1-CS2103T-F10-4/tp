@@ -122,7 +122,7 @@ public class CommandBoxTest {
     }
 
     @Test
-    public void inputLengthFilter_rejectsCharactersBeyondMaximum() throws Exception {
+    public void inputLengthFilter_truncatesAndWarnsOnCharactersBeyondMaximum() throws Exception {
         runOnFxThread(() -> {
             TextField field = createField(command -> new CommandResult("Success"));
             field.replaceText(0, 0, "a".repeat(MAX_COMMAND_LENGTH + 1));
@@ -132,6 +132,28 @@ public class CommandBoxTest {
             assertTrue(hint.getStyleClass().contains(CommandBox.WARNING_STYLE_CLASS));
             field.appendText("b");
             assertEquals(MAX_COMMAND_LENGTH, field.getText().length());
+            assertEquals(1, hint.getStyleClass().stream()
+                    .filter(CommandBox.WARNING_STYLE_CLASS::equals).count());
+            submit(field);
+            assertEquals("↑/↓ command history • Type to see suggestions", hint.getText());
+            assertFalse(hint.getStyleClass().contains(CommandBox.WARNING_STYLE_CLASS));
+        });
+    }
+
+    @Test
+    public void submit_invalidCommand_clearsOverflowWarning() throws Exception {
+        runOnFxThread(() -> {
+            List<String> executed = new ArrayList<>();
+            TextField field = createField(command -> {
+                executed.add(command);
+                throw new ParseException("Invalid syntax");
+            });
+            field.replaceText(0, 0, "a".repeat(MAX_COMMAND_LENGTH + 1));
+            submit(field);
+            assertEquals(1, executed.size());
+            Label hint = (Label) field.getParent().lookup("#commandHint");
+            assertFalse(hint.getText().contains("Input truncated"));
+            assertFalse(hint.getStyleClass().contains(CommandBox.WARNING_STYLE_CLASS));
         });
     }
 

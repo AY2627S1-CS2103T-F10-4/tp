@@ -1,7 +1,5 @@
 package seedu.address.ui;
 
-import java.util.function.UnaryOperator;
-
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -25,6 +23,7 @@ public class CommandBox extends UiPart<Region> {
     public static final String ERROR_STYLE_CLASS = "error";
     public static final String WARNING_STYLE_CLASS = "warning";
     private static final String COMMAND_HINT = "↑/↓ command history • Type to see suggestions";
+    private static final String SUGGESTION_HINT = "Suggestions: ↑/↓ select • Tab complete • Esc dismiss";
     private static final String OVERFLOW_WARNING = "Input truncated at " + InputLimits.MAX_COMMAND_LENGTH
             + " characters";
     private static final String FXML = "CommandBox.fxml";
@@ -61,9 +60,7 @@ public class CommandBox extends UiPart<Region> {
         super(FXML);
         this.commandExecutor = commandExecutor;
         this.commandSuggestions = commandSuggestions;
-        UnaryOperator<TextFormatter.Change> inputLengthFilter = change ->
-                limitInputLength(change);
-        commandTextField.setTextFormatter(new TextFormatter<String>(inputLengthFilter));
+        commandTextField.setTextFormatter(new TextFormatter<String>(this::limitInputLength));
         suggestionList.visibleProperty().addListener((observable, oldValue, newValue) -> updateCommandHint());
         updateCommandHint();
         suggestionOverlay.visibleProperty().bind(suggestionList.visibleProperty());
@@ -73,6 +70,9 @@ public class CommandBox extends UiPart<Region> {
                 suggestionOverlay.resize(newWidth.doubleValue(), suggestionOverlay.getPrefHeight()));
         commandTextField.textProperty().addListener((unused1, unused2, unused3) -> {
             setStyleToDefault();
+            if (commandTextField.getLength() < InputLimits.MAX_COMMAND_LENGTH) {
+                clearOverflowWarning();
+            }
             if (!areSuggestionsSuppressed) {
                 updateSuggestions();
             }
@@ -102,22 +102,39 @@ public class CommandBox extends UiPart<Region> {
         if (change.getControlNewText().length() <= InputLimits.MAX_COMMAND_LENGTH) {
             return change;
         }
-        int excess = change.getControlNewText().length() - InputLimits.MAX_COMMAND_LENGTH;
-        change.setText(change.getText().substring(0, Math.max(0, change.getText().length() - excess)));
+        int permittedLength = InputLimits.MAX_COMMAND_LENGTH - change.getControlText().length()
+                + change.getRangeEnd() - change.getRangeStart();
+        String truncatedText = change.getText().substring(0, Math.max(0, permittedLength));
+        if (!truncatedText.isEmpty() && Character.isHighSurrogate(truncatedText.charAt(truncatedText.length() - 1))) {
+            truncatedText = truncatedText.substring(0, truncatedText.length() - 1);
+        }
+        change.setText(truncatedText);
         inputOverflowAttempted = true;
         updateCommandHint();
         return change;
     }
 
+    /** Updates the command hint and its warning style based on the current input state. */
     private void updateCommandHint() {
         if (inputOverflowAttempted) {
             commandHint.setText(OVERFLOW_WARNING);
-            commandHint.getStyleClass().add(WARNING_STYLE_CLASS);
+            addStyleClassIfAbsent(commandHint.getStyleClass(), WARNING_STYLE_CLASS);
         } else if (suggestionList.isVisible()) {
-            commandHint.setText("Suggestions: ↑/↓ select • Tab complete • Esc dismiss");
+            commandHint.setText(SUGGESTION_HINT);
+            commandHint.getStyleClass().remove(WARNING_STYLE_CLASS);
         } else {
             commandHint.setText(COMMAND_HINT);
+            commandHint.getStyleClass().remove(WARNING_STYLE_CLASS);
         }
+    }
+
+    /** Clears the overflow warning and restores the normal command hint. */
+    private void clearOverflowWarning() {
+        if (!inputOverflowAttempted) {
+            return;
+        }
+        inputOverflowAttempted = false;
+        updateCommandHint();
     }
 
     /**
@@ -230,10 +247,8 @@ public class CommandBox extends UiPart<Region> {
         try {
             commandExecutor.execute(commandText);
             commandTextField.setText("");
-            inputOverflowAttempted = false;
-            commandHint.getStyleClass().remove(WARNING_STYLE_CLASS);
-            updateCommandHint();
         } catch (CommandException | ParseException e) {
+            clearOverflowWarning();
             setStyleToIndicateCommandFailure();
         }
     }
@@ -250,12 +265,15 @@ public class CommandBox extends UiPart<Region> {
      */
     private void setStyleToIndicateCommandFailure() {
         ObservableList<String> styleClass = commandTextField.getStyleClass();
+        addStyleClassIfAbsent(styleClass, ERROR_STYLE_CLASS);
+    }
 
-        if (styleClass.contains(ERROR_STYLE_CLASS)) {
+    /** Adds a style class only when it is not already present. */
+    private static void addStyleClassIfAbsent(ObservableList<String> styleClass, String styleClassName) {
+        if (styleClass.contains(styleClassName)) {
             return;
         }
-
-        styleClass.add(ERROR_STYLE_CLASS);
+        styleClass.add(styleClassName);
     }
 
     /**

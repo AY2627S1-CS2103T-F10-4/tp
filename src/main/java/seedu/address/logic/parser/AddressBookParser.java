@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.logic.Messages.MESSAGE_COMMAND_TOO_LONG;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 
@@ -9,7 +10,6 @@ import java.util.regex.Pattern;
 
 import seedu.address.commons.core.InputLimits;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.logic.Messages;
 import seedu.address.logic.commands.AddClientCommand;
 import seedu.address.logic.commands.AddJobseekerCommand;
 import seedu.address.logic.commands.ClearClientCommand;
@@ -63,7 +63,7 @@ public class AddressBookParser {
      */
     public Command parseCommand(String userInput) throws ParseException {
         if (userInput.length() > InputLimits.MAX_COMMAND_LENGTH) {
-            throw new ParseException(Messages.MESSAGE_COMMAND_TOO_LONG);
+            throw new ParseException(MESSAGE_COMMAND_TOO_LONG);
         }
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
         if (!matcher.matches()) {
