@@ -233,7 +233,7 @@ The command overwrites some of the jobseeker's contact details, while leaving th
 
 Similar to [`addj`](#adding-a-jobseeker-addj), edits that would create duplicate jobseekers are rejected.
 
-**Format:**{: #editj-format} `editj <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [q/<highest qualification>] [r/<remarks>] [t/<tag>]...`
+**Format:**{: #editj-format} `editj <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [q/<highest qualification>] [r/<remarks>] [t/<tag> [<more tags>]...]...`
 
 At least one of the fields `<name>`, `<phone number>`, `<email>`, `<address>`, `<remarks>`,
 `<highest qualification>`, or `<tag>` must be provided.
@@ -255,7 +255,10 @@ At least one of the fields `<name>`, `<phone number>`, `<email>`, `<address>`, `
 * Use `q/<highest qualification>` to replace the qualification, or `q/` alone to clear it.
   Omit `q/` to keep the current value. Specify `q/` at most once.
 * To clear remarks, specify `r/` without any values.
-* Supplied tags replace all existing tags. To clear all tags, specify `t/` without any values.
+* Supplied tags replace all existing tags. For example, `editj 1 t/java python t/teamwork` replaces them with three tags.
+* Separate tags with spaces after one `t/`, or use repeated prefixes; mixed syntax is accepted.
+* Duplicate tags are stored once; tags are case-sensitive and must be alphanumeric.
+* Omit `t/` to preserve existing tags. A single empty `t/` clears them; empty prefixes mixed with other tags are rejected.
 * Editing preserves hidden status and returns the view to the normal jobseeker list.
   An edited hidden jobseeker remains hidden.
 
@@ -280,7 +283,7 @@ The command overwrites some of the client's contact details, while leaving the r
 
 Similar to [`addc`](#adding-a-client-addc), edits that would create duplicate clients are rejected.
 
-**Format:**{: #editc-format} `editc <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [j/<job>]... [r/<remarks>] [t/<tag>]...`
+**Format:**{: #editc-format} `editc <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [j/<job>]... [r/<remarks>] [t/<tag> [<more tags>]...]...`
 
 The common contact fields follow [Editing a jobseeker: `editj` - Format](#editj-format).
 Clients accept available jobs (`j/`) instead of a highest qualification (`q/`).
@@ -292,7 +295,10 @@ At least one field must be supplied; `j/` alone also counts.
 * Supplied jobs replace all existing jobs. Repeat `j/` for multiple titles.
 * Use `j/` alone to clear all jobs. Omit `j/` to keep existing jobs.
 * Do not combine an empty `j/` with other `j/` entries.
-* Use `r/` alone to clear remarks, and `t/` alone to clear tags. Supplied tags replace all existing tags.
+* Use `r/` alone to clear remarks. Supplied tags replace all existing tags, e.g. `editc 1 t/finance technology`.
+* Separate tags with spaces after one `t/`, or use repeated prefixes; mixed syntax is accepted.
+* Duplicate tags are stored once; tags are case-sensitive and must be alphanumeric.
+* Omit `t/` to preserve existing tags. A single empty `t/` clears them; empty prefixes mixed with other tags are rejected.
 
 **Examples:**
 {: #editc-examples}
@@ -854,8 +860,8 @@ _Details coming soon ..._
 | [Exit](#exiting-the-program-exit)                              | `exit`                                                                                                  |
 | [Add jobseeker](#adding-a-jobseeker-addj)                      | `addj n/<name> p/<phone number> e/<email> a/<address> [q/<highest qualification>] [r/<remarks>] [t/<tag> [<more tags>]...]`                       |
 | [Add client](#adding-a-client-addc)                            | `addc n/<name> p/<phone number> e/<email> a/<address> [j/<job>]... [r/<remarks>] [t/<tag> [<more tags>]...]`                       |
-| [Edit jobseeker](#editing-a-jobseeker-editj)                   | `editj <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [q/<highest qualification>] [r/<remarks>] [t/<tag>]...`      |
-| [Edit client](#editing-a-client-editc)                         | `editc <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [j/<job>]... [r/<remarks>] [t/<tag>]...`      |
+| [Edit jobseeker](#editing-a-jobseeker-editj)                   | `editj <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [q/<highest qualification>] [r/<remarks>] [t/<tag> [<more tags>]...]...`      |
+| [Edit client](#editing-a-client-editc)                         | `editc <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [j/<job>]... [r/<remarks>] [t/<tag> [<more tags>]...]...`      |
 | [Clear jobseekers](#clearing-all-jobseekers-clearj)            | `clearj`                                                                                                |
 | [Clear clients](#clearing-all-clients-clearc)                  | `clearc`                                                                                                |
 | [Delete jobseekers](#deleting-a-jobseeker-deletej)             | `deletej <index>`                                                                                       |
