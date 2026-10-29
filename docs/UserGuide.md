@@ -3,13 +3,7 @@ layout: page
 title: User Guide
 ---
 
-TalentLink is a **desktop application that HR recruiters in recruitment agencies use to manage 
-their contacts, optimized for use through a Command Line Interface (CLI)** while retaining the 
-benefits of a Graphical User Interface (GUI). If you type quickly, TalentLink can help you 
-manage your jobseeker/client contacts faster than traditional GUI applications. Additionally, 
-TalentLink also provides support for many tasks that recruiters often do on a daily basis, 
-such as recording notes on various jobseekers/clients, searching for jobseekers with particular 
-educational qualifications and determine which jobseekers to link up with each client's job opening.
+TalentLink is a **desktop application that HR recruiters in recruitment agencies use to manage their contacts, optimized for use through a Command Line Interface (CLI)** while retaining the benefits of a Graphical User Interface (GUI). If you type quickly, TalentLink can help you manage your jobseeker/client contacts faster than traditional GUI applications. Additionally, TalentLink also provides support for many tasks that recruiters often do on a daily basis, such as recording notes on various jobseekers/clients, searching for jobseekers with particular educational qualifications and determine which jobseekers to link up with each client's job opening.
 
 * Table of Contents
 {:toc}
@@ -20,15 +14,13 @@ educational qualifications and determine which jobseekers to link up with each c
 
 1.  Ensure that Java `25` or later is installed on your computer.
     
-    **Mac users:** Ensure you have the precise JDK version prescribed
-    [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
+    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
 1.  Download the latest `.jar` file from [here](https://github.com/AY2627S1-CS2103T-F10-4/tp/releases).
 
 1.  Copy the file to the folder you want to use as the _home folder_ for TalentLink.
 
-1.  Open your terminal and run the following commands,
-    replacing `HOME` with the path to your application home folder:
+1.  Open your terminal and run the following commands, replacing `HOME` with the path to your application home folder:
 
     **Windows**
 
@@ -58,10 +50,8 @@ educational qualifications and determine which jobseekers to link up with each c
     * `listc`: Lists all unhidden clients.
     * `clearj`: Deletes all jobseekers.
     * `clearc`: Deletes all clients.
-    * `addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 q/Diploma in IT`:
-      Adds a jobseeker named `John Doe` to TalentLink.
-    * `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road r/Hiring engineers t/employer`:
-      Adds a client named `Jane Tan` with a remark and tag.
+    * `addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 q/Diploma in IT`: Adds a jobseeker named `John Doe` to TalentLink.
+    * `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road r/Hiring engineers t/employer`: Adds a client named `Jane Tan` with a remark and tag.
     * `deletej 3`: Deletes the third jobseeker shown in the current list.
     * `exit`: Exits the app.
 
@@ -75,8 +65,7 @@ educational qualifications and determine which jobseekers to link up with each c
 
 **:information_source: Notes about the command format:**
 
-* Words inside angle bracket `<field name>` are the parameters to be supplied by the user,
-  hereby called _fields_.
+* Words inside angle bracket `<field name>` are the parameters to be supplied by the user, hereby called _fields_.
 
   Field values can contain spaces, but preceding and trailing spaces are ignored.
 
@@ -89,18 +78,13 @@ educational qualifications and determine which jobseekers to link up with each c
   For example, `[t/<tag>]...` may be omitted, or written as `t/friend` or `t/friend t/family`.
 * Prefixed parameters can be in any order.
 
-  For example, if the command specifies `n/<name> p/<phone number>`, `p/<phone number> n/<name>`
-  is also acceptable.
+  For example, if the command specifies `n/<name> p/<phone number>`, `p/<phone number> n/<name>` is also acceptable.
 
-  For `editj`, `editc`, `tagj`, `tagc`, `untagj`, and `untagc`, 
-  the index must come first, followed by the fields or tags to update.
-* Extraneous parameters for commands that take no parameters,
-  such as `help`, `exit`, `list`, `listj`, `listc`, `clearj`, and `clearc`, are ignored.
+  For `editj`, `editc`, `tagj`, `tagc`, `untagj`, and `untagc`, the index must come first, followed by the fields or tags to update.
+* Extraneous parameters for commands that take no parameters, such as `help`, `exit`, `list`, `listj`, `listc`, `clearj`, and `clearc`, are ignored.
 
   For example, `help 123` is interpreted as `help`.
-* If you are using a PDF version of this document, be careful when copying and pasting commands
-  that span multiple lines as space characters surrounding line-breaks may be omitted when
-  copied over to the application.
+* If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 
 </div>
 
@@ -163,11 +147,9 @@ Contacts are identified by their phone number **and** their email address.
 The `q/` field is only accepted by `addj` and `editj`; `j/` is only accepted by `addc` and `editc`.
 Using either field with the wrong contact type is rejected, even when its value is empty.
 
-* Contacts with the same phone number and email address are treated as the same contacts,
-  even if their other fields differs.
+* Contacts with the same phone number and email address are treated as the same contacts, even if their other fields differs.
 
-* If contacts only have **either** the same phone number or email address,
-  they are treated as different contacts.
+* If contacts only have **either** the same phone number or email address, they are treated as different contacts.
 
 #### Adding a jobseeker: `addj`
 
@@ -193,8 +175,7 @@ However, adding an existing _client_ contact to the jobseeker list is allowed
   * Each tag must be alphanumeric. Duplicate tags are stored once; tags are case-sensitive.
   * An empty `t/` is rejected when adding a contact. Omit it if no tags are needed.
 
-See [Common info about contacts](#common-info-about-contacts) for
-additional constraints on field values.
+See [Common info about contacts](#common-info-about-contacts) for additional constraints on field values.
 
 **Examples:**
 {: #addj-examples}
@@ -235,12 +216,10 @@ Similar to [`addj`](#adding-a-jobseeker-addj), edits that would create duplicate
 
 **Format:**{: #editj-format} `editj <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [q/<highest qualification>] [r/<remarks>] [t/<tag>]...`
 
-At least one of the fields `<name>`, `<phone number>`, `<email>`, `<address>`, `<remarks>`,
-`<highest qualification>`, or `<tag>` must be provided.
+At least one of the fields `<name>`, `<phone number>`, `<email>`, `<address>`, `<remarks>`, `<highest qualification>`, or `<tag>` must be provided.
 
 * `<index>`: the index of the jobseeker to edit
-  * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
-    inclusive
+  * must be a positive integer, from 1 to the size of the currently displayed jobseeker list, inclusive
 * `<name>`: the name of the jobseeker
 * `<phone number>`: the phone number of the jobseeker
 * `<email>`: the email address of the jobseeker
@@ -262,12 +241,9 @@ At least one of the fields `<name>`, `<phone number>`, `<email>`, `<address>`, `
 **Examples:**
 {: #editj-examples}
 
-* Update the first displayed jobseeker's phone and email:
-  `editj 1 p/91234567 e/johndoe@example.com`
-* Replace the second displayed jobseeker's remark:
-  `editj 2 r/Available immediately`
-* Clear the second displayed jobseeker's remark and tags:
-  `editj 2 r/ t/`
+* Update the first displayed jobseeker's phone and email: `editj 1 p/91234567 e/johndoe@example.com`
+* Replace the second displayed jobseeker's remark: `editj 2 r/Available immediately`
+* Clear the second displayed jobseeker's remark and tags: `editj 2 r/ t/`
 
 * Replace the first displayed jobseeker's qualification: `editj 1 q/Degree in Computing`
 * Clear it: `editj 1 q/`
@@ -297,10 +273,8 @@ At least one field must be supplied; `j/` alone also counts.
 **Examples:**
 {: #editc-examples}
 
-* Update the first displayed client's remark:
-  `editc 1 r/Hiring software engineers`
-* Clear that client's remark:
-  `editc 1 r/`
+* Update the first displayed client's remark: `editc 1 r/Hiring software engineers`
+* Clear that client's remark: `editc 1 r/`
 
 * Replace the first displayed client's jobs: `editc 1 j/Software Engineer j/QA Tester`
 * Clear all of that client's jobs: `editc 1 j/`
@@ -312,8 +286,7 @@ Deletes a jobseeker from the currently displayed jobseeker list.
 **Format:**{: #deletej-format} `deletej <index>`
 
 * `<index>`: the index of the jobseeker to delete
-  * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
-    inclusive
+  * must be a positive integer, from 1 to the size of the currently displayed jobseeker list, inclusive
 
 **Examples:**
 {: #deletej-examples}
@@ -327,8 +300,7 @@ Deletes a client from the currently displayed client list.
 **Format:**{: #deletec-format} `deletec <index>`
 
 * `<index>`: the index of the client to delete
-  * must be a positive integer, from 1 to the size of the currently displayed client list,
-    inclusive
+  * must be a positive integer, from 1 to the size of the currently displayed client list, inclusive
 
 **Examples:**
 {: #deletec-examples}
@@ -354,13 +326,11 @@ This includes contacts that aren't listed in the currently displayed client list
 ### Viewing contacts
 
 There are 2 contact lists: the jobseeker list (on the right) and the client list (on the left).
-Commands such as `listj` and `listc` update their respective lists independently,
-while `list` updates both lists together.
+Commands such as `listj` and `listc` update their respective lists independently, while `list` updates both lists together.
 
 #### Listing jobseekers and clients: `list`
 
-Shows all visible (not hidden) jobseekers and clients,
-and clears the current filters in both lists.
+Shows all visible (not hidden) jobseekers and clients, and clears the current filters in both lists.
 
 **Format:**{: #list-format} `list`
 
@@ -369,8 +339,7 @@ and clears the current filters in both lists.
 
 * Use this command to return both lists to their normal views after searching or viewing hidden contacts.
 * Hidden contacts remain hidden. No contact details are changed.
-* To update only one list, use [Listing jobseekers: `listj`](#listing-jobseekers-listj)
-  or [Listing clients: `listc`](#listing-clients-listc).
+* To update only one list, use [Listing jobseekers: `listj`](#listing-jobseekers-listj) or [Listing clients: `listc`](#listing-clients-listc).
 
 **Examples:**
 {: #list-examples}
@@ -380,8 +349,7 @@ and clears the current filters in both lists.
 
 #### Listing jobseekers: `listj`
 
-Shows all visible (not hidden) jobseekers in the jobseeker list,
-and clears the current jobseeker filter.
+Shows all visible (not hidden) jobseekers in the jobseeker list, and clears the current jobseeker filter.
 
 For more information on hidden jobseekers, see [Hiding a jobseeker: `hidej`](#hiding-a-jobseeker-hidej).
 
@@ -391,8 +359,7 @@ To list hidden jobseekers, see [Listing hidden jobseekers: `listhj`](#listing-hi
 
 #### Listing clients: `listc`
 
-Shows all visible (not hidden) clients in the client list,
-and clears the current client filter.
+Shows all visible (not hidden) clients in the client list, and clears the current client filter.
 
 For more information on hidden clients, see [Hiding a client: `hidec`](#hiding-a-client-hidec).
 
@@ -432,8 +399,7 @@ To search among hidden jobseekers, see [Finding hidden jobseekers: `findhj`](#fi
   For example, `diploma` matches a jobseeker whose highest qualification is `Diploma in IT`.
 * Each keyword must match within a single field.
 
-  For example, `Yeoh8743` does not match a jobseeker named `Alex Yeoh`
-  whose phone number is `87438807`.
+  For example, `Yeoh8743` does not match a jobseeker named `Alex Yeoh` whose phone number is `87438807`.
 
 **Examples:**
 {: #findj-examples}
@@ -462,8 +428,7 @@ To search among hidden clients, see [Finding hidden clients: `findhc`](#finding-
 **Notes:**
 {: #findc-notes}
 
-The notes are the same as `findj`, except that clients have job openings instead of a highest qualification,
-so job openings are searched instead.
+The notes are the same as `findj`, except that clients have job openings instead of a highest qualification, so job openings are searched instead.
 See [Finding jobseekers: `findj` - Notes](#findj-notes).
 
 * Each job opening is searched on its own, like each tag.
@@ -484,10 +449,8 @@ See [Finding jobseekers: `findj` - Notes](#findj-notes).
 Finds jobseekers and clients whose name, phone number, email or tags contain any of the given keywords.
 Jobseekers' highest qualifications and clients' job openings are searched too.
 
-This does the same as running [`findj`](#finding-jobseekers-findj) and [`findc`](#finding-clients-findc)
-with the same keywords, so both lists are filtered at once.
-This is useful for finding every contact with a certain tag, such as an industry,
-every jobseeker with a certain qualification, or every client hiring for a certain job.
+This does the same as running [`findj`](#finding-jobseekers-findj) and [`findc`](#finding-clients-findc) with the same keywords, so both lists are filtered at once.
+This is useful for finding every contact with a certain tag, such as an industry, every jobseeker with a certain qualification, or every client hiring for a certain job.
 
 Hidden jobseekers and clients are not searched.
 
@@ -507,27 +470,22 @@ The notes are the same as [`findj`](#findj-notes) for jobseekers and [`findc`](#
 * `find colleagues` returns the jobseeker `Bernice Yu` and the client `Roy Balakrishnan`, who are both tagged `colleagues`.
 * `find alex roy` returns the jobseeker `Alex Yeoh` and the client `Roy Balakrishnan`.
 * `find engineer` returns every client with a job opening such as `Software Engineer`.
-* `find diploma engineer` returns every jobseeker with a qualification such as `Diploma in IT`,
-  and every client with a job opening such as `Software Engineer`.
+* `find diploma engineer` returns every jobseeker with a qualification such as `Diploma in IT`, and every client with a job opening such as `Software Engineer`.
 
 #### Hiding a jobseeker: `hidej`
 
-Hides the specified jobseeker, so that [`listj`](#listing-jobseekers-listj)
-and [`findj`](#finding-jobseekers-findj) no longer show them.
+Hides the specified jobseeker, so that [`listj`](#listing-jobseekers-listj) and [`findj`](#finding-jobseekers-findj) no longer show them.
 
 Unlike deleting, hiding keeps the jobseeker and all their details in TalentLink.
 
-To list hidden jobseekers,
-see [Listing hidden jobseekers: `listhj`](#listing-hidden-jobseekers-listhj).
+To list hidden jobseekers, see [Listing hidden jobseekers: `listhj`](#listing-hidden-jobseekers-listhj).
 
-To search among hidden jobseekers,
-see [Finding hidden jobseekers: `findhj`](#finding-hidden-jobseekers-findhj).
+To search among hidden jobseekers, see [Finding hidden jobseekers: `findhj`](#finding-hidden-jobseekers-findhj).
 
 **Format:**{: #hidej-format} `hidej <index>`
 
 * `<index>`: the index of the jobseeker to hide
-  * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
-    inclusive
+  * must be a positive integer, from 1 to the size of the currently displayed jobseeker list, inclusive
 
 **Examples:**
 {: #hidej-examples}
@@ -537,22 +495,18 @@ see [Finding hidden jobseekers: `findhj`](#finding-hidden-jobseekers-findhj).
 
 #### Hiding a client: `hidec`
 
-Hides the specified client, so that [`listc`](#listing-clients-listc)
-and [`findc`](#finding-clients-findc) no longer show them.
+Hides the specified client, so that [`listc`](#listing-clients-listc) and [`findc`](#finding-clients-findc) no longer show them.
 
 Unlike deleting, hiding keeps the client and all their details in TalentLink.
 
-To list hidden clients,
-see [Listing hidden clients: `listhc`](#listing-hidden-clients-listhc).
+To list hidden clients, see [Listing hidden clients: `listhc`](#listing-hidden-clients-listhc).
 
-To search among hidden clients,
-see [Finding hidden clients: `findhc`](#finding-hidden-clients-findhc).
+To search among hidden clients, see [Finding hidden clients: `findhc`](#finding-hidden-clients-findhc).
 
 **Format:**{: #hidec-format} `hidec <index>`
 
 * `<index>`: the index of the client to hide
-  * must be a positive integer, from 1 to the size of the currently displayed client list,
-    inclusive
+  * must be a positive integer, from 1 to the size of the currently displayed client list, inclusive
 
 **Examples:**
 {: #hidec-examples}
@@ -561,19 +515,16 @@ see [Finding hidden clients: `findhc`](#finding-hidden-clients-findhc).
 
 #### Unhiding a jobseeker: `unhidej`
 
-Make a hidden jobseeker visible to [`listj`](#listing-jobseekers-listj)
-and [`findj`](#finding-jobseekers-findj) again.
+Make a hidden jobseeker visible to [`listj`](#listing-jobseekers-listj) and [`findj`](#finding-jobseekers-findj) again.
 
-This command must be used while [`listhj`](#listing-hidden-jobseekers-listhj)
-or [`findhj`](#finding-hidden-jobseekers-findhj) is in effect.
+This command must be used while [`listhj`](#listing-hidden-jobseekers-listhj) or [`findhj`](#finding-hidden-jobseekers-findhj) is in effect.
 
 For more information on hidden jobseekers, see [Hiding a jobseeker: `hidej`](#hiding-a-jobseeker-hidej).
 
 **Format:**{: #unhidej-format} `unhidej <index>`
 
 * `<index>`: the index of the jobseeker to unhide
-  * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
-    inclusive
+  * must be a positive integer, from 1 to the size of the currently displayed jobseeker list, inclusive
 
 **Examples:**
 {: #unhidej-examples}
@@ -582,19 +533,16 @@ For more information on hidden jobseekers, see [Hiding a jobseeker: `hidej`](#hi
 
 #### Unhiding a client: `unhidec`
 
-Make a hidden client visible to [`listc`](#listing-clients-listc)
-and [`findc`](#finding-clients-findc) again.
+Make a hidden client visible to [`listc`](#listing-clients-listc) and [`findc`](#finding-clients-findc) again.
 
-This command must be used while [`listhc`](#listing-hidden-clients-listhc)
-or [`findhc`](#finding-hidden-clients-findhc) is in effect.
+This command must be used while [`listhc`](#listing-hidden-clients-listhc) or [`findhc`](#finding-hidden-clients-findhc) is in effect.
 
 For more information on hidden clients, see [Hiding a client: `hidec`](#hiding-a-client-hidec).
 
 **Format:**{: #unhidec-format} `unhidec <index>`
 
 * `<index>`: the index of the client to unhide
-  * must be a positive integer, from 1 to the size of the currently displayed client list,
-      inclusive
+  * must be a positive integer, from 1 to the size of the currently displayed client list, inclusive
 
 **Examples:**
 {: #unhidec-examples}
@@ -603,27 +551,23 @@ For more information on hidden clients, see [Hiding a client: `hidec`](#hiding-a
 
 #### Listing hidden jobseekers: `listhj`
 
-Shows all _hidden_ jobseekers in the jobseeker list,
-and clears the current jobseeker filter.
+Shows all _hidden_ jobseekers in the jobseeker list, and clears the current jobseeker filter.
 
 For more information on hidden jobseekers, see [Hiding a jobseeker: `hidej`](#hiding-a-jobseeker-hidej).
 
 **Format:**{: #listhj-format} `listhj`
 
-To return both lists to their visible contacts, use
-[Listing jobseekers and clients: `list`](#listing-jobseekers-and-clients-list).
+To return both lists to their visible contacts, use [Listing jobseekers and clients: `list`](#listing-jobseekers-and-clients-list).
 
 #### Listing hidden clients: `listhc`
 
-Shows all _hidden_ clients in the client list,
-and clears the current clients filter.
+Shows all _hidden_ clients in the client list, and clears the current clients filter.
 
 For more information on hidden clients, see [Hiding a client: `hidec`](#hiding-a-client-hidec).
 
 **Format:**{: #listhc-format} `listhc`
 
-To return both lists to their visible contacts, use
-[Listing jobseekers and clients: `list`](#listing-jobseekers-and-clients-list).
+To return both lists to their visible contacts, use [Listing jobseekers and clients: `list`](#listing-jobseekers-and-clients-list).
 
 #### Finding hidden jobseekers: `findhj`
 
@@ -670,8 +614,7 @@ Tags contains the following attributes, and their corresponding constraints:
   * must contain only alphanumeric characters
   * is _case-sensitive_, unlike the parameters to `findj` and `findc`
 
-Tags are identified by their names, i.e. 2 tags with the same name,
-_case-sensitive_, are considered the same tags.
+Tags are identified by their names, i.e. 2 tags with the same name, _case-sensitive_, are considered the same tags.
 
 A jobseeker or client contact can have multiple tags, or no tags at all.
 
@@ -682,8 +625,7 @@ Adds tags to a jobseeker while preserving existing tags.
 **Format:**{: #tagj-format} `tagj <index> <tag>...`
 
 * `<index>`: the index of the jobseeker to add the tag to
-  * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
-    inclusive
+  * must be a positive integer, from 1 to the size of the currently displayed jobseeker list, inclusive
 * `<tag>`: the name of a tag to add
   * At least one tag name must be given.
 
@@ -700,8 +642,7 @@ Adds tags to a client while preserving existing tags.
 **Format:**{: #tagc-format} `tagc <index> <tag>...`
 
 * `<index>`: the index of the client to add the tag to
-  * must be a positive integer, from 1 to the size of the currently displayed client list,
-    inclusive
+  * must be a positive integer, from 1 to the size of the currently displayed client list, inclusive
 * `<tag>`: the name of a tag to add
   * At least one tag name must be given.
 
@@ -718,8 +659,7 @@ Removes specified tags from a jobseeker while preserving other tags.
 **Format:**{: #untagj-format} `untagj <index> <tag>...`
 
 * `<index>`: the index of the jobseeker to remove the tag from
-  * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
-    inclusive
+  * must be a positive integer, from 1 to the size of the currently displayed jobseeker list, inclusive
   * `<tag>`: the name of a tag to add
     * At least one tag name must be given.
 
@@ -737,8 +677,7 @@ Removes specified tags from a client while preserving other tags.
 **Format:**{: #untagc-format} `untagc <index> <tag>...`
 
 * `<index>`: the index of the client to remove the tag from 
-  * must be a positive integer, from 1 to the size of the currently displayed client list,
-    inclusive
+  * must be a positive integer, from 1 to the size of the currently displayed client list, inclusive
 * `<tag>`: the name of a tag to add
   * At least one tag name must be given.
 
@@ -799,8 +738,7 @@ Use the up and down arrow keys to revisit commands from your command history.
 
 ### Autocomplete commands
 
-Type part of a command (e.g. `list`) to see suggestions. Use `Up`/`Down` to select one,
-then `Tab` or `Enter` to complete it.
+Type part of a command (e.g. `list`) to see suggestions. Use `Up`/`Down` to select one, then `Tab` or `Enter` to complete it.
 Press `Enter` again to run the command, or `Escape` to dismiss suggestions.
 
 ### Editing the data file
@@ -812,13 +750,11 @@ Advanced users are welcome to update data directly by editing that data file.
 
 **:exclamation: Caution:**
 
-If your changes make the data file invalid, TalentLink starts with
-empty jobseeker and client lists at the next run.
+If your changes make the data file invalid, TalentLink starts with empty jobseeker and client lists at the next run.
 The invalid file remains on disk until you run a command (TalentLink saves after every command).
 Still, we recommend backing up the file before editing it.
 
-Furthermore, certain edits can cause TalentLink to behave in unexpected ways
-(e.g., if a value entered is outside the acceptable range).
+Furthermore, certain edits can cause TalentLink to behave in unexpected ways (e.g., if a value entered is outside the acceptable range).
 Therefore, edit the data file only if you are confident that you can update it correctly.
 
 </div>
