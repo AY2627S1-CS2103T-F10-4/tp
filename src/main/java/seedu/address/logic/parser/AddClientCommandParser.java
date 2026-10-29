@@ -56,7 +56,7 @@ public class AddClientCommandParser implements Parser<AddClientCommand> {
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
-        Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+        Set<Tag> tagList = ParserUtil.parseTagsForAdd(argMultimap.getAllValues(PREFIX_TAG));
 
         Remark remark = new Remark(argMultimap.getValue(PREFIX_REMARK).orElse(""));
         Set<Job> jobs = ParserUtil.parseJobs(argMultimap.getAllValues(PREFIX_JOB));
