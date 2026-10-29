@@ -440,7 +440,7 @@ To search among hidden jobseekers, see [Finding hidden jobseekers: `findhj`](#fi
 
 #### Finding clients: `findc`
 
-Finds clients whose name, phone number, email or tags contain any of the given keywords.
+Finds clients whose name, phone number, email, tags or job openings contain any of the given keywords.
 
 The search is case-insensitive and is inclusive.
 
@@ -456,7 +456,13 @@ To search among hidden clients, see [Finding hidden clients: `findhc`](#finding-
 **Notes:**
 {: #findc-notes}
 
-The notes are the same as `findj`. See [Finding jobseekers: `findj` - Notes](#findj-notes).
+The notes are the same as `findj`, except that job openings are also searched.
+See [Finding jobseekers: `findj` - Notes](#findj-notes).
+
+* Each job opening is searched on its own, like each tag.
+
+  For example, `engineer` matches a client with the job opening `Software Engineer`.
+  To find a job title with spaces, search for one of its words, since every keyword is searched separately.
 
 **Examples:**
 {: #findc-examples}
@@ -464,14 +470,17 @@ The notes are the same as `findj`. See [Finding jobseekers: `findj` - Notes](#fi
 * `findc roy` returns `Roy Balakrishnan`.
 * `findc irfan@example.com` returns `Irfan Ibrahim`.
 * `findc colleagues` returns `Roy Balakrishnan`, who is tagged `colleagues`.
+* `findc engineer` returns `Roy Balakrishnan`, after `editc 2 j/Software Engineer` adds that job opening.
 
 #### Finding jobseekers and clients: `find`
 
 Finds jobseekers and clients whose name, phone number, email or tags contain any of the given keywords.
+Clients' job openings are searched too.
 
 This does the same as running [`findj`](#finding-jobseekers-findj) and [`findc`](#finding-clients-findc)
 with the same keywords, so both lists are filtered at once.
-This is useful for finding every contact with a certain tag, such as an industry.
+This is useful for finding every contact with a certain tag, such as an industry,
+or every client hiring for a certain job.
 
 Hidden jobseekers and clients are not searched.
 
@@ -483,13 +492,14 @@ Hidden jobseekers and clients are not searched.
 **Notes:**
 {: #find-notes}
 
-The notes are the same as `findj`. See [Finding jobseekers: `findj` - Notes](#findj-notes).
+The notes are the same as `findc`. See [Finding clients: `findc` - Notes](#findc-notes).
 
 **Examples:**
 {: #find-examples}
 
 * `find colleagues` returns the jobseeker `Bernice Yu` and the client `Roy Balakrishnan`, who are both tagged `colleagues`.
 * `find alex roy` returns the jobseeker `Alex Yeoh` and the client `Roy Balakrishnan`.
+* `find engineer` returns every client with a job opening such as `Software Engineer`.
 
 #### Hiding a jobseeker: `hidej`
 

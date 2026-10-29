@@ -5,16 +5,18 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import seedu.address.commons.util.ToStringBuilder;
 
 /**
- * Tests that a {@code Person}'s name, phone number, email or any of their tags contains any of the
- * keywords given, ignoring case. For example, the keyword {@code "lic"} matches the name
- * {@code "Alice Tan"}, {@code "9435"} matches the phone number {@code "94351253"}, and
- * {@code "friend"} matches the tag {@code "friends"}.
+ * Tests that a {@code Person}'s name, phone number, email, any of their tags or, for a {@code Client},
+ * any of their job openings contains any of the keywords given, ignoring case. For example, the keyword
+ * {@code "lic"} matches the name {@code "Alice Tan"}, {@code "9435"} matches the phone number
+ * {@code "94351253"}, {@code "friend"} matches the tag {@code "friends"}, and {@code "engineer"}
+ * matches the job {@code "Software Engineer"}.
  */
 public class PersonContainsKeywordsPredicate implements Predicate<Person> {
     public static final String MESSAGE_BLANK_KEYWORD = "Keywords should not be blank";
@@ -48,7 +50,14 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
                 person.getEmail().value.toLowerCase(Locale.ROOT));
         Stream<String> tagNames = person.getTags().stream()
                 .map(tag -> tag.tagName.toLowerCase(Locale.ROOT));
-        List<String> searchableFields = Stream.concat(contactFields, tagNames).toList();
+        // Only clients have job openings, so a jobseeker adds no job names. Like tags, each job name
+        // is a field of its own.
+        Stream<String> jobNames = (person instanceof Client client)
+                ? client.getAvailableJobs().stream().map(job -> job.jobName.toLowerCase(Locale.ROOT))
+                : Stream.empty();
+        List<String> searchableFields = Stream.of(contactFields, tagNames, jobNames)
+                .flatMap(Function.identity())
+                .toList();
         return keywords.stream()
                 .map(keyword -> keyword.toLowerCase(Locale.ROOT))
                 .anyMatch(keyword -> searchableFields.stream().anyMatch(field -> field.contains(keyword)));

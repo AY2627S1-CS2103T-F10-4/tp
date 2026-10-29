@@ -13,6 +13,7 @@ import java.util.Locale;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.JobseekerBuilder;
 
 public class PersonContainsKeywordsPredicateTest {
@@ -196,6 +197,48 @@ public class PersonContainsKeywordsPredicateTest {
                 new PersonContainsKeywordsPredicate(List.of("friendsowes", "moneyfriends"));
         assertFalse(predicate.test(new JobseekerBuilder().withName("Alice")
                 .withTags("friends", "owesMoney").build()));
+    }
+
+    /**
+     * Checks that a client's job openings are searched. Each keyword here matches nothing but a job name,
+     * so this fails if job openings are dropped from the searched fields.
+     */
+    @Test
+    public void test_keywordMatchesClientJob_returnsTrue() {
+        // Full job name
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(List.of("Tester"));
+        assertTrue(predicate.test(new ClientBuilder().withName("Adrian").withAvailableJobs("Tester").build()));
+
+        // One word of a multi-word job name, mixed case
+        predicate = new PersonContainsKeywordsPredicate(List.of("eNGINEER"));
+        assertTrue(predicate.test(new ClientBuilder().withName("Adrian")
+                .withAvailableJobs("QA Tester", "Software Engineer").build()));
+
+        // Part of a word in a job name
+        predicate = new PersonContainsKeywordsPredicate(List.of("soft"));
+        assertTrue(predicate.test(new ClientBuilder().withName("Adrian")
+                .withAvailableJobs("Software Engineer").build()));
+    }
+
+    @Test
+    public void test_keywordMatchesNoClientJob_returnsFalse() {
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(List.of("Designer"));
+        assertFalse(predicate.test(new ClientBuilder().withName("Adrian")
+                .withAvailableJobs("Software Engineer").build()));
+        assertFalse(predicate.test(new ClientBuilder().withName("Adrian").build()));
+    }
+
+    /**
+     * Guards checking each job separately, as for tags: each keyword spans the end of one job name and
+     * the start of the other, one for each order the jobs could be joined in, so this fails if the job
+     * names are joined into one string before matching.
+     */
+    @Test
+    public void test_keywordSpansTwoJobs_returnsFalse() {
+        PersonContainsKeywordsPredicate predicate =
+                new PersonContainsKeywordsPredicate(List.of("chefcleaner", "cleanerchef"));
+        assertFalse(predicate.test(new ClientBuilder().withName("Adrian")
+                .withAvailableJobs("Chef", "Cleaner").build()));
     }
 
     /**

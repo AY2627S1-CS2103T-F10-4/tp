@@ -11,7 +11,8 @@ import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 /**
  * Finds and lists all unhidden jobseekers and clients in the address book whose name, phone number,
- * email or tags contain any of the argument keywords. Keyword matching is case insensitive.
+ * email, tags or (for clients) job openings contain any of the argument keywords. Keyword matching is
+ * case insensitive.
  * This has the same effect as running {@code findj} and {@code findc} with the same keywords, so a
  * recruiter can, for example, see every contact with a given tag in one command. Hidden jobseekers
  * and clients are not searched.
@@ -21,10 +22,10 @@ public class FindCommand extends AbstractFindCommand {
     public static final String COMMAND_WORD = "find";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all jobseekers and clients whose "
-            + "name, phone number, email or tags contain any of the specified keywords (case-insensitive) "
-            + "and displays them as two lists with index numbers.\n"
+            + "name, phone number, email, tags or (for clients) job openings contain any of the specified "
+            + "keywords (case-insensitive) and displays them as two lists with index numbers.\n"
             + "Parameters: <keyword>...\n"
-            + "Example: " + COMMAND_WORD + " colleagues";
+            + "Example: " + COMMAND_WORD + " colleagues engineer";
 
     private static final Logger logger = LogsCenter.getLogger(FindCommand.class);
 

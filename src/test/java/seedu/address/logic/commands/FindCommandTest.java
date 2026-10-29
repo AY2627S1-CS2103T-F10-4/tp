@@ -125,6 +125,26 @@ public class FindCommandTest {
     }
 
     /**
+     * Checks that {@code find} searches clients' job openings: {@code "engineer"} matches only the job
+     * opening of the client, so this fails if job openings are not searched. The jobseeker list must
+     * be empty, since jobseekers have no job openings.
+     */
+    @Test
+    public void execute_keywordMatchesClientJob_clientFound() {
+        Client clientWithJob = new ClientBuilder(ADRIAN).withAvailableJobs("Software Engineer").build();
+        Model jobModel = new ModelManager();
+        jobModel.addJobseeker(ALICE);
+        jobModel.addClient(clientWithJob);
+        jobModel.addClient(BRENDA);
+
+        CommandResult result = new FindCommand(preparePredicate("engineer")).execute(jobModel);
+
+        assertEquals(String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0, 1), result.getFeedbackToUser());
+        assertEquals(List.of(), jobModel.getFilteredJobseekerList());
+        assertEquals(List.of(clientWithJob), jobModel.getFilteredClientList());
+    }
+
+    /**
      * Hidden jobseekers and clients must not be found, even though the keywords match them, as for
      * {@code findj} and {@code findc}.
      */
