@@ -399,7 +399,7 @@ To list hidden clients, see [Listing hidden clients: `listhc`](#listing-hidden-c
 
 #### Finding jobseekers: `findj`
 
-Finds jobseekers whose name, phone number, email or tags contain any of the given keywords.
+Finds jobseekers whose name, phone number, email, tags or highest qualification contain any of the given keywords.
 
 The search is case-insensitive and is inclusive, as in:
 
@@ -424,7 +424,9 @@ To search among hidden jobseekers, see [Finding hidden jobseekers: `findhj`](#fi
 * Keyword order does not matter.
 
   For example, `Hans Bo` is equivalent to `Bo Hans`.
-* Only the name, phone number, email and tags are searched. Addresses and remarks are not.
+* Only the name, phone number, email, tags and highest qualification are searched. Addresses and remarks are not.
+
+  For example, `diploma` matches a jobseeker whose highest qualification is `Diploma in IT`.
 * Each keyword must match within a single field.
 
   For example, `Yeoh8743` does not match a jobseeker named `Alex Yeoh`
@@ -437,6 +439,7 @@ To search among hidden jobseekers, see [Finding hidden jobseekers: `findhj`](#fi
 * `findj li` returns `Charlotte Oliveiro` and `David Li`, since `li` appears inside both names.
 * `findj 9103` returns `David Li`, whose phone number is `91031282`.
 * `findj friends` returns `Alex Yeoh` and `Bernice Yu`, who are both tagged `friends`.
+* `findj diploma` returns `Alex Yeoh`, after `editj 1 q/Diploma in IT` sets that qualification.
 
 #### Finding clients: `findc`
 
@@ -456,7 +459,8 @@ To search among hidden clients, see [Finding hidden clients: `findhc`](#finding-
 **Notes:**
 {: #findc-notes}
 
-The notes are the same as `findj`, except that job openings are also searched.
+The notes are the same as `findj`, except that clients have job openings instead of a highest qualification,
+so job openings are searched instead.
 See [Finding jobseekers: `findj` - Notes](#findj-notes).
 
 * Each job opening is searched on its own, like each tag.
@@ -475,12 +479,12 @@ See [Finding jobseekers: `findj` - Notes](#findj-notes).
 #### Finding jobseekers and clients: `find`
 
 Finds jobseekers and clients whose name, phone number, email or tags contain any of the given keywords.
-Clients' job openings are searched too.
+Jobseekers' highest qualifications and clients' job openings are searched too.
 
 This does the same as running [`findj`](#finding-jobseekers-findj) and [`findc`](#finding-clients-findc)
 with the same keywords, so both lists are filtered at once.
 This is useful for finding every contact with a certain tag, such as an industry,
-or every client hiring for a certain job.
+every jobseeker with a certain qualification, or every client hiring for a certain job.
 
 Hidden jobseekers and clients are not searched.
 
@@ -492,7 +496,7 @@ Hidden jobseekers and clients are not searched.
 **Notes:**
 {: #find-notes}
 
-The notes are the same as `findc`. See [Finding clients: `findc` - Notes](#findc-notes).
+The notes are the same as [`findj`](#findj-notes) for jobseekers and [`findc`](#findc-notes) for clients.
 
 **Examples:**
 {: #find-examples}
@@ -500,6 +504,8 @@ The notes are the same as `findc`. See [Finding clients: `findc` - Notes](#findc
 * `find colleagues` returns the jobseeker `Bernice Yu` and the client `Roy Balakrishnan`, who are both tagged `colleagues`.
 * `find alex roy` returns the jobseeker `Alex Yeoh` and the client `Roy Balakrishnan`.
 * `find engineer` returns every client with a job opening such as `Software Engineer`.
+* `find diploma engineer` returns every jobseeker with a qualification such as `Diploma in IT`,
+  and every client with a job opening such as `Software Engineer`.
 
 #### Hiding a jobseeker: `hidej`
 

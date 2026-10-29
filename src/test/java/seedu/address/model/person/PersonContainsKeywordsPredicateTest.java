@@ -242,6 +242,33 @@ public class PersonContainsKeywordsPredicateTest {
     }
 
     /**
+     * Checks that a jobseeker's highest qualification is searched. Each keyword here matches nothing but
+     * the qualification, so this fails if qualifications are dropped from the searched fields.
+     */
+    @Test
+    public void test_keywordMatchesJobseekerQualification_returnsTrue() {
+        // One word of the qualification, mixed case
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(List.of("dIPLOMA"));
+        assertTrue(predicate.test(new JobseekerBuilder().withName("Alice")
+                .withHighestQualification("Diploma in IT").build()));
+
+        // Part of a word in the qualification
+        predicate = new PersonContainsKeywordsPredicate(List.of("comput"));
+        assertTrue(predicate.test(new JobseekerBuilder().withName("Alice")
+                .withHighestQualification("Degree in Computing").build()));
+    }
+
+    @Test
+    public void test_keywordMatchesNoJobseekerQualification_returnsFalse() {
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(List.of("Masters"));
+        assertFalse(predicate.test(new JobseekerBuilder().withName("Alice")
+                .withHighestQualification("Diploma in IT").build()));
+        // Unspecified (empty) qualification
+        assertFalse(predicate.test(new JobseekerBuilder().withName("Alice")
+                .withHighestQualification("").build()));
+    }
+
+    /**
      * Guards checking each field separately: {@code "Alice12345"} spans the end of the name and the
      * start of the phone number, so this fails if the fields are joined into one string before matching.
      */
