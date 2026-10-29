@@ -1,9 +1,16 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MESSAGE_MISSING_REQUIRED_FIELDS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
@@ -23,6 +30,32 @@ import seedu.address.model.tag.Tag;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index must be a positive integer.";
+
+    /**
+     * Checks required add-command prefixes in name, phone, email, address order.
+     * A present prefix with an empty value is left to the field's value validation.
+     *
+     * @throws ParseException listing only the missing required fields, if any.
+     */
+    public static void verifyRequiredAddFields(ArgumentMultimap arguments) throws ParseException {
+        requireNonNull(arguments);
+        List<String> missing = new ArrayList<>();
+        if (arguments.getValue(PREFIX_NAME).isEmpty()) {
+            missing.add(PREFIX_NAME + " (name)");
+        }
+        if (arguments.getValue(PREFIX_PHONE).isEmpty()) {
+            missing.add(PREFIX_PHONE + " (phone)");
+        }
+        if (arguments.getValue(PREFIX_EMAIL).isEmpty()) {
+            missing.add(PREFIX_EMAIL + " (email)");
+        }
+        if (arguments.getValue(PREFIX_ADDRESS).isEmpty()) {
+            missing.add(PREFIX_ADDRESS + " (address)");
+        }
+        if (!missing.isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_MISSING_REQUIRED_FIELDS, String.join(", ", missing)));
+        }
+    }
 
     /**
      * Parses an optional qualification, trimming surrounding whitespace. Empty text clears the qualification.
@@ -144,12 +177,12 @@ public class ParserUtil {
     }
 
     /**
-     * Parses whitespace-separated tags from each {@code t/} value in an add command.
+     * Parses whitespace-separated tags from each {@code t/} value in an add or edit command.
      * Repeated prefixes are supported and duplicate tags are removed.
      *
      * @throws ParseException if a value is empty or any individual tag is invalid.
      */
-    public static Set<Tag> parseTagsForAdd(Collection<String> values) throws ParseException {
+    public static Set<Tag> parseSpaceSeparatedTags(Collection<String> values) throws ParseException {
         requireNonNull(values);
         Set<Tag> tags = new HashSet<>();
         for (String value : values) {

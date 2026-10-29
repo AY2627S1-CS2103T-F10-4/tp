@@ -169,6 +169,11 @@ Using either field with the wrong contact type is rejected, even when its value 
 * If contacts only have **either** the same phone number or email address,
   they are treated as different contacts.
 
+For `addj` and `addc`, omitting required fields produces an error listing only the missing fields.
+For example, `addj n/Alice Tan p/91234567` reports `Missing required fields: e/ (email), a/ (address).`
+A supplied field with an empty or invalid value instead produces its field-specific validation error
+once all required prefixes are present.
+
 #### Adding a jobseeker: `addj`
 
 Adds a jobseeker to TalentLink.
@@ -200,7 +205,7 @@ additional constraints on field values.
 {: #addj-examples}
 
 * `addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 q/Diploma in IT`
-* `addj n/Betsy Crowe t/friend colleague e/betsycrowe@example.com a/Newgate Prison p/1234567`
+* `addj n/Betsy Crowe e/betsycrowe@example.com a/Newgate Prison p/1234567 t/friend colleague`
 
 #### Adding a client: `addc`
 
@@ -233,7 +238,7 @@ The command overwrites some of the jobseeker's contact details, while leaving th
 
 Similar to [`addj`](#adding-a-jobseeker-addj), edits that would create duplicate jobseekers are rejected.
 
-**Format:**{: #editj-format} `editj <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [q/<highest qualification>] [r/<remarks>] [t/<tag>]...`
+**Format:**{: #editj-format} `editj <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [q/<highest qualification>] [r/<remarks>] [t/<tag> [<more tags>]...]...`
 
 At least one of the fields `<name>`, `<phone number>`, `<email>`, `<address>`, `<remarks>`,
 `<highest qualification>`, or `<tag>` must be provided.
@@ -255,7 +260,10 @@ At least one of the fields `<name>`, `<phone number>`, `<email>`, `<address>`, `
 * Use `q/<highest qualification>` to replace the qualification, or `q/` alone to clear it.
   Omit `q/` to keep the current value. Specify `q/` at most once.
 * To clear remarks, specify `r/` without any values.
-* Supplied tags replace all existing tags. To clear all tags, specify `t/` without any values.
+* Supplied tags replace all existing tags. For example, `editj 1 t/java python t/teamwork` replaces them with three tags.
+* Separate tags with spaces after one `t/`, or use repeated prefixes; mixed syntax is accepted.
+* Duplicate tags are stored once; tags are case-sensitive and must be alphanumeric.
+* Omit `t/` to preserve existing tags. A single empty `t/` clears them; empty prefixes mixed with other tags are rejected.
 * Editing preserves hidden status and returns the view to the normal jobseeker list.
   An edited hidden jobseeker remains hidden.
 
@@ -280,7 +288,7 @@ The command overwrites some of the client's contact details, while leaving the r
 
 Similar to [`addc`](#adding-a-client-addc), edits that would create duplicate clients are rejected.
 
-**Format:**{: #editc-format} `editc <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [j/<job>]... [r/<remarks>] [t/<tag>]...`
+**Format:**{: #editc-format} `editc <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [j/<job>]... [r/<remarks>] [t/<tag> [<more tags>]...]...`
 
 The common contact fields follow [Editing a jobseeker: `editj` - Format](#editj-format).
 Clients accept available jobs (`j/`) instead of a highest qualification (`q/`).
@@ -292,7 +300,10 @@ At least one field must be supplied; `j/` alone also counts.
 * Supplied jobs replace all existing jobs. Repeat `j/` for multiple titles.
 * Use `j/` alone to clear all jobs. Omit `j/` to keep existing jobs.
 * Do not combine an empty `j/` with other `j/` entries.
-* Use `r/` alone to clear remarks, and `t/` alone to clear tags. Supplied tags replace all existing tags.
+* Use `r/` alone to clear remarks. Supplied tags replace all existing tags, e.g. `editc 1 t/finance technology`.
+* Separate tags with spaces after one `t/`, or use repeated prefixes; mixed syntax is accepted.
+* Duplicate tags are stored once; tags are case-sensitive and must be alphanumeric.
+* Omit `t/` to preserve existing tags. A single empty `t/` clears them; empty prefixes mixed with other tags are rejected.
 
 **Examples:**
 {: #editc-examples}
@@ -752,9 +763,9 @@ Removes specified tags from a client while preserving other tags.
 
 #### Copying displayed jobseekers: `cpj`
 
-Copies the details of all currently displayed jobseekers to the system clipboard.
+Copies the details of displayed jobseekers to the system clipboard.
 
-**Format:**{: #cpj-format} `cpj`
+**Format:**{: #cpj-format} `cpj [index]`
 
 **Notes:**
 {: #cpj-notes}
@@ -763,28 +774,31 @@ Copies the details of all currently displayed jobseekers to the system clipboard
 * Each jobseeker is copied on a separate line.
 * The command only copies whichever jobseekers are currently displayed.
   If no jobseekers are displayed, the clipboard is cleared.
+* Without `index`, all displayed jobseekers are copied. With `index`, only the specified displayed jobseeker is copied.
+* The index is one-based and refers to the current displayed list.
 
 **Examples:**
 {: #cpj-examples}
 
-* `findj java` followed by `cpj` copies the displayed search results.
+* `findj java` followed by `cpj 2` copies the second displayed jobseeker.
 
 #### Copying displayed clients: `cpc`
 
-Copies the details of all currently displayed clients to the system clipboard.
+Copies the details of displayed clients to the system clipboard.
 
-**Format:**{: #cpc-format} `cpc`
+**Format:**{: #cpc-format} `cpc [index]`
 
 **Notes:**
 {: #cpc-notes}
 
 The notes are the same as `cpj`.
 See [Copying displayed jobseekers: `cpj` - Notes](#cpj-notes) for notes.
+The same indexed-copy behavior as `cpj` applies to clients.
 
 **Examples:**
 {: #cpc-examples}
 
-* `findc technology` followed by `cpc` copies the displayed search results.
+* `findc technology` followed by `cpc 1` copies the first displayed client.
 
 ### Saving the data
 
@@ -802,7 +816,10 @@ Press `Enter` again to run the command, or `Escape` to dismiss suggestions.
 
 ### Editing the data file
 
-TalentLink data is saved automatically as a JSON file `[JAR file location]/data/addressbook.json`.
+TalentLink data is saved automatically as a JSON file `data/addressbook.json`, relative to the terminal's
+current working directory when the application is launched. Following the Quick Start instructions makes
+this directory the same as the folder containing the JAR file. Launching the JAR from a different working
+directory uses a different data-file location.
 Advanced users are welcome to update data directly by editing that data file.
 
 <div markdown="span" class="alert alert-warning">
@@ -848,8 +865,8 @@ _Details coming soon ..._
 | [Exit](#exiting-the-program-exit)                              | `exit`                                                                                                  |
 | [Add jobseeker](#adding-a-jobseeker-addj)                      | `addj n/<name> p/<phone number> e/<email> a/<address> [q/<highest qualification>] [r/<remarks>] [t/<tag> [<more tags>]...]`                       |
 | [Add client](#adding-a-client-addc)                            | `addc n/<name> p/<phone number> e/<email> a/<address> [j/<job>]... [r/<remarks>] [t/<tag> [<more tags>]...]`                       |
-| [Edit jobseeker](#editing-a-jobseeker-editj)                   | `editj <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [q/<highest qualification>] [r/<remarks>] [t/<tag>]...`      |
-| [Edit client](#editing-a-client-editc)                         | `editc <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [j/<job>]... [r/<remarks>] [t/<tag>]...`      |
+| [Edit jobseeker](#editing-a-jobseeker-editj)                   | `editj <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [q/<highest qualification>] [r/<remarks>] [t/<tag> [<more tags>]...]...`      |
+| [Edit client](#editing-a-client-editc)                         | `editc <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [j/<job>]... [r/<remarks>] [t/<tag> [<more tags>]...]...`      |
 | [Clear jobseekers](#clearing-all-jobseekers-clearj)            | `clearj`                                                                                                |
 | [Clear clients](#clearing-all-clients-clearc)                  | `clearc`                                                                                                |
 | [Delete jobseekers](#deleting-a-jobseeker-deletej)             | `deletej <index>`                                                                                       |
@@ -872,5 +889,5 @@ _Details coming soon ..._
 | [Add client tags](#adding-client-tags-tagc)                    | `tagc <index> <tag>...`                                                                                 |
 | [Remove jobseeker tags](#removing-jobseeker-tags-untagj)       | `untagj <index> <tag>...`                                                                               |
 | [Remove client tags](#removing-client-tags-untagc)             | `untagc <index> <tag>...`                                                                               |
-| [Copy displayed jobseekers](#copying-displayed-jobseekers-cpj) | `cpj`                                                                                                   |
-| [Copy displayed clients](#copying-displayed-clients-cpc)       | `cpc`                                                                                                   |
+| [Copy displayed jobseekers](#copying-displayed-jobseekers-cpj) | `cpj [index]`                                                                                            |
+| [Copy displayed clients](#copying-displayed-clients-cpc)       | `cpc [index]`                                                                                            |
