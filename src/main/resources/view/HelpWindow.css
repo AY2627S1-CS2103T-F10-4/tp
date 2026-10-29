@@ -70,3 +70,18 @@ Text {
     -fx-scale-y: 1.5;
     -fx-padding: 0 8 0 8;
 }
+
+.copy-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.copy-button:hover {
+    -fx-background-color: lightgray;
+    -fx-border-color: transparent;
+}
+
+.copy-button:armed {
+    -fx-background-color: transparent;
+    -fx-border-color: grey;
+}

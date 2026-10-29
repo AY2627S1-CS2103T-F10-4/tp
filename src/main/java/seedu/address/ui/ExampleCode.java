@@ -10,11 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 
 /**
  * A UI component that represent a command snippet that can be copied.
@@ -36,9 +32,8 @@ public class ExampleCode extends HBox {
         Button copyButton = new Button();
         copyButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         copyButton.setPadding(new Insets(0));
-        copyButton.setBackground(Background.EMPTY);
-        copyButton.setBorder(Border.EMPTY);
         copyButton.setOnAction(_ -> copyExample());
+        copyButton.getStyleClass().add("copy-button");
 
         ImageView copyImage = new ImageView(getClass().getResource("/images/copy.png").toExternalForm());
         copyImage.setFitWidth(10);
