@@ -88,7 +88,6 @@ public class EditJobseekerCommand extends Command {
         }
 
         model.setJobseeker(jobseekerToEdit, editedJobseeker);
-        model.updateFilteredJobseekerList(Model.PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS);
         return new CommandResult(String.format(MESSAGE_EDIT_JOBSEEKER_SUCCESS,
                 Messages.format(editedJobseeker)));
     }

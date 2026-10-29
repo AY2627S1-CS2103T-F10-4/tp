@@ -18,6 +18,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.person.Client;
 import seedu.address.model.person.Jobseeker;
+import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.model.person.Remark;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.JobseekerBuilder;
@@ -118,7 +119,7 @@ public class EditClientCommandTest {
         model.addClient(first);
         model.addClient(target);
         model.addJobseeker(jobseeker);
-        model.updateFilteredClientList(client -> client.equals(target));
+        model.updateFilteredClientList(client -> client.getEmail().equals(target.getEmail()));
 
         EditClientDescriptor descriptor = new EditClientDescriptor();
         descriptor.setRemark(new Remark("New remark"));
@@ -130,7 +131,7 @@ public class EditClientCommandTest {
                 Messages.format(expected))), command.execute(model));
         assertEquals(List.of(first, expected), model.getAddressBook().getClientList());
         assertEquals(List.of(jobseeker), model.getAddressBook().getJobseekerList());
-        assertEquals(List.of(first), model.getFilteredClientList());
+        assertEquals(List.of(expected), model.getFilteredClientList());
     }
 
     @Test
@@ -164,5 +165,36 @@ public class EditClientCommandTest {
         model.updateFilteredClientList(client -> client.equals(first));
         assertCommandFailure(new EditClientCommand(INDEX_SECOND_PERSON, descriptor), model,
                 Messages.MESSAGE_INVALID_CLIENT_DISPLAYED_INDEX);
+    }
+
+    @Test
+    public void execute_preservesVisibilityAndSearchFilter() throws Exception {
+        for (boolean hidden : List.of(false, true)) {
+            for (boolean filtered : List.of(false, true)) {
+                for (String newName : List.of("Alice Updated", "Bob Updated")) {
+                    Model viewModel = new ModelManager();
+                    Client target = new ClientBuilder().withName("Alice Original").withHidden(hidden).build();
+                    Client other = new ClientBuilder().withName("Charlie Other")
+                            .withPhone("91234567").withEmail("other@example.com").withHidden(hidden).build();
+                    Client opposite = new ClientBuilder().withName("Alice Opposite")
+                            .withPhone("87654321").withEmail("opposite@example.com").withHidden(!hidden).build();
+                    viewModel.addClient(target);
+                    viewModel.addClient(other);
+                    viewModel.addClient(opposite);
+                    viewModel.updateFilteredClientList(person -> person.isHidden() == hidden
+                            && (!filtered || new PersonContainsKeywordsPredicate(List.of("Alice")).test(person)));
+                    EditClientDescriptor descriptor = new EditClientDescriptor();
+                    Client edited = new ClientBuilder(target).withName(newName).build();
+                    descriptor.setName(edited.getName());
+
+                    new EditClientCommand(INDEX_FIRST_PERSON, descriptor).execute(viewModel);
+
+                    List<Client> expected = filtered
+                            ? (newName.startsWith("Alice") ? List.of(edited) : List.of()) : List.of(edited, other);
+                    assertEquals(expected, viewModel.getFilteredClientList());
+                    assertEquals(List.of(edited, other, opposite), viewModel.getAddressBook().getClientList());
+                }
+            }
+        }
     }
 }
