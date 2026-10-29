@@ -285,8 +285,6 @@ At least one field must be supplied; `j/` alone also counts.
 * Use `j/` alone to clear all jobs. Omit `j/` to keep existing jobs.
 * Do not combine an empty `j/` with other `j/` entries.
 * Use `r/` alone to clear remarks, and `t/` alone to clear tags. Supplied tags replace all existing tags.
-* Editing preserves hidden status and returns the view to the normal client list.
-  An edited hidden client remains hidden.
 
 **Examples:**
 {: #editc-examples}

@@ -48,7 +48,7 @@ class JsonAdaptedClient {
     }
 
     /**
-     * Constructs an adapted person with an optional remark and hidden status.
+     * Constructs an adapted client with an optional remark and hidden status.
      * A missing {@code hidden} field (e.g. in a save file written before hiding existed) is read as
      * unhidden, so older save files still load.
      */
@@ -58,7 +58,9 @@ class JsonAdaptedClient {
     }
 
     /**
-     * Reads optional contact fields, including files saved before these fields were introduced.
+     * Constructs a {@code JsonAdaptedClient} from the given client details。
+     * Missing tags and available jobs default to empty lists, a missing remark to an empty string,
+     * and a missing hidden status to false.
      */
     @JsonCreator
     public JsonAdaptedClient(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
@@ -66,7 +68,6 @@ class JsonAdaptedClient {
             @JsonProperty("tags") List<JsonAdaptedTag> tags, @JsonProperty("remark") String remark,
             @JsonProperty("hidden") Boolean isHidden,
             @JsonProperty("availableJobs") List<String> availableJobs) {
-        this.availableJobs = availableJobs == null ? new ArrayList<>() : new ArrayList<>(availableJobs);
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -76,6 +77,7 @@ class JsonAdaptedClient {
         if (tags != null) {
             this.tags.addAll(tags);
         }
+        this.availableJobs = availableJobs == null ? new ArrayList<>() : new ArrayList<>(availableJobs);
     }
 
     /**
@@ -88,8 +90,7 @@ class JsonAdaptedClient {
         address = source.getAddress().value;
         remark = source.getRemark().value;
         isHidden = source.isHidden();
-        availableJobs = source.getAvailableJobs().stream().map(job -> job.jobName).sorted()
-                .collect(Collectors.toList());
+        availableJobs = source.getSortedJobNames();
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));

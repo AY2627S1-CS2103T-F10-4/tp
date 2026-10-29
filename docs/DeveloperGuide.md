@@ -124,7 +124,7 @@ How the parsing works:
 
 The `Model` component,
 
-* stores jobseekers and clients in separate `UniquePersonList<Jobseeker>` and `UniquePersonList<Client>` collections. Both types extend the abstract `Person` class.
+* stores jobseekers and clients in separate `UniquePersonList<Jobseeker>` and `UniquePersonList<Client>` collections. Both jobseeker and client extend the abstract `Person` class.
 * exposes separate filtered `ObservableList<Jobseeker>` and `ObservableList<Client>` views that the UI observes.
 * stores an optional highest qualification in each `Jobseeker` as a `Qualification` value object. An empty value means unspecified. Each `Client` stores an immutable `Set<Job>` of available jobs; an empty set means no jobs specified. These fields affect equality but do not change contact identity (phone and email).
 * stores a `UserPrefs` object that represents the user’s preferences (currently, just the GUI settings). This is exposed to the outside as a `ReadOnlyUserPrefs` object.

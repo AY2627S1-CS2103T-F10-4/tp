@@ -52,11 +52,11 @@ public class PersonCardTest {
         });
     }
 
-    private static void assertLabel(PersonCard card, String id, String expected, boolean visible) {
+    private static void assertLabel(PersonCard card, String id, String expected, boolean visibility) {
         Label label = (Label) card.getRoot().lookup("#" + id);
         assertEquals(expected, label.getText());
-        assertEquals(visible, label.isVisible());
-        assertEquals(visible, label.isManaged());
+        assertEquals(visibility, label.isVisible());
+        assertEquals(visibility, label.isManaged());
         assertTrue(label.isWrapText());
         assertFalse(label.getText().contains("null"));
     }

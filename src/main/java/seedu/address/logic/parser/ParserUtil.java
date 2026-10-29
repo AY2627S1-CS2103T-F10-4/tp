@@ -43,15 +43,15 @@ public class ParserUtil {
         if (jobs.size() == 1 && jobs.iterator().next().isBlank()) {
             return Set.of();
         }
-        Set<Job> result = new HashSet<>();
-        for (String name : jobs) {
-            String trimmedName = name.trim();
+        Set<Job> parsedJobs = new HashSet<>();
+        for (String job : jobs) {
+            String trimmedName = job.trim();
             if (!Job.isValidJobName(trimmedName)) {
                 throw new ParseException(Job.MESSAGE_CONSTRAINTS);
             }
-            result.add(new Job(trimmedName));
+            parsedJobs.add(new Job(trimmedName));
         }
-        return result;
+        return parsedJobs;
     }
 
     /**

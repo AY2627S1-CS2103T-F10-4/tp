@@ -79,8 +79,7 @@ public class Messages {
                 .append("; Tags: ");
         client.getTags().forEach(builder::append);
         if (!client.getAvailableJobs().isEmpty()) {
-            builder.append("; Available jobs: ").append(client.getAvailableJobs().stream()
-                    .map(job -> job.jobName).sorted().collect(Collectors.joining(", ")));
+            builder.append("; Available jobs: ").append(String.join(", ", client.getSortedJobNames()));
         }
         return builder.toString();
     }

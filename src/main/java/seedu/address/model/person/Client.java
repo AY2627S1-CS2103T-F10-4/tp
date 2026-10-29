@@ -1,5 +1,6 @@
 package seedu.address.model.person;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -46,6 +47,16 @@ public class Client extends Person {
      */
     public Set<Job> getAvailableJobs() {
         return availableJobs;
+    }
+
+    /**
+     * Returns an unmodifiable list of available job names in natural string order.
+     */
+    public List<String> getSortedJobNames() {
+        return availableJobs.stream()
+                .map(job -> job.jobName)
+                .sorted()
+                .toList();
     }
 
     @Override

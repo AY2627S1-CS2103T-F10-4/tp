@@ -1,7 +1,6 @@
 package seedu.address.ui;
 
 import java.util.Comparator;
-import java.util.stream.Collectors;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -65,12 +64,12 @@ public class PersonCard extends UiPart<Region> {
         remark.setVisible(!person.getRemark().value.isEmpty());
         remark.setManaged(remark.isVisible());
         String qualification = person instanceof Jobseeker jobseeker
-                ? jobseeker.getHighestQualification().value : "";
+                ? jobseeker.getHighestQualification().value
+                : "";
         highestQualification.setText("Highest qualification: " + qualification);
         highestQualification.setVisible(!qualification.isEmpty());
         highestQualification.setManaged(highestQualification.isVisible());
-        String jobs = person instanceof Client client ? client.getAvailableJobs().stream()
-                .map(job -> job.jobName).sorted().collect(Collectors.joining(", ")) : "";
+        String jobs = person instanceof Client client ? String.join(", ", client.getSortedJobNames()) : "";
         availableJobs.setText("Available jobs: " + jobs);
         availableJobs.setVisible(!jobs.isEmpty());
         availableJobs.setManaged(availableJobs.isVisible());

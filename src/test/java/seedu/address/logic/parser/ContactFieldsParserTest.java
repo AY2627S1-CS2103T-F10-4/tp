@@ -157,7 +157,7 @@ public class ContactFieldsParserTest {
         parser.parseCommand("addj" + REQUIRED_FIELDS + " q/Diploma").execute(model);
         parser.parseCommand("addc" + REQUIRED_FIELDS + " j/Developer").execute(model);
         for (String command : new String[]{"tagj 1 java", "untagj 1 java", "hidej 1", "listhj", "unhidej 1",
-            "tagc 1 java", "untagc 1 java", "hidec 1", "listhc", "unhidec 1"}) {
+                "tagc 1 java", "untagc 1 java", "hidec 1", "listhc", "unhidec 1"}) {
             parser.parseCommand(command).execute(model);
             assertEquals(new Qualification("Diploma"),
                     model.getAddressBook().getJobseekerList().getFirst().getHighestQualification(), command);

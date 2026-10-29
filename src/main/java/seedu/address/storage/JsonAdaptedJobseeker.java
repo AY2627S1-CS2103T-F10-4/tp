@@ -48,7 +48,7 @@ class JsonAdaptedJobseeker {
     }
 
     /**
-     * Constructs an adapted person with an optional remark and hidden status.
+     * Constructs an adapted jobseeker with an optional remark and hidden status.
      * A missing {@code hidden} field (e.g. in a save file written before hiding existed) is read as
      * unhidden, so older save files still load.
      */
@@ -58,7 +58,9 @@ class JsonAdaptedJobseeker {
     }
 
     /**
-     * Reads optional contact fields, including files saved before these fields were introduced.
+     * Constructs a {@code JsonAdaptedJobseeker} from the given jobseeker details.
+     * Missing tags default to an empty list, missing remark and highest qualification to empty strings,
+     * and a missing hidden status to false.
      */
     @JsonCreator
     public JsonAdaptedJobseeker(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
