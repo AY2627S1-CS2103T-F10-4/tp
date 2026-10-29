@@ -649,7 +649,7 @@ Removes specified tags from a client while preserving other tags.
 
 Copies the details of displayed jobseekers to the system clipboard.
 
-**Format:**{: #cpj-format} `cpj [INDEX]`
+**Format:**{: #cpj-format} `cpj [index]`
 
 **Notes:**
 {: #cpj-notes}
@@ -658,7 +658,7 @@ Copies the details of displayed jobseekers to the system clipboard.
 * Each jobseeker is copied on a separate line.
 * The command only copies whichever jobseekers are currently displayed.
   If no jobseekers are displayed, the clipboard is cleared.
-* Without `INDEX`, all displayed jobseekers are copied. With `INDEX`, only the specified displayed jobseeker is copied.
+* Without `index`, all displayed jobseekers are copied. With `index`, only the specified displayed jobseeker is copied.
 * The index is one-based and refers to the current displayed list.
 
 **Examples:**
@@ -670,7 +670,7 @@ Copies the details of displayed jobseekers to the system clipboard.
 
 Copies the details of displayed clients to the system clipboard.
 
-**Format:**{: #cpc-format} `cpc [INDEX]`
+**Format:**{: #cpc-format} `cpc [index]`
 
 **Notes:**
 {: #cpc-notes}
@@ -768,5 +768,5 @@ _Details coming soon ..._
 | [Add client tags](#adding-client-tags-tagc)                    | `tagc <index> <tag>...`                                                                                 |
 | [Remove jobseeker tags](#removing-jobseeker-tags-untagj)       | `untagj <index> <tag>...`                                                                               |
 | [Remove client tags](#removing-client-tags-untagc)             | `untagc <index> <tag>...`                                                                               |
-| [Copy displayed jobseekers](#copying-displayed-jobseekers-cpj) | `cpj [INDEX]`                                                                                            |
-| [Copy displayed clients](#copying-displayed-clients-cpc)       | `cpc [INDEX]`                                                                                            |
+| [Copy displayed jobseekers](#copying-displayed-jobseekers-cpj) | `cpj [index]`                                                                                            |
+| [Copy displayed clients](#copying-displayed-clients-cpc)       | `cpc [index]`                                                                                            |
