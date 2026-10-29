@@ -20,6 +20,8 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
@@ -255,34 +257,39 @@ public class EditJobseekerCommandTest {
         assertEquals(List.of(editedAlice), hiddenModel.getFilteredJobseekerList());
     }
 
-    @Test
-    public void execute_preservesVisibilityAndSearchFilter() throws Exception {
-        for (boolean hidden : List.of(false, true)) {
-            for (boolean filtered : List.of(false, true)) {
-                for (String newName : List.of("Alice Updated", "Bob Updated")) {
-                    Model viewModel = new ModelManager();
-                    Jobseeker target = new JobseekerBuilder().withName("Alice Original").withHidden(hidden).build();
-                    Jobseeker other = new JobseekerBuilder().withName("Charlie Other")
-                            .withPhone("91234567").withEmail("other@example.com").withHidden(hidden).build();
-                    Jobseeker opposite = new JobseekerBuilder().withName("Alice Opposite")
-                            .withPhone("87654321").withEmail("opposite@example.com").withHidden(!hidden).build();
-                    viewModel.addJobseeker(target);
-                    viewModel.addJobseeker(other);
-                    viewModel.addJobseeker(opposite);
-                    viewModel.updateFilteredJobseekerList(person -> person.isHidden() == hidden
-                            && (!filtered || new PersonContainsKeywordsPredicate(List.of("Alice")).test(person)));
-                    EditJobseekerDescriptor descriptor = new EditJobseekerDescriptor();
-                    Jobseeker edited = new JobseekerBuilder(target).withName(newName).build();
-                    descriptor.setName(edited.getName());
+    @ParameterizedTest(name = "hidden={0}, filtered={1}, newName={2}")
+    @CsvSource({
+        "false, false, Alice Updated",
+        "false, false, Bob Updated",
+        "false, true,  Alice Updated",
+        "false, true,  Bob Updated",
+        "true,  false, Alice Updated",
+        "true,  false, Bob Updated",
+        "true,  true,  Alice Updated",
+        "true,  true,  Bob Updated"
+    })
+    public void execute_preservesVisibilityAndSearchFilter(
+            boolean hidden, boolean filtered, String newName) throws Exception {
+        Model viewModel = new ModelManager();
+        Jobseeker target = new JobseekerBuilder().withName("Alice Original").withHidden(hidden).build();
+        Jobseeker other = new JobseekerBuilder().withName("Charlie Other")
+                .withPhone("91234567").withEmail("other@example.com").withHidden(hidden).build();
+        Jobseeker opposite = new JobseekerBuilder().withName("Alice Opposite")
+                .withPhone("87654321").withEmail("opposite@example.com").withHidden(!hidden).build();
+        viewModel.addJobseeker(target);
+        viewModel.addJobseeker(other);
+        viewModel.addJobseeker(opposite);
+        viewModel.updateFilteredJobseekerList(person -> person.isHidden() == hidden
+                && (!filtered || new PersonContainsKeywordsPredicate(List.of("Alice")).test(person)));
+        EditJobseekerDescriptor descriptor = new EditJobseekerDescriptor();
+        Jobseeker edited = new JobseekerBuilder(target).withName(newName).build();
+        descriptor.setName(edited.getName());
 
-                    new EditJobseekerCommand(INDEX_FIRST_PERSON, descriptor).execute(viewModel);
+        new EditJobseekerCommand(INDEX_FIRST_PERSON, descriptor).execute(viewModel);
 
-                    List<Jobseeker> expected = filtered
-                            ? (newName.startsWith("Alice") ? List.of(edited) : List.of()) : List.of(edited, other);
-                    assertEquals(expected, viewModel.getFilteredJobseekerList());
-                    assertEquals(List.of(edited, other, opposite), viewModel.getAddressBook().getJobseekerList());
-                }
-            }
-        }
+        List<Jobseeker> expected = filtered
+                ? (newName.startsWith("Alice") ? List.of(edited) : List.of()) : List.of(edited, other);
+        assertEquals(expected, viewModel.getFilteredJobseekerList());
+        assertEquals(List.of(edited, other, opposite), viewModel.getAddressBook().getJobseekerList());
     }
 }
