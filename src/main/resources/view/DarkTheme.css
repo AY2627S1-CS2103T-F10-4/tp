@@ -120,9 +120,27 @@
     -fx-text-fill: white;
 }
 
+.command-hint {
+    -fx-text-fill: white;
+    -fx-opacity: 1;
+    -fx-font-size: 12px;
+}
+
+.command-suggestions-pane {
+    -fx-border-color: #788595;
+    -fx-border-width: 1;
+    -fx-background-color: #303438;
+}
+
 #suggestionList .list-cell {
     -fx-text-fill: white;
     -fx-padding: 0 8 0 8;
+}
+
+#suggestionList .list-cell:filled:selected {
+    -fx-background-color: #2d6a70;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
 }
 
 .cell_big_label {
