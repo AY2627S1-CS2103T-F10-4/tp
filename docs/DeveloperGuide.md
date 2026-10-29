@@ -408,7 +408,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 ### Use cases
 
 For all use cases below, the **System** is **TalentLink** and the **Actor** is the **recruiter**.
-A contact is a jobseeker or a client. Unhidden contacts are contacts that are not hidden.
+A contact is a jobseeker or a client.
 
 **Use case: UC01 - List contacts**
 
@@ -442,7 +442,7 @@ Use case ends.
 
     * 1a1. TalentLink informs the recruiter of the duplicate without adding a contact.
 
-      Use case resumes at step 1.
+      Use case ends.
 
 * 1b. Required details are missing, or supplied details are invalid.
 
