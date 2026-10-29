@@ -163,8 +163,9 @@ public class FindCommandTest {
                 expectedJobseekers.size(), expectedClients.size());
         PersonContainsKeywordsPredicate predicate = preparePredicate(userInput);
         FindCommand command = new FindCommand(predicate);
-        expectedModel.updateFilteredJobseekerList(predicate);
-        expectedModel.updateFilteredClientList(predicate);
+        // Mirrors FindCommand#execute, which never lists hidden jobseekers or clients.
+        expectedModel.updateFilteredJobseekerList(Model.PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS.and(predicate));
+        expectedModel.updateFilteredClientList(Model.PREDICATE_SHOW_UNHIDDEN_CLIENTS.and(predicate));
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         // ModelManager#equals does not compare filtered lists, so check both lists explicitly.
         assertEquals(expectedJobseekers, model.getFilteredJobseekerList());
