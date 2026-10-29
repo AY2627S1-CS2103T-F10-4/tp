@@ -5,6 +5,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_QUALIFICATION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
@@ -26,6 +27,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Qualification;
 import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 
@@ -39,20 +41,21 @@ public class EditJobseekerCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the jobseeker identified "
             + "by the index number used in the displayed jobseeker list. "
             + "Existing values will be overwritten by the input values.\n"
-            + "Parameters: INDEX (must be a positive integer) "
-            + "[" + PREFIX_NAME + "NAME] "
-            + "[" + PREFIX_PHONE + "PHONE] "
-            + "[" + PREFIX_EMAIL + "EMAIL] "
-            + "[" + PREFIX_ADDRESS + "ADDRESS] "
-            + "[" + PREFIX_REMARK + "REMARK] "
-            + "[" + PREFIX_TAG + "TAG]...\n"
+            + "Parameters: <index> (must be a positive integer) "
+            + "[" + PREFIX_NAME + "<name>] "
+            + "[" + PREFIX_PHONE + "<phone number>] "
+            + "[" + PREFIX_EMAIL + "<email>] "
+            + "[" + PREFIX_ADDRESS + "<address>] "
+            + "[" + PREFIX_REMARK + "<remarks>] "
+            + "[" + PREFIX_QUALIFICATION + "<highest qualification>] "
+            + "[" + PREFIX_TAG + "<tag>]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com";
 
     public static final String MESSAGE_EDIT_JOBSEEKER_SUCCESS = "Edited jobseeker: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_JOBSEEKER = "This jobseeker already exists in the address book.";
+    public static final String MESSAGE_DUPLICATE_JOBSEEKER = "This jobseeker already exists in TalentLink.";
 
     private final Index index;
     private final EditJobseekerDescriptor editJobseekerDescriptor;
@@ -88,7 +91,6 @@ public class EditJobseekerCommand extends Command {
         }
 
         model.setJobseeker(jobseekerToEdit, editedJobseeker);
-        model.updateFilteredJobseekerList(Model.PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS);
         return new CommandResult(String.format(MESSAGE_EDIT_JOBSEEKER_SUCCESS,
                 Messages.format(editedJobseeker)));
     }
@@ -107,9 +109,11 @@ public class EditJobseekerCommand extends Command {
         Address updatedAddress = editJobseekerDescriptor.getAddress().orElse(jobseekerToEdit.getAddress());
         Set<Tag> updatedTags = editJobseekerDescriptor.getTags().orElse(jobseekerToEdit.getTags());
         Remark updatedRemark = editJobseekerDescriptor.getRemark().orElse(jobseekerToEdit.getRemark());
+        Qualification updatedHighestQualification = editJobseekerDescriptor.getHighestQualification()
+                .orElse(jobseekerToEdit.getHighestQualification());
 
         return new Jobseeker(updatedName, updatedPhone, updatedEmail,
-                updatedAddress, updatedTags, updatedRemark,
+                updatedAddress, updatedTags, updatedRemark, updatedHighestQualification,
                 jobseekerToEdit.isHidden());
     }
 
@@ -137,7 +141,7 @@ public class EditJobseekerCommand extends Command {
     }
 
     /**
-     * Stores the details to edit the jobseeker with. Each non-empty field value will replace the
+     * Stores the details to edit the jobseeker with. Each supplied field value will replace the
      * corresponding field value of the jobseeker.
      */
     public static class EditJobseekerDescriptor {
@@ -146,6 +150,7 @@ public class EditJobseekerCommand extends Command {
         private Email email;
         private Address address;
         private Remark remark;
+        private Qualification highestQualification;
         private Set<Tag> tags;
 
         /** Creates an empty descriptor. */
@@ -161,6 +166,7 @@ public class EditJobseekerCommand extends Command {
             setEmail(toCopy.email);
             setAddress(toCopy.address);
             setRemark(toCopy.remark);
+            setHighestQualification(toCopy.highestQualification);
             setTags(toCopy.tags);
         }
 
@@ -168,7 +174,7 @@ public class EditJobseekerCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, tags, remark);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, tags, remark, highestQualification);
         }
 
         public void setName(Name name) {
@@ -211,6 +217,14 @@ public class EditJobseekerCommand extends Command {
             return Optional.ofNullable(remark);
         }
 
+        public void setHighestQualification(Qualification highestQualification) {
+            this.highestQualification = highestQualification;
+        }
+
+        public Optional<Qualification> getHighestQualification() {
+            return Optional.ofNullable(highestQualification);
+        }
+
         /**
          * Sets {@code tags} to this object's {@code tags}.
          * A defensive copy of {@code tags} is used internally.
@@ -244,6 +258,7 @@ public class EditJobseekerCommand extends Command {
                     && Objects.equals(email, otherEditJobseekerDescriptor.email)
                     && Objects.equals(address, otherEditJobseekerDescriptor.address)
                     && Objects.equals(remark, otherEditJobseekerDescriptor.remark)
+                    && Objects.equals(highestQualification, otherEditJobseekerDescriptor.highestQualification)
                     && Objects.equals(tags, otherEditJobseekerDescriptor.tags);
         }
 
@@ -256,6 +271,7 @@ public class EditJobseekerCommand extends Command {
                     .add("address", address)
                     .add("tags", tags)
                     .add("remark", remark)
+                    .add("highestQualification", highestQualification)
                     .toString();
         }
     }

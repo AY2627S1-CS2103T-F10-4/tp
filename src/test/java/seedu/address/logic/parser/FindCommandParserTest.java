@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.FindClientCommand;
+import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.FindHiddenClientCommand;
 import seedu.address.logic.commands.FindHiddenJobseekerCommand;
 import seedu.address.logic.commands.FindJobseekerCommand;
@@ -16,6 +17,7 @@ import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 public class FindCommandParserTest {
 
+    private FindCommandParser<FindCommand> allParser = FindCommandParser.forAll();
     private FindCommandParser<FindJobseekerCommand> jobseekerParser = FindCommandParser.forJobseekers();
     private FindCommandParser<FindClientCommand> clientParser = FindCommandParser.forClients();
     private FindCommandParser<FindHiddenJobseekerCommand> hiddenJobseekerParser =
@@ -91,6 +93,23 @@ public class FindCommandParserTest {
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindHiddenJobseekerCommand.MESSAGE_USAGE));
         assertParseFailure(hiddenClientParser, "     ",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindHiddenClientCommand.MESSAGE_USAGE));
+    }
+
+    /**
+     * Checks the parser for {@code find} reports its own usage, so this fails if {@code forAll()} is
+     * given the usage message of {@code findj} or {@code findc}.
+     */
+    @Test
+    public void parse_emptyArgForAll_throwsParseException() {
+        assertParseFailure(allParser, "     ",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_validArgs_returnsFindCommand() {
+        FindCommand expectedCommand =
+                new FindCommand(new PersonContainsKeywordsPredicate(List.of("Alice", "Adrian")));
+        assertParseSuccess(allParser, " \n Alice \n \t Adrian  \t", expectedCommand);
     }
 
     @Test

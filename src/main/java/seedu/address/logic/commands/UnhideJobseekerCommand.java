@@ -21,7 +21,7 @@ public class UnhideJobseekerCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Unhides the jobseeker identified by the index number used in the displayed jobseeker list.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
+            + "Parameters: <index> (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_UNHIDE_JOBSEEKER_SUCCESS = "Unhidden jobseeker: %1$s";
@@ -57,7 +57,7 @@ public class UnhideJobseekerCommand extends Command {
 
         Jobseeker unhiddenJobseeker = new Jobseeker(jobseekerToUnhide.getName(), jobseekerToUnhide.getPhone(),
                 jobseekerToUnhide.getEmail(), jobseekerToUnhide.getAddress(), jobseekerToUnhide.getTags(),
-                jobseekerToUnhide.getRemark(), false);
+                jobseekerToUnhide.getRemark(), jobseekerToUnhide.getHighestQualification(), false);
         // Preserve the current filter; restored jobseekers drop out of hidden lists and searches.
         model.setJobseeker(jobseekerToUnhide, unhiddenJobseeker);
         return new CommandResult(String.format(MESSAGE_UNHIDE_JOBSEEKER_SUCCESS,

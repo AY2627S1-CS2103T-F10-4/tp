@@ -22,7 +22,7 @@ public class HideClientCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Hides the client identified by the index number used in the displayed client list.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
+            + "Parameters: <index> (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_HIDE_CLIENT_SUCCESS = "Hidden client: %1$s";
@@ -58,7 +58,7 @@ public class HideClientCommand extends Command {
 
         Client hiddenClient = new Client(clientToHide.getName(), clientToHide.getPhone(),
                 clientToHide.getEmail(), clientToHide.getAddress(), clientToHide.getTags(),
-                clientToHide.getRemark(), true);
+                clientToHide.getRemark(), clientToHide.getAvailableJobs(), true);
         // The displayed list only shows unhidden clients, so the hidden client drops out of it by
         // itself; there is no need to update the filter here.
         model.setClient(clientToHide, hiddenClient);

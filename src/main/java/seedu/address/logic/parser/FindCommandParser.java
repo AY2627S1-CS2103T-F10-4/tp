@@ -5,8 +5,9 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import java.util.List;
 import java.util.function.Function;
 
-import seedu.address.logic.commands.Command;
+import seedu.address.logic.commands.AbstractFindCommand;
 import seedu.address.logic.commands.FindClientCommand;
+import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.FindHiddenClientCommand;
 import seedu.address.logic.commands.FindHiddenJobseekerCommand;
 import seedu.address.logic.commands.FindJobseekerCommand;
@@ -14,14 +15,14 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 /**
- * Parses the keywords of a findj/findc/findhj/findhc command and creates that command.
+ * Parses the keywords of a find/findj/findc/findhj/findhc command and creates that command.
  * These commands take the same arguments and differ only in the command they create, so this one
- * parser serves all of them. Use {@link #forJobseekers()}, {@link #forClients()},
+ * parser serves all of them. Use {@link #forAll()}, {@link #forJobseekers()}, {@link #forClients()},
  * {@link #forHiddenJobseekers()} or {@link #forHiddenClients()} to get one.
  *
  * @param <T> Type of find command this parser creates.
  */
-public class FindCommandParser<T extends Command> implements Parser<T> {
+public class FindCommandParser<T extends AbstractFindCommand> implements Parser<T> {
 
     /** Creates the command from the parsed keywords, e.g. {@code FindJobseekerCommand::new}. */
     private final Function<PersonContainsKeywordsPredicate, T> commandFactory;
@@ -33,6 +34,13 @@ public class FindCommandParser<T extends Command> implements Parser<T> {
             String messageUsage) {
         this.commandFactory = commandFactory;
         this.messageUsage = messageUsage;
+    }
+
+    /**
+     * Returns a parser that creates a {@code FindCommand}, which searches jobseekers and clients.
+     */
+    public static FindCommandParser<FindCommand> forAll() {
+        return new FindCommandParser<>(FindCommand::new, FindCommand.MESSAGE_USAGE);
     }
 
     /**

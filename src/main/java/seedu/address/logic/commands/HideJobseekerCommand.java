@@ -22,7 +22,7 @@ public class HideJobseekerCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Hides the jobseeker identified by the index number used in the displayed jobseeker list.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
+            + "Parameters: <index> (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_HIDE_JOBSEEKER_SUCCESS = "Hidden jobseeker: %1$s";
@@ -58,7 +58,7 @@ public class HideJobseekerCommand extends Command {
 
         Jobseeker hiddenJobseeker = new Jobseeker(jobseekerToHide.getName(), jobseekerToHide.getPhone(),
                 jobseekerToHide.getEmail(), jobseekerToHide.getAddress(), jobseekerToHide.getTags(),
-                jobseekerToHide.getRemark(), true);
+                jobseekerToHide.getRemark(), jobseekerToHide.getHighestQualification(), true);
         // The displayed list only shows unhidden jobseekers, so the hidden jobseeker drops out of it
         // by itself; there is no need to update the filter here.
         model.setJobseeker(jobseekerToHide, hiddenJobseeker);

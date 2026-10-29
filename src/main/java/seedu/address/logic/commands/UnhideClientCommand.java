@@ -21,7 +21,7 @@ public class UnhideClientCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Unhides the client identified by the index number used in the displayed client list.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
+            + "Parameters: <index> (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_UNHIDE_CLIENT_SUCCESS = "Unhidden client: %1$s";
@@ -57,7 +57,7 @@ public class UnhideClientCommand extends Command {
 
         Client unhiddenClient = new Client(clientToUnhide.getName(), clientToUnhide.getPhone(),
                 clientToUnhide.getEmail(), clientToUnhide.getAddress(), clientToUnhide.getTags(),
-                clientToUnhide.getRemark(), false);
+                clientToUnhide.getRemark(), clientToUnhide.getAvailableJobs(), false);
         // Preserve the current filter; restored clients drop out of hidden lists and searches.
         model.setClient(clientToUnhide, unhiddenClient);
         return new CommandResult(String.format(MESSAGE_UNHIDE_CLIENT_SUCCESS, Messages.format(unhiddenClient)));
