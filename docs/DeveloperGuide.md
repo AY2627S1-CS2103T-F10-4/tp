@@ -407,22 +407,23 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-(For all use cases below, the **System** is the `TalentLink` and the **Actor** is the `recruiter`, A contact refers to a job seeker or client, unless specified otherwise)
+For all use cases below, the **System** is **TalentLink** and the **Actor** is the **recruiter**.
+A contact is a jobseeker or a client. Unhidden contacts are contacts that are not hidden.
 
-**Use case: UC01 - List all contacts**
+**Use case: UC01 - List contacts**
 
 **MSS**
 
-1.  Recruiter requests to list all job seekers or all clients, specifying whether to show normal or hidden contacts.
-2.  TalentLink shows all contacts in the respective list with the requested hidden status.
+1. Recruiter requests to list unhidden jobseekers, unhidden clients, both unhidden contact types, or hidden contacts of one type.
+2. TalentLink displays all contacts in the requested scope and confirms that the list has been displayed.
 
-    Use case ends.
+Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 2a. No contacts exist in the requested scope.
 
-    * 2a1. TalentLink notifies the user the error.
+    * 2a1. TalentLink displays an empty list for that scope.
 
       Use case ends.
 
@@ -430,22 +431,22 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1. Recruiter requests to add a contact into the list, providing the contact's details and specifying whether it is a job seeker or a client.
-2. TalentLink adds the contact.
+1. Recruiter requests to add a contact, providing its details and specifying whether it is a jobseeker or a client.
+2. TalentLink adds the contact and confirms the addition.
 
-   Use case ends.
+Use case ends.
 
 **Extensions**
 
-* 1a. The phone number or email already exists in the list.
+* 1a. A contact of the selected type already exists with the same phone number and email address.
 
-    * 1a1. TalentLink notifies user the error.
+    * 1a1. TalentLink informs the recruiter of the duplicate without adding a contact.
 
       Use case resumes at step 1.
 
-* 1b. Required details are missing or invalid.
+* 1b. Required details are missing, or supplied details are invalid.
 
-    * 1b1. TalentLink notifies user the error.
+    * 1b1. TalentLink explains the input error without adding a contact.
 
       Use case resumes at step 1.
 
@@ -453,46 +454,47 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  Recruiter requests to <u>list all contacts (UC01)</u>.
-2.  TalentLink shows a list of contacts.
-3.  Recruiter requests to delete a specific contact in the clients or job seekers' list.
-4.  TalentLink deletes the contact.
+1. Recruiter requests to view the relevant jobseekers or clients, specifying any search criteria or hidden status.
+2. TalentLink displays the contacts in the requested scope.
+3. Recruiter identifies a displayed contact and requests its deletion.
+4. TalentLink deletes the contact and confirms the deletion.
 
-    Use case ends.
-
-**Extensions**
-
-* 1a. The list is empty.
-
-  Use case ends.
-
-* 3a. The contact requested is not within the list of contacts.
-
-    * 3a1. TalentLink notifies the user the error.
-
-      Use case resumes at step 2.
-
-**Use case: UC04 - Search a contact**
-
-**MSS**
-
-1.  Recruiter requests to search a contact in the clients or job seekers' list, specifying whether to search normal or hidden contacts.
-2.  Recruiter enters the information.
-3.  TalentLink returns all contacts that contain the information entered.
-
-    Use case ends.
+Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 2a. No contacts are displayed.
 
-    * 2a1. TalentLink notifies the user the error.
+    * 2a1. TalentLink displays an empty result; there is no contact to select.
 
       Use case ends.
 
-* 3a. There is no contact containing the information.
+* 3a. The contact selection is missing, invalid, or outside the displayed results.
 
-    * 3a1. TalentLink notifies the user the empty result.
+    * 3a1. TalentLink informs the recruiter of the invalid selection without changing any contact.
+
+      Use case resumes at step 3.
+
+**Use case: UC04 - Search for contacts**
+
+**MSS**
+
+1. Recruiter requests a search, providing keywords and choosing unhidden jobseekers, unhidden clients, both unhidden contact types, or hidden contacts of one type.
+2. TalentLink displays contacts in that scope whose name, phone number, email, tags, job openings (for clients), or highest qualification (for jobseekers) contain any supplied keyword, ignoring case, and reports the number of matches.
+
+Use case ends.
+
+**Extensions**
+
+* 1a. No search keywords are provided.
+
+    * 1a1. TalentLink informs the recruiter that keywords are required.
+
+      Use case resumes at step 1.
+
+* 2a. No contacts match, including when the requested scope contains no contacts.
+
+    * 2a1. TalentLink displays an empty result and reports zero matches.
 
       Use case ends.
 
@@ -500,30 +502,42 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  Recruiter requests to <u>list all contacts (UC01)</u>.
-2.  TalentLink displays the matching jobseekers or clients.
-3.  Recruiter specifies a contact using its displayed index and provides the details to update.
-4.  TalentLink updates the contact, preserving unspecified details and its hidden status.
+1. Recruiter requests to view the relevant jobseekers or clients, specifying any search criteria or hidden status.
+2. TalentLink displays the contacts in the requested scope.
+3. Recruiter identifies a displayed contact and provides the details to update.
+4. TalentLink updates the contact, preserving unspecified details and hidden status, and confirms the update. The current filter remains active; the contact remains visible only if it still matches.
 
-   Use case ends.
+Use case ends.
 
 **Extensions**
 
-* 1a. The list is empty.
+* 2a. No contacts are displayed.
 
-    * 1a1. TalentLink notifies the user the error.
-
-      Use case ends.
-
-* 3a. The index is missing, invalid, or outside the displayed list.
-
-    * 3a1. TalentLink notifies the user the error.
+    * 2a1. TalentLink displays an empty result; there is no contact to select.
 
       Use case ends.
+
+* 3a. The contact selection is missing, invalid, or outside the displayed results.
+
+    * 3a1. TalentLink informs the recruiter of the invalid selection without changing any contact.
+
+      Use case resumes at step 3.
 
 * 3b. No fields to update are provided.
 
-    * 3b1. TalentLink requests at least one field to update.
+    * 3b1. TalentLink informs the recruiter that at least one field is required without changing the contact.
+
+      Use case resumes at step 3.
+
+* 3c. Supplied details are invalid.
+
+    * 3c1. TalentLink explains the input error without changing the contact.
+
+      Use case resumes at step 3.
+
+* 3d. The updated phone number and email address would both match another contact of the same type.
+
+    * 3d1. TalentLink informs the recruiter of the duplicate without changing the contact.
 
       Use case resumes at step 3.
 
@@ -531,24 +545,24 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  Recruiter requests to <u>list all contacts (UC01)</u>.
-2.  TalentLink displays the matching jobseekers or clients.
-3.  Recruiter requests to hide a contact using its displayed index.
-4.  TalentLink hides the contact, preserving all its details.
+1. Recruiter requests to view the relevant jobseekers or clients, specifying any search criteria or hidden status.
+2. TalentLink displays the contacts in the requested scope.
+3. Recruiter identifies a displayed contact and requests to hide it.
+4. TalentLink hides the contact, preserves its other details, and confirms the change. The contact disappears from the current view if it no longer matches its filter.
 
-   Use case ends.
+Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 2a. No contacts are displayed.
 
-    * 2a1. TalentLink notifies the user the error.
+    * 2a1. TalentLink displays an empty result; there is no contact to select.
 
       Use case ends.
 
-* 3a. The index is missing, invalid, or outside the displayed list.
+* 3a. The contact selection is missing, invalid, or outside the displayed results.
 
-    * 3a1. TalentLink notifies the user the error.
+    * 3a1. TalentLink informs the recruiter of the invalid selection without changing any contact.
 
       Use case resumes at step 3.
 
@@ -562,28 +576,28 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  Recruiter requests to <u>list all contacts (UC01)</u>.
-2.  TalentLink displays the matching jobseekers or clients.
-3.  Recruiter requests to unhide a contact using its displayed index.
-4.  TalentLink unhides the contact, preserving all its details.
+1. Recruiter requests to view the relevant jobseekers or clients, specifying any search criteria or hidden status.
+2. TalentLink displays the contacts in the requested scope.
+3. Recruiter identifies a displayed contact and requests to unhide it.
+4. TalentLink unhides the contact, preserves its other details, and confirms the change. The contact disappears from the current view if it no longer matches its filter.
 
 Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 2a. No contacts are displayed.
 
-    * 2a1. TalentLink notifies the user the error.
+    * 2a1. TalentLink displays an empty result; there is no contact to select.
 
       Use case ends.
 
-* 3a. The index is missing, invalid, or outside the displayed list.
+* 3a. The contact selection is missing, invalid, or outside the displayed results.
 
-    * 3a1. TalentLink notifies the user the error.
+    * 3a1. TalentLink informs the recruiter of the invalid selection without changing any contact.
 
       Use case resumes at step 3.
 
-* 3b. Recruiter targets an already-unhidden contact in a normal list..
+* 3b. The selected contact is already unhidden.
 
     * 3b1. TalentLink informs the recruiter that the contact is already unhidden and makes no changes.
 
@@ -593,70 +607,82 @@ Use case ends.
 
 **MSS**
 
-1.  Recruiter requests to <u>list all contacts (UC01)</u>.
-2.  TalentLink displays the matching jobseekers or clients.
-3.  Recruiter specifies a contact using its displayed index and provides the tags to add.
-4.  TalentLink adds the tags while preserving the contact’s existing tags and other details.
+1. Recruiter requests to view the relevant jobseekers or clients, specifying any search criteria or hidden status.
+2. TalentLink displays the contacts in the requested scope.
+3. Recruiter identifies a displayed contact and provides the tags to add.
+4. TalentLink adds tags that are not already present, preserves existing tags and other details, and confirms the update.
 
 Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 2a. No contacts are displayed.
 
-    * 2a1. TalentLink notifies the user the error.
+    * 2a1. TalentLink displays an empty result; there is no contact to select.
 
       Use case ends.
 
-* 3a. The index is missing, invalid, or outside the displayed list.
+* 3a. The contact selection is missing, invalid, or outside the displayed results.
 
-    * 3a1. TalentLink notifies the user the error.
+    * 3a1. TalentLink informs the recruiter of the invalid selection without changing any contact.
 
       Use case resumes at step 3.
 
 * 3b. No tags are provided, or a supplied tag is invalid.
 
-    * 3b1. TalentLink informs the recruiter about the error without changing any contact.
+    * 3b1. TalentLink explains the input error without changing the contact.
 
       Use case resumes at step 3.
+
+* 3c. All supplied tags already belong to the contact.
+
+    * 3c1. TalentLink informs the recruiter that the tags already exist and makes no changes.
+
+      Use case ends.
 
 **Use case: UC09 - Remove tags from a contact**
 
 **MSS**
 
-1.  Recruiter requests to <u>list all contacts (UC01)</u>.
-2.  TalentLink displays the matching jobseekers or clients.
-3.  Recruiter specifies a contact using its displayed index and provides the tags to remove.
-4.  TalentLink removes the specified tags while preserving the contact’s existing tags and other details.
+1. Recruiter requests to view the relevant jobseekers or clients, specifying any search criteria or hidden status.
+2. TalentLink displays the contacts in the requested scope.
+3. Recruiter identifies a displayed contact and provides the tags to remove.
+4. TalentLink removes the supplied tags that belong to the contact, preserves all other tags and contact details, and confirms the update.
 
 Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 2a. No contacts are displayed.
 
-    * 2a1. TalentLink notifies the user the error.
+    * 2a1. TalentLink displays an empty result; there is no contact to select.
 
       Use case ends.
 
-* 3a. The index is missing, invalid, or outside the displayed list.
+* 3a. The contact selection is missing, invalid, or outside the displayed results.
 
-    * 3a1. TalentLink notifies the user the error.
+    * 3a1. TalentLink informs the recruiter of the invalid selection without changing any contact.
 
       Use case resumes at step 3.
 
 * 3b. No tags are provided, or a supplied tag is invalid.
 
-    * 3b1. TalentLink informs the recruiter about the error without changing any contact.
+    * 3b1. TalentLink explains the input error without changing the contact.
 
       Use case resumes at step 3.
+
+* 3c. None of the supplied tags belong to the contact.
+
+    * 3c1. TalentLink informs the recruiter that none of the tags were found and makes no changes.
+
+      Use case ends.
 
 **Use case: UC10 - Clear contacts**
 
 **MSS**
 
-1.  Recruiter requests to clear all jobseekers or all clients.
-2.  TalentLink removes all contacts of the selected type, including hidden contacts and contacts excluded by the current search filter. Contacts of the other type remain unchanged.
+1. Recruiter requests to clear all jobseekers or all clients.
+2. TalentLink removes all contacts of the selected type, including hidden contacts and those excluded by the current filter, and confirms the operation. Contacts of the other type remain unchanged.
 
 Use case ends.
 
@@ -664,11 +690,40 @@ Use case ends.
 
 * 2a. No contacts of the selected type exist.
 
-    * 2a1. TalentLink leaves the data unchanged.
+    * 2a1. TalentLink leaves the data unchanged and confirms the clear operation.
 
       Use case ends.
 
-*{More to be added}*
+**Use case: UC11 - Copy contact details**
+
+**MSS**
+
+1. Recruiter requests to view the relevant jobseekers or clients.
+2. TalentLink displays the contacts in the requested scope.
+3. Recruiter requests to copy the details of all displayed contacts of one type.
+4. TalentLink copies their details to the clipboard in the displayed order and confirms the copy.
+
+Use case ends.
+
+**Extensions**
+
+* 3a. Recruiter requests to copy one specific displayed contact.
+
+    * 3a1. TalentLink copies that contact's details to the clipboard and confirms the copy.
+
+      Use case ends.
+
+* 3b. Recruiter requests to copy one contact, but the selection is invalid or outside the displayed results.
+
+    * 3b1. TalentLink informs the recruiter of the invalid selection without changing the clipboard.
+
+      Use case resumes at step 3.
+
+* 3c. Recruiter requests to copy all displayed contacts, but none are displayed.
+
+    * 3c1. TalentLink clears the clipboard and reports that zero contacts were copied.
+
+      Use case ends.
 
 ### Non-Functional Requirements
 
