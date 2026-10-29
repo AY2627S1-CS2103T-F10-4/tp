@@ -56,6 +56,26 @@ public class AddJobseekerCommandParserTest {
     private final AddJobseekerCommandParser parser = new AddJobseekerCommandParser();
 
     @Test
+    public void parse_spaceSeparatedTags_success() {
+        Jobseeker expected = new JobseekerBuilder(AMY).withRemark(VALID_REMARK_AMY)
+                .withTags("friend", "colleague").build();
+        for (String tags : new String[]{" t/friend colleague", " t/ friend   colleague ",
+            " t/friend\tcolleague", " t/friend colleague friend", " t/friend t/colleague",
+            " t/friend colleague t/friend"}) {
+            assertParseSuccess(parser, REQUIRED_FIELDS + tags + REMARK_DESC_AMY, new AddJobseekerCommand(expected));
+            assertParseSuccess(parser, tags + REQUIRED_FIELDS + REMARK_DESC_AMY, new AddJobseekerCommand(expected));
+        }
+    }
+
+    @Test
+    public void parse_emptyOrInvalidTagInGroup_failure() {
+        for (String tags : new String[]{" t/", " t/   ", " t/friend invalid!", " t/invalid! friend",
+            " t/friend t/", " t/ t/friend"}) {
+            assertParseFailure(parser, REQUIRED_FIELDS + tags, Tag.MESSAGE_CONSTRAINTS);
+        }
+    }
+
+    @Test
     public void parse_withRemarkAndTags_success() {
         Jobseeker expectedJobseeker = new JobseekerBuilder(AMY).withRemark(VALID_REMARK_AMY)
                 .withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND).build();

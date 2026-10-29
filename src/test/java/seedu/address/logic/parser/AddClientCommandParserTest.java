@@ -52,6 +52,26 @@ public class AddClientCommandParserTest {
     private final AddClientCommandParser parser = new AddClientCommandParser();
 
     @Test
+    public void parse_spaceSeparatedTags_success() {
+        Client expected = new ClientBuilder(AMY).withRemark(VALID_REMARK_AMY)
+                .withTags("friend", "colleague").build();
+        for (String tags : new String[]{" t/friend colleague", " t/ friend   colleague ",
+            " t/friend\tcolleague", " t/friend colleague friend", " t/friend t/colleague",
+            " t/friend colleague t/friend"}) {
+            assertParseSuccess(parser, REQUIRED_FIELDS + tags + REMARK_DESC_AMY, new AddClientCommand(expected));
+            assertParseSuccess(parser, tags + REQUIRED_FIELDS + REMARK_DESC_AMY, new AddClientCommand(expected));
+        }
+    }
+
+    @Test
+    public void parse_emptyOrInvalidTagInGroup_failure() {
+        for (String tags : new String[]{" t/", " t/   ", " t/friend invalid!", " t/invalid! friend",
+            " t/friend t/", " t/ t/friend"}) {
+            assertParseFailure(parser, REQUIRED_FIELDS + tags, Tag.MESSAGE_CONSTRAINTS);
+        }
+    }
+
+    @Test
     public void parse_withRemarkAndTags_success() {
         Client expected = new ClientBuilder(AMY).withRemark(VALID_REMARK_AMY)
                 .withTags(VALID_TAG_EMPLOYER, VALID_TAG_PARTNER).build();

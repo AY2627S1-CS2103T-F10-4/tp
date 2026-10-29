@@ -58,7 +58,7 @@ public class HideJobseekerCommand extends Command {
 
         Jobseeker hiddenJobseeker = new Jobseeker(jobseekerToHide.getName(), jobseekerToHide.getPhone(),
                 jobseekerToHide.getEmail(), jobseekerToHide.getAddress(), jobseekerToHide.getTags(),
-                jobseekerToHide.getRemark(), true);
+                jobseekerToHide.getRemark(), jobseekerToHide.getHighestQualification(), true);
         // The displayed list only shows unhidden jobseekers, so the hidden jobseeker drops out of it
         // by itself; there is no need to update the filter here.
         model.setJobseeker(jobseekerToHide, hiddenJobseeker);

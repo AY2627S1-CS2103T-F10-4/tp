@@ -175,6 +175,37 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseTagsForAdd_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseTagsForAdd(null));
+    }
+
+    @Test
+    public void parseTagsForAdd_emptyCollection_returnsEmptySet() throws Exception {
+        assertTrue(ParserUtil.parseTagsForAdd(List.of()).isEmpty());
+    }
+
+    @Test
+    public void parseTagsForAdd_multipleValuesWithWhitespaceAndDuplicates_returnsUniqueTags() throws Exception {
+        assertEquals(Set.of(new Tag("friend"), new Tag("colleague"), new Tag("Friend")),
+                ParserUtil.parseTagsForAdd(List.of(" friend  colleague\tfriend ", "\nFriend\r\ncolleague")));
+    }
+
+    @Test
+    public void parseTagsForAdd_emptyOrInvalidValue_throwsParseException() {
+        for (String value : List.of("", " \t ", "friend invalid!", "invalid! friend")) {
+            assertThrows(ParseException.class, Tag.MESSAGE_CONSTRAINTS, () ->
+                    ParserUtil.parseTagsForAdd(List.of(value)));
+        }
+        assertThrows(ParseException.class, Tag.MESSAGE_CONSTRAINTS, () ->
+                ParserUtil.parseTagsForAdd(List.of("friend", "")));
+    }
+
+    @Test
+    public void parseTags_spaceSeparatedValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseTags(List.of("friend colleague")));
+    }
+
+    @Test
     public void parseTags_collectionWithInvalidTags_throwsParseException() {
         assertThrows(ParseException.class, () -> ParserUtil.parseTags(List.of(VALID_TAG_1, INVALID_TAG)));
     }

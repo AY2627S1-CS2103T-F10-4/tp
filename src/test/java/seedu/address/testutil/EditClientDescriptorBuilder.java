@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import seedu.address.logic.commands.EditClientCommand.EditClientDescriptor;
+import seedu.address.model.job.Job;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Client;
 import seedu.address.model.person.Email;
@@ -38,6 +39,7 @@ public class EditClientDescriptorBuilder {
         descriptor.setEmail(client.getEmail());
         descriptor.setAddress(client.getAddress());
         descriptor.setRemark(client.getRemark());
+        descriptor.setAvailableJobs(client.getAvailableJobs());
         descriptor.setTags(client.getTags());
     }
 
@@ -80,6 +82,14 @@ public class EditClientDescriptorBuilder {
     public EditClientDescriptorBuilder withTags(String... tags) {
         Set<Tag> tagSet = Stream.of(tags).map(Tag::new).collect(Collectors.toSet());
         descriptor.setTags(tagSet);
+        return this;
+    }
+
+    /**
+     * Sets the optional available jobs.
+     */
+    public EditClientDescriptorBuilder withAvailableJobs(String... jobs) {
+        descriptor.setAvailableJobs(Stream.of(jobs).map(Job::new).collect(Collectors.toSet()));
         return this;
     }
 

@@ -90,7 +90,8 @@ public class EditJobseekerDescriptorTest {
                 + editJobseekerDescriptor.getEmail().orElse(null) + ", address="
                 + editJobseekerDescriptor.getAddress().orElse(null) + ", tags="
                 + editJobseekerDescriptor.getTags().orElse(null) + ", remark="
-                + editJobseekerDescriptor.getRemark().orElse(null) + "}";
+                + editJobseekerDescriptor.getRemark().orElse(null) + ", highestQualification="
+                + editJobseekerDescriptor.getHighestQualification().orElse(null) + "}";
         assertEquals(expected, editJobseekerDescriptor.toString());
     }
 }

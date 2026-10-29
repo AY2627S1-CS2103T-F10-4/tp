@@ -57,7 +57,7 @@ public class UnhideClientCommand extends Command {
 
         Client unhiddenClient = new Client(clientToUnhide.getName(), clientToUnhide.getPhone(),
                 clientToUnhide.getEmail(), clientToUnhide.getAddress(), clientToUnhide.getTags(),
-                clientToUnhide.getRemark(), false);
+                clientToUnhide.getRemark(), clientToUnhide.getAvailableJobs(), false);
         // Preserve the current filter; restored clients drop out of hidden lists and searches.
         model.setClient(clientToUnhide, unhiddenClient);
         return new CommandResult(String.format(MESSAGE_UNHIDE_CLIENT_SUCCESS, Messages.format(unhiddenClient)));

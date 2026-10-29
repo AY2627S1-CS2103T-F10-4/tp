@@ -3,6 +3,7 @@ package seedu.address.testutil;
 import java.util.HashSet;
 import java.util.Set;
 
+import seedu.address.model.job.Job;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Client;
 import seedu.address.model.person.Email;
@@ -27,6 +28,7 @@ public class ClientBuilder {
     private Email email;
     private Address address;
     private Remark remark;
+    private Set<Job> availableJobs;
     private Set<Tag> tags;
     private boolean isHidden;
 
@@ -39,6 +41,7 @@ public class ClientBuilder {
         email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
         remark = new Remark("");
+        availableJobs = new HashSet<>();
         tags = new HashSet<>();
         isHidden = false;
     }
@@ -52,6 +55,7 @@ public class ClientBuilder {
         email = clientToCopy.getEmail();
         address = clientToCopy.getAddress();
         remark = clientToCopy.getRemark();
+        availableJobs = clientToCopy.getAvailableJobs();
         tags = new HashSet<>(clientToCopy.getTags());
         isHidden = clientToCopy.isHidden();
     }
@@ -112,7 +116,18 @@ public class ClientBuilder {
         return this;
     }
 
+    /**
+     * Sets the optional available jobs.
+     */
+    public ClientBuilder withAvailableJobs(String... jobs) {
+        availableJobs = new HashSet<>();
+        for (String job : jobs) {
+            availableJobs.add(new Job(job));
+        }
+        return this;
+    }
+
     public Client build() {
-        return new Client(name, phone, email, address, tags, remark, isHidden);
+        return new Client(name, phone, email, address, tags, remark, availableJobs, isHidden);
     }
 }
