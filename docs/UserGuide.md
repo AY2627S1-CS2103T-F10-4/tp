@@ -805,7 +805,10 @@ Press `Enter` again to run the command, or `Escape` to dismiss suggestions.
 
 ### Editing the data file
 
-TalentLink data is saved automatically as a JSON file `[JAR file location]/data/addressbook.json`.
+TalentLink data is saved automatically as a JSON file `data/addressbook.json`, relative to the terminal's
+current working directory when the application is launched. Following the Quick Start instructions makes
+this directory the same as the folder containing the JAR file. Launching the JAR from a different working
+directory uses a different data-file location.
 Advanced users are welcome to update data directly by editing that data file.
 
 <div markdown="span" class="alert alert-warning">
