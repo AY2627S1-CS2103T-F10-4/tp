@@ -9,6 +9,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.model.Model;
 import seedu.address.model.tag.Tag;
 
 /** Tests the equality contract shared by the four tag and untag commands. */
@@ -35,4 +36,27 @@ public class AbstractTagCommandTest {
             }
         }
     }
+
+    @Test
+    public void equals_sameClassAndArgumentsWithDifferentOperations_returnsFalse() {
+        AbstractTagCommand addCommand = new TestTagCommand(AbstractTagCommand.TagOperation.ADD);
+        AbstractTagCommand removeCommand = new TestTagCommand(AbstractTagCommand.TagOperation.REMOVE);
+
+        assertNotEquals(addCommand, removeCommand);
+        assertNotEquals(removeCommand, addCommand);
+        assertEquals(addCommand, new TestTagCommand(AbstractTagCommand.TagOperation.ADD));
+    }
+
+    /** Allows both operations on the same concrete type to exercise the base equality contract. */
+    private static class TestTagCommand extends AbstractTagCommand {
+        TestTagCommand(TagOperation operation) {
+            super(Index.fromOneBased(1), Set.of(new Tag("java")), operation);
+        }
+
+        @Override
+        public CommandResult execute(Model model) {
+            throw new UnsupportedOperationException("This command is only used to test equality.");
+        }
+    }
+
 }
