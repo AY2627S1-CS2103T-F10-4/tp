@@ -752,9 +752,9 @@ Removes specified tags from a client while preserving other tags.
 
 #### Copying displayed jobseekers: `cpj`
 
-Copies the details of all currently displayed jobseekers to the system clipboard.
+Copies the details of displayed jobseekers to the system clipboard.
 
-**Format:**{: #cpj-format} `cpj`
+**Format:**{: #cpj-format} `cpj [index]`
 
 **Notes:**
 {: #cpj-notes}
@@ -763,28 +763,31 @@ Copies the details of all currently displayed jobseekers to the system clipboard
 * Each jobseeker is copied on a separate line.
 * The command only copies whichever jobseekers are currently displayed.
   If no jobseekers are displayed, the clipboard is cleared.
+* Without `index`, all displayed jobseekers are copied. With `index`, only the specified displayed jobseeker is copied.
+* The index is one-based and refers to the current displayed list.
 
 **Examples:**
 {: #cpj-examples}
 
-* `findj java` followed by `cpj` copies the displayed search results.
+* `findj java` followed by `cpj 2` copies the second displayed jobseeker.
 
 #### Copying displayed clients: `cpc`
 
-Copies the details of all currently displayed clients to the system clipboard.
+Copies the details of displayed clients to the system clipboard.
 
-**Format:**{: #cpc-format} `cpc`
+**Format:**{: #cpc-format} `cpc [index]`
 
 **Notes:**
 {: #cpc-notes}
 
 The notes are the same as `cpj`.
 See [Copying displayed jobseekers: `cpj` - Notes](#cpj-notes) for notes.
+The same indexed-copy behavior as `cpj` applies to clients.
 
 **Examples:**
 {: #cpc-examples}
 
-* `findc technology` followed by `cpc` copies the displayed search results.
+* `findc technology` followed by `cpc 1` copies the first displayed client.
 
 ### Saving the data
 
@@ -872,5 +875,5 @@ _Details coming soon ..._
 | [Add client tags](#adding-client-tags-tagc)                    | `tagc <index> <tag>...`                                                                                 |
 | [Remove jobseeker tags](#removing-jobseeker-tags-untagj)       | `untagj <index> <tag>...`                                                                               |
 | [Remove client tags](#removing-client-tags-untagc)             | `untagc <index> <tag>...`                                                                               |
-| [Copy displayed jobseekers](#copying-displayed-jobseekers-cpj) | `cpj`                                                                                                   |
-| [Copy displayed clients](#copying-displayed-clients-cpc)       | `cpc`                                                                                                   |
+| [Copy displayed jobseekers](#copying-displayed-jobseekers-cpj) | `cpj [index]`                                                                                            |
+| [Copy displayed clients](#copying-displayed-clients-cpc)       | `cpc [index]`                                                                                            |
