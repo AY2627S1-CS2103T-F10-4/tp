@@ -1,6 +1,6 @@
 ---
 layout: page
-title: AddressBook Level 3
+title: TalentLink
 ---
 
 [![CI Status](https://github.com/AY2627S1-CS2103T-F10-4/tp/workflows/Java%20CI/badge.svg)](https://github.com/AY2627S1-CS2103T-F10-4/tp/actions)
@@ -8,10 +8,10 @@ title: AddressBook Level 3
 
 ![Ui](images/Ui.png)
 
-**AddressBook is a desktop application for managing your contact details.** While it has a GUI, most of the user interactions happen using a CLI (Command Line Interface).
+**TalentLink is a desktop application that helps HR recruiters keep track of their jobseekers and clients, and maintain notes on each of them.** Every feature is used by typing a command into the CLI (Command Line Interface); the GUI displays the results.
 
-* If you are interested in using AddressBook, head over to the [_Quick Start_ section of the **User Guide**](UserGuide.html#quick-start).
-* If you are interested in developing AddressBook, the [**Developer Guide**](DeveloperGuide.html) is a good place to start.
+* If you are interested in using TalentLink, head over to the [_Quick Start_ section of the **User Guide**](UserGuide.html#quick-start).
+* If you are interested in developing TalentLink, the [**Developer Guide**](DeveloperGuide.html) is a good place to start.
 
 
 **Acknowledgements**
