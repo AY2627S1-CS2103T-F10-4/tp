@@ -40,6 +40,32 @@ public class EditJobseekerCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
+    public void execute_filteredList_preservesFilterAndReevaluatesEditedContact() throws Exception {
+        for (boolean isHidden : List.of(false, true)) {
+            for (String updatedName : List.of("Matching Updated", "Other Name")) {
+                Model filteredModel = new ModelManager();
+                Jobseeker other = new JobseekerBuilder().withName("Unrelated").build();
+                Jobseeker target = new JobseekerBuilder().withName("Matching Original")
+                        .withPhone("91234567").withEmail("target@example.com").withHidden(isHidden).build();
+                filteredModel.addJobseeker(other);
+                filteredModel.addJobseeker(target);
+                filteredModel.updateFilteredJobseekerList(person -> person.isHidden() == isHidden
+                        && person.getName().fullName.startsWith("Matching"));
+                Jobseeker edited = new JobseekerBuilder(target).withName(updatedName).build();
+                EditJobseekerDescriptor descriptor = new EditJobseekerDescriptor();
+                descriptor.setName(edited.getName());
+
+                new EditJobseekerCommand(INDEX_FIRST_PERSON, descriptor).execute(filteredModel);
+
+                assertEquals(updatedName.startsWith("Matching") ? List.of(edited) : List.of(),
+                        filteredModel.getFilteredJobseekerList());
+                assertEquals(List.of(other, edited), filteredModel.getAddressBook().getJobseekerList());
+            }
+        }
+    }
+
+
+    @Test
     public void execute_remarkEdit_updatesOrClearsRemarkAndPreservesHiddenStatus() throws Exception {
         for (String remark : List.of("Available immediately", "")) {
             Model remarkModel = new ModelManager();
@@ -54,7 +80,8 @@ public class EditJobseekerCommandTest {
 
             assertEquals(List.of(new JobseekerBuilder(original).withRemark(remark).build()),
                     remarkModel.getAddressBook().getJobseekerList());
-            assertTrue(remarkModel.getFilteredJobseekerList().isEmpty());
+            assertEquals(remarkModel.getAddressBook().getJobseekerList(),
+                    remarkModel.getFilteredJobseekerList());
         }
     }
 
@@ -81,6 +108,7 @@ public class EditJobseekerCommandTest {
                 Messages.format(editedJobseeker));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        showJobseekerAtIndex(expectedModel, INDEX_FIRST_PERSON);
         expectedModel.setJobseeker(model.getFilteredJobseekerList().get(0), editedJobseeker);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -239,7 +267,7 @@ public class EditJobseekerCommandTest {
     }
 
     /**
-     * Editing resets the view, and the reset view must still leave out hidden jobseekers.
+     * Editing preserves the default view, which leaves out hidden jobseekers.
      */
     @Test
     public void execute_otherJobseekerHidden_hiddenJobseekerStaysOutOfView() throws Exception {

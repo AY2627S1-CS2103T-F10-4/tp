@@ -176,7 +176,7 @@ Unspecified fields remain unchanged. For remarks, an omitted `r/` leaves the des
 1. `EditJobseekerCommand` reads `Model.getFilteredJobseekerList()` and rejects an index outside the displayed list with a `CommandException`.
 2. `createEditedJobseeker()` combines supplied values with the original jobseeker's unchanged fields and preserves `isHidden()`.
 3. If the edited jobseeker has a different identity according to `isSamePerson()`, the command calls `Model.hasJobseeker()` and rejects a duplicate before modifying the model.
-4. The command calls `Model.setJobseeker()` and resets the filter using `Model.PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS`. Editing a hidden jobseeker therefore keeps that jobseeker hidden and returns the view to the normal list.
+4. The command calls `Model.setJobseeker()` without changing the current filter. The filtered list reevaluates the replacement: it remains visible only if it still matches the active predicate. Hidden status is preserved. `editc` follows the same behavior using `Model.setClient()`.
 5. After the command returns, `LogicManager` saves the address book through `Storage`. Parsing or execution failures skip saving; a storage failure is reported as a `CommandException` after the model has been updated.
 
 ### Tag/untag feature

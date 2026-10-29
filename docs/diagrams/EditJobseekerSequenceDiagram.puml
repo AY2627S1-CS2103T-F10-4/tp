@@ -37,11 +37,10 @@ note over Command, Model
 end note
 Command -> Model : setJobseeker(target, edited)
 Model --> Command
-Command -> Model : updateFilteredJobseekerList(...)
-Model --> Command
 note over Command, Model
-  Show unhidden jobseekers.
-  An edited hidden jobseeker stays hidden.
+  Preserve the current filter and hidden status.
+  The edited jobseeker remains visible only
+  if it still matches the filter.
 end note
 Command --> Logic : success result
 deactivate Command

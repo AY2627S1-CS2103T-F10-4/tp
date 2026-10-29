@@ -24,6 +24,31 @@ import seedu.address.testutil.JobseekerBuilder;
 
 public class EditClientCommandTest {
     @Test
+    public void execute_filteredList_preservesFilterAndReevaluatesEditedContact() throws Exception {
+        for (boolean isHidden : List.of(false, true)) {
+            for (String updatedName : List.of("Matching Updated", "Other Name")) {
+                Model filteredModel = new ModelManager();
+                Client other = new ClientBuilder().withName("Unrelated").build();
+                Client target = new ClientBuilder().withName("Matching Original")
+                        .withPhone("91234567").withEmail("target@example.com").withHidden(isHidden).build();
+                filteredModel.addClient(other);
+                filteredModel.addClient(target);
+                filteredModel.updateFilteredClientList(person -> person.isHidden() == isHidden
+                        && person.getName().fullName.startsWith("Matching"));
+                Client edited = new ClientBuilder(target).withName(updatedName).build();
+                EditClientDescriptor descriptor = new EditClientDescriptor();
+                descriptor.setName(edited.getName());
+
+                new EditClientCommand(INDEX_FIRST_PERSON, descriptor).execute(filteredModel);
+
+                assertEquals(updatedName.startsWith("Matching") ? List.of(edited) : List.of(),
+                        filteredModel.getFilteredClientList());
+                assertEquals(List.of(other, edited), filteredModel.getAddressBook().getClientList());
+            }
+        }
+    }
+
+    @Test
     public void constructor_nullArguments_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> new EditClientCommand(null, new EditClientDescriptor()));
         assertThrows(NullPointerException.class, () -> new EditClientCommand(INDEX_FIRST_PERSON, null));
@@ -130,7 +155,7 @@ public class EditClientCommandTest {
                 Messages.format(expected))), command.execute(model));
         assertEquals(List.of(first, expected), model.getAddressBook().getClientList());
         assertEquals(List.of(jobseeker), model.getAddressBook().getJobseekerList());
-        assertEquals(List.of(first), model.getFilteredClientList());
+        assertEquals(List.of(), model.getFilteredClientList());
     }
 
     @Test

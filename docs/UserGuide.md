@@ -235,7 +235,7 @@ or `<tag>` must be provided.
 
 * To clear remarks, specify `r/` without any values.
 * Supplied tags replace all existing tags. To clear all tags, specify `t/` without any values.
-* Editing preserves hidden status and returns the view to the normal jobseeker list.
+* Editing preserves hidden status and the current list filter. The edited contact stays in the view if it still matches the filter; otherwise, it disappears from that view but remains in TalentPulse.
   An edited hidden jobseeker remains hidden.
 
 **Examples:**
