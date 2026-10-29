@@ -10,8 +10,8 @@ import seedu.address.model.Model;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 /**
- * Finds and lists all unhidden clients in the address book whose name, phone number, email or
- * tags contain any of the argument keywords. Keyword matching is case insensitive. Hidden clients
+ * Finds and lists all unhidden clients in the address book whose name, phone number, email, tags or
+ * job openings contain any of the argument keywords. Keyword matching is case insensitive. Hidden clients
  * and jobseekers are not searched.
  */
 public class FindClientCommand extends AbstractFindCommand {
@@ -19,10 +19,10 @@ public class FindClientCommand extends AbstractFindCommand {
     public static final String COMMAND_WORD = "findc";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all clients whose name, "
-            + "phone number, email or tags contain any of the specified keywords (case-insensitive) "
-            + "and displays them as a list with index numbers.\n"
+            + "phone number, email, tags or job openings contain any of the specified keywords "
+            + "(case-insensitive) and displays them as a list with index numbers.\n"
             + "Parameters: <keyword>...\n"
-            + "Example: " + COMMAND_WORD + " adrian 81110001 adrian@example.com";
+            + "Example: " + COMMAND_WORD + " adrian 81110001 adrian@example.com engineer";
 
     private static final Logger logger = LogsCenter.getLogger(FindClientCommand.class);
 

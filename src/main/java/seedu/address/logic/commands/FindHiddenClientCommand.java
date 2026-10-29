@@ -10,8 +10,8 @@ import seedu.address.model.Model;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 /**
- * Finds and lists all hidden clients in the address book whose name, phone number, email or
- * tags contain any of the argument keywords. Keyword matching is case insensitive, as for
+ * Finds and lists all hidden clients in the address book whose name, phone number, email, tags or
+ * job openings contain any of the argument keywords. Keyword matching is case insensitive, as for
  * {@code findc}. Unhidden clients and jobseekers are not searched.
  */
 public class FindHiddenClientCommand extends AbstractFindCommand {
@@ -19,8 +19,8 @@ public class FindHiddenClientCommand extends AbstractFindCommand {
     public static final String COMMAND_WORD = "findhc";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all hidden clients whose name, "
-            + "phone number, email or tags contain any of the specified keywords (case-insensitive) "
-            + "and displays them as a list with index numbers.\n"
+            + "phone number, email, tags or job openings contain any of the specified keywords "
+            + "(case-insensitive) and displays them as a list with index numbers.\n"
             + "Parameters: <keyword>...\n"
             + "Example: " + COMMAND_WORD + " adrian 81110001 adrian@example.com";
 

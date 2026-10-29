@@ -144,6 +144,25 @@ public class FindJobseekerCommandTest {
         assertEquals(getTypicalClients(), model.getFilteredClientList());
     }
 
+    /**
+     * Checks that a jobseeker's highest qualification is searched: {@code "diploma"} matches only
+     * Benson's qualification, so this fails if qualifications are not searched.
+     */
+    @Test
+    public void execute_qualificationKeyword_jobseekerFound() {
+        Jobseeker bensonWithDiploma = new JobseekerBuilder(BENSON).withHighestQualification("Diploma in IT")
+                .build();
+        Model qualificationModel = new ModelManager();
+        qualificationModel.addJobseeker(ALICE);
+        qualificationModel.addJobseeker(bensonWithDiploma);
+
+        CommandResult result = new FindJobseekerCommand(preparePredicate("diploma"))
+                .execute(qualificationModel);
+
+        assertEquals(String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, 1), result.getFeedbackToUser());
+        assertEquals(List.of(bensonWithDiploma), qualificationModel.getFilteredJobseekerList());
+    }
+
     @Test
     public void toStringMethod() {
         PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(List.of("keyword"));
