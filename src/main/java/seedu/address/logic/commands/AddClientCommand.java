@@ -21,7 +21,7 @@ public class AddClientCommand extends Command {
 
     public static final String COMMAND_WORD = "addc";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a client to the address book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a client to TalentLink. "
             + "Parameters: "
             + PREFIX_NAME + "<name> "
             + PREFIX_PHONE + "<phone number> "
@@ -38,7 +38,7 @@ public class AddClientCommand extends Command {
             + PREFIX_TAG + "classmates";
 
     public static final String MESSAGE_SUCCESS = "New client added: %1$s";
-    public static final String MESSAGE_DUPLICATE_CLIENT = "This client already exists in the address book.";
+    public static final String MESSAGE_DUPLICATE_CLIENT = "This client already exists in TalentLink.";
 
     private final Client toAdd;
 

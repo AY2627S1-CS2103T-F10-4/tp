@@ -21,7 +21,7 @@ public class AddJobseekerCommand extends Command {
 
     public static final String COMMAND_WORD = "addj";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a jobseeker to the address book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a jobseeker to TalentLink. "
             + "Parameters: "
             + PREFIX_NAME + "<name> "
             + PREFIX_PHONE + "<phone number> "
@@ -38,7 +38,7 @@ public class AddJobseekerCommand extends Command {
             + PREFIX_TAG + "friends ";
 
     public static final String MESSAGE_SUCCESS = "New jobseeker added: %1$s";
-    public static final String MESSAGE_DUPLICATE_JOBSEEKER = "This jobseeker already exists in the address book.";
+    public static final String MESSAGE_DUPLICATE_JOBSEEKER = "This jobseeker already exists in TalentLink.";
 
     private final Jobseeker toAdd;
 

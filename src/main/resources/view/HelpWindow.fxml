@@ -447,7 +447,7 @@
                                        <Label styleClass="code" text="addj" />
                                     </children>
                                  </TextFlow>
-                                 <Label styleClass="p" text="Adds a jobseeker to the address book." wrapText="true" />
+                                 <Label styleClass="p" text="Adds a jobseeker to TalentLink." wrapText="true" />
                                  <TextFlow styleClass="p">
                                     <children>
                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Format: " />
@@ -530,7 +530,7 @@
                                        <Label styleClass="code" text="addc" />
                                     </children>
                                  </TextFlow>
-                                 <Label styleClass="p" text="Adds a client to the address book." wrapText="true" />
+                                 <Label styleClass="p" text="Adds a client to TalentLink." wrapText="true" />
                                  <TextFlow styleClass="p">
                                     <children>
                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Format: " />
@@ -564,7 +564,7 @@
                                        <Label styleClass="code" text="list" />
                                     </children>
                                  </TextFlow>
-                                 <Label styleClass="p" text="Shows a list of all persons in the address book." wrapText="true" />
+                                 <Label styleClass="p" text="Shows a list of all persons in TalentLink." wrapText="true" />
                                  <TextFlow styleClass="p">
                                     <children>
                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Format: " />
@@ -582,7 +582,7 @@
                                        <Label styleClass="code" text="edit" />
                                     </children>
                                  </TextFlow>
-                                 <Label styleClass="p" text="Edits an existing person in the address book." wrapText="true" />
+                                 <Label styleClass="p" text="Edits an existing person in TalentLink." wrapText="true" />
                                  <TextFlow styleClass="p">
                                     <children>
                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Format: " />
@@ -735,7 +735,7 @@
                                        <String fx:value="bold" />
                                        <String fx:value="text" />
                                     </styleClass></Text>
-                                 <Text layoutX="22.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=": Install the app on the other computer and overwrite the data file it creates with the data file from your previous AddressBook home folder." />
+                                 <Text layoutX="22.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text=": Install the app on the other computer and overwrite the data file it creates with the data file from your previous TalentLink home folder." />
                               </children>
                            </TextFlow>
                            <Separator prefWidth="200.0" />
