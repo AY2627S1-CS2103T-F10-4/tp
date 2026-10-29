@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.logging.Logger;
 
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
@@ -17,7 +16,7 @@ import seedu.address.model.person.PersonContainsKeywordsPredicate;
  * recruiter can, for example, see every contact with a given tag in one command. Hidden jobseekers
  * and clients are not searched.
  */
-public class FindCommand extends Command {
+public class FindCommand extends AbstractFindCommand {
 
     public static final String COMMAND_WORD = "find";
 
@@ -29,16 +28,13 @@ public class FindCommand extends Command {
 
     private static final Logger logger = LogsCenter.getLogger(FindCommand.class);
 
-    private final PersonContainsKeywordsPredicate predicate;
-
     /**
      * Creates a command that lists all jobseekers and clients that match {@code predicate}.
      *
      * @param predicate Predicate that decides which jobseekers and clients are listed; must not be null.
      */
     public FindCommand(PersonContainsKeywordsPredicate predicate) {
-        requireNonNull(predicate);
-        this.predicate = predicate;
+        super(predicate);
     }
 
     @Override
@@ -55,26 +51,5 @@ public class FindCommand extends Command {
                 + " client(s) matching " + predicate);
         return new CommandResult(String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW,
                 jobseekerMatchCount, clientMatchCount));
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        // instanceof handles nulls
-        if (!(other instanceof FindCommand otherFindCommand)) {
-            return false;
-        }
-
-        return predicate.equals(otherFindCommand.predicate);
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .add("predicate", predicate)
-                .toString();
     }
 }

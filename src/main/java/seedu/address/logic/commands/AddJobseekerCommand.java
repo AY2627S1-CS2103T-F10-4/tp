@@ -5,6 +5,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_QUALIFICATION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
@@ -28,14 +29,15 @@ public class AddJobseekerCommand extends Command {
             + PREFIX_EMAIL + "<email> "
             + PREFIX_ADDRESS + "<address> "
             + "[" + PREFIX_REMARK + "<remarks>] "
-            + "[" + PREFIX_TAG + "<tag>]...\n"
+            + "[" + PREFIX_QUALIFICATION + "<highest qualification>] "
+            + "[" + PREFIX_TAG + "<tag> [<more tags>]...]\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
             + PREFIX_EMAIL + "johnd@example.com "
             + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
             + PREFIX_REMARK + "owesMoney "
-            + PREFIX_TAG + "friends ";
+            + PREFIX_TAG + "friends colleagues";
 
     public static final String MESSAGE_SUCCESS = "New jobseeker added: %1$s";
     public static final String MESSAGE_DUPLICATE_JOBSEEKER = "This jobseeker already exists in TalentLink.";

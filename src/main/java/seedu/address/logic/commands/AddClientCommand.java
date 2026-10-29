@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_JOB;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
@@ -28,14 +29,15 @@ public class AddClientCommand extends Command {
             + PREFIX_EMAIL + "<email> "
             + PREFIX_ADDRESS + "<address> "
             + "[" + PREFIX_REMARK + "<remarks>] "
-            + "[" + PREFIX_TAG + "<tag>]...\n"
+            + "[" + PREFIX_JOB + "<job title>]... "
+            + "[" + PREFIX_TAG + "<tag> [<more tags>]...]\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "Irfan Ibrahim "
             + PREFIX_PHONE + "92492021 "
             + PREFIX_EMAIL + "irfan@example.com "
             + PREFIX_ADDRESS + "Blk 47 Tampines Street 20, #17-35 "
             + PREFIX_REMARK + "immediate "
-            + PREFIX_TAG + "classmates";
+            + PREFIX_TAG + "classmates employer";
 
     public static final String MESSAGE_SUCCESS = "New client added: %1$s";
     public static final String MESSAGE_DUPLICATE_CLIENT = "This client already exists in TalentLink.";

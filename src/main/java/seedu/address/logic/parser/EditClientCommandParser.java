@@ -2,10 +2,13 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_QUALIFICATION_FIELD_NOT_ALLOWED;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_JOB;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_QUALIFICATION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
@@ -36,7 +39,11 @@ public class EditClientCommandParser implements Parser<EditClientCommand> {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                        PREFIX_TAG, PREFIX_REMARK);
+                        PREFIX_TAG, PREFIX_REMARK, PREFIX_JOB, PREFIX_QUALIFICATION);
+
+        if (argMultimap.getValue(PREFIX_QUALIFICATION).isPresent()) {
+            throw new ParseException(MESSAGE_QUALIFICATION_FIELD_NOT_ALLOWED);
+        }
 
         Index index;
 
@@ -66,6 +73,9 @@ public class EditClientCommandParser implements Parser<EditClientCommand> {
         }
         argMultimap.getValue(PREFIX_REMARK).map(Remark::new).ifPresent(editClientDescriptor::setRemark);
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editClientDescriptor::setTags);
+        if (argMultimap.getValue(PREFIX_JOB).isPresent()) {
+            editClientDescriptor.setAvailableJobs(ParserUtil.parseJobs(argMultimap.getAllValues(PREFIX_JOB)));
+        }
 
         if (!editClientDescriptor.isAnyFieldEdited()) {
             throw new ParseException(EditClientCommand.MESSAGE_NOT_EDITED);
