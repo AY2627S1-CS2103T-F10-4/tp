@@ -114,5 +114,6 @@ public class HelpWindow extends UiPart<Stage> {
 
     private void navigateToPage(String pageName) {
         content.setContent(new HelpPage(pageName).getRoot());
+        content.setVvalue(0);
     }
 }
