@@ -26,6 +26,15 @@
           </minWidth>
         </Label>
         <Label fx:id="name" text="\$first" styleClass="cell_big_label" />
+        <!-- Badge shown only on hidden contacts; PersonCard toggles its visibility -->
+        <Label fx:id="hiddenIndicator" text="Hidden" styleClass="hidden_indicator">
+          <HBox.margin>
+            <Insets left="8" />
+          </HBox.margin>
+          <minWidth>
+            <Region fx:constant="USE_PREF_SIZE" />
+          </minWidth>
+        </Label>
       </HBox>
       <FlowPane fx:id="tags" />
       <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" />

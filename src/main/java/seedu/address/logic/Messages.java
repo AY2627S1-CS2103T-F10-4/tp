@@ -23,6 +23,7 @@ public class Messages {
     public static final String MESSAGE_INVALID_CLIENT_DISPLAYED_INDEX = "The client index provided is invalid.";
     public static final String MESSAGE_JOBSEEKERS_LISTED_OVERVIEW = "%1$d jobseeker(s) listed!";
     public static final String MESSAGE_CLIENTS_LISTED_OVERVIEW = "%1$d client(s) listed!";
+    public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d jobseeker(s) and %2$d client(s) listed!";
     public static final String MESSAGE_HIDDEN_JOBSEEKERS_LISTED_OVERVIEW = "%1$d hidden jobseeker(s) listed!";
     public static final String MESSAGE_HIDDEN_CLIENTS_LISTED_OVERVIEW = "%1$d hidden client(s) listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS =

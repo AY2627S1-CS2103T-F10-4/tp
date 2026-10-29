@@ -24,18 +24,28 @@ public class NameTest {
         // null name
         assertThrows(NullPointerException.class, () -> Name.isValidName(null));
 
-        // invalid name
+        // tests for invalid names
         assertFalse(Name.isValidName("")); // empty string
         assertFalse(Name.isValidName(" ")); // spaces only
-        assertFalse(Name.isValidName("^")); // only non-alphanumeric characters
-        assertFalse(Name.isValidName("peter*")); // contains non-alphanumeric characters
+        assertFalse(Name.isValidName("/")); // only the reserved '/' character
+        assertFalse(Name.isValidName("peter/jack")); // '/' in the middle
+        assertFalse(Name.isValidName("peter/")); // '/' at the end
+        assertFalse(Name.isValidName(" peter")); // leading whitespace
 
-        // valid name
+        // tests for valid names
         assertTrue(Name.isValidName("peter jack")); // alphabets only
         assertTrue(Name.isValidName("12345")); // numbers only
         assertTrue(Name.isValidName("peter the 2nd")); // alphanumeric characters
         assertTrue(Name.isValidName("Capital Tan")); // with capital letters
         assertTrue(Name.isValidName("David Roger Jackson Ray Jr 2nd")); // long names
+
+        // tests for valid names with special and non-ascii characters
+        assertTrue(Name.isValidName("^")); // only non-alphanumeric characters
+        assertTrue(Name.isValidName("Hershey's")); // apostrophe
+        assertTrue(Name.isValidName("McDonald's Pte. Ltd.")); // apostrophe and full stops
+        assertTrue(Name.isValidName("X Æ A-Xii")); // non-ASCII letter and hyphen
+        assertTrue(Name.isValidName("Zoë Núñez")); // accented letters
+        assertTrue(Name.isValidName("张伟")); // non-Latin script
     }
 
     @Test

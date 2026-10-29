@@ -120,15 +120,44 @@
     -fx-text-fill: white;
 }
 
+.command-hint {
+    -fx-text-fill: white;
+    -fx-opacity: 1;
+    -fx-font-size: 12px;
+}
+
+.command-suggestions-pane {
+    -fx-border-color: #788595;
+    -fx-border-width: 1;
+    -fx-background-color: #303438;
+}
+
 #suggestionList .list-cell {
     -fx-text-fill: white;
     -fx-padding: 0 8 0 8;
+}
+
+#suggestionList .list-cell:filled:selected {
+    -fx-background-color: #2d6a70;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
 }
 
 .cell_big_label {
     -fx-font-family: "Segoe UI Semibold";
     -fx-font-size: 16px;
     -fx-text-fill: #010504;
+}
+
+/* Badge marking a hidden jobseeker/client on its card */
+.hidden_indicator {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 11px;
+    -fx-text-fill: white;
+    -fx-background-color: #7a7a7a;
+    -fx-padding: 1 6 1 6;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
 }
 
 .cell_small_label {
