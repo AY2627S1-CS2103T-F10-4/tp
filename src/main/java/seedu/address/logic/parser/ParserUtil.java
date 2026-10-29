@@ -56,7 +56,7 @@ public class ParserUtil {
             throw new ParseException(String.format(MESSAGE_MISSING_REQUIRED_FIELDS, String.join(", ", missing)));
         }
     }
-  
+
     /**
      * Parses an optional qualification, trimming surrounding whitespace. Empty text clears the qualification.
      */
