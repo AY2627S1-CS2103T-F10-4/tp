@@ -334,13 +334,16 @@ _{Explain here how the data archiving feature will be implemented}_
 
 **Target user profile**:
 
-* has a need to manage a significant number of contacts
+* is a HR recruiter in a recruitment agency
+* has to keep track of many potential jobseekers and clients (prospective employers)
+* has to interview and shortlist jobseekers, and match jobseekers to clients
 * prefers desktop apps over other types of applications
 * can type fast
 * prefers typing to mouse interactions
 * is reasonably comfortable using CLI apps
 
-**Value proposition**: Manage contacts faster than with a typical mouse-driven GUI application.
+**Value proposition**: TalentLink provides a much faster way for HR Recruiters in recruitment agencies to manage their contacts list (jobseekers + clients), compared to a typical mouse-driven GUI application. 
+TalentLink helps these recruiters with daily tasks such as recording notes on each jobseeker/client, and determining which jobseeker to match with which client/which job opening.
 
 
 ### User stories
@@ -709,20 +712,22 @@ testers are expected to do more *exploratory* testing.
 
 1. _{ more test cases …​ }_
 
-### Deleting a person
+### Deleting a jobseeker
 
-1. Deleting a person while all persons are being shown
+1. Deleting a jobseeker while all jobseekers are being shown
 
-   1. Prerequisites: List all persons using the `list` command, with multiple persons in the list.
+   1. Prerequisites: List all jobseekers using the `listj` command, with multiple jobseekers in the list.
 
-   1. Test case: `delete 1`<br>
-      Expected: The first contact is deleted from the list. The status message shows the deleted contact's details.
+   1. Test case: `deletej 1`<br>
+      Expected: The first jobseeker is deleted from the jobseeker list. The status message shows the deleted jobseeker's details. The client list is unchanged.
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. The status message shows error details.
+   1. Test case: `deletej 0`<br>
+      Expected: No jobseeker is deleted. The status message shows error details.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
+   1. Other incorrect delete commands to try: `deletej`, `deletej x`, `...` (where x is larger than the jobseeker list size)<br>
       Expected: Similar to previous.
+
+1. Deleting a client works the same way: use `listc` and `deletec` in place of `listj` and `deletej`.
 
 1. _{ more test cases …​ }_
 
