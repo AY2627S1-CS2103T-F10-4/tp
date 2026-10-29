@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_JOB;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
@@ -28,6 +29,7 @@ public class AddClientCommand extends Command {
             + PREFIX_EMAIL + "<email> "
             + PREFIX_ADDRESS + "<address> "
             + "[" + PREFIX_REMARK + "<remarks>] "
+            + "[" + PREFIX_JOB + "<job title>]... "
             + "[" + PREFIX_TAG + "<tag>]...\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "Irfan Ibrahim "
