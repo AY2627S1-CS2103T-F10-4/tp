@@ -5,7 +5,7 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import java.util.List;
 import java.util.function.Function;
 
-import seedu.address.logic.commands.Command;
+import seedu.address.logic.commands.AbstractFindCommand;
 import seedu.address.logic.commands.FindClientCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.FindHiddenClientCommand;
@@ -22,7 +22,7 @@ import seedu.address.model.person.PersonContainsKeywordsPredicate;
  *
  * @param <T> Type of find command this parser creates.
  */
-public class FindCommandParser<T extends Command> implements Parser<T> {
+public class FindCommandParser<T extends AbstractFindCommand> implements Parser<T> {
 
     /** Creates the command from the parsed keywords, e.g. {@code FindJobseekerCommand::new}. */
     private final Function<PersonContainsKeywordsPredicate, T> commandFactory;
