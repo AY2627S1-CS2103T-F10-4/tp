@@ -15,6 +15,7 @@ public class Messages {
 
     public static final String MESSAGE_UNKNOWN_COMMAND = "Unknown command.";
     public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format!\n%1$s";
+    public static final String MESSAGE_MISSING_REQUIRED_FIELDS = "Missing required fields: %s.";
     public static final String MESSAGE_JOB_FIELD_NOT_ALLOWED =
             "The j/ field is only supported for clients (addc/editc), not jobseekers.";
     public static final String MESSAGE_QUALIFICATION_FIELD_NOT_ALLOWED =

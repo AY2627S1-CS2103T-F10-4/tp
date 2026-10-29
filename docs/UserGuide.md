@@ -169,6 +169,11 @@ Using either field with the wrong contact type is rejected, even when its value 
 * If contacts only have **either** the same phone number or email address,
   they are treated as different contacts.
 
+For `addj` and `addc`, omitting required fields produces an error listing only the missing fields.
+For example, `addj n/Alice Tan p/91234567` reports `Missing required fields: e/ (email), a/ (address).`
+A supplied field with an empty or invalid value instead produces its field-specific validation error
+once all required prefixes are present.
+
 #### Adding a jobseeker: `addj`
 
 Adds a jobseeker to TalentLink.
@@ -200,7 +205,7 @@ additional constraints on field values.
 {: #addj-examples}
 
 * `addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 q/Diploma in IT`
-* `addj n/Betsy Crowe t/friend colleague e/betsycrowe@example.com a/Newgate Prison p/1234567`
+* `addj n/Betsy Crowe e/betsycrowe@example.com a/Newgate Prison p/1234567 t/friend colleague`
 
 #### Adding a client: `addc`
 
