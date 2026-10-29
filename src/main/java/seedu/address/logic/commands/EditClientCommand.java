@@ -91,7 +91,6 @@ public class EditClientCommand extends Command {
         }
 
         model.setClient(clientToEdit, editedClient);
-        model.updateFilteredClientList(Model.PREDICATE_SHOW_UNHIDDEN_CLIENTS);
         return new CommandResult(String.format(MESSAGE_EDIT_CLIENT_SUCCESS,
                 Messages.format(editedClient)));
     }
