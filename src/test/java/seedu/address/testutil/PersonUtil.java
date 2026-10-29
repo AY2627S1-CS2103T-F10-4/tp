@@ -4,6 +4,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_QUALIFICATION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
@@ -36,6 +37,7 @@ public class PersonUtil {
         sb.append(PREFIX_EMAIL + jobseeker.getEmail().value + " ");
         sb.append(PREFIX_ADDRESS + jobseeker.getAddress().value + " ");
         sb.append(PREFIX_REMARK + jobseeker.getRemark().value + " ");
+        sb.append(PREFIX_QUALIFICATION + jobseeker.getHighestQualification().value + " ");
         jobseeker.getTags().stream().forEach(
             s -> sb.append(PREFIX_TAG + s.tagName + " ")
         );
@@ -52,6 +54,8 @@ public class PersonUtil {
         descriptor.getEmail().ifPresent(email -> sb.append(PREFIX_EMAIL).append(email.value).append(" "));
         descriptor.getAddress().ifPresent(address -> sb.append(PREFIX_ADDRESS).append(address.value).append(" "));
         descriptor.getRemark().ifPresent(remark -> sb.append(PREFIX_REMARK).append(remark.value).append(" "));
+        descriptor.getHighestQualification().ifPresent(qualification ->
+                sb.append(PREFIX_QUALIFICATION).append(qualification.value).append(" "));
         if (descriptor.getTags().isPresent()) {
             Set<Tag> tags = descriptor.getTags().get();
             if (tags.isEmpty()) {

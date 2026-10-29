@@ -2,12 +2,18 @@
 
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox styleClass="stack-pane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+  <Label fx:id="commandHint" styleClass="command-hint" minHeight="22" prefHeight="22" maxHeight="22"/>
   <TextField fx:id="commandTextField" onAction="#handleCommandEntered" promptText="Enter command here..."/>
-  <ListView fx:id="suggestionList" visible="false" managed="false" focusTraversable="false"
-            mouseTransparent="true" fixedCellSize="28" minHeight="-Infinity" maxHeight="-Infinity"
-            accessibleText="Command suggestions"/>
+  <StackPane fx:id="suggestionOverlay" styleClass="command-suggestions-pane" managed="false"
+             visible="false" viewOrder="-1" minHeight="76" prefHeight="76" maxHeight="76">
+    <ListView fx:id="suggestionList" visible="false" managed="false" focusTraversable="false"
+              mouseTransparent="true" fixedCellSize="24" minHeight="74" prefHeight="74" maxHeight="74"
+              accessibleText="Command suggestions"/>
+  </StackPane>
 </VBox>
 

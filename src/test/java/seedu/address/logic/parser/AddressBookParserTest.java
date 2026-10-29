@@ -25,6 +25,7 @@ import seedu.address.logic.commands.EditJobseekerCommand;
 import seedu.address.logic.commands.EditJobseekerCommand.EditJobseekerDescriptor;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindClientCommand;
+import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.FindHiddenClientCommand;
 import seedu.address.logic.commands.FindHiddenJobseekerCommand;
 import seedu.address.logic.commands.FindJobseekerCommand;
@@ -32,6 +33,7 @@ import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HideClientCommand;
 import seedu.address.logic.commands.HideJobseekerCommand;
 import seedu.address.logic.commands.ListClientCommand;
+import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.ListHiddenClientCommand;
 import seedu.address.logic.commands.ListHiddenJobseekerCommand;
 import seedu.address.logic.commands.ListJobseekerCommand;
@@ -214,6 +216,14 @@ public class AddressBookParserTest {
     }
 
     @Test
+    public void parseCommand_find() throws Exception {
+        List<String> keywords = List.of("foo", "bar", "baz");
+        FindCommand command = (FindCommand) parser.parseCommand(
+                FindCommand.COMMAND_WORD + " " + String.join(" ", keywords));
+        assertEquals(new FindCommand(new PersonContainsKeywordsPredicate(keywords)), command);
+    }
+
+    @Test
     public void parseCommand_findj() throws Exception {
         List<String> keywords = List.of("foo", "bar", "baz");
         FindJobseekerCommand command = (FindJobseekerCommand) parser.parseCommand(
@@ -249,6 +259,12 @@ public class AddressBookParserTest {
     public void parseCommand_help() throws Exception {
         assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD) instanceof HelpCommand);
         assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD + " 3") instanceof HelpCommand);
+    }
+
+    @Test
+    public void parseCommand_list() throws Exception {
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD) instanceof ListCommand);
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3") instanceof ListCommand);
     }
 
     @Test

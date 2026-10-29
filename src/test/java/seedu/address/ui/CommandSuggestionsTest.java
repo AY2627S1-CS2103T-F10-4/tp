@@ -13,8 +13,8 @@ public class CommandSuggestionsTest {
 
     @Test
     public void suggest_prefix_returnsSortedMatches() {
-        assertEquals(List.of("listc", "listhc", "listhj", "listj"), suggestions.suggest("list"));
-        assertEquals(List.of("listc", "listhc", "listhj", "listj"), suggestions.suggest("  list"));
+        assertEquals(List.of("list", "listc", "listhc", "listhj", "listj"), suggestions.suggest("lis"));
+        assertEquals(List.of("list", "listc", "listhc", "listhj", "listj"), suggestions.suggest("  lis"));
         assertEquals(List.of("editc", "editj"), suggestions.suggest("edi"));
         assertEquals(List.of("clearc", "clearj", "cpc", "cpj"), suggestions.suggest("c"));
         assertEquals(List.of("cpc", "cpj"), suggestions.suggest("cp"));
@@ -26,7 +26,9 @@ public class CommandSuggestionsTest {
     @Test
     public void suggest_hiddenCommandPrefixes_returnsSortedMatches() {
         assertEquals(List.of("listhc", "listhj"), suggestions.suggest("listh"));
-        assertEquals(List.of("findc", "findhc", "findhj", "findj"), suggestions.suggest("find"));
+        assertEquals(List.of("find", "findc", "findhc", "findhj", "findj"), suggestions.suggest("fin"));
+        // "find" is itself a command, so it counts as complete and gets no suggestions.
+        assertEquals(List.of(), suggestions.suggest("find"));
         assertEquals(List.of("findhc", "findhj"), suggestions.suggest("  findh"));
     }
 
@@ -65,7 +67,8 @@ public class CommandSuggestionsTest {
 
     @Test
     public void suggest_blankExactUnknownOrArguments_returnsEmpty() {
-        for (String input : List.of("", "  ", "listc", "LIST", "unknown", "list ", "addj n/Alice", "add\t")) {
+        for (String input : List.of("", "  ", "list", "  list", "listc", "LIST", "unknown", "list ",
+                "list 3", "addj n/Alice", "add\t")) {
             assertTrue(suggestions.suggest(input).isEmpty(), input);
         }
     }
