@@ -3,6 +3,7 @@ package seedu.address.ui;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.commons.core.InputLimits.MAX_COMMAND_LENGTH;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -116,6 +118,20 @@ public class CommandBoxTest {
             press(field, KeyCode.UP);
             assertEquals("  listc  ", field.getText());
             assertEquals(1, executed.size());
+        });
+    }
+
+    @Test
+    public void inputLengthFilter_rejectsCharactersBeyondMaximum() throws Exception {
+        runOnFxThread(() -> {
+            TextField field = createField(command -> new CommandResult("Success"));
+            field.replaceText(0, 0, "a".repeat(MAX_COMMAND_LENGTH + 1));
+            assertEquals(MAX_COMMAND_LENGTH, field.getText().length());
+            Label hint = (Label) field.getParent().lookup("#commandHint");
+            assertTrue(hint.getText().contains("Input truncated"));
+            assertTrue(hint.getStyleClass().contains(CommandBox.WARNING_STYLE_CLASS));
+            field.appendText("b");
+            assertEquals(MAX_COMMAND_LENGTH, field.getText().length());
         });
     }
 

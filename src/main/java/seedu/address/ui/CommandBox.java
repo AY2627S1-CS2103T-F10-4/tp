@@ -1,15 +1,18 @@
 package seedu.address.ui;
 
-import javafx.beans.binding.Bindings;
+import java.util.function.UnaryOperator;
+
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import seedu.address.commons.core.InputLimits;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -20,12 +23,17 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public class CommandBox extends UiPart<Region> {
 
     public static final String ERROR_STYLE_CLASS = "error";
+    public static final String WARNING_STYLE_CLASS = "warning";
+    private static final String COMMAND_HINT = "↑/↓ command history • Type to see suggestions";
+    private static final String OVERFLOW_WARNING = "Input truncated at " + InputLimits.MAX_COMMAND_LENGTH
+            + " characters";
     private static final String FXML = "CommandBox.fxml";
 
     private final CommandExecutor commandExecutor;
     private final CommandHistory commandHistory = new CommandHistory();
     private final CommandSuggestions commandSuggestions;
     private boolean areSuggestionsSuppressed;
+    private boolean inputOverflowAttempted;
 
     @FXML
     private TextField commandTextField;
@@ -53,9 +61,11 @@ public class CommandBox extends UiPart<Region> {
         super(FXML);
         this.commandExecutor = commandExecutor;
         this.commandSuggestions = commandSuggestions;
-        commandHint.textProperty().bind(Bindings.when(suggestionList.visibleProperty())
-                .then("Suggestions: ↑/↓ select • Tab complete • Esc dismiss")
-                .otherwise("↑/↓ command history • Type to see suggestions"));
+        UnaryOperator<TextFormatter.Change> inputLengthFilter = change ->
+                limitInputLength(change);
+        commandTextField.setTextFormatter(new TextFormatter<String>(inputLengthFilter));
+        suggestionList.visibleProperty().addListener((observable, oldValue, newValue) -> updateCommandHint());
+        updateCommandHint();
         suggestionOverlay.visibleProperty().bind(suggestionList.visibleProperty());
         suggestionOverlay.layoutYProperty().bind(commandTextField.layoutYProperty()
                 .add(commandTextField.heightProperty()));
@@ -85,6 +95,29 @@ public class CommandBox extends UiPart<Region> {
         suggestionList.setVisible(isVisible);
         suggestionList.setManaged(isVisible);
         suggestionList.getSelectionModel().selectFirst();
+    }
+
+    /** Truncates edits that would exceed the command limit and records the attempted overflow. */
+    private TextFormatter.Change limitInputLength(TextFormatter.Change change) {
+        if (change.getControlNewText().length() <= InputLimits.MAX_COMMAND_LENGTH) {
+            return change;
+        }
+        int excess = change.getControlNewText().length() - InputLimits.MAX_COMMAND_LENGTH;
+        change.setText(change.getText().substring(0, Math.max(0, change.getText().length() - excess)));
+        inputOverflowAttempted = true;
+        updateCommandHint();
+        return change;
+    }
+
+    private void updateCommandHint() {
+        if (inputOverflowAttempted) {
+            commandHint.setText(OVERFLOW_WARNING);
+            commandHint.getStyleClass().add(WARNING_STYLE_CLASS);
+        } else if (suggestionList.isVisible()) {
+            commandHint.setText("Suggestions: ↑/↓ select • Tab complete • Esc dismiss");
+        } else {
+            commandHint.setText(COMMAND_HINT);
+        }
     }
 
     /**
@@ -197,6 +230,9 @@ public class CommandBox extends UiPart<Region> {
         try {
             commandExecutor.execute(commandText);
             commandTextField.setText("");
+            inputOverflowAttempted = false;
+            commandHint.getStyleClass().remove(WARNING_STYLE_CLASS);
+            updateCommandHint();
         } catch (CommandException | ParseException e) {
             setStyleToIndicateCommandFailure();
         }
