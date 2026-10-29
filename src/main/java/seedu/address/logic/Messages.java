@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import seedu.address.commons.core.InputLimits;
 import seedu.address.logic.parser.Prefix;
 import seedu.address.model.person.Client;
 import seedu.address.model.person.Jobseeker;
@@ -14,6 +15,8 @@ import seedu.address.model.person.Jobseeker;
 public class Messages {
 
     public static final String MESSAGE_UNKNOWN_COMMAND = "Unknown command.";
+    public static final String MESSAGE_COMMAND_TOO_LONG = "Command input must not exceed "
+            + InputLimits.MAX_COMMAND_LENGTH + " characters.";
     public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format!\n%1$s";
     public static final String MESSAGE_MISSING_REQUIRED_FIELDS = "Missing required fields: %s.";
     public static final String MESSAGE_JOB_FIELD_NOT_ALLOWED =

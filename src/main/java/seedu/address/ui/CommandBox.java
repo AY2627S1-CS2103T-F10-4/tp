@@ -1,15 +1,16 @@
 package seedu.address.ui;
 
-import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import seedu.address.commons.core.InputLimits;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -20,12 +21,18 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public class CommandBox extends UiPart<Region> {
 
     public static final String ERROR_STYLE_CLASS = "error";
+    public static final String WARNING_STYLE_CLASS = "warning";
+    private static final String COMMAND_HINT = "↑/↓ command history • Type to see suggestions";
+    private static final String SUGGESTION_HINT = "Suggestions: ↑/↓ select • Tab complete • Esc dismiss";
+    private static final String OVERFLOW_WARNING = "Input truncated at " + InputLimits.MAX_COMMAND_LENGTH
+            + " characters";
     private static final String FXML = "CommandBox.fxml";
 
     private final CommandExecutor commandExecutor;
     private final CommandHistory commandHistory = new CommandHistory();
     private final CommandSuggestions commandSuggestions;
     private boolean areSuggestionsSuppressed;
+    private boolean inputOverflowAttempted;
 
     @FXML
     private TextField commandTextField;
@@ -53,9 +60,9 @@ public class CommandBox extends UiPart<Region> {
         super(FXML);
         this.commandExecutor = commandExecutor;
         this.commandSuggestions = commandSuggestions;
-        commandHint.textProperty().bind(Bindings.when(suggestionList.visibleProperty())
-                .then("Suggestions: ↑/↓ select • Tab complete • Esc dismiss")
-                .otherwise("↑/↓ command history • Type to see suggestions"));
+        commandTextField.setTextFormatter(new TextFormatter<String>(this::limitInputLength));
+        suggestionList.visibleProperty().addListener((observable, oldValue, newValue) -> updateCommandHint());
+        updateCommandHint();
         suggestionOverlay.visibleProperty().bind(suggestionList.visibleProperty());
         suggestionOverlay.layoutYProperty().bind(commandTextField.layoutYProperty()
                 .add(commandTextField.heightProperty()));
@@ -63,6 +70,9 @@ public class CommandBox extends UiPart<Region> {
                 suggestionOverlay.resize(newWidth.doubleValue(), suggestionOverlay.getPrefHeight()));
         commandTextField.textProperty().addListener((unused1, unused2, unused3) -> {
             setStyleToDefault();
+            if (commandTextField.getLength() < InputLimits.MAX_COMMAND_LENGTH) {
+                clearOverflowWarning();
+            }
             if (!areSuggestionsSuppressed) {
                 updateSuggestions();
             }
@@ -85,6 +95,46 @@ public class CommandBox extends UiPart<Region> {
         suggestionList.setVisible(isVisible);
         suggestionList.setManaged(isVisible);
         suggestionList.getSelectionModel().selectFirst();
+    }
+
+    /** Truncates edits that would exceed the command limit and records the attempted overflow. */
+    private TextFormatter.Change limitInputLength(TextFormatter.Change change) {
+        if (change.getControlNewText().length() <= InputLimits.MAX_COMMAND_LENGTH) {
+            return change;
+        }
+        int permittedLength = InputLimits.MAX_COMMAND_LENGTH - change.getControlText().length()
+                + change.getRangeEnd() - change.getRangeStart();
+        String truncatedText = change.getText().substring(0, Math.max(0, permittedLength));
+        if (!truncatedText.isEmpty() && Character.isHighSurrogate(truncatedText.charAt(truncatedText.length() - 1))) {
+            truncatedText = truncatedText.substring(0, truncatedText.length() - 1);
+        }
+        change.setText(truncatedText);
+        inputOverflowAttempted = true;
+        updateCommandHint();
+        return change;
+    }
+
+    /** Updates the command hint and its warning style based on the current input state. */
+    private void updateCommandHint() {
+        if (inputOverflowAttempted) {
+            commandHint.setText(OVERFLOW_WARNING);
+            addStyleClassIfAbsent(commandHint.getStyleClass(), WARNING_STYLE_CLASS);
+        } else if (suggestionList.isVisible()) {
+            commandHint.setText(SUGGESTION_HINT);
+            commandHint.getStyleClass().remove(WARNING_STYLE_CLASS);
+        } else {
+            commandHint.setText(COMMAND_HINT);
+            commandHint.getStyleClass().remove(WARNING_STYLE_CLASS);
+        }
+    }
+
+    /** Clears the overflow warning and restores the normal command hint. */
+    private void clearOverflowWarning() {
+        if (!inputOverflowAttempted) {
+            return;
+        }
+        inputOverflowAttempted = false;
+        updateCommandHint();
     }
 
     /**
@@ -198,6 +248,7 @@ public class CommandBox extends UiPart<Region> {
             commandExecutor.execute(commandText);
             commandTextField.setText("");
         } catch (CommandException | ParseException e) {
+            clearOverflowWarning();
             setStyleToIndicateCommandFailure();
         }
     }
@@ -214,12 +265,15 @@ public class CommandBox extends UiPart<Region> {
      */
     private void setStyleToIndicateCommandFailure() {
         ObservableList<String> styleClass = commandTextField.getStyleClass();
+        addStyleClassIfAbsent(styleClass, ERROR_STYLE_CLASS);
+    }
 
-        if (styleClass.contains(ERROR_STYLE_CLASS)) {
+    /** Adds a style class only when it is not already present. */
+    private static void addStyleClassIfAbsent(ObservableList<String> styleClass, String styleClassName) {
+        if (styleClass.contains(styleClassName)) {
             return;
         }
-
-        styleClass.add(ERROR_STYLE_CLASS);
+        styleClass.add(styleClassName);
     }
 
     /**

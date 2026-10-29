@@ -2,6 +2,8 @@ package seedu.address.logic.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.commons.core.InputLimits.MAX_COMMAND_LENGTH;
+import static seedu.address.logic.Messages.MESSAGE_COMMAND_TOO_LONG;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -304,5 +306,17 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_unknownCommand_throwsParseException() {
         assertThrows(ParseException.class, MESSAGE_UNKNOWN_COMMAND, () -> parser.parseCommand("unknownCommand"));
+    }
+
+    @Test
+    public void parseCommand_inputTooLong_throwsParseException() {
+        String input = "a".repeat(MAX_COMMAND_LENGTH + 1);
+        assertThrows(ParseException.class, MESSAGE_COMMAND_TOO_LONG, () -> parser.parseCommand(input));
+    }
+
+    @Test
+    public void parseCommand_inputAtMaximumLength_isParsed() throws Exception {
+        String input = "find " + "a".repeat(MAX_COMMAND_LENGTH - "find ".length());
+        assertTrue(parser.parseCommand(input) instanceof FindCommand);
     }
 }
