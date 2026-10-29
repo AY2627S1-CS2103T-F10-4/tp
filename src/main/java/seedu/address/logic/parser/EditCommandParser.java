@@ -95,7 +95,7 @@ public class EditCommandParser implements Parser<EditJobseekerCommand> {
             return Optional.empty();
         }
         Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
-        return Optional.of(ParserUtil.parseTags(tagSet));
+        return Optional.of(ParserUtil.parseSpaceSeparatedTags(tagSet));
     }
 
 }

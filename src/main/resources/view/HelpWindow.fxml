@@ -588,9 +588,9 @@
                                  <TextFlow styleClass="p">
                                     <children>
                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Format: " />
-                                       <Label fx:id="edit_format" styleClass="code" text="editj INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [q/QUALIFICATION] [r/REMARK] [t/TAG]…" wrapText="true" />
+                                       <Label fx:id="edit_format" styleClass="code" text="editj INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [q/QUALIFICATION] [r/REMARK] [t/TAG [MORE_TAGS]...]..." wrapText="true" />
                                        <CopyButton target="${edit_format}" />
-                                       <Label fx:id="editc_format" styleClass="code" text="editc INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [j/JOB]… [r/REMARK] [t/TAG]…" wrapText="true" />
+                                       <Label fx:id="editc_format" styleClass="code" text="editc INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [j/JOB]… [r/REMARK] [t/TAG [MORE_TAGS]...]..." wrapText="true" />
                                        <CopyButton target="${editc_format}" />
                                     </children>
                                  </TextFlow>
@@ -640,7 +640,7 @@
                                              <Label alignment="CENTER_RIGHT" contentDisplay="TEXT_ONLY" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" styleClass="bullet" text="•" />
                                              <TextFlow styleClass="body">
                                                 <children>
-                                                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="When editing tags, all of the person’s existing tags are removed; adding tags is not cumulative." />
+                                                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="For editj and editc, supplied tags replace all existing tags. Use t/java python, repeated prefixes such as t/java t/python, or a mixture. Duplicate tags are stored once; tags are case-sensitive and must be alphanumeric. Omit t/ to preserve tags. A single empty t/ clears them; do not combine empty prefixes with other tags." />
                                                 </children>
                                              </TextFlow>
                                           </children>

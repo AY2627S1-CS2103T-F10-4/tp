@@ -144,12 +144,12 @@ public class ParserUtil {
     }
 
     /**
-     * Parses whitespace-separated tags from each {@code t/} value in an add command.
+     * Parses whitespace-separated tags from each {@code t/} value in an add or edit command.
      * Repeated prefixes are supported and duplicate tags are removed.
      *
      * @throws ParseException if a value is empty or any individual tag is invalid.
      */
-    public static Set<Tag> parseTagsForAdd(Collection<String> values) throws ParseException {
+    public static Set<Tag> parseSpaceSeparatedTags(Collection<String> values) throws ParseException {
         requireNonNull(values);
         Set<Tag> tags = new HashSet<>();
         for (String value : values) {
