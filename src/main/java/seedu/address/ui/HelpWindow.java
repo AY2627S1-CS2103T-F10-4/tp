@@ -93,6 +93,7 @@ public class HelpWindow extends UiPart<Stage> {
     private static class HelpPage extends UiPart<VBox> {
 
         private static final Map<String, String> PAGES = Map.ofEntries(
+                Map.entry("Notes about the command format", "HelpPage_NotesAboutTheCommandFormat.fxml"),
                 Map.entry("Viewing help", "HelpPage_ViewingHelp.fxml"),
                 Map.entry("Exiting the application", "HelpPage_ExitingTheApplication.fxml"),
                 Map.entry("Common info about contacts", "HelpPage_CommonInfoAboutContacts.fxml"),

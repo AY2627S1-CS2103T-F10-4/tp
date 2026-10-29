@@ -47,13 +47,19 @@
                                                    <HBox alignment="BASELINE_LEFT">
                                                       <children>
                                                          <Label styleClass="bullet" text="◦" />
-                                                         <SectionHyperlink minHeight="-Infinity" text="Viewing help" wrapText="true" />
+                                                         <SectionHyperlink minHeight="-Infinity" text="Notes about the command format" wrapText="true" />
                                                       </children>
                                                    </HBox>
                                                    <HBox alignment="BASELINE_LEFT">
                                                       <children>
                                                          <Label styleClass="bullet" text="◦" />
                                                          <SectionHyperlink minHeight="-Infinity" text="Exiting the application" wrapText="true" />
+                                                      </children>
+                                                   </HBox>
+                                                   <HBox alignment="BASELINE_LEFT">
+                                                      <children>
+                                                         <Label styleClass="bullet" text="◦" />
+                                                         <SectionHyperlink minHeight="-Infinity" text="Viewing help" wrapText="true" />
                                                       </children>
                                                    </HBox>
                                                 </children>

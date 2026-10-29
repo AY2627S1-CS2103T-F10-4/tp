@@ -43,6 +43,10 @@ Text {
     -fx-font-weight: bold;
 }
 
+.italic {
+    -fx-font-style: italic;
+}
+
 .code {
     -fx-font-family: "Consolas", monospace;
     -fx-font-size: 0.8em;
