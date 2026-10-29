@@ -12,6 +12,8 @@ import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BOB;
 
+import java.util.Locale;
+
 import org.junit.jupiter.api.Test;
 
 import seedu.address.testutil.JobseekerBuilder;
@@ -56,8 +58,12 @@ public class PersonTest {
         Person hiddenAlice = new JobseekerBuilder(ALICE).withHidden(true).build();
         assertTrue(ALICE.isSamePerson(hiddenAlice));
 
-        // no need to check for cases and trailing spaces,
-        // email and phone numbers have validation built-in
+        // same phone number, email differs only in case -> returns true, so casing cannot sneak in a duplicate
+        Person upperCaseEmailAlice = new JobseekerBuilder(ALICE)
+                .withEmail(ALICE.getEmail().value.toUpperCase(Locale.ROOT)).build();
+        assertTrue(ALICE.isSamePerson(upperCaseEmailAlice));
+
+        // no need to check for trailing spaces, email and phone numbers have validation built-in
     }
 
     @Test

@@ -1,5 +1,6 @@
 package seedu.address.model.person;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -93,5 +94,35 @@ public class EmailTest {
 
         // different values -> returns false
         assertFalse(email.equals(new Email("other.valid@email.com")));
+    }
+
+    /**
+     * Guards the decision to treat emails differing only in letter case as the same email,
+     * since {@code Person#isSamePerson} relies on it to block duplicate contacts.
+     */
+    @Test
+    public void equals_differentCase_returnsTrue() {
+        Email email = new Email("valid@email.com");
+
+        // different case in local part -> returns true
+        assertTrue(email.equals(new Email("VALID@email.com")));
+
+        // different case in domain -> returns true
+        assertTrue(email.equals(new Email("valid@EMAIL.COM")));
+
+        // mixed case -> returns true
+        assertTrue(email.equals(new Email("VaLiD@EmAiL.cOm")));
+    }
+
+    /** Equal objects must have equal hash codes, or HashSet/HashMap lookups would miss them. */
+    @Test
+    public void hashCode_differentCase_sameHashCode() {
+        assertEquals(new Email("valid@email.com").hashCode(), new Email("VALID@Email.COM").hashCode());
+    }
+
+    /** Comparison ignores case, but the casing the user typed must still be shown as-is. */
+    @Test
+    public void toString_mixedCase_preservesOriginalCase() {
+        assertEquals("John.Doe@Example.com", new Email("John.Doe@Example.com").toString());
     }
 }

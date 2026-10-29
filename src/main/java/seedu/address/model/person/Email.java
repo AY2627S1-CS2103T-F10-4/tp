@@ -3,9 +3,14 @@ package seedu.address.model.person;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
+import java.util.Locale;
+
 /**
  * Represents a Person's email in the address book.
  * Guarantees: immutable; is valid as declared in {@link #isValidEmail(String)}
+ * Two emails are equal if they differ only in letter case (e.g. {@code John@Example.com} and
+ * {@code john@example.com}), because mail providers deliver both to the same inbox in practice.
+ * The casing the user typed is kept in {@link #value} for display.
  */
 public class Email {
 
@@ -69,12 +74,23 @@ public class Email {
             return false;
         }
 
-        return value.equals(otherEmail.value);
+        return getNormalizedValue().equals(otherEmail.getNormalizedValue());
     }
 
     @Override
     public int hashCode() {
-        return value.hashCode();
+        // Must hash the same normalized form that equals() compares, so that equal emails
+        // always have equal hash codes (required for HashSet/HashMap to work correctly).
+        return getNormalizedValue().hashCode();
+    }
+
+    /**
+     * Returns the email in lower case, the form used to compare emails.
+     * {@code Locale.ROOT} keeps the result independent of the user's system language
+     * (e.g. under a Turkish locale, {@code "I".toLowerCase()} would give a dotless {@code "ı"}).
+     */
+    private String getNormalizedValue() {
+        return value.toLowerCase(Locale.ROOT);
     }
 
 }
