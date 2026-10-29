@@ -343,7 +343,7 @@ _{Explain here how the data archiving feature will be implemented}_
 * is reasonably comfortable using CLI apps
 
 **Value proposition**: TalentLink provides a much faster way for HR Recruiters in recruitment agencies to manage their contacts list (jobseekers + clients), compared to a typical mouse-driven GUI application. 
-TalentLink helps these recruiters with daily tasks such as recording notes on each jobseeker/client, and determining which jobseeker to match with which client/which job opening.
+TalentLink helps these recruiters with daily tasks such as recording notes on each jobseeker/client, searching for jobseekers with specified educational qualifications, and determining which jobseeker to match with which client/which job opening.
 
 
 ### User stories
