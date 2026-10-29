@@ -55,7 +55,7 @@ applications.
     * `listc`: Lists all unhidden clients.
     * `clearj`: Deletes all jobseekers.
     * `clearc`: Deletes all clients.
-    * `addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`:
+    * `addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 q/Diploma in IT`:
       Adds a jobseeker named `John Doe` to the Address Book.
     * `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road r/Hiring engineers t/employer`:
       Adds a client named `Jane Tan` with a remark and tag.
@@ -157,6 +157,9 @@ Client contacts contains the following values, and their corresponding constrain
 
 Contacts are identified by their phone number **and** their email address.
 
+The `q/` field is only accepted by `addj` and `editj`; `j/` is only accepted by `addc` and `editc`.
+Using either field with the wrong contact type is rejected, even when its value is empty.
+
 * Contacts with the same phone number and email address are treated as the same contacts,
   even if their other fields differs.
 
@@ -175,12 +178,14 @@ Adds a jobseeker to the address book.
 Adding duplicate jobseeker contacts is not allowed.
 However, adding an existing _client_ contact to the jobseeker list is allowed
 
-**Format:**{: #addj-format} `addj n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag> [<more tags>]...]`
+**Format:**{: #addj-format} `addj n/<name> p/<phone number> e/<email> a/<address> [q/<highest qualification>] [r/<remarks>] [t/<tag> [<more tags>]...]`
 
 * `<name>`: the name of the jobseeker
 * `<phone number>`: the phone number of the jobseeker
 * `<email>`: the email address of the jobseeker
 * `<address>`: the address of the jobseeker
+* `<highest qualification>`: the jobseeker's highest qualification, e.g. `Diploma in IT`
+  * Optional free text. Omit `q/` to leave it empty; specify it at most once.
 * `<remarks>`: your remarks about this jobseeker
   * Optional. When omitted, the remarks value is treated as empty.
 * `<tag>`: a tag for this jobseeker
@@ -196,7 +201,7 @@ additional constraints on field values.
 **Examples:**
 {: #addj-examples}
 
-* `addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
+* `addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 q/Diploma in IT`
 * `addj n/Betsy Crowe t/friend colleague e/betsycrowe@example.com a/Newgate Prison p/1234567`
 
 #### Adding a client: `addc`
@@ -206,15 +211,21 @@ Adds a client to the address book.
 Adding duplicate client contacts is not allowed.
 However, adding an existing _jobseeker_ contact to the client list is allowed
 
-**Format:**{: #addc-format} `addc n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag> [<more tags>]...]`
+**Format:**{: #addc-format} `addc n/<name> p/<phone number> e/<email> a/<address> [j/<job>]... [r/<remarks>] [t/<tag> [<more tags>]...]`
 
-The fields are the same as `addj`. See [Adding a jobseeker: `addj` - Format](#addj-format).
+The common contact fields follow [Adding a jobseeker: `addj` - Format](#addj-format).
+Clients have available jobs (`j/`) instead of a highest qualification (`q/`).
+
+* `<job>`: a job title, e.g. `Software Engineer`. Spaces and punctuation are allowed.
+* Jobs are optional. Omit `j/` to leave the list empty. Repeat `j/` to list multiple jobs.
+* Repeated identical titles are stored once; titles are case-sensitive.
+* `j/` alone leaves the list empty. Do not combine an empty `j/` with other `j/` entries.
 
 **Examples:**
 {: #addc-examples}
 
 * `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road`
-* `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road r/Hiring software engineers t/employer technology`
+* `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road j/Software Engineer j/QA Tester t/employer t/technology`
 
 #### Editing a jobseeker: `editj`
 
@@ -224,10 +235,10 @@ The command overwrites some of the jobseeker's contact details, while leaving th
 
 Similar to [`addj`](#adding-a-jobseeker-addj), edits that would create duplicate jobseekers are rejected.
 
-**Format:**{: #editj-format} `editj <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [r/<remarks>] [t/<tag>]...`
+**Format:**{: #editj-format} `editj <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [q/<highest qualification>] [r/<remarks>] [t/<tag>]...`
 
 At least one of the fields `<name>`, `<phone number>`, `<email>`, `<address>`, `<remarks>`,
-or `<tag>` must be provided.
+`<highest qualification>`, or `<tag>` must be provided.
 
 * `<index>`: the index of the jobseeker to edit
   * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
@@ -236,12 +247,15 @@ or `<tag>` must be provided.
 * `<phone number>`: the phone number of the jobseeker
 * `<email>`: the email address of the jobseeker
 * `<address>`: the address of the jobseeker
+* `<highest qualification>`: the jobseeker's highest qualification
 * `<remarks>`: your remarks about this jobseeker
 * `<tag>`: a tag for this jobseeker
 
 **Notes:**
 {: #editj-notes}
 
+* Use `q/<highest qualification>` to replace the qualification, or `q/` alone to clear it.
+  Omit `q/` to keep the current value. Specify `q/` at most once.
 * To clear remarks, specify `r/` without any values.
 * Supplied tags replace all existing tags. To clear all tags, specify `t/` without any values.
 * Editing preserves hidden status and returns the view to the normal jobseeker list.
@@ -257,6 +271,9 @@ or `<tag>` must be provided.
 * Clear the second displayed jobseeker's remark and tags:
   `editj 2 r/ t/`
 
+* Replace the first displayed jobseeker's qualification: `editj 1 q/Degree in Computing`
+* Clear it: `editj 1 q/`
+
 #### Editing a client: `editc`
 
 Edits an existing client in the currently displayed client list.
@@ -265,14 +282,19 @@ The command overwrites some of the client's contact details, while leaving the r
 
 Similar to [`addc`](#adding-a-client-addc), edits that would create duplicate clients are rejected.
 
-**Format:**{: #editc-format} `editc <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [r/<remarks>] [t/<tag>]...`
+**Format:**{: #editc-format} `editc <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [j/<job>]... [r/<remarks>] [t/<tag>]...`
 
-The fields are the same as `editj`. See [Editing a jobseeker: `editj` - Format](#editj-format)
+The common contact fields follow [Editing a jobseeker: `editj` - Format](#editj-format).
+Clients accept available jobs (`j/`) instead of a highest qualification (`q/`).
+At least one field must be supplied; `j/` alone also counts.
 
 **Notes:**
 {: #editc-notes}
 
-The notes are the same as `editj`. See [Editing a jobseeker: `editj` - Notes](#editj-notes)
+* Supplied jobs replace all existing jobs. Repeat `j/` for multiple titles.
+* Use `j/` alone to clear all jobs. Omit `j/` to keep existing jobs.
+* Do not combine an empty `j/` with other `j/` entries.
+* Use `r/` alone to clear remarks, and `t/` alone to clear tags. Supplied tags replace all existing tags.
 
 **Examples:**
 {: #editc-examples}
@@ -281,6 +303,9 @@ The notes are the same as `editj`. See [Editing a jobseeker: `editj` - Notes](#e
   `editc 1 r/Hiring software engineers`
 * Clear that client's remark:
   `editc 1 r/`
+
+* Replace the first displayed client's jobs: `editc 1 j/Software Engineer j/QA Tester`
+* Clear all of that client's jobs: `editc 1 j/`
 
 #### Deleting a jobseeker: `deletej`
 
@@ -444,6 +469,32 @@ The notes are the same as `findj`. See [Finding jobseekers: `findj` - Notes](#fi
 * `findc roy` returns `Roy Balakrishnan`.
 * `findc irfan@example.com` returns `Irfan Ibrahim`.
 * `findc colleagues` returns `Roy Balakrishnan`, who is tagged `colleagues`.
+
+#### Finding jobseekers and clients: `find`
+
+Finds jobseekers and clients whose name, phone number, email or tags contain any of the given keywords.
+
+This does the same as running [`findj`](#finding-jobseekers-findj) and [`findc`](#finding-clients-findc)
+with the same keywords, so both lists are filtered at once.
+This is useful for finding every contact with a certain tag, such as an industry.
+
+Hidden jobseekers and clients are not searched.
+
+**Format:**{: #find-format} `find <keyword>...`
+
+* `<keyword>`: a keyword to search for
+  * At least one keyword must be given.
+
+**Notes:**
+{: #find-notes}
+
+The notes are the same as `findj`. See [Finding jobseekers: `findj` - Notes](#findj-notes).
+
+**Examples:**
+{: #find-examples}
+
+* `find colleagues` returns the jobseeker `Bernice Yu` and the client `Roy Balakrishnan`, who are both tagged `colleagues`.
+* `find alex roy` returns the jobseeker `Alex Yeoh` and the client `Roy Balakrishnan`.
 
 #### Hiding a jobseeker: `hidej`
 
@@ -781,10 +832,10 @@ _Details coming soon ..._
 |----------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
 | [Help](#viewing-help-help)                                     | `help`                                                                                                  |
 | [Exit](#exiting-the-program-exit)                              | `exit`                                                                                                  |
-| [Add jobseeker](#adding-a-jobseeker-addj)                      | `addj n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag> [<more tags>]...]`                       |
-| [Add client](#adding-a-client-addc)                            | `addc n/<name> p/<phone number> e/<email> a/<address> [r/<remarks>] [t/<tag> [<more tags>]...]`                       |
-| [Edit jobseeker](#editing-a-jobseeker-editj)                   | `editj <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [r/<remarks>] [t/<tag>]...`      |
-| [Edit client](#editing-a-client-editc)                         | `editc <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [r/<remarks>] [t/<tag>]...`      |
+| [Add jobseeker](#adding-a-jobseeker-addj)                      | `addj n/<name> p/<phone number> e/<email> a/<address> [q/<highest qualification>] [r/<remarks>] [t/<tag> [<more tags>]...]`                       |
+| [Add client](#adding-a-client-addc)                            | `addc n/<name> p/<phone number> e/<email> a/<address> [j/<job>]... [r/<remarks>] [t/<tag> [<more tags>]...]`                       |
+| [Edit jobseeker](#editing-a-jobseeker-editj)                   | `editj <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [q/<highest qualification>] [r/<remarks>] [t/<tag>]...`      |
+| [Edit client](#editing-a-client-editc)                         | `editc <index> [n/<name>] [p/<phone number>] [e/<email>] [a/<address>] [j/<job>]... [r/<remarks>] [t/<tag>]...`      |
 | [Clear jobseekers](#clearing-all-jobseekers-clearj)            | `clearj`                                                                                                |
 | [Clear clients](#clearing-all-clients-clearc)                  | `clearc`                                                                                                |
 | [Delete jobseekers](#deleting-a-jobseeker-deletej)             | `deletej <index>`                                                                                       |
@@ -794,6 +845,7 @@ _Details coming soon ..._
 | [List clients](#listing-clients-listc)                         | `listc`                                                                                                 |
 | [Find jobseekers](#finding-jobseekers-findj)                   | `findj <keyword>...`                                                                                    |
 | [Find clients](#finding-clients-findc)                         | `findc <keyword>...`                                                                                    |
+| [Find jobseekers and clients](#finding-jobseekers-and-clients-find) | `find <keyword>...` |
 | [Find hidden jobseekers](#finding-hidden-jobseekers-findhj)    | `findhj <keyword>...`                                                                                   |
 | [Find hidden clients](#finding-hidden-clients-findhc)          | `findhc <keyword>...`                                                                                   |
 | [Hide jobseeker](#hiding-a-jobseeker-hidej)                    | `hidej <index>`                                                                                         |

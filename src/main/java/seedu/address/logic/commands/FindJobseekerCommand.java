@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.logging.Logger;
 
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
@@ -15,7 +14,7 @@ import seedu.address.model.person.PersonContainsKeywordsPredicate;
  * tags contain any of the argument keywords. Keyword matching is case insensitive. Hidden jobseekers
  * and clients are not searched.
  */
-public class FindJobseekerCommand extends Command {
+public class FindJobseekerCommand extends AbstractFindCommand {
 
     public static final String COMMAND_WORD = "findj";
 
@@ -27,16 +26,13 @@ public class FindJobseekerCommand extends Command {
 
     private static final Logger logger = LogsCenter.getLogger(FindJobseekerCommand.class);
 
-    private final PersonContainsKeywordsPredicate predicate;
-
     /**
      * Creates a command that lists all jobseekers that match {@code predicate}.
      *
      * @param predicate Predicate that decides which jobseekers are listed; must not be null.
      */
     public FindJobseekerCommand(PersonContainsKeywordsPredicate predicate) {
-        requireNonNull(predicate);
-        this.predicate = predicate;
+        super(predicate);
     }
 
     @Override
@@ -48,26 +44,5 @@ public class FindJobseekerCommand extends Command {
         // that is useful when debugging search results.
         logger.fine("Found " + matchCount + " jobseeker(s) matching " + predicate);
         return new CommandResult(String.format(Messages.MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, matchCount));
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        // instanceof handles nulls
-        if (!(other instanceof FindJobseekerCommand otherFindJobseekerCommand)) {
-            return false;
-        }
-
-        return predicate.equals(otherFindJobseekerCommand.predicate);
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .add("predicate", predicate)
-                .toString();
     }
 }

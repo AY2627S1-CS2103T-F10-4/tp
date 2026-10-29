@@ -26,7 +26,9 @@ public class CommandSuggestionsTest {
     @Test
     public void suggest_hiddenCommandPrefixes_returnsSortedMatches() {
         assertEquals(List.of("listhc", "listhj"), suggestions.suggest("listh"));
-        assertEquals(List.of("findc", "findhc", "findhj", "findj"), suggestions.suggest("find"));
+        assertEquals(List.of("find", "findc", "findhc", "findhj", "findj"), suggestions.suggest("fin"));
+        // "find" is itself a command, so it counts as complete and gets no suggestions.
+        assertEquals(List.of(), suggestions.suggest("find"));
         assertEquals(List.of("findhc", "findhj"), suggestions.suggest("  findh"));
     }
 

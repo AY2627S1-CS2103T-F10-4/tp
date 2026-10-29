@@ -1,10 +1,13 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_QUALIFICATION_FIELD_NOT_ALLOWED;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_JOB;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_QUALIFICATION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
@@ -12,6 +15,7 @@ import java.util.Set;
 
 import seedu.address.logic.commands.AddClientCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.job.Job;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Client;
 import seedu.address.model.person.Email;
@@ -33,7 +37,11 @@ public class AddClientCommandParser implements Parser<AddClientCommand> {
     public AddClientCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                        PREFIX_TAG, PREFIX_REMARK);
+                        PREFIX_TAG, PREFIX_REMARK, PREFIX_JOB, PREFIX_QUALIFICATION);
+
+        if (argMultimap.getValue(PREFIX_QUALIFICATION).isPresent()) {
+            throw new ParseException(MESSAGE_QUALIFICATION_FIELD_NOT_ALLOWED);
+        }
 
         if (!argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
@@ -51,9 +59,10 @@ public class AddClientCommandParser implements Parser<AddClientCommand> {
         Set<Tag> tagList = ParserUtil.parseTagsForAdd(argMultimap.getAllValues(PREFIX_TAG));
 
         Remark remark = new Remark(argMultimap.getValue(PREFIX_REMARK).orElse(""));
+        Set<Job> jobs = ParserUtil.parseJobs(argMultimap.getAllValues(PREFIX_JOB));
         // A newly added client always starts unhidden; only a later hide command can hide them.
         boolean isHidden = false;
-        Client client = new Client(name, phone, email, address, tagList, remark, isHidden);
+        Client client = new Client(name, phone, email, address, tagList, remark, jobs, isHidden);
 
         return new AddClientCommand(client);
     }
