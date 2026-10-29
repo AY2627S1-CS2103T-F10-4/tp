@@ -3,7 +3,6 @@ package seedu.address.ui;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
@@ -14,27 +13,16 @@ import javafx.application.Platform;
 import javafx.scene.Node;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.ClientBuilder;
+import seedu.address.testutil.JavaFxTestUtil;
 import seedu.address.testutil.JobseekerBuilder;
 
 /**
  * Checks that {@code PersonCard} shows the "Hidden" badge only for hidden persons.
  */
 public class PersonCardTest {
-    /**
-     * Starts the JavaFX toolkit, tolerating one already started by another UI test in this JVM.
-     */
     @BeforeAll
     public static void startJavaFx() throws Exception {
-        CountDownLatch started = new CountDownLatch(1);
-        try {
-            Platform.startup(() -> {
-                Platform.setImplicitExit(false);
-                started.countDown();
-            });
-        } catch (IllegalStateException alreadyStarted) {
-            started.countDown();
-        }
-        assertTrue(started.await(10, TimeUnit.SECONDS), "JavaFX startup timed out");
+        JavaFxTestUtil.startJavaFx();
     }
 
     @Test
