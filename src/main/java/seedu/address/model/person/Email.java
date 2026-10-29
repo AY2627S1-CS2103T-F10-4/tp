@@ -15,10 +15,10 @@ public class Email {
             + "1. The local-part should only contain alphanumeric characters and these special characters, excluding "
             + "the parentheses, (" + SPECIAL_CHARACTERS + "). The local-part may not start or end with any special "
             + "characters.\n"
-            + "2. The local-part is followed by an '@' and then a domain name. The domain name is made up of domain "
-            + "labels separated by periods.\n"
+            + "2. The local-part is followed by an '@' and then a domain name. The domain name is made up of at "
+            + "least two domain labels separated by periods (e.g. example.com).\n"
             + "The domain name must:\n"
-            + "    - end with a domain label at least 2 characters long\n"
+            + "    - end with a top-level domain (e.g. com) of at least 2 letters only\n"
             + "    - have each domain label start and end with alphanumeric characters\n"
             + "    - have each domain label consist of alphanumeric characters, separated only by hyphens, if any.";
     // alphanumeric and special characters
@@ -27,8 +27,10 @@ public class Email {
             + ALPHANUMERIC_NO_UNDERSCORE + ")*";
     private static final String DOMAIN_PART_REGEX = ALPHANUMERIC_NO_UNDERSCORE
             + "(-" + ALPHANUMERIC_NO_UNDERSCORE + ")*";
-    private static final String DOMAIN_LAST_PART_REGEX = "(" + DOMAIN_PART_REGEX + "){2,}$"; // At least two chars
-    private static final String DOMAIN_REGEX = "(" + DOMAIN_PART_REGEX + "\\.)*" + DOMAIN_LAST_PART_REGEX;
+    // Top-level domain such as "com" or "sg": letters only, at least two of them
+    private static final String TOP_LEVEL_DOMAIN_REGEX = "[a-zA-Z]{2,}$";
+    // "+" (not "*") requires at least one "label." before the top-level domain, so "irfan@example" is rejected
+    private static final String DOMAIN_REGEX = "(" + DOMAIN_PART_REGEX + "\\.)+" + TOP_LEVEL_DOMAIN_REGEX;
     public static final String VALIDATION_REGEX = LOCAL_PART_REGEX + "@" + DOMAIN_REGEX;
 
     public final String value;
