@@ -202,7 +202,7 @@ additional constraints on field values.
 {: #addj-examples}
 
 * `addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 q/Diploma in IT`
-* `addj n/Betsy Crowe t/friend colleague e/betsycrowe@example.com a/Newgate Prison p/1234567`
+* `addj n/Betsy Crowe e/betsycrowe@example.com a/Newgate Prison p/1234567 t/friend colleague`
 
 #### Adding a client: `addc`
 

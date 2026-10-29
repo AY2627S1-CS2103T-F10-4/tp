@@ -41,16 +41,16 @@ public class ParserUtil {
         requireNonNull(arguments);
         List<String> missing = new ArrayList<>();
         if (arguments.getValue(PREFIX_NAME).isEmpty()) {
-            missing.add("n/ (name)");
+            missing.add(PREFIX_NAME + " (name)");
         }
         if (arguments.getValue(PREFIX_PHONE).isEmpty()) {
-            missing.add("p/ (phone)");
+            missing.add(PREFIX_PHONE + " (phone)");
         }
         if (arguments.getValue(PREFIX_EMAIL).isEmpty()) {
-            missing.add("e/ (email)");
+            missing.add(PREFIX_EMAIL + " (email)");
         }
         if (arguments.getValue(PREFIX_ADDRESS).isEmpty()) {
-            missing.add("a/ (address)");
+            missing.add(PREFIX_ADDRESS + " (address)");
         }
         if (!missing.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_MISSING_REQUIRED_FIELDS, String.join(", ", missing)));
