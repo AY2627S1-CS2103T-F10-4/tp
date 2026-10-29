@@ -34,22 +34,15 @@ import seedu.address.model.ModelManager;
 import seedu.address.storage.JsonAddressBookStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.StorageManager;
+import seedu.address.testutil.JavaFxTestUtil;
 
 /**
  * Exercises command entry, completion and history on the JavaFX application thread.
  */
 public class CommandBoxTest {
-    /**
-     * Starts the shared JavaFX toolkit and keeps it alive between window-based tests.
-     */
     @BeforeAll
     public static void startJavaFx() throws Exception {
-        CountDownLatch started = new CountDownLatch(1);
-        Platform.startup(() -> {
-            Platform.setImplicitExit(false);
-            started.countDown();
-        });
-        assertTrue(started.await(10, TimeUnit.SECONDS), "JavaFX startup timed out");
+        JavaFxTestUtil.startJavaFx();
     }
 
     @Test

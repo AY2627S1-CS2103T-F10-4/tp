@@ -65,7 +65,7 @@ public class UntagClientCommand extends Command {
         }
 
         Client updatedClient = new Client(target.getName(), target.getPhone(), target.getEmail(),
-                target.getAddress(), updatedTags, target.getRemark(), target.isHidden());
+                target.getAddress(), updatedTags, target.getRemark(), target.getAvailableJobs(), target.isHidden());
         model.setClient(target, updatedClient);
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(updatedClient)));
     }

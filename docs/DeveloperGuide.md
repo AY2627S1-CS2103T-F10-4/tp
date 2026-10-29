@@ -119,13 +119,14 @@ How the parsing works:
 ### Model component
 **API** : [`Model.java`](https://github.com/AY2627S1-CS2103T-F10-4/tp/tree/master/src/main/java/seedu/address/model/Model.java)
 
-<img src="images/ModelClassDiagram.png" width="450" />
+<img src="images/ModelClassDiagram.png" width="900" />
 
 
 The `Model` component,
 
-* stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
-* stores the `Person` objects selected by the current filter, such as search results, in a separate _filtered_ list. It exposes this list as an unmodifiable `ObservableList<Person>` that the UI can observe and bind to, so the UI updates when the list changes.
+* stores jobseekers and clients in separate `UniquePersonList<Jobseeker>` and `UniquePersonList<Client>` collections. Both jobseeker and client extend the abstract `Person` class.
+* exposes separate filtered `ObservableList<Jobseeker>` and `ObservableList<Client>` views that the UI observes.
+* stores an optional highest qualification in each `Jobseeker` as a `Qualification` value object. An empty value means unspecified. Each `Client` stores an immutable `Set<Job>` of available jobs; an empty set means no jobs specified. These fields affect equality but do not change contact identity (phone and email).
 * stores a `UserPrefs` object that represents the user’s preferences (currently, just the GUI settings). This is exposed to the outside as a `ReadOnlyUserPrefs` object.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
@@ -147,6 +148,8 @@ The `Storage` component,
 * is implemented by `StorageManager`, which delegates the actual JSON file access to `JsonAddressBookStorage` and `JsonUserPrefsStorage` (one class per data file).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
+`JsonAdaptedJobseeker` persists `highestQualification` as a string, and `JsonAdaptedClient` persists `availableJobs` as an array of job titles. Missing or null fields default to an empty qualification or job set, allowing older files to load. Blank or null entries inside the jobs array are rejected as invalid data.
+
 ### Common classes
 
 Classes used by multiple components are in the `seedu.address.commons` package.
@@ -167,9 +170,11 @@ The following sequence diagram focuses on successful execution of `editj 1 n/Ali
 
 #### Parsing and optional fields
 
-`EditCommandParser` tokenizes the arguments using `ArgumentTokenizer`, parses the index with `ParserUtil.parseIndex()`, and rejects repeated `n/`, `p/`, `e/`, `a/`, or `r/` prefixes. It validates the supplied fields and populates `EditJobseekerDescriptor`. Invalid input or a descriptor with no supplied fields causes a `ParseException` before execution.
+`EditCommandParser` tokenizes the arguments using `ArgumentTokenizer`, parses the index with `ParserUtil.parseIndex()`, and rejects repeated `n/`, `p/`, `e/`, `a/`, `r/`, or `q/` prefixes. It validates the supplied fields and populates `EditJobseekerDescriptor`. Invalid input or a descriptor with no supplied fields causes a `ParseException` before execution.
 
 Unspecified fields remain unchanged. For remarks, an omitted `r/` leaves the descriptor's remark unset, while an empty `r/` supplies `new Remark("")` to clear the existing remark. Supplied tags replace the existing set; `t/` alone supplies an empty set to clear all tags.
+
+Jobseeker qualifications follow the same omitted/empty distinction: `q/` supplies an empty `Qualification`, while omitting it preserves the current value. For clients, `EditClientCommandParser` accepts repeated `j/` prefixes and supplies a replacement `Set<Job>` to `EditClientDescriptor`. `j/` alone clears the set; blank entries mixed with other jobs are rejected. Hide, unhide, tag, and untag commands preserve these fields when constructing replacement contacts.
 
 #### Execution, filtering, and persistence
 

@@ -7,6 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import seedu.address.model.person.Client;
+import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.Person;
 
 /**
@@ -32,6 +34,9 @@ public class PersonCard extends UiPart<Region> {
     private Label name;
     @FXML
     private Label id;
+    /** Badge that marks the person as hidden; shown only when {@code person.isHidden()} */
+    @FXML
+    private Label hiddenIndicator;
     @FXML
     private Label phone;
     @FXML
@@ -42,6 +47,10 @@ public class PersonCard extends UiPart<Region> {
     private Label remark;
     @FXML
     private FlowPane tags;
+    @FXML
+    private Label highestQualification;
+    @FXML
+    private Label availableJobs;
 
     /**
      * Creates a {@code PersonCard} with the given {@code Person} and index to display.
@@ -51,12 +60,25 @@ public class PersonCard extends UiPart<Region> {
         this.person = person;
         id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
+        // Unmanaged when invisible, so unhidden cards leave no gap after the name
+        hiddenIndicator.setVisible(person.isHidden());
+        hiddenIndicator.setManaged(hiddenIndicator.isVisible());
         phone.setText(person.getPhone().value);
         address.setText(person.getAddress().value);
         email.setText(person.getEmail().value);
         remark.setText(person.getRemark().value);
         remark.setVisible(!person.getRemark().value.isEmpty());
         remark.setManaged(remark.isVisible());
+        String qualification = person instanceof Jobseeker jobseeker
+                ? jobseeker.getHighestQualification().value
+                : "";
+        highestQualification.setText("Highest qualification: " + qualification);
+        highestQualification.setVisible(!qualification.isEmpty());
+        highestQualification.setManaged(highestQualification.isVisible());
+        String jobs = person instanceof Client client ? String.join(", ", client.getSortedJobNames()) : "";
+        availableJobs.setText("Available jobs: " + jobs);
+        availableJobs.setVisible(!jobs.isEmpty());
+        availableJobs.setManaged(availableJobs.isVisible());
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
