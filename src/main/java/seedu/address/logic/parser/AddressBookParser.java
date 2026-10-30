@@ -97,11 +97,11 @@ public class AddressBookParser {
             case ClearClientCommand.COMMAND_WORD -> new ClearClientCommand();
             case CopyJobseekerCommand.COMMAND_WORD -> new CopyJobseekerCommandParser().parse(arguments);
             case CopyClientCommand.COMMAND_WORD -> new CopyClientCommandParser().parse(arguments);
-            case FindCommand.COMMAND_WORD -> FindCommandParser.forAll().parse(arguments);
-            case FindJobseekerCommand.COMMAND_WORD -> FindCommandParser.forJobseekers().parse(arguments);
-            case FindClientCommand.COMMAND_WORD -> FindCommandParser.forClients().parse(arguments);
-            case FindHiddenJobseekerCommand.COMMAND_WORD -> FindCommandParser.forHiddenJobseekers().parse(arguments);
-            case FindHiddenClientCommand.COMMAND_WORD -> FindCommandParser.forHiddenClients().parse(arguments);
+            case FindCommand.COMMAND_WORD -> new FindCommandParser().parse(arguments);
+            case FindJobseekerCommand.COMMAND_WORD -> new FindJobseekerCommandParser().parse(arguments);
+            case FindClientCommand.COMMAND_WORD -> new FindClientCommandParser().parse(arguments);
+            case FindHiddenJobseekerCommand.COMMAND_WORD -> new FindHiddenJobseekerCommandParser().parse(arguments);
+            case FindHiddenClientCommand.COMMAND_WORD -> new FindHiddenClientCommandParser().parse(arguments);
             case ListCommand.COMMAND_WORD -> new ListCommand();
             case ListJobseekerCommand.COMMAND_WORD -> new ListJobseekerCommand();
             case ListClientCommand.COMMAND_WORD -> new ListClientCommand();
