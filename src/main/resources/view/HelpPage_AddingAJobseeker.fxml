@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import seedu.address.ui.ExampleCode?>
+<?import seedu.address.ui.SectionHyperlink?>
+
+<VBox styleClass="document" stylesheets="@HelpWindow.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextFlow styleClass="h2">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Adding a jobseeker: " />
+            <Label styleClass="code" text="addj" />
+         </children>
+      </TextFlow>
+      <Label minHeight="-Infinity" text="Adds a jobseeker to TalentLink." wrapText="true" />
+      <Label layoutX="40.0" layoutY="94.0" minHeight="-Infinity" text="Adding duplicate jobseeker contacts is not allowed. However, adding an existing client contact to the jobseeker list is allowed" wrapText="true" />
+      <HBox alignment="BASELINE_LEFT">
+         <children>
+            <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="bold" text="Format: " />
+            <ExampleCode code="addj n/&lt;name&gt; p/&lt;phone number&gt; e/&lt;email&gt; a/&lt;address&gt; [q/&lt;highest qualification&gt;] [r/&lt;remarks&gt;] [t/&lt;tags&gt;]..." />
+         </children>
+      </HBox>
+      <VBox styleClass="body">
+         <children>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <Label styleClass="code" text="&lt;name&gt;" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": the name of the jobseeker" />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <Label styleClass="code" text="&lt;phone number&gt;" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": the phone number of the jobseeker" />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="33.0">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <Label styleClass="code" text="&lt;email&gt;" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": the email address of the jobseeker" />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="56.0">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <Label styleClass="code" text="&lt;address&gt;" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": the address of the jobseeker" />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <TextFlow>
+                           <children>
+                              <Label styleClass="code" text="&lt;highest qualification&gt;" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": the jobseeker’s highest qualification" />
+                           </children>
+                        </TextFlow>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="Optional. When omitted, the qualification is treated as empty." wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <TextFlow>
+                           <children>
+                              <Label styleClass="code" text="&lt;remarks&gt;" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": your remarks about this jobseeker" />
+                           </children>
+                        </TextFlow>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="Optional. When omitted, the remarks value is treated as empty." wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <TextFlow>
+                           <children>
+                              <Label styleClass="code" text="&lt;tags&gt;" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": a list of tags for this jobseeker, separated by spaces" />
+                           </children>
+                        </TextFlow>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="Optional. When omitted, no tags will be added." wrapText="true" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <TextFlow>
+                                 <children>
+                                    <Text layoutX="60.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Specifying a single list of tags, repeating the prefix multiple times or mixing both are all valid ways to add multiple tags, i.e. " />
+                                    <Label styleClass="code" text="t/friend t/colleague" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" and " />
+                                    <Label layoutX="818.0" layoutY="14.0" styleClass="code" text="t/friend colleague" />
+                                    <Text layoutX="987.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" are the same" />
+                                 </children>
+                              </TextFlow>
+                           </children>
+                        </HBox>
+                        <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="59.0">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <TextFlow>
+                                 <children>
+                                    <Text layoutX="60.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="An empty " />
+                                    <Label styleClass="code" text="t/" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" is rejected when adding a contact. Omit it if no tags are needed." />
+                                 </children>
+                              </TextFlow>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <TextFlow>
+         <children>
+            <Text layoutX="60.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="See " />
+            <SectionHyperlink text="Common info about contacts" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" for additional constraints on field values." />
+         </children>
+      </TextFlow>
+      <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="bold" text="Examples:" />
+      <VBox styleClass="body">
+         <children>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <TextFlow>
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add a jobseeker named " />
+                              <Label styleClass="code" text="John Doe" />
+                              <Text layoutX="481.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" with a diploma in IT" />
+                           </children>
+                        </TextFlow>
+                        <ExampleCode code="addj n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 q/Diploma in IT" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <TextFlow>
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add a jobseeker named " />
+                              <Label styleClass="code" text="Betsy Crowe" />
+                              <Text layoutX="481.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" who is tagged as a friend" />
+                           </children>
+                        </TextFlow>
+                        <ExampleCode code="addj n/Betsy Crowe e/betsycrowe@example.com a/Newgate Prison p/1234567 t/friend colleague" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>

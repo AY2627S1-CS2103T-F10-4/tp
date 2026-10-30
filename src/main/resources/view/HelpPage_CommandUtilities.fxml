@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<VBox styleClass="document" stylesheets="@HelpWindow.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label styleClass="h2" text="Revisit past commands" />
+      <Label layoutX="40.0" layoutY="40.0" text="Use the up and down arrow keys to revisit commands from your command history." />
+      <Separator prefWidth="200.0" />
+      <Label layoutX="40.0" layoutY="40.0" styleClass="h2" text="Autocomplete commands">
+         <VBox.margin>
+            <Insets top="30.0" />
+         </VBox.margin>
+      </Label>
+      <TextFlow styleClass="body">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type part of a command (e.g. " />
+            <Label styleClass="code" text="list" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text=") to see suggestions. Use " />
+            <Label layoutX="222.0" layoutY="14.0" styleClass="code" text="Up" />
+            <Text layoutX="261.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="/" />
+            <Label layoutX="440.0" layoutY="14.0" styleClass="code" text="Down" />
+            <Text layoutX="465.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" to select one, then " />
+            <Label layoutX="471.0" layoutY="14.0" styleClass="code" text="Tab" />
+            <Text layoutX="510.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" or " />
+            <Label layoutX="649.0" layoutY="14.0" styleClass="code" text="Enter" />
+            <Text layoutX="681.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" to complete it. Press " />
+            <Label layoutX="705.0" layoutY="14.0" styleClass="code" text="Enter" />
+            <Text layoutX="751.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" again to run the command, or " />
+            <Label layoutX="903.0" layoutY="14.0" styleClass="code" text="Escape" />
+            <Text layoutX="949.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" to dismiss suggestions." />
+         </children>
+      </TextFlow>
+   </children>
+</VBox>

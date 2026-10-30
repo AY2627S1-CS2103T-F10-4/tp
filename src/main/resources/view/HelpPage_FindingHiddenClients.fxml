@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import seedu.address.ui.ExampleCode?>
+<?import seedu.address.ui.SectionHyperlink?>
+
+<VBox styleClass="document" stylesheets="@HelpWindow.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextFlow styleClass="h2">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Finding hidden clients: " />
+            <Label styleClass="code" text="findhc" />
+         </children>
+      </TextFlow>
+      <TextFlow>
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Finds " />
+            <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="italic" text="hidden" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" clients whose name, phone number, email or tags contain any of the given keywords." />
+         </children>
+      </TextFlow>
+      <TextFlow layoutX="40.0" layoutY="98.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="The search logic is the same as " />
+            <Label styleClass="code" text="findc" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="See " />
+            <SectionHyperlink text="Finding clients" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" for more details." />
+         </children>
+      </TextFlow>
+      <HBox alignment="BASELINE_LEFT">
+         <children>
+            <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="bold" text="Format: " />
+            <ExampleCode code="findhc &lt;keyword&gt;..." />
+         </children>
+      </HBox>
+      <VBox styleClass="body">
+         <children>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <TextFlow>
+                           <children>
+                              <Label styleClass="code" text="&lt;keyword&gt;" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": a keyword to search for" />
+                           </children>
+                        </TextFlow>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="At least one keyword must be given." wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="bold" text="Examples:" />
+      <Label minHeight="-Infinity" text="The following examples act on the sample dataset." wrapText="true" />
+      <VBox styleClass="body">
+         <children>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <ExampleCode code="findhc irfan" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" returns " />
+                        <Label styleClass="code" text="Irfan Ibrahim" />
+                        <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" if " />
+                        <Label layoutX="159.0" layoutY="14.0" styleClass="code" text="Irfan Ibrahim" />
+                        <Text layoutX="138.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" has been hidden." />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>

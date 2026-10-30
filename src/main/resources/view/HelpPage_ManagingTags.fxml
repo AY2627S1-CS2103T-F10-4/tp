@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<VBox styleClass="document" stylesheets="@HelpWindow.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label styleClass="h2" text="Managing tags" />
+      <Label layoutX="40.0" layoutY="40.0" text="Tags are labels with arbitrary names that you can put on jobseekers and clients. They can be used to help you organize contacts and speed up searches." />
+      <Label layoutX="40.0" layoutY="94.0" text="Tags contains the following attributes, and their corresponding constraints:" />
+      <VBox styleClass="body">
+         <children>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <Label text="Name" />
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label text="must contain only alphanumeric characters" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="33.0">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <TextFlow styleClass="body">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="is " />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="italic" text="case-sensitive" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text=", unlike the parameters to " />
+                                    <Label styleClass="code" text="findj" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" and " />
+                                    <Label layoutX="304.0" layoutY="14.0" styleClass="code" text="findc" />
+                                    <Text layoutX="350.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+                                 </children>
+                              </TextFlow>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <TextFlow styleClass="body">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tags are identified by their names, i.e. 2 tags with the same name, " />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="italic" text="case-sensitive" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text=", are considered the same tags." />
+         </children>
+      </TextFlow>
+      <Label layoutX="40.0" layoutY="128.0" text="A jobseeker or client contact can have multiple tags, or no tags at all." />
+   </children>
+</VBox>

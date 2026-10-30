@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<VBox styleClass="document" stylesheets="@HelpWindow.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label styleClass="h2" text="Notes about the command format" />
+      <HBox alignment="BASELINE_LEFT">
+         <children>
+            <Label styleClass="bullet" text="•" />
+            <TextFlow styleClass="body">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Words inside angle bracket " />
+                  <Label styleClass="code" text="&lt;field name&gt;" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" are the parameters to be supplied by the user, hereby called " />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="italic" text="fields" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Field values can contain spaces, but preceding and trailing spaces are ignored." />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="For example, in " />
+                  <Label layoutX="206.0" layoutY="14.0" styleClass="code" text="addj n/&lt;name&gt;" />
+                  <Text layoutX="10.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text=", replace " />
+                  <Label layoutX="206.0" layoutY="14.0" styleClass="code" text="&lt;name&gt;" />
+                  <Text layoutX="222.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" with a value such as " />
+                  <Label layoutX="284.0" layoutY="66.0" styleClass="code" text="John Doe" />
+                  <Text layoutX="770.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+               </children>
+            </TextFlow>
+         </children>
+      </HBox>
+      <HBox alignment="BASELINE_LEFT">
+         <children>
+            <Label styleClass="bullet" text="•" />
+            <TextFlow styleClass="body">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fields in square brackets are optional. Every other items are required." />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="For example, " />
+                  <Label layoutX="206.0" layoutY="14.0" styleClass="code" text="n/&lt;name&gt; [t/&lt;tag&gt;]" />
+                  <Text layoutX="10.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" can be written as " />
+                  <Label layoutX="206.0" layoutY="14.0" styleClass="code" text="n/John Doe t/friend" />
+                  <Text layoutX="222.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" or as " />
+                  <Label layoutX="284.0" layoutY="66.0" styleClass="code" text="n/John Doe" />
+                  <Text layoutX="770.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+               </children>
+            </TextFlow>
+         </children>
+      </HBox>
+      <HBox alignment="BASELINE_LEFT" layoutX="40.0" layoutY="183.0">
+         <children>
+            <Label styleClass="bullet" text="•" />
+            <TextFlow styleClass="body">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Items followed by " />
+                  <Label layoutX="104.0" layoutY="40.0" styleClass="code" text="..." />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="can appear 1 or more times. Every other items must only appear once." />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="For example, " />
+                  <Label layoutX="206.0" layoutY="14.0" styleClass="code" text="[t/&lt;tag&gt;]..." />
+                  <Text layoutX="10.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" may be omitted, or written as " />
+                  <Label layoutX="206.0" layoutY="14.0" styleClass="code" text="t/friend" />
+                  <Text layoutX="222.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" or " />
+                  <Label layoutX="284.0" layoutY="66.0" styleClass="code" text="t/friend t/family" />
+                  <Text layoutX="770.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+               </children>
+            </TextFlow>
+         </children>
+      </HBox>
+      <HBox alignment="BASELINE_LEFT" layoutX="40.0" layoutY="183.0">
+         <children>
+            <Label styleClass="bullet" text="•" />
+            <TextFlow styleClass="body">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Prefixed parameters can be in any order." />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="For example, if the command specifies " />
+                  <Label layoutX="206.0" layoutY="14.0" styleClass="code" text="n/&lt;name&gt; p/&lt;phone number&gt;" />
+                  <Text layoutX="10.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text=", " />
+                  <Label layoutX="206.0" layoutY="14.0" styleClass="code" text="p/&lt;phone number&gt; n/&lt;name&gt;" />
+                  <Text layoutX="222.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" is also acceptable." />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="For " />
+                  <Label styleClass="code" text="editj" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=", " />
+                  <Label styleClass="code" text="editc" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=", " />
+                  <Label styleClass="code" text="tagj" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=", " />
+                  <Label styleClass="code" text="tagc" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=", " />
+                  <Label styleClass="code" text="untagj" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=", and " />
+                  <Label styleClass="code" text="untagc" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=", the index must come first, followed by the fields or tags to update." />
+               </children>
+            </TextFlow>
+         </children>
+      </HBox>
+      <HBox alignment="BASELINE_LEFT" layoutX="40.0" layoutY="310.0">
+         <children>
+            <Label styleClass="bullet" text="•" />
+            <TextFlow styleClass="body">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Extraneous parameters for commands that take no parameters, such as " />
+                  <Label styleClass="code" text="help" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=", " />
+                  <Label styleClass="code" text="exit" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=", " />
+                  <Label styleClass="code" text="list" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=", " />
+                  <Label styleClass="code" text="listj" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=", " />
+                  <Label styleClass="code" text="listc" />
+                  <Text layoutX="701.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text=", " />
+                  <Label layoutX="709.0" layoutY="66.0" styleClass="code" text="clearj" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=", and " />
+                  <Label styleClass="code" text="clearc" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" are ignored." />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="For example, " />
+                  <Label styleClass="code" text="help 123" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" is interpreted as " />
+                  <Label styleClass="code" text="help" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+               </children>
+            </TextFlow>
+         </children>
+      </HBox>
+      <HBox alignment="BASELINE_LEFT">
+         <children>
+            <Label styleClass="bullet" text="•" />
+            <TextFlow styleClass="body">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Due to JavaFX restrictions, texts cannot be selected and copied normally. To mitigate this problem, some important code areas have a copy button on their left." />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;" />
+                  <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click on the button to copy the command to your clipboard, which can then be pasted in the application." />
+               </children>
+            </TextFlow>
+         </children>
+      </HBox>
+   </children>
+</VBox>

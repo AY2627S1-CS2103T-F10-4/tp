@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import seedu.address.ui.ExampleCode?>
+
+<VBox styleClass="document" stylesheets="@HelpWindow.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="h2" text="Exiting the program" />
+      <TextFlow>
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Exits the program." />
+         </children>
+      </TextFlow>
+      <HBox alignment="BASELINE_LEFT">
+         <children>
+            <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="bold" text="Format: " />
+            <ExampleCode code="exit" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

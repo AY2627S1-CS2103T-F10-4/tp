@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import seedu.address.ui.ExampleCode?>
+<?import seedu.address.ui.SectionHyperlink?>
+
+<VBox styleClass="document" stylesheets="@HelpWindow.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextFlow styleClass="h2">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Editing a client: " />
+            <Label styleClass="code" text="editc" />
+         </children>
+      </TextFlow>
+      <Label minHeight="-Infinity" text="Edits an existing client in the currently displayed client list." wrapText="true" />
+      <Label layoutX="40.0" layoutY="94.0" minHeight="-Infinity" text="The command overwrites some of the client’s contact details, while leaving the rest unmodified." wrapText="true" />
+      <TextFlow layoutX="40.0" layoutY="40.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Similar to " />
+            <Label styleClass="code" text="addc" />
+            <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=", edits that would create duplicate clients are rejected." />
+         </children>
+      </TextFlow>
+      <TextFlow>
+         <children>
+            <Text layoutX="60.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Editing preserves hidden status and returns the view to the normal client list. An edited hidden client remains hidden." />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;" />
+            <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="See " />
+            <SectionHyperlink text="Hiding a client" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" for more details" />
+         </children>
+      </TextFlow>
+      <HBox alignment="BASELINE_LEFT">
+         <children>
+            <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="bold" text="Format: " />
+            <ExampleCode code="editc &lt;index&gt; [n/&lt;name&gt;] [p/&lt;phone number&gt;] [e/&lt;email&gt;] [a/&lt;address&gt;] [j/&lt;job&gt;]...  [r/&lt;remarks&gt;] [t/&lt;tags&gt;]..." />
+         </children>
+      </HBox>
+      <VBox styleClass="body">
+         <children>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <Label styleClass="code" text="&lt;name&gt;" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": the name of the client" />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <Label styleClass="code" text="&lt;phone number&gt;" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": the phone number of the client" />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="33.0">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <Label styleClass="code" text="&lt;email&gt;" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": the email address of the client" />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="56.0">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <Label styleClass="code" text="&lt;address&gt;" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": the address of the client" />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <TextFlow>
+                           <children>
+                              <Label styleClass="code" text="&lt;job&gt;" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": the job title of an open position" />
+                           </children>
+                        </TextFlow>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="Optional. When omitted, it is assumed that no positions are open." wrapText="true" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="Multiple job titles can be specified by repeating the prefix." wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <TextFlow>
+                           <children>
+                              <Label styleClass="code" text="&lt;remarks&gt;" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": your remarks about this client" />
+                           </children>
+                        </TextFlow>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="Optional. When omitted, the remarks value is treated as empty." wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <TextFlow>
+                           <children>
+                              <Label styleClass="code" text="&lt;tags&gt;" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": a list of tags for this client, separated by spaces" />
+                           </children>
+                        </TextFlow>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="Optional. When omitted, no tags will be added." wrapText="true" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <TextFlow>
+                                 <children>
+                                    <Text layoutX="60.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Specifying a single list of tags, repeating the prefix multiple times or mixing both are all valid ways to add multiple tags, i.e. " />
+                                    <Label styleClass="code" text="t/friend t/colleague" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" and " />
+                                    <Label layoutX="818.0" layoutY="14.0" styleClass="code" text="t/friend colleague" />
+                                    <Text layoutX="987.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" are the same" />
+                                 </children>
+                              </TextFlow>
+                           </children>
+                        </HBox>
+                        <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="59.0">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <TextFlow>
+                                 <children>
+                                    <Text layoutX="60.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="An empty " />
+                                    <Label styleClass="code" text="t/" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" clears all current tags. Omit it if no changes are needed." />
+                                 </children>
+                              </TextFlow>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <TextFlow>
+         <children>
+            <Text layoutX="60.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="See " />
+            <SectionHyperlink text="Common info about contacts" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" for additional constraints on field values." />
+         </children>
+      </TextFlow>
+      <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="bold" text="Examples:" />
+      <VBox styleClass="body">
+         <children>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <TextFlow>
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Update the first displayed client’s remark" />
+                           </children>
+                        </TextFlow>
+                        <ExampleCode code="editc 1 r/Hiring software engineers" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <TextFlow>
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Clear the first displayed client’s remark" />
+                           </children>
+                        </TextFlow>
+                        <ExampleCode code="editc 1 r/" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="58.0">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <TextFlow>
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Replace the first displayed client’s open positions" />
+                           </children>
+                        </TextFlow>
+                        <ExampleCode code="editc 1 j/Software Engineer j/QA Tester" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="106.0">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <TextFlow>
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Clear all of the first displayed client’s open positions" />
+                           </children>
+                        </TextFlow>
+                        <ExampleCode code="editc 1 j/" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>

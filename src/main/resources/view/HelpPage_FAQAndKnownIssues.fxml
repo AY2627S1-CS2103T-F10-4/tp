@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<VBox styleClass="document" stylesheets="@HelpWindow.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label styleClass="h2" text="FAQ" />
+      <TextFlow styleClass="body">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bold" text="Q: " />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="How do I transfer my data to another computer?" />
+            <Text layoutX="31.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bold" text="A: " />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="italic" text="Install the app on the other computer and overwrite the data file it creates with the data file from your previous TalentLink home folder." />
+         </children>
+      </TextFlow>
+      <Separator prefWidth="200.0" />
+      <Label layoutX="40.0" layoutY="40.0" styleClass="h2" text="Known issues">
+         <VBox.margin>
+            <Insets top="30.0" />
+         </VBox.margin>
+      </Label>
+      <VBox styleClass="body">
+         <children>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label text="1. " />
+                  <TextFlow styleClass="body">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bold" text="When using multiple screens" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=", if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the " />
+                        <Label layoutX="206.0" layoutY="14.0" styleClass="code" text="preferences.json" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="italic" text=" file created by the application before running the application again." />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label text="2. " />
+                  <TextFlow styleClass="body">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bold" text="If you minimize the Help Window" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" and then run the " />
+                        <Label layoutX="206.0" layoutY="14.0" styleClass="code" text="help" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="italic" text=" command (or use the " />
+                        <Label layoutX="390.0" layoutY="14.0" styleClass="code" text="Help" />
+                        <Text layoutX="429.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="italic" text=" menu, or the keyboard shortcut " />
+                        <Label layoutX="584.0" layoutY="14.0" styleClass="code" text="F1" />
+                        <Text layoutX="623.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="italic" text=") again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window." />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>

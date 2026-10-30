@@ -1,175 +1,91 @@
 .root {
     -text-color-1: #111111;
     -text-color-2: #e46c0a;
-    -link-text-color: #0096C9;
-    -link-visited-text-color: #c58af9;
-
-    -palette-1-background: linear-gradient(to bottom, #d6e6ff, #cfe2ff);
-    -palette-1-primary: #073984;
-    -palette-1-secondary: #bbd6fe;
-
-    -palette-2-background: linear-gradient(to bottom, #d8eff3, #d1ecf1);
-    -palette-2-primary: #0c5460;
-    -palette-2-secondary: #bee5eb;
-
-    -palette-3-background: linear-gradient(to bottom, #fff5d5, #fff3cd);
-    -palette-3-primary: #856404;
-    -palette-3-secondary: #ffeeba;
 
     -fx-font-size: 16;
     -fx-font-family: "Segoe UI", sans-serif;
+    -fx-text-fill: -text-color-1;
 }
 
-.text {
-    -fx-fill: -text-color-1;
+TextFlow, Label {
+    -fx-line-spacing: 0.25em;
+}
+
+Text {
+    -fx-fill: -fx-text-fill;
+}
+
+.hyperlink:visited {
+    -fx-text-fill: -fx-accent;
+}
+
+.document {
+    -fx-padding: 30 30 30 30;
+    -fx-spacing: 15;
 }
 
 .h1 {
-    -fx-font-size: 40;
-    -fx-padding: 32 0 16 0;
+    -fx-font-size: 2.5em;
+    -fx-text-fill: -text-color-2;
 }
 
 .h2 {
-    -fx-font-size: 32;
-    -fx-padding: 32 0 16 0;
-}
-
-.h2 .text {
-    -fx-fill: -text-color-2;
+    -fx-font-size: 2em;
+    -fx-text-fill: -text-color-2;
 }
 
 .h3 {
-    -fx-font-size: 24;
-    -fx-padding: 16 0 16 0;
-}
-
-.h3 .text {
-    -fx-fill: -text-color-2;
+    -fx-font-size: 1.5em;
+    -fx-text-fill: -text-color-1;
 }
 
 .body {
-    -fx-padding: 0 0 4 0;
-}
-
-.p {
-    -fx-padding: 0 0 16 0;
-}
-
-TextFlow.h1, TextFlow.h2, TextFlow.h3,
-TextFlow.body, TextFlow.p {
-    -fx-line-spacing: 4;
-}
-
-VBox.h1, VBox.h2, VBox.h3,
-VBox.body, VBox.p {
-    -fx-spacing: 4;
+    -fx-spacing: 0.25em;
 }
 
 .bold {
     -fx-font-weight: bold;
 }
 
+.italic {
+    -fx-font-style: italic;
+}
+
 .code {
     -fx-font-family: "Consolas", monospace;
-    -fx-font-size: 16;
+    -fx-font-size: 0.8em;
 
-    -fx-padding: 1 4 1 4;
+    -fx-padding: 0 0.3em 0 0.3em;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-background-color: #eeeeff;
 
     -fx-border-width: 1;
     -fx-border-style: solid;
     -fx-border-color: #e8e8e8;
 
-    -fx-background-color: #eeeeff;
 
     -fx-border-radius: 4;
     -fx-background-radius: 4;
-}
-
-.code.label {
-    -fx-background-insets: 1 0 -1 0;
-    -fx-border-insets: 1 0 -1 0;
-}
-
-.hyperlink {
-    -fx-padding: -1 -1 -2 -1;
-    -fx-border-color: transparent;
-}
-
-.hyperlink .text,
-.hyperlink:hover .text,
-.hyperlink:hover:visited .text {
-    -fx-fill: -link-text-color;
-}
-
-.hyperlink:armed .text,
-.hyperlink:visited .text,
-.hyperlink:hover:armed .text {
-    -fx-fill: -link-visited-text-color;
-}
-
-.hyperlink:hover,
-.hyperlink:visited,
-.hyperlink:hover:visited {
-    -fx-underline: true;
-}
-
-.hyperlink:visited:armed {
-    -fx-underline: false;
 }
 
 .bullet {
+    -fx-scale-x: 1.5;
+    -fx-scale-y: 1.5;
     -fx-padding: 0 8 0 8;
-    -fx-scale-x: 1.7;
-    -fx-scale-y: 1.7;
-}
-
-.alert {
-    -fx-padding: 12 20 0 20;
-    -fx-background-insets: 0 0 16 0;
-    -fx-border-insets: 0 0 16 0;
-
-    -fx-border-width: 1;
-    -fx-border-style: solid;
-
-    -fx-border-radius: 4;
-    -fx-background-radius: 4;
-}
-
-.alert-primary {
-    -fx-border-color: -palette-1-secondary;
-    -fx-background-color: -palette-1-background;
-}
-
-.alert-primary .text {
-    -fx-fill: -palette-1-primary;
-}
-
-.alert-info {
-    -fx-border-color: -palette-2-secondary;
-    -fx-background-color: -palette-2-background;
-}
-
-.alert-info .text {
-    -fx-fill: -palette-2-primary;
-}
-
-.alert-warning {
-    -fx-border-color: -palette-3-secondary;
-    -fx-background-color: -palette-3-background;
-}
-
-.alert-warning .text {
-    -fx-fill: -palette-3-primary;
 }
 
 .copy-button {
-    -fx-padding: -3 0 0 0;
-    -fx-border-color: transparent;
     -fx-background-color: transparent;
+    -fx-border-color: transparent;
 }
 
-.copy-button .image-view {
-    -fx-scale-x: 0.7;
-    -fx-scale-y: 0.7;
-    -fx-translate-y: 3;
+.copy-button:hover {
+    -fx-background-color: lightgray;
+    -fx-border-color: transparent;
+}
+
+.copy-button:armed {
+    -fx-background-color: transparent;
+    -fx-border-color: grey;
 }

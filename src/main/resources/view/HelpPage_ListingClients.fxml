@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import seedu.address.ui.ExampleCode?>
+<?import seedu.address.ui.SectionHyperlink?>
+
+<VBox styleClass="document" stylesheets="@HelpWindow.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextFlow styleClass="h2">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Listing clients: " />
+            <Label styleClass="code" text="listc" />
+         </children>
+      </TextFlow>
+      <Label minHeight="-Infinity" text="Shows all visible (not hidden) clients in the client list, and clears the current client filter." wrapText="true" />
+      <TextFlow layoutX="40.0" layoutY="40.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="For more information on hidden clients, see " />
+            <SectionHyperlink text="Hiding a client" />
+            <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+         </children>
+      </TextFlow>
+      <TextFlow layoutX="40.0" layoutY="132.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="To list hidden clients, see " />
+            <SectionHyperlink text="Listing hidden clients" />
+            <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+         </children>
+      </TextFlow>
+      <HBox alignment="BASELINE_LEFT">
+         <children>
+            <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="bold" text="Format: " />
+            <ExampleCode code="listc" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
