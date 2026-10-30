@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import seedu.address.ui.ExampleCode?>
+<?import seedu.address.ui.SectionHyperlink?>
+
+<VBox styleClass="document" stylesheets="@HelpWindow.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextFlow styleClass="h2">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Finding clients: " />
+            <Label styleClass="code" text="findc" />
+         </children>
+      </TextFlow>
+      <Label minHeight="-Infinity" text="Finds clients whose name, phone number, email, tags or job openings contain any of the given keywords." wrapText="true" />
+      <Label layoutX="40.0" layoutY="94.0" minHeight="-Infinity" text="The search is case-insensitive and is inclusive, as in:" wrapText="true" />
+      <VBox styleClass="body">
+         <children>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="inputting " />
+                        <Label styleClass="code" text="hans" />
+                        <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" or " />
+                        <Label layoutX="79.0" layoutY="14.0" styleClass="code" text="Hans" />
+                        <Text layoutX="118.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" both matches " />
+                        <Label layoutX="142.0" layoutY="14.0" styleClass="code" text="Hans Gruber" />
+                        <Text layoutX="181.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="10.0">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="inputting " />
+                        <Label styleClass="code" text="Hans Bo" />
+                        <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" matches both " />
+                        <Label layoutX="79.0" layoutY="14.0" styleClass="code" text="Hans Gruber" />
+                        <Text layoutX="118.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" and " />
+                        <Label layoutX="142.0" layoutY="14.0" styleClass="code" text="Bo Yang" />
+                        <Text layoutX="181.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <TextFlow>
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hidden jobseekers and clients are not searched." />
+            <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;" />
+            <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For more information on hidden clients, see " />
+            <SectionHyperlink text="Hiding a client" />
+            <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="To search among hidden clients, see " />
+            <SectionHyperlink text="Finding hidden clients" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+         </children>
+      </TextFlow>
+      <HBox alignment="BASELINE_LEFT">
+         <children>
+            <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="bold" text="Format: " />
+            <ExampleCode code="findc &lt;keyword&gt;..." />
+         </children>
+      </HBox>
+      <VBox styleClass="body">
+         <children>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <TextFlow>
+                           <children>
+                              <Label styleClass="code" text="&lt;keyword&gt;" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": a keyword to search for" />
+                           </children>
+                        </TextFlow>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="At least one keyword must be given." wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="bold" text="Notes:" />
+      <TextFlow>
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="The notes are the same as " />
+            <Label styleClass="code" text="findj" />
+            <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=", except that clients have job openings instead of a highest qualification, so job openings are searched instead." />
+            <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;" />
+            <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="See " />
+            <SectionHyperlink text="Finding jobseekers" />
+            <Text layoutX="181.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+         </children>
+      </TextFlow>
+      <VBox styleClass="body">
+         <children>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="10.0">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Each job opening is searched on its own, similar to tags." />
+                        <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="For example, " />
+                        <Label styleClass="code" text="engineer" />
+                        <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" matches a client with the job opening " />
+                        <Label layoutX="79.0" layoutY="14.0" styleClass="code" text="Software Engineer" />
+                        <Text layoutX="181.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;" />
+                        <Text layoutX="171.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To find a job title with spaces, search for one of its words, since every keyword is searched separately." />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="bold" text="Examples:" />
+      <Label minHeight="-Infinity" text="The following examples act on the sample dataset." wrapText="true" />
+      <VBox styleClass="body">
+         <children>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <ExampleCode code="findc roy" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" returns " />
+                        <Label styleClass="code" text="Roy Balakrishnan" />
+                        <Text layoutX="138.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <ExampleCode code="findc irfan@example.com" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" returns " />
+                        <Label styleClass="code" text="Irfan Ibrahim" />
+                        <Text layoutX="138.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=", since " />
+                        <Label layoutX="237.0" layoutY="14.0" styleClass="code" text="li" />
+                        <Text layoutX="304.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" appears inside both names." />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <ExampleCode code="findc colleagues" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" returns " />
+                        <Label layoutX="159.0" layoutY="14.0" styleClass="code" text="Roy Balakrishnan" />
+                        <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=", who is tagged " />
+                        <Label styleClass="code" text="colleagues" />
+                        <Text layoutX="304.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="10.0">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <ExampleCode code="editj 1 q/Diploma in IT" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=", then " />
+                        <ExampleCode code="findc engineer" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" returns " />
+                        <Label styleClass="code" text="Alex Yeoh" />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>

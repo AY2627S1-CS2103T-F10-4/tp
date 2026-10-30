@@ -211,7 +211,7 @@
                                              </VBox>
                                           </content>
                                           <graphic>
-                                             <Label minHeight="-Infinity" text="Viewing contacts" wrapText="true" />
+                                             <SectionHyperlink text="Viewing contacts" />
                                           </graphic>
                                        </TitledPane>
                                     </children>

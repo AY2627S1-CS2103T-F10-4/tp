@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import seedu.address.ui.ExampleCode?>
+
+<VBox styleClass="document" stylesheets="@HelpWindow.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextFlow styleClass="h2">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Adding client tags: " />
+            <Label styleClass="code" text="tagc" />
+         </children>
+      </TextFlow>
+      <Label text="Adds tags to a client while preserving existing tags." />
+      <HBox alignment="BASELINE_LEFT">
+         <children>
+            <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="bold" text="Format: " />
+            <ExampleCode code="tagc &lt;index&gt; &lt;tag&gt;..." />
+         </children>
+      </HBox>
+      <VBox styleClass="body">
+         <children>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <TextFlow>
+                           <children>
+                              <Label styleClass="code" text="&lt;index&gt;" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": the index of the client to add the tag to" />
+                           </children>
+                        </TextFlow>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="must be a positive integer, from 1 to the size of the currently displayed client list, inclusive" wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="10.0">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <TextFlow>
+                           <children>
+                              <Label styleClass="code" text="&lt;tag&gt;" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": the name of a tag to add" />
+                           </children>
+                        </TextFlow>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="At least one tag name must be given." wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="bold" text="Examples:" />
+      <VBox styleClass="body">
+         <children>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <ExampleCode code="tagc 1 priority" />
+                        <Text layoutX="72.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" adds " />
+                        <Label styleClass="code" text="priority" />
+                        <Text layoutX="114.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" to the 1st displayed client." />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="10.0">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <ExampleCode code="tagc 2 finance technology" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" adds " />
+                        <Label styleClass="code" text="finance" />
+                        <Text layoutX="72.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" and " />
+                        <Label styleClass="code" text="teamwork" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" to the 2nd displayed client." />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>

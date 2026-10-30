@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<VBox styleClass="document" stylesheets="@HelpWindow.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label styleClass="h2" text="Viewing contacts" />
+      <TextFlow styleClass="body">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="There are 2 contact lists: the jobseeker list (on the right) and the client list (on the left)." />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Commands such as " />
+            <Label layoutX="206.0" layoutY="14.0" styleClass="code" text="listj" />
+            <Text layoutX="10.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" and " />
+            <Label layoutX="206.0" layoutY="14.0" styleClass="code" text="listc" />
+            <Text layoutX="222.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="update their respective lists independently, while " />
+            <Label layoutX="284.0" layoutY="66.0" styleClass="code" text="list" />
+            <Text layoutX="770.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" updates both lists together." />
+         </children>
+      </TextFlow>
+   </children>
+</VBox>
