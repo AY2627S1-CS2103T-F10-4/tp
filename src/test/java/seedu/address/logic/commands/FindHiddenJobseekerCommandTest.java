@@ -58,6 +58,16 @@ public class FindHiddenJobseekerCommandTest {
     }
 
     /**
+     * Checks that no hidden jobseeker is listed when there are no keywords to search for.
+     * A user cannot trigger this, as the parser rejects blank input, so this test skips the parser:
+     * {@code preparePredicate(" ")} gives a predicate with an empty keyword list.
+     */
+    @Test
+    public void execute_zeroKeywords_noJobseekerFound() {
+        assertFindSuccess(prepareModel(), " ", List.of());
+    }
+
+    /**
      * An unhidden jobseeker must not be found, even though the keywords match them.
      */
     @Test

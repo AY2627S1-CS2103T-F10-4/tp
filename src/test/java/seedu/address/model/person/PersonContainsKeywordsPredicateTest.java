@@ -280,6 +280,18 @@ public class PersonContainsKeywordsPredicateTest {
                 .withEmail("bob@email.com").build()));
     }
 
+    /**
+     * Checks that a keyword written like an add command's prefix is matched as plain text. Names and tags
+     * cannot contain {@code /}, so neither keyword can match here, and this fails if the predicate starts
+     * ignoring the prefix and matches {@code Alice} or {@code friends} instead.
+     */
+    @Test
+    public void test_prefixStyleKeyword_returnsFalse() {
+        PersonContainsKeywordsPredicate predicate =
+                new PersonContainsKeywordsPredicate(List.of("n/Alice", "t/friends"));
+        assertFalse(predicate.test(new JobseekerBuilder().withName("Alice").withTags("friends").build()));
+    }
+
     @Test
     public void toStringMethod() {
         List<String> keywords = List.of("keyword1", "keyword2");

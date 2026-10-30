@@ -21,6 +21,7 @@ import seedu.address.model.person.PersonContainsKeywordsPredicate;
  */
 public abstract class AbstractFindCommandParserTest {
     private final Parser<? extends AbstractFindCommand> parser;
+    private final Function<PersonContainsKeywordsPredicate, AbstractFindCommand> commandFactory;
     private final AbstractFindCommand expectedAliceBobCommand;
     private final String messageUsage;
 
@@ -29,6 +30,7 @@ public abstract class AbstractFindCommandParserTest {
             Function<PersonContainsKeywordsPredicate, AbstractFindCommand> commandFactory,
             String messageUsage) {
         this.parser = parser;
+        this.commandFactory = commandFactory;
         this.expectedAliceBobCommand = commandFactory.apply(
                 new PersonContainsKeywordsPredicate(List.of("Alice", "Bob")));
         this.messageUsage = messageUsage;
@@ -41,6 +43,18 @@ public abstract class AbstractFindCommandParserTest {
 
         // multiple whitespaces between keywords
         assertParseSuccess(parser, " \n Alice \n \t Bob  \t", expectedAliceBobCommand);
+    }
+
+    /**
+     * Checks that find commands do not treat {@code n/} or {@code t/} as prefixes, unlike the add and
+     * edit commands. The text stays part of the keyword, so this fails if the parser starts stripping
+     * prefixes, which would turn {@code n/Alice} into a search for {@code Alice}.
+     */
+    @Test
+    public void parse_prefixStyleArgs_keptAsLiteralKeywords() {
+        AbstractFindCommand expectedCommand = commandFactory.apply(
+                new PersonContainsKeywordsPredicate(List.of("n/Alice", "t/friends")));
+        assertParseSuccess(parser, "n/Alice t/friends", expectedCommand);
     }
 
     /**

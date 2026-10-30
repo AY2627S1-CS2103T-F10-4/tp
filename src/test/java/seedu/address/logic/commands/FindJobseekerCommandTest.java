@@ -79,6 +79,17 @@ public class FindJobseekerCommandTest {
     }
 
     /**
+     * Checks that a second search looks through all jobseekers again rather than only those the first
+     * search listed. Alice is not Benson, so this fails if the second search narrows the list further
+     * instead of replacing the first search's results.
+     */
+    @Test
+    public void execute_secondSearch_replacesFirstSearch() {
+        assertFindSuccess("Alice", List.of(ALICE));
+        assertFindSuccess("Benson", List.of(BENSON));
+    }
+
+    /**
      * Checks that a keyword matching only part of a jobseeker's name still finds those jobseekers.
      * {@code "eier"} is not a whole word in any name but lies inside "Meier", so exactly
      * Benson Meier and Daniel Meier are listed. This test case guards substring matching: it fails

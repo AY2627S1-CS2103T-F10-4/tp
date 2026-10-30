@@ -89,6 +89,36 @@ public class FindCommandTest {
     }
 
     /**
+     * Checks that a second search looks through everyone again rather than only the people the first
+     * search listed. The two searches have no one in common, so this fails if the second search narrows
+     * either list further instead of replacing the first search's results.
+     */
+    @Test
+    public void execute_secondSearch_replacesFirstSearch() {
+        assertFindSuccess("Alice Brenda", List.of(ALICE), List.of(BRENDA));
+        assertFindSuccess("Benson Adrian", List.of(BENSON), List.of(ADRIAN));
+    }
+
+    /**
+     * Checks that both lists end up empty when nobody matches. This fails if {@code find} falls back to
+     * showing everyone when a search finds nothing. The other test cases only ever empty one list at a time.
+     */
+    @Test
+    public void execute_keywordMatchesNobody_bothListsEmpty() {
+        assertFindSuccess("zzz", List.of(), List.of());
+    }
+
+    /**
+     * Checks that nobody is listed when there are no keywords to search for.
+     * A user cannot trigger this, as the parser rejects blank input, so this test skips the parser:
+     * {@code preparePredicate(" ")} gives a predicate with an empty keyword list.
+     */
+    @Test
+    public void execute_zeroKeywords_noPersonFound() {
+        assertFindSuccess(" ", List.of(), List.of());
+    }
+
+    /**
      * Checks that a tag search narrows the client list to nobody when only jobseekers carry the tag,
      * so this fails if {@code find} left the client list unfiltered.
      */

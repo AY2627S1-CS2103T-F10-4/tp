@@ -79,6 +79,17 @@ public class FindClientCommandTest {
     }
 
     /**
+     * Checks that a second search looks through all clients again rather than only those the first
+     * search listed. Adrian is not Brenda, so this fails if the second search narrows the list further
+     * instead of replacing the first search's results.
+     */
+    @Test
+    public void execute_secondSearch_replacesFirstSearch() {
+        assertFindSuccess("Adrian", List.of(ADRIAN));
+        assertFindSuccess("Brenda", List.of(BRENDA));
+    }
+
+    /**
      * Checks that substring matching applies to clients too: {@code "an"} is part of
      * "Adrian", "Diana" and "Ethan".
      */

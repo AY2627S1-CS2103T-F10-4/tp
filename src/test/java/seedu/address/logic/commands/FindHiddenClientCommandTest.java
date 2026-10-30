@@ -58,6 +58,16 @@ public class FindHiddenClientCommandTest {
     }
 
     /**
+     * Checks that no hidden client is listed when there are no keywords to search for.
+     * A user cannot trigger this, as the parser rejects blank input, so this test skips the parser:
+     * {@code preparePredicate(" ")} gives a predicate with an empty keyword list.
+     */
+    @Test
+    public void execute_zeroKeywords_noClientFound() {
+        assertFindSuccess(prepareModel(), " ", List.of());
+    }
+
+    /**
      * An unhidden client must not be found, even though the keywords match them.
      */
     @Test
