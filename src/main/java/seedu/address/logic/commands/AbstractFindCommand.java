@@ -39,7 +39,7 @@ public abstract class AbstractFindCommand extends Command {
             return true;
         }
 
-        // getClass() also handles nulls, as other == null fails this check before other is used
+        // The null check must come first, as other.getClass() would throw NullPointerException on null
         if (other == null || other.getClass() != getClass()) {
             return false;
         }
