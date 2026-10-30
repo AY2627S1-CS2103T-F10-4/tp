@@ -15,6 +15,10 @@ Text {
     -fx-fill: -fx-text-fill;
 }
 
+.hyperlink:visited {
+    -fx-text-fill: -fx-accent;
+}
+
 .document {
     -fx-padding: 30 30 30 30;
     -fx-spacing: 15;

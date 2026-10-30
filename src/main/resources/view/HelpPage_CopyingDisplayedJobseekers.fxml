@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import seedu.address.ui.ExampleCode?>
+
+<VBox styleClass="document" stylesheets="@HelpWindow.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextFlow styleClass="h2">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Copying displayed jobseekers: " />
+            <Label styleClass="code" text="cpj" />
+         </children>
+      </TextFlow>
+      <Label text="Copies the details of displayed jobseekers to the system clipboard." />
+      <HBox alignment="BASELINE_LEFT">
+         <children>
+            <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="bold" text="Format: " />
+            <ExampleCode code="cpj [index]" />
+         </children>
+      </HBox>
+      <VBox styleClass="body">
+         <children>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <VBox styleClass="body">
+                     <children>
+                        <TextFlow>
+                           <children>
+                              <Label styleClass="code" text="&lt;index&gt;" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text=": the index of the jobseeker to copy the data from" />
+                           </children>
+                        </TextFlow>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="Must be a positive integer, from 1 to the size of the currently displayed jobseeker list, inclusive" wrapText="true" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="BASELINE_LEFT">
+                           <children>
+                              <Label styleClass="bullet" text="◦" />
+                              <Label minHeight="-Infinity" text="Optional. If omitted, all jobseekers will have their data copied." wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="bold" text="Examples:" />
+      <VBox styleClass="body">
+         <children>
+            <HBox alignment="BASELINE_LEFT">
+               <children>
+                  <Label styleClass="bullet" text="•" />
+                  <TextFlow>
+                     <children>
+                        <ExampleCode code="cpj 2" />
+                        <Text layoutX="114.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" copies the second displayed jobseeker." />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>

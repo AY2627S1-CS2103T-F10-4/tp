@@ -33,11 +33,23 @@
                   <items>
                      <StackPane alignment="TOP_LEFT">
                         <children>
-                           <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
+                           <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vvalue="0.2">
                               <content>
                                  <VBox styleClass="body">
                                     <children>
-                                       <TitledPane>
+                                       <HBox alignment="BASELINE_LEFT">
+                                          <children>
+                                             <Label styleClass="bullet" text="◦" />
+                                             <SectionHyperlink minHeight="-Infinity" text="Command utilities" wrapText="true" />
+                                          </children>
+                                       </HBox>
+                                       <HBox alignment="BASELINE_LEFT">
+                                          <children>
+                                             <Label styleClass="bullet" text="◦" />
+                                             <SectionHyperlink minHeight="-Infinity" text="FAQ and Known issues" wrapText="true" />
+                                          </children>
+                                       </HBox>
+                                       <TitledPane expanded="false">
                                           <graphic>
                                              <Label minHeight="-Infinity" text="Basic commands" wrapText="true" />
                                           </graphic>
@@ -66,7 +78,7 @@
                                              </VBox>
                                           </content>
                                        </TitledPane>
-                                       <TitledPane>
+                                       <TitledPane expanded="false">
                                           <graphic>
                                              <Label minHeight="-Infinity" text="Adding and modifying contacts" wrapText="true" />
                                           </graphic>
@@ -119,7 +131,7 @@
                                              </VBox>
                                           </content>
                                        </TitledPane>
-                                       <TitledPane>
+                                       <TitledPane expanded="false">
                                           <content>
                                              <VBox styleClass="body">
                                                 <children>
@@ -214,6 +226,64 @@
                                              <SectionHyperlink text="Viewing contacts" />
                                           </graphic>
                                        </TitledPane>
+                                       <TitledPane expanded="false">
+                                          <content>
+                                             <VBox styleClass="body">
+                                                <children>
+                                                   <HBox alignment="BASELINE_LEFT">
+                                                      <children>
+                                                         <Label styleClass="bullet" text="◦" />
+                                                         <SectionHyperlink minHeight="-Infinity" text="Adding jobseeker tags" wrapText="true" />
+                                                      </children>
+                                                   </HBox>
+                                                   <HBox alignment="BASELINE_LEFT">
+                                                      <children>
+                                                         <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                         <SectionHyperlink minHeight="-Infinity" text="Adding client tags" wrapText="true" />
+                                                      </children>
+                                                   </HBox>
+                                                   <HBox alignment="BASELINE_LEFT">
+                                                      <children>
+                                                         <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                         <SectionHyperlink minHeight="-Infinity" text="Removing jobseeker tags" wrapText="true" />
+                                                      </children>
+                                                   </HBox>
+                                                   <HBox alignment="BASELINE_LEFT">
+                                                      <children>
+                                                         <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                         <SectionHyperlink minHeight="-Infinity" text="Removing client tags" wrapText="true" />
+                                                      </children>
+                                                   </HBox>
+                                                </children>
+                                             </VBox>
+                                          </content>
+                                          <graphic>
+                                             <SectionHyperlink text="Managing tags" />
+                                          </graphic>
+                                       </TitledPane>
+                                       <TitledPane expanded="false">
+                                          <content>
+                                             <VBox styleClass="body">
+                                                <children>
+                                                   <HBox alignment="BASELINE_LEFT">
+                                                      <children>
+                                                         <Label styleClass="bullet" text="◦" />
+                                                         <SectionHyperlink minHeight="-Infinity" text="Copying displayed jobseekers" wrapText="true" />
+                                                      </children>
+                                                   </HBox>
+                                                   <HBox alignment="BASELINE_LEFT">
+                                                      <children>
+                                                         <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                         <SectionHyperlink minHeight="-Infinity" text="Copying displayed clients" wrapText="true" />
+                                                      </children>
+                                                   </HBox>
+                                                </children>
+                                             </VBox>
+                                          </content>
+                                          <graphic>
+                                             <Label minHeight="-Infinity" text="Miscellaneous commands" wrapText="true" />
+                                          </graphic>
+                                       </TitledPane>
                                     </children>
                                     <padding>
                                        <Insets bottom="15.0" left="15.0" right="15.0" top="75.0" />
@@ -258,7 +328,7 @@
                                        <Insets bottom="15.0" />
                                     </VBox.margin>
                                  </TextFlow>
-                                 <Label minHeight="-Infinity" text="Select a help page on the left to start." wrapText="true" />
+                                 <Label minHeight="-Infinity" text="Blue colored texts are hyperlinks that leads to help pages. Select a help page on the left to start." wrapText="true" />
                               </children>
                            </VBox>
                         </content></ScrollPane>
