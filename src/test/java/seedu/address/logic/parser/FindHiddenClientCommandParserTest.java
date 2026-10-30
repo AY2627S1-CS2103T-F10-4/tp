@@ -1,16 +1,12 @@
 package seedu.address.logic.parser;
 
-import java.util.List;
-
 import seedu.address.logic.commands.FindHiddenClientCommand;
-import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
-/** Runs the shared parsing contract for {@link FindHiddenClientCommandParser}. */
+/** Runs the shared find parser test cases against {@link FindHiddenClientCommandParser}. */
 public class FindHiddenClientCommandParserTest extends AbstractFindCommandParserTest {
-    /** Configures the concrete command expected from this parser. */
+    /** Supplies the parser, its command's constructor and its usage message to the shared test cases. */
     public FindHiddenClientCommandParserTest() {
-        super(new FindHiddenClientCommandParser(),
-                new FindHiddenClientCommand(new PersonContainsKeywordsPredicate(List.of("Alice", "Bob"))),
+        super(new FindHiddenClientCommandParser(), FindHiddenClientCommand::new,
                 FindHiddenClientCommand.MESSAGE_USAGE);
     }
 }
