@@ -144,6 +144,14 @@ public class CommandTestUtil {
     }
 
     /**
+     * Parses {@code userInput} into a {@code PersonContainsKeywordsPredicate}, for testing a find
+     * command without going through its parser.
+     */
+    public static PersonContainsKeywordsPredicate preparePredicate(String userInput) {
+        return new PersonContainsKeywordsPredicate(List.of(userInput.split("\\s+")));
+    }
+
+    /**
      * Filters jobseekers using the first name token of the jobseeker at {@code targetIndex}
      * in the current filtered list, leaving out hidden jobseekers as {@code findj} does.
      * Asserts that the resulting list contains exactly one jobseeker.

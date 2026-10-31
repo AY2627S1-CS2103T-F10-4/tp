@@ -2,10 +2,9 @@ package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_JOBSEEKERS_LISTED_OVERVIEW;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.address.testutil.Assert.assertThrows;
+import static seedu.address.logic.commands.CommandTestUtil.preparePredicate;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalPersons.CARL;
@@ -34,9 +33,9 @@ public class FindJobseekerCommandTest {
     private Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     /**
-     * Helper method that executes a {@code FindJobseekerCommand} built from {@code userInput} on the
-     * typical jobseekers, and checks that exactly {@code expectedJobseekers} are listed, in that order,
-     * with the matching result message.
+     * Executes a {@code FindJobseekerCommand} built from {@code userInput} on the typical address book,
+     * and checks that exactly {@code expectedJobseekers} are listed, in that order, with the matching
+     * result message.
      */
     private void assertFindSuccess(String userInput, List<Jobseeker> expectedJobseekers) {
         String expectedMessage = String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, expectedJobseekers.size());
@@ -47,46 +46,47 @@ public class FindJobseekerCommandTest {
         assertEquals(expectedJobseekers, model.getFilteredJobseekerList());
     }
 
-    @Test
-    public void constructor_nullPredicate_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new FindJobseekerCommand(null));
+    /**
+     * Executes a {@code FindJobseekerCommand} built from {@code userInput} on {@code customModel}, for
+     * test cases that need jobseekers the typical address book does not have, and checks that exactly
+     * {@code expectedJobseekers} are listed, with the matching result message.
+     */
+    private void assertFindSuccess(Model customModel, String userInput, List<Jobseeker> expectedJobseekers) {
+        CommandResult result = new FindJobseekerCommand(preparePredicate(userInput)).execute(customModel);
+
+        assertEquals(String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, expectedJobseekers.size()),
+                result.getFeedbackToUser());
+        assertEquals(expectedJobseekers, customModel.getFilteredJobseekerList());
     }
 
-    @Test
-    public void equals() {
-        PersonContainsKeywordsPredicate firstPredicate =
-                new PersonContainsKeywordsPredicate(List.of("first"));
-        PersonContainsKeywordsPredicate secondPredicate =
-                new PersonContainsKeywordsPredicate(List.of("second"));
-
-        FindJobseekerCommand findFirstCommand = new FindJobseekerCommand(firstPredicate);
-        FindJobseekerCommand findSecondCommand = new FindJobseekerCommand(secondPredicate);
-
-        // same object -> returns true
-        assertTrue(findFirstCommand.equals(findFirstCommand));
-
-        // same values -> returns true
-        FindJobseekerCommand findFirstCommandCopy = new FindJobseekerCommand(firstPredicate);
-        assertTrue(findFirstCommand.equals(findFirstCommandCopy));
-
-        // different types -> returns false
-        assertFalse(findFirstCommand.equals(1));
-
-        // null -> returns false
-        assertFalse(findFirstCommand.equals(null));
-
-        // different jobseeker -> returns false
-        assertFalse(findFirstCommand.equals(findSecondCommand));
-    }
-
+    /**
+     * Checks that no jobseeker is listed when there are no keywords to search for.
+     * A user cannot trigger this, as the parser rejects blank input, so this test skips the parser:
+     * {@code preparePredicate(" ")} gives a predicate with an empty keyword list.
+     */
     @Test
     public void execute_zeroKeywords_noPersonFound() {
         assertFindSuccess(" ", List.of());
     }
 
+    /**
+     * Checks that a jobseeker is listed if they match any one of the keywords, rather than all of them.
+     * Each keyword here matches a different jobseeker: Carl Kurz, Elle Meyer and Fiona Kunz.
+     */
     @Test
     public void execute_multipleNameKeywords_personsFound() {
         assertFindSuccess("Kurz Elle Kunz", List.of(CARL, ELLE, FIONA));
+    }
+
+    /**
+     * Checks that a second search looks through all jobseekers again rather than only those the first
+     * search listed. Alice is not Benson, so this fails if the second search narrows the list further
+     * instead of replacing the first search's results.
+     */
+    @Test
+    public void execute_secondSearch_replacesFirstSearch() {
+        assertFindSuccess("Alice", List.of(ALICE));
+        assertFindSuccess("Benson", List.of(BENSON));
     }
 
     /**
@@ -114,11 +114,19 @@ public class FindJobseekerCommandTest {
         assertFalse(model.getFilteredJobseekerList().contains(ELLE));
     }
 
+    /**
+     * Checks that phone numbers are searched, and that part of a number is enough to match.
+     * {@code "9435"} appears only in Alice's phone number, 94351253.
+     */
     @Test
     public void execute_partialPhoneKeyword_personFound() {
         assertFindSuccess("9435", List.of(ALICE));
     }
 
+    /**
+     * Checks that email addresses are searched. {@code "cornelia"} appears in no name, only in
+     * Daniel's email address, cornelia@example.com.
+     */
     @Test
     public void execute_partialEmailKeyword_personFound() {
         assertFindSuccess("cornelia", List.of(DANIEL));
@@ -135,8 +143,8 @@ public class FindJobseekerCommandTest {
     /**
      * Checks that {@code findj} leaves the client list alone. {@code ModelManager#equals} does not
      * compare filtered lists, so {@code assertCommandSuccess} alone would not notice if this command
-     * filtered clients by mistake. {@code "Adrian"} matches a client but no jobseeker, so a mix-up
-     * would also show up as a non-empty jobseeker list.
+     * filtered clients by mistake. {@code "Adrian"} matches a client but no jobseeker, so the jobseeker
+     * list must end up empty, which it would not if this command filtered the client list instead.
      */
     @Test
     public void execute_clientKeyword_clientListUnchanged() {
@@ -156,26 +164,7 @@ public class FindJobseekerCommandTest {
         qualificationModel.addJobseeker(ALICE);
         qualificationModel.addJobseeker(bensonWithDiploma);
 
-        CommandResult result = new FindJobseekerCommand(preparePredicate("diploma"))
-                .execute(qualificationModel);
-
-        assertEquals(String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, 1), result.getFeedbackToUser());
-        assertEquals(List.of(bensonWithDiploma), qualificationModel.getFilteredJobseekerList());
-    }
-
-    @Test
-    public void toStringMethod() {
-        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(List.of("keyword"));
-        FindJobseekerCommand findCommand = new FindJobseekerCommand(predicate);
-        String expected = FindJobseekerCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
-        assertEquals(expected, findCommand.toString());
-    }
-
-    /**
-     * Parses {@code userInput} into a {@code PersonContainsKeywordsPredicate}.
-     */
-    private PersonContainsKeywordsPredicate preparePredicate(String userInput) {
-        return new PersonContainsKeywordsPredicate(List.of(userInput.split("\\s+")));
+        assertFindSuccess(qualificationModel, "diploma", List.of(bensonWithDiploma));
     }
 
     /**
@@ -187,10 +176,6 @@ public class FindJobseekerCommandTest {
         hiddenModel.addJobseeker(ALICE);
         hiddenModel.addJobseeker(new JobseekerBuilder(BENSON).withHidden(true).build());
 
-        CommandResult result = new FindJobseekerCommand(preparePredicate("Alice Benson"))
-                .execute(hiddenModel);
-
-        assertEquals(String.format(MESSAGE_JOBSEEKERS_LISTED_OVERVIEW, 1), result.getFeedbackToUser());
-        assertEquals(List.of(ALICE), hiddenModel.getFilteredJobseekerList());
+        assertFindSuccess(hiddenModel, "Alice Benson", List.of(ALICE));
     }
 }

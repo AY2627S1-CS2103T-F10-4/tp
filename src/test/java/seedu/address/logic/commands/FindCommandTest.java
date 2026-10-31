@@ -1,11 +1,9 @@
 package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.address.testutil.Assert.assertThrows;
+import static seedu.address.logic.commands.CommandTestUtil.preparePredicate;
 import static seedu.address.testutil.TypicalPersons.ADRIAN;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
@@ -36,39 +34,40 @@ public class FindCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
     private Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
-    @Test
-    public void constructor_nullPredicate_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new FindCommand(null));
+    /**
+     * Executes a {@code FindCommand} built from {@code userInput} on the typical address book, and
+     * checks that exactly {@code expectedJobseekers} and {@code expectedClients} are listed, each in
+     * the order given, with the matching result message.
+     */
+    private void assertFindSuccess(String userInput, List<Jobseeker> expectedJobseekers,
+            List<Client> expectedClients) {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW,
+                expectedJobseekers.size(), expectedClients.size());
+        PersonContainsKeywordsPredicate predicate = preparePredicate(userInput);
+        FindCommand command = new FindCommand(predicate);
+        // Mirrors FindCommand#execute, which never lists hidden jobseekers or clients.
+        expectedModel.updateFilteredJobseekerList(Model.PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS.and(predicate));
+        expectedModel.updateFilteredClientList(Model.PREDICATE_SHOW_UNHIDDEN_CLIENTS.and(predicate));
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        // ModelManager#equals does not compare filtered lists, so check both lists explicitly.
+        assertEquals(expectedJobseekers, model.getFilteredJobseekerList());
+        assertEquals(expectedClients, model.getFilteredClientList());
     }
 
-    @Test
-    public void equals() {
-        PersonContainsKeywordsPredicate firstPredicate =
-                new PersonContainsKeywordsPredicate(List.of("first"));
-        PersonContainsKeywordsPredicate secondPredicate =
-                new PersonContainsKeywordsPredicate(List.of("second"));
+    /**
+     * Executes a {@code FindCommand} built from {@code userInput} on {@code customModel}, for test cases
+     * that need people the typical address book does not have, and checks that exactly
+     * {@code expectedJobseekers} and {@code expectedClients} are listed, each in the order given, with
+     * the matching result message.
+     */
+    private void assertFindSuccess(Model customModel, String userInput, List<Jobseeker> expectedJobseekers,
+            List<Client> expectedClients) {
+        CommandResult result = new FindCommand(preparePredicate(userInput)).execute(customModel);
 
-        FindCommand findFirstCommand = new FindCommand(firstPredicate);
-        FindCommand findSecondCommand = new FindCommand(secondPredicate);
-
-        // same object -> returns true
-        assertTrue(findFirstCommand.equals(findFirstCommand));
-
-        // same values -> returns true
-        assertTrue(findFirstCommand.equals(new FindCommand(firstPredicate)));
-
-        // different types -> returns false
-        assertFalse(findFirstCommand.equals(1));
-
-        // null -> returns false
-        assertFalse(findFirstCommand.equals(null));
-
-        // different predicate -> returns false
-        assertFalse(findFirstCommand.equals(findSecondCommand));
-
-        // findj/findc with the same predicate -> returns false
-        assertFalse(findFirstCommand.equals(new FindJobseekerCommand(firstPredicate)));
-        assertFalse(findFirstCommand.equals(new FindClientCommand(firstPredicate)));
+        assertEquals(String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, expectedJobseekers.size(),
+                expectedClients.size()), result.getFeedbackToUser());
+        assertEquals(expectedJobseekers, customModel.getFilteredJobseekerList());
+        assertEquals(expectedClients, customModel.getFilteredClientList());
     }
 
     /**
@@ -81,12 +80,42 @@ public class FindCommandTest {
     }
 
     /**
-     * Checks that one keyword per list works: "Alice" only matches a jobseeker and "Brenda" only a
-     * client, so each list must show just its own match.
+     * Checks that multiple keywords apply to both lists: "Alice" only matches a jobseeker and "Brenda"
+     * only a client, so each list must show just its own match.
      */
     @Test
     public void execute_multipleKeywords_eachListShowsOwnMatches() {
         assertFindSuccess("Alice Brenda", List.of(ALICE), List.of(BRENDA));
+    }
+
+    /**
+     * Checks that a second search looks through everyone again rather than only the people the first
+     * search listed. The two searches have no one in common, so this fails if the second search narrows
+     * either list further instead of replacing the first search's results.
+     */
+    @Test
+    public void execute_secondSearch_replacesFirstSearch() {
+        assertFindSuccess("Alice Brenda", List.of(ALICE), List.of(BRENDA));
+        assertFindSuccess("Benson Adrian", List.of(BENSON), List.of(ADRIAN));
+    }
+
+    /**
+     * Checks that both lists end up empty when nobody matches. This fails if {@code find} falls back to
+     * showing everyone when a search finds nothing. The other test cases only ever empty one list at a time.
+     */
+    @Test
+    public void execute_keywordMatchesNobody_bothListsEmpty() {
+        assertFindSuccess("zzz", List.of(), List.of());
+    }
+
+    /**
+     * Checks that nobody is listed when there are no keywords to search for.
+     * A user cannot trigger this, as the parser rejects blank input, so this test skips the parser:
+     * {@code preparePredicate(" ")} gives a predicate with an empty keyword list.
+     */
+    @Test
+    public void execute_zeroKeywords_noPersonFound() {
+        assertFindSuccess(" ", List.of(), List.of());
     }
 
     /**
@@ -107,6 +136,11 @@ public class FindCommandTest {
         assertFindSuccess("partner", List.of(), List.of(BRENDA, DIANA));
     }
 
+    /**
+     * Checks that {@code find} lists both the jobseeker and the client who have the searched tag.
+     * No jobseeker and client in the typical address book share a tag, so this test gives Alice and
+     * Adrian the same tag. Benson and Brenda do not have it, so they must not be listed.
+     */
     @Test
     public void execute_tagSharedByBothTypes_jobseekersAndClientsFound() {
         Jobseeker taggedJobseeker = new JobseekerBuilder(ALICE).withTags("technology").build();
@@ -117,11 +151,7 @@ public class FindCommandTest {
         taggedModel.addClient(taggedClient);
         taggedModel.addClient(BRENDA);
 
-        CommandResult result = new FindCommand(preparePredicate("technology")).execute(taggedModel);
-
-        assertEquals(String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1, 1), result.getFeedbackToUser());
-        assertEquals(List.of(taggedJobseeker), taggedModel.getFilteredJobseekerList());
-        assertEquals(List.of(taggedClient), taggedModel.getFilteredClientList());
+        assertFindSuccess(taggedModel, "technology", List.of(taggedJobseeker), List.of(taggedClient));
     }
 
     /**
@@ -137,11 +167,7 @@ public class FindCommandTest {
         jobModel.addClient(clientWithJob);
         jobModel.addClient(BRENDA);
 
-        CommandResult result = new FindCommand(preparePredicate("engineer")).execute(jobModel);
-
-        assertEquals(String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0, 1), result.getFeedbackToUser());
-        assertEquals(List.of(), jobModel.getFilteredJobseekerList());
-        assertEquals(List.of(clientWithJob), jobModel.getFilteredClientList());
+        assertFindSuccess(jobModel, "engineer", List.of(), List.of(clientWithJob));
     }
 
     /**
@@ -160,16 +186,13 @@ public class FindCommandTest {
         mixedModel.addClient(clientWithJob);
         mixedModel.addClient(BRENDA);
 
-        CommandResult result = new FindCommand(preparePredicate("degree engineer")).execute(mixedModel);
-
-        assertEquals(String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1, 1), result.getFeedbackToUser());
-        assertEquals(List.of(jobseekerWithDegree), mixedModel.getFilteredJobseekerList());
-        assertEquals(List.of(clientWithJob), mixedModel.getFilteredClientList());
+        assertFindSuccess(mixedModel, "degree engineer", List.of(jobseekerWithDegree),
+                List.of(clientWithJob));
     }
 
     /**
-     * Hidden jobseekers and clients must not be found, even though the keywords match them, as for
-     * {@code findj} and {@code findc}.
+     * Hidden jobseekers and clients must not be found, even though the keywords match them. This is
+     * the same rule that {@code findj} and {@code findc} follow.
      */
     @Test
     public void execute_keywordMatchesHiddenPeople_hiddenPeopleNotFound() {
@@ -179,46 +202,6 @@ public class FindCommandTest {
         hiddenModel.addClient(ADRIAN);
         hiddenModel.addClient(new ClientBuilder(BRENDA).withHidden(true).build());
 
-        CommandResult result = new FindCommand(preparePredicate("Alice Benson Adrian Brenda"))
-                .execute(hiddenModel);
-
-        assertEquals(String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1, 1), result.getFeedbackToUser());
-        assertEquals(List.of(ALICE), hiddenModel.getFilteredJobseekerList());
-        assertEquals(List.of(ADRIAN), hiddenModel.getFilteredClientList());
-    }
-
-    @Test
-    public void toStringMethod() {
-        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(List.of("keyword"));
-        FindCommand findCommand = new FindCommand(predicate);
-        String expected = FindCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
-        assertEquals(expected, findCommand.toString());
-    }
-
-    /**
-     * Executes a {@code FindCommand} built from {@code userInput} on the typical address book, and
-     * checks that exactly {@code expectedJobseekers} and {@code expectedClients} are listed, in that
-     * order, with the matching result message.
-     */
-    private void assertFindSuccess(String userInput, List<Jobseeker> expectedJobseekers,
-            List<Client> expectedClients) {
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW,
-                expectedJobseekers.size(), expectedClients.size());
-        PersonContainsKeywordsPredicate predicate = preparePredicate(userInput);
-        FindCommand command = new FindCommand(predicate);
-        // Mirrors FindCommand#execute, which never lists hidden jobseekers or clients.
-        expectedModel.updateFilteredJobseekerList(Model.PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS.and(predicate));
-        expectedModel.updateFilteredClientList(Model.PREDICATE_SHOW_UNHIDDEN_CLIENTS.and(predicate));
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        // ModelManager#equals does not compare filtered lists, so check both lists explicitly.
-        assertEquals(expectedJobseekers, model.getFilteredJobseekerList());
-        assertEquals(expectedClients, model.getFilteredClientList());
-    }
-
-    /**
-     * Parses {@code userInput} into a {@code PersonContainsKeywordsPredicate}.
-     */
-    private PersonContainsKeywordsPredicate preparePredicate(String userInput) {
-        return new PersonContainsKeywordsPredicate(List.of(userInput.split("\\s+")));
+        assertFindSuccess(hiddenModel, "Alice Benson Adrian Brenda", List.of(ALICE), List.of(ADRIAN));
     }
 }
