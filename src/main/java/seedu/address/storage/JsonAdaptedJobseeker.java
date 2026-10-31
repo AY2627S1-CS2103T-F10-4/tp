@@ -102,6 +102,10 @@ class JsonAdaptedJobseeker {
      * @throws IllegalValueException if there were any data constraints violated in the adapted jobseeker.
      */
     public Jobseeker toModelType() throws IllegalValueException {
+        if (tags.contains(null)) {
+            throw new IllegalValueException(Tag.MESSAGE_CONSTRAINTS);
+        }
+
         final List<Tag> jobseekerTags = new ArrayList<>();
         for (JsonAdaptedTag tag : tags) {
             jobseekerTags.add(tag.toModelType());
