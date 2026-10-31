@@ -112,6 +112,17 @@ public class EditClientCommandTest {
     }
 
     @Test
+    public void toStringMethod() {
+        EditClientDescriptor descriptor = new EditClientDescriptor();
+        descriptor.setRemark(new Remark("Hiring now"));
+        EditClientCommand command = new EditClientCommand(INDEX_SECOND_PERSON, descriptor);
+
+        String expected = EditClientCommand.class.getCanonicalName()
+                + "{index=" + INDEX_SECOND_PERSON + ", editClientDescriptor=" + descriptor + "}";
+        assertEquals(expected, command.toString());
+    }
+
+    @Test
     public void execute_filteredClient_updatesRemarkAndPreservesOtherPeople() throws Exception {
         Model model = new ModelManager();
         Client first = new ClientBuilder().build();
