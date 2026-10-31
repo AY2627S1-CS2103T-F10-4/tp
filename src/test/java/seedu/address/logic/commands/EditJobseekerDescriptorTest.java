@@ -14,9 +14,15 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.EditJobseekerCommand.EditJobseekerDescriptor;
+import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.Remark;
 import seedu.address.testutil.EditJobseekerDescriptorBuilder;
+import seedu.address.testutil.JobseekerBuilder;
 
+/**
+ * Tests {@code EditJobseekerDescriptor}, which holds the fields to change in an edit jobseeker command.
+ * Covers remark edits and copying, equality, and the string representation.
+ */
 public class EditJobseekerDescriptorTest {
 
     @Test
@@ -81,8 +87,36 @@ public class EditJobseekerDescriptorTest {
         assertFalse(DESC_AMY.equals(editedAmy));
     }
 
+    /**
+     * Sets every field because an empty descriptor prints all its values as null, which would not
+     * reveal a field whose value is printed under the wrong label.
+     */
     @Test
-    public void toStringMethod() {
+    public void toStringMethod_allFieldsSet_listsEveryField() {
+        Jobseeker jobseeker = new JobseekerBuilder().withTags("priority").withRemark("Open to work")
+                .withHighestQualification("Bachelor of Science").build();
+        EditJobseekerDescriptor descriptor = new EditJobseekerDescriptor();
+        descriptor.setName(jobseeker.getName());
+        descriptor.setPhone(jobseeker.getPhone());
+        descriptor.setEmail(jobseeker.getEmail());
+        descriptor.setAddress(jobseeker.getAddress());
+        descriptor.setTags(jobseeker.getTags());
+        descriptor.setRemark(jobseeker.getRemark());
+        descriptor.setHighestQualification(jobseeker.getHighestQualification());
+
+        String expected = EditJobseekerDescriptor.class.getCanonicalName()
+                + "{name=" + jobseeker.getName()
+                + ", phone=" + jobseeker.getPhone()
+                + ", email=" + jobseeker.getEmail()
+                + ", address=" + jobseeker.getAddress()
+                + ", tags=" + jobseeker.getTags()
+                + ", remark=" + jobseeker.getRemark()
+                + ", highestQualification=" + jobseeker.getHighestQualification() + "}";
+        assertEquals(expected, descriptor.toString());
+    }
+
+    @Test
+    public void toStringMethod_noFieldsSet_printsNullValues() {
         EditJobseekerDescriptor editJobseekerDescriptor = new EditJobseekerDescriptor();
         String expected = EditJobseekerDescriptor.class.getCanonicalName() + "{name="
                 + editJobseekerDescriptor.getName().orElse(null) + ", phone="
