@@ -246,7 +246,7 @@
                   <Label styleClass="bullet" text="•" />
                   <TextFlow>
                      <children>
-                        <ExampleCode code="editc 2 j/Software Engineer" />
+                        <ExampleCode code="editj 1 q/Diploma in IT" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text=", then " />
                         <ExampleCode code="findj diploma" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" returns " />

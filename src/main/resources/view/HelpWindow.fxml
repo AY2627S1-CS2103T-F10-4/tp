@@ -168,7 +168,7 @@
                                                    <HBox alignment="BASELINE_LEFT">
                                                       <children>
                                                          <Label styleClass="bullet" text="◦" wrapText="true" />
-                                                         <SectionHyperlink minHeight="-Infinity" text="Finding client" wrapText="true" />
+                                                         <SectionHyperlink minHeight="-Infinity" text="Finding clients" wrapText="true" />
                                                       </children>
                                                    </HBox>
                                                    <HBox alignment="BASELINE_LEFT">
@@ -216,7 +216,7 @@
                                                    <HBox alignment="BASELINE_LEFT">
                                                       <children>
                                                          <Label styleClass="bullet" text="◦" wrapText="true" />
-                                                         <SectionHyperlink minHeight="-Infinity" text="Finding hidden client" wrapText="true" />
+                                                         <SectionHyperlink minHeight="-Infinity" text="Finding hidden clients" wrapText="true" />
                                                       </children>
                                                    </HBox>
                                                 </children>

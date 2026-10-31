@@ -1,9 +1,6 @@
 package seedu.address.ui;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.control.Hyperlink;
 
