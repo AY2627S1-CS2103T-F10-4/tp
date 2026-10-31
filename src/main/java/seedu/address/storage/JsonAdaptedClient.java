@@ -102,6 +102,10 @@ class JsonAdaptedClient {
      * @throws IllegalValueException if there were any data constraints violated in the adapted client.
      */
     public Client toModelType() throws IllegalValueException {
+        if (tags.contains(null)) {
+            throw new IllegalValueException(Tag.MESSAGE_CONSTRAINTS);
+        }
+
         final List<Tag> clientTags = new ArrayList<>();
         for (JsonAdaptedTag tag : tags) {
             clientTags.add(tag.toModelType());
