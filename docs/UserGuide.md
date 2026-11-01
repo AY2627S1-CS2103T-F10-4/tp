@@ -523,22 +523,21 @@ The notes are the same as [`findj`](#findj-notes) for jobseekers and [`findc`](#
 
 #### Hiding a jobseeker: `hidej`
 
-Hides the specified jobseeker, so that [`listj`](#listing-jobseekers-listj)
-and [`findj`](#finding-jobseekers-findj) no longer show them.
+Hides the specified jobseeker from `list`, `find`, `listj`, and `findj`.
 
 Unlike deleting, hiding keeps the jobseeker and all their details in TalentLink.
 
-To list hidden jobseekers,
-see [Listing hidden jobseekers: `listhj`](#listing-hidden-jobseekers-listhj).
-
-To search among hidden jobseekers,
-see [Finding hidden jobseekers: `findhj`](#finding-hidden-jobseekers-findhj).
+Use [`listhj`](#listing-hidden-jobseekers-listhj) to list hidden jobseekers,
+or [`findhj`](#finding-hidden-jobseekers-findhj) to search them.
+Hiding an already hidden jobseeker makes no changes and displays a message.
 
 **Format:**{: #hidej-format} `hidej <index>`
 
 * `<index>`: the index of the jobseeker to hide
   * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
     inclusive
+
+Check the updated indices before acting on another contact.
 
 **Examples:**
 {: #hidej-examples}
@@ -548,22 +547,21 @@ see [Finding hidden jobseekers: `findhj`](#finding-hidden-jobseekers-findhj).
 
 #### Hiding a client: `hidec`
 
-Hides the specified client, so that [`listc`](#listing-clients-listc)
-and [`findc`](#finding-clients-findc) no longer show them.
+Hides the specified client from `list`, `find`, `listc`, and `findc`.
 
 Unlike deleting, hiding keeps the client and all their details in TalentLink.
 
-To list hidden clients,
-see [Listing hidden clients: `listhc`](#listing-hidden-clients-listhc).
-
-To search among hidden clients,
-see [Finding hidden clients: `findhc`](#finding-hidden-clients-findhc).
+Use [`listhc`](#listing-hidden-clients-listhc) to list hidden clients,
+or [`findhc`](#finding-hidden-clients-findhc) to search them.
+Hiding an already hidden client makes no changes and displays a message.
 
 **Format:**{: #hidec-format} `hidec <index>`
 
 * `<index>`: the index of the client to hide
   * must be a positive integer, from 1 to the size of the currently displayed client list,
     inclusive
+
+Check the updated indices before acting on another contact.
 
 **Examples:**
 {: #hidec-examples}
@@ -572,19 +570,23 @@ see [Finding hidden clients: `findhc`](#finding-hidden-clients-findhc).
 
 #### Unhiding a jobseeker: `unhidej`
 
-Make a hidden jobseeker visible to [`listj`](#listing-jobseekers-listj)
-and [`findj`](#finding-jobseekers-findj) again.
+Makes a hidden jobseeker visible to `list`, `find`, `listj`, and `findj` again.
 
-This command must be used while [`listhj`](#listing-hidden-jobseekers-listhj)
-or [`findhj`](#finding-hidden-jobseekers-findhj) is in effect.
+First use [`listhj`](#listing-hidden-jobseekers-listhj) or
+[`findhj`](#finding-hidden-jobseekers-findhj) to display hidden jobseekers,
+then unhide the jobseeker using its displayed index.
 
-For more information on hidden jobseekers, see [Hiding a jobseeker: `hidej`](#hiding-a-jobseeker-hidej).
+The restored jobseeker disappears from the hidden results; the current filter stays active.
+Run `listj` to see visible jobseekers again. Unhiding an already visible jobseeker
+makes no changes and displays a message.
 
 **Format:**{: #unhidej-format} `unhidej <index>`
 
 * `<index>`: the index of the jobseeker to unhide
   * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
     inclusive
+
+Check the updated indices before acting on another contact.
 
 **Examples:**
 {: #unhidej-examples}
@@ -593,19 +595,23 @@ For more information on hidden jobseekers, see [Hiding a jobseeker: `hidej`](#hi
 
 #### Unhiding a client: `unhidec`
 
-Make a hidden client visible to [`listc`](#listing-clients-listc)
-and [`findc`](#finding-clients-findc) again.
+Makes a hidden client visible to `list`, `find`, `listc`, and `findc` again.
 
-This command must be used while [`listhc`](#listing-hidden-clients-listhc)
-or [`findhc`](#finding-hidden-clients-findhc) is in effect.
+First use [`listhc`](#listing-hidden-clients-listhc) or
+[`findhc`](#finding-hidden-clients-findhc) to display hidden clients,
+then unhide the client using its displayed index.
 
-For more information on hidden clients, see [Hiding a client: `hidec`](#hiding-a-client-hidec).
+The restored client disappears from the hidden results; the current filter stays active.
+Run `listc` to see visible clients again. Unhiding an already visible client
+makes no changes and displays a message.
 
 **Format:**{: #unhidec-format} `unhidec <index>`
 
 * `<index>`: the index of the client to unhide
   * must be a positive integer, from 1 to the size of the currently displayed client list,
-      inclusive
+    inclusive
+
+Check the updated indices before acting on another contact.
 
 **Examples:**
 {: #unhidec-examples}
@@ -621,24 +627,25 @@ For more information on hidden jobseekers, see [Hiding a jobseeker: `hidej`](#hi
 
 **Format:**{: #listhj-format} `listhj`
 
-To return both lists to their visible contacts, use
-[Listing jobseekers and clients: `list`](#listing-jobseekers-and-clients-list).
+To show visible jobseekers again, use [`listj`](#listing-jobseekers-listj).
+Use [`list`](#listing-jobseekers-and-clients-list) to return both lists to visible contacts.
 
 #### Listing hidden clients: `listhc`
 
 Shows all _hidden_ clients in the client list,
-and clears the current clients filter.
+and clears the current client filter.
 
 For more information on hidden clients, see [Hiding a client: `hidec`](#hiding-a-client-hidec).
 
 **Format:**{: #listhc-format} `listhc`
 
-To return both lists to their visible contacts, use
-[Listing jobseekers and clients: `list`](#listing-jobseekers-and-clients-list).
+To show visible clients again, use [`listc`](#listing-clients-listc).
+Use [`list`](#listing-jobseekers-and-clients-list) to return both lists to visible contacts.
 
 #### Finding hidden jobseekers: `findhj`
 
-Finds _hidden_ jobseekers whose name, phone number, email or tags contain any of the given keywords.
+Finds _hidden_ jobseekers whose name, phone number, email, tags or highest qualification
+contain any of the given keywords.
 
 The search logic is the same as `findj`.
 See [Finding jobseekers: `findj`](#finding-jobseekers-findj) for more details.
@@ -655,7 +662,8 @@ See [Finding jobseekers: `findj`](#finding-jobseekers-findj) for more details.
 
 #### Finding hidden clients: `findhc`
 
-Finds _hidden_ clients whose name, phone number, email or tags contain any of the given keywords.
+Finds _hidden_ clients whose name, phone number, email, tags or job openings
+contain any of the given keywords.
 
 The search logic is the same as `findc`.
 See [Finding clients: `findc`](#finding-clients-findc) for more details.
@@ -672,19 +680,25 @@ See [Finding clients: `findc`](#finding-clients-findc) for more details.
 
 ### Managing Tags
 
-Tags are labels with arbitrary names that you can put on jobseekers and clients.
-They can be used to help you organize contacts and speed up searches.
+Tags are labels that help you organize and search for jobseekers and clients.
+Each contact can have multiple tags or none.
 
-Tags contains the following attributes, and their corresponding constraints:
+* Tag names must contain only letters (`A–Z`, `a–z`) and digits (`0–9`), with no spaces or punctuation.
+* Tags are case-sensitive: `Java` and `java` are different tags. To remove a tag, match its case exactly.
+  Searches using `find`, `findj`, and `findc` are case-insensitive.
+* Each tag is stored only once per contact. Adding an existing tag or removing a tag the contact
+  does not have leaves that tag unchanged.
 
-* Name
-  * must contain only alphanumeric characters
-  * is _case-sensitive_, unlike the parameters to `findj` and `findc`
+For all four commands below:
 
-Tags are identified by their names, i.e. 2 tags with the same name,
-_case-sensitive_, are considered the same tags.
+* `<index>` must be a positive integer referring to a contact in the currently displayed list:
+  the jobseeker list for `tagj` and `untagj`, or the client list for `tagc` and `untagc`.
+  After a search, use the index shown in the search results.
+* Supply at least one tag name after the index. Separate multiple names with spaces;
+  do not use the `t/` prefix.
 
-A jobseeker or client contact can have multiple tags, or no tags at all.
+To replace all tags or clear them in one command, see
+[Editing a jobseeker](#editj-notes) or [Editing a client](#editc-notes).
 
 #### Adding jobseeker tags: `tagj`
 
@@ -692,11 +706,7 @@ Adds tags to a jobseeker while preserving existing tags.
 
 **Format:**{: #tagj-format} `tagj <index> <tag>...`
 
-* `<index>`: the index of the jobseeker to add the tag to
-  * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
-    inclusive
-* `<tag>`: the name of a tag to add
-  * At least one tag name must be given.
+* `<tag>`: the name of a tag to add.
 
 **Examples:**
 {: #tagj-examples}
@@ -710,11 +720,7 @@ Adds tags to a client while preserving existing tags.
 
 **Format:**{: #tagc-format} `tagc <index> <tag>...`
 
-* `<index>`: the index of the client to add the tag to
-  * must be a positive integer, from 1 to the size of the currently displayed client list,
-    inclusive
-* `<tag>`: the name of a tag to add
-  * At least one tag name must be given.
+* `<tag>`: the name of a tag to add.
 
 **Examples:**
 {: #tagc-examples}
@@ -728,11 +734,7 @@ Removes specified tags from a jobseeker while preserving other tags.
 
 **Format:**{: #untagj-format} `untagj <index> <tag>...`
 
-* `<index>`: the index of the jobseeker to remove the tag from
-  * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
-    inclusive
-  * `<tag>`: the name of a tag to add
-    * At least one tag name must be given.
+* `<tag>`: the name of a tag to remove.
 
 **Examples:**
 {: #untagj-examples}
@@ -740,18 +742,13 @@ Removes specified tags from a jobseeker while preserving other tags.
 * `untagj 1 java` removes `java` from the 1st displayed jobseeker.
 * `untagj 2 python teamwork` removes `python` and `teamwork` from the 2nd displayed jobseeker.
 
-
 #### Removing client tags: `untagc`
 
 Removes specified tags from a client while preserving other tags.
 
 **Format:**{: #untagc-format} `untagc <index> <tag>...`
 
-* `<index>`: the index of the client to remove the tag from 
-  * must be a positive integer, from 1 to the size of the currently displayed client list,
-    inclusive
-* `<tag>`: the name of a tag to add
-  * At least one tag name must be given.
+* `<tag>`: the name of a tag to remove.
 
 **Examples:**
 {: #untagc-examples}
