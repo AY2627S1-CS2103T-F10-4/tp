@@ -3,6 +3,7 @@ package seedu.address.storage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.storage.JsonAdaptedClient.MESSAGE_NULL_TAG;
 import static seedu.address.storage.JsonAdaptedClient.MISSING_FIELD_MESSAGE_FORMAT;
 import static seedu.address.testutil.Assert.assertThrows;
 
@@ -110,6 +111,25 @@ public class JsonAdaptedClientTest {
         JsonAdaptedClient client =
                 new JsonAdaptedClient(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, invalidTags);
         assertThrows(IllegalValueException.class, client::toModelType);
+    }
+
+    /**
+     * Goes through real JSON text because a JSON null in the list arrives as a null entry, rather than as
+     * a tag with a null name. It must be rejected as invalid data instead of causing a crash at startup.
+     */
+    @Test
+    public void toModelType_nullTagEntry_throwsIllegalValueException() throws Exception {
+        // EP: tag list containing a null entry
+        assertNullTagEntryRejected("[null]"); // Boundary value
+        assertNullTagEntryRejected("[\"friends\", null]");
+    }
+
+    private void assertNullTagEntryRejected(String tagsJson) throws Exception {
+        String json = "{\"name\": \"" + VALID_NAME + "\", \"phone\": \"" + VALID_PHONE
+                + "\", \"email\": \"" + VALID_EMAIL + "\", \"address\": \"" + VALID_ADDRESS
+                + "\", \"tags\": " + tagsJson + "}";
+        JsonAdaptedClient client = JsonUtil.fromJsonString(json, JsonAdaptedClient.class);
+        assertThrows(IllegalValueException.class, MESSAGE_NULL_TAG, client::toModelType);
     }
 
     /**
