@@ -122,7 +122,7 @@ Exits the program.
 
 #### Common info about contacts
 
-Jobseeker contacts contains the following values, and their corresponding constraints:
+Jobseeker contacts contain the following values, and their corresponding constraints:
 
 * Name
   * can contain any characters except `/` (e.g. `Beyoncé` and `Zoë` are allowed)
@@ -131,16 +131,19 @@ Jobseeker contacts contains the following values, and their corresponding constr
   * contains only digits
   * must be at least 3 digits long
 * Email address
-  * must follow the conventional format of email address
+  * must follow the conventional format of an email address
 * Physical address
   * can be any value other than empty
+* Highest qualification
+  * optional
+  * can be any value
 * Remarks about the individual
   * can be any value
 * Tags
   * can have multiple unique tags
   * See [Managing tags](#managing-tags) for more details about tags.
 
-Client contacts contains the following values, and their corresponding constraints:
+Client contacts contain the following values, and their corresponding constraints:
 
 * Name
   * can contain any characters except `/` (e.g. `Ben & Jerry's`, `Pokémon` and `7-Eleven` are allowed)
@@ -149,9 +152,13 @@ Client contacts contains the following values, and their corresponding constrain
   * contains only digits
   * must be at least 3 digits long
 * Email address
-  * must follow the conventional format of email address
+  * must follow the conventional format of an email address
 * Physical address
   * can be any value other than empty
+* Job openings
+  * optional
+  * can have multiple unique job titles
+  * each job title must not be blank
 * Remarks about the individual
   * can be any value
 * Tags
@@ -163,8 +170,8 @@ Contacts are identified by their phone number **and** their email address.
 The `q/` field is only accepted by `addj` and `editj`; `j/` is only accepted by `addc` and `editc`.
 Using either field with the wrong contact type is rejected, even when its value is empty.
 
-* Contacts with the same phone number and email address are treated as the same contacts,
-  even if their other fields differs.
+* Contacts with the same phone number and email address are treated as the same contact,
+  even if their other fields differ.
 
 * If contacts only have **either** the same phone number or email address,
   they are treated as different contacts.
