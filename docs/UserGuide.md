@@ -834,10 +834,6 @@ Therefore, edit the data file only if you are confident that you can update it c
 
 </div>
 
-### Archiving data files `[coming in v2.0]`
-
-_Details coming soon ..._
-
 ---------------------------------------------------------------------------------------------------
 
 ## FAQ
