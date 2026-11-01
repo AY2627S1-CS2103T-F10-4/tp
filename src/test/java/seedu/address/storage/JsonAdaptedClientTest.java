@@ -3,6 +3,7 @@ package seedu.address.storage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.storage.JsonAdaptedClient.MESSAGE_NULL_TAG;
 import static seedu.address.storage.JsonAdaptedClient.MISSING_FIELD_MESSAGE_FORMAT;
 import static seedu.address.testutil.Assert.assertThrows;
 
@@ -19,7 +20,6 @@ import seedu.address.model.person.Client;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
-import seedu.address.model.tag.Tag;
 import seedu.address.testutil.ClientBuilder;
 
 public class JsonAdaptedClientTest {
@@ -129,7 +129,7 @@ public class JsonAdaptedClientTest {
                 + "\", \"email\": \"" + VALID_EMAIL + "\", \"address\": \"" + VALID_ADDRESS
                 + "\", \"tags\": " + tagsJson + "}";
         JsonAdaptedClient client = JsonUtil.fromJsonString(json, JsonAdaptedClient.class);
-        assertThrows(IllegalValueException.class, Tag.MESSAGE_CONSTRAINTS, client::toModelType);
+        assertThrows(IllegalValueException.class, MESSAGE_NULL_TAG, client::toModelType);
     }
 
     /**

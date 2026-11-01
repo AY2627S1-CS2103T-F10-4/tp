@@ -25,6 +25,7 @@ import seedu.address.model.tag.Tag;
 class JsonAdaptedClient {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Client's %s field is missing!";
+    public static final String MESSAGE_NULL_TAG = "Client's tags list contains a null entry.";
 
     private final String name;
     private final String phone;
@@ -103,7 +104,7 @@ class JsonAdaptedClient {
      */
     public Client toModelType() throws IllegalValueException {
         if (tags.contains(null)) {
-            throw new IllegalValueException(Tag.MESSAGE_CONSTRAINTS);
+            throw new IllegalValueException(MESSAGE_NULL_TAG);
         }
 
         final List<Tag> clientTags = new ArrayList<>();
