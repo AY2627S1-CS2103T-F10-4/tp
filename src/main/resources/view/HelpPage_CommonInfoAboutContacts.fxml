@@ -149,11 +149,10 @@
                               <TextFlow styleClass="body">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="See " />
-                                    <SectionHyperlink text="Tag details" />
+                                    <SectionHyperlink text="Managing tags" />
                                     <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" for more details about tags. " />
                                  </children>
                               </TextFlow>
-                              <Label text="can have multiple unique tags" />
                            </children>
                         </HBox>
                      </children>
@@ -309,7 +308,7 @@
                               <TextFlow styleClass="body">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="See " />
-                                    <SectionHyperlink text="Tag details" />
+                                    <SectionHyperlink text="Managing tags" />
                                     <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" for more details about tags. " />
                                  </children>
                               </TextFlow>
