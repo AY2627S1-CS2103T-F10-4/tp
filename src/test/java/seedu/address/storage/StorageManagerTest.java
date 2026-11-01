@@ -65,4 +65,13 @@ public class StorageManagerTest {
         assertNotNull(storageManager.getAddressBookFilePath());
     }
 
+    /**
+     * Compares the exact path because both storages hold a path, so a non-null check would still pass if
+     * the manager returned the address book's path instead.
+     */
+    @Test
+    public void getUserPrefsFilePath_returnsPathOfPrefsStorage() {
+        assertEquals(getTempFilePath("prefs"), storageManager.getUserPrefsFilePath());
+    }
+
 }

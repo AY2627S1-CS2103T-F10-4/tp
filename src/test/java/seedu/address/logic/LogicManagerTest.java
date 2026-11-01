@@ -18,6 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.commands.AddJobseekerCommand;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.ListJobseekerCommand;
@@ -85,6 +86,20 @@ public class LogicManagerTest {
     @Test
     public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> logic.getFilteredJobseekerList().remove(0));
+    }
+
+    /**
+     * The main window calls this when it closes, so the settings must reach the model for them to be saved.
+     */
+    @Test
+    public void setGuiSettings_variousSettings_updatesModelOrThrows() {
+        // EP: null settings
+        assertThrows(NullPointerException.class, () -> logic.setGuiSettings(null));
+
+        // EP: valid settings
+        GuiSettings guiSettings = new GuiSettings(1, 2, 3, 4);
+        logic.setGuiSettings(guiSettings);
+        assertEquals(guiSettings, model.getGuiSettings());
     }
 
     /**

@@ -10,6 +10,7 @@ import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BOB;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -192,9 +193,27 @@ public class UniquePersonListTest {
         assertEqualWithSameHashCode(createListOf(ALICE, BOB), createListOf(ALICE, BOB));
     }
 
+    @Test
+    public void iterator_variousListSizes_returnsPeopleInListOrder() {
+        // EP: no people
+        assertEquals(List.of(), collectByIterating(createListOf())); // Boundary value
+
+        // EP: at least one person
+        assertEquals(List.of(ALICE), collectByIterating(createListOf(ALICE))); // Boundary value
+        assertEquals(List.of(ALICE, BOB), collectByIterating(createListOf(ALICE, BOB)));
+    }
+
     private UniquePersonList<Person> createListOf(Person... persons) {
         UniquePersonList<Person> list = new UniquePersonList<>();
         list.setPersons(List.of(persons));
         return list;
+    }
+
+    private List<Person> collectByIterating(UniquePersonList<Person> list) {
+        List<Person> persons = new ArrayList<>();
+        for (Person person : list) {
+            persons.add(person);
+        }
+        return persons;
     }
 }
