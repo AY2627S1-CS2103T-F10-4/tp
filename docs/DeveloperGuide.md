@@ -114,7 +114,7 @@ How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name, e.g., `AddJobseekerCommandParser`). The parser uses the other classes shown above to parse the user command and create an `XYZCommand` object (e.g., `AddJobseekerCommand`). The `AddressBookParser` returns that object as a `Command` object.
 * All `XYZCommandParser` classes, such as `AddJobseekerCommandParser` and `TagJobseekerCommandParser`, implement the `Parser` interface so they can be treated similarly where appropriate, for example during testing.
 
-* Parser dependencies vary by command. Tag/untag parsers split whitespace-separated arguments and use `ParserUtil.parseIndex()` and `ParserUtil.parseTags()` directly; they do not use `ArgumentTokenizer`, `ArgumentMultimap`, or `CliSyntax`.
+* Parser dependencies vary by command. Tag/untag parsers split ASCII whitespace-separated arguments and use `ParserUtil.parseIndex()` and `ParserUtil.parseTags()` directly; they do not use `ArgumentTokenizer`, `ArgumentMultimap`, or `CliSyntax`.
 
 ### Model component
 **API** : [`Model.java`](https://github.com/AY2627S1-CS2103T-F10-4/tp/tree/master/src/main/java/seedu/address/model/Model.java)
@@ -186,7 +186,7 @@ Jobseeker qualifications follow the same omitted/empty distinction: `q/` supplie
 
 ### Tag/untag feature
 
-The tag/untag commands add or remove tags for a jobseeker or client identified by their one-based index in the currently displayed list. Each command accepts `INDEX TAG [MORE_TAGS]...`, with tags separated by whitespace.
+The tag/untag commands add or remove tags for a jobseeker or client identified by their one-based index in the currently displayed list. Each command accepts `INDEX TAG [MORE_TAGS]...`, with tags separated by one or more ASCII whitespace characters. Use ordinary spaces (`U+0020`) when entering commands; Unicode spaces such as EM SPACE (`U+2003`) are not supported as separators.
 
 | Command | Command class | Parser class |
 | --- | --- | --- |
@@ -202,6 +202,8 @@ The following class diagram shows the commands, their parsers, and their depende
 ![Tag and untag command and parser classes](images/TagUntagClassDiagram.png)
 
 `AddressBookParser` selects the parser using the command word. Each parser splits the arguments into an index and tag names, then uses `ParserUtil.parseIndex()` and `ParserUtil.parseTags()` to validate them. Missing or invalid arguments cause a `ParseException` before command execution. Tags are collected into a `Set<Tag>`, so duplicate inputs are collapsed.
+
+The shared `TagCommandParser` uses Java's default `\s+` regular expression, which matches ASCII space, tab, line feed, vertical tab, form feed, and carriage return. It does not enable Unicode character classes. An EM SPACE between two tag names therefore remains part of a single tag and causes validation to fail with "Tag names should be alphanumeric".
 
 Each command extends `Command` and stores the target `Index` and a defensive copy of the supplied tags. Each parser implements `Parser<T>`, where `T` is its corresponding command class.
 
