@@ -672,19 +672,25 @@ See [Finding clients: `findc`](#finding-clients-findc) for more details.
 
 ### Managing Tags
 
-Tags are labels with arbitrary names that you can put on jobseekers and clients.
-They can be used to help you organize contacts and speed up searches.
+Tags are labels that help you organize and search for jobseekers and clients.
+Each contact can have multiple tags or none.
 
-Tags contains the following attributes, and their corresponding constraints:
+* Tag names must contain only letters (`A–Z`, `a–z`) and digits (`0–9`), with no spaces or punctuation.
+* Tags are case-sensitive: `Java` and `java` are different tags. To remove a tag, match its case exactly.
+  Searches using `find`, `findj`, and `findc` are case-insensitive.
+* Each tag is stored only once per contact. Adding an existing tag or removing a tag the contact
+  does not have leaves that tag unchanged.
 
-* Name
-  * must contain only alphanumeric characters
-  * is _case-sensitive_, unlike the parameters to `findj` and `findc`
+For all four commands below:
 
-Tags are identified by their names, i.e. 2 tags with the same name,
-_case-sensitive_, are considered the same tags.
+* `<index>` must be a positive integer referring to a contact in the currently displayed list:
+  the jobseeker list for `tagj` and `untagj`, or the client list for `tagc` and `untagc`.
+  After a search, use the index shown in the search results.
+* Supply at least one tag name after the index. Separate multiple names with spaces;
+  do not use the `t/` prefix.
 
-A jobseeker or client contact can have multiple tags, or no tags at all.
+To replace all tags or clear them in one command, see
+[Editing a jobseeker](#editj-notes) or [Editing a client](#editc-notes).
 
 #### Adding jobseeker tags: `tagj`
 
@@ -692,11 +698,7 @@ Adds tags to a jobseeker while preserving existing tags.
 
 **Format:**{: #tagj-format} `tagj <index> <tag>...`
 
-* `<index>`: the index of the jobseeker to add the tag to
-  * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
-    inclusive
-* `<tag>`: the name of a tag to add
-  * At least one tag name must be given.
+* `<tag>`: the name of a tag to add.
 
 **Examples:**
 {: #tagj-examples}
@@ -710,11 +712,7 @@ Adds tags to a client while preserving existing tags.
 
 **Format:**{: #tagc-format} `tagc <index> <tag>...`
 
-* `<index>`: the index of the client to add the tag to
-  * must be a positive integer, from 1 to the size of the currently displayed client list,
-    inclusive
-* `<tag>`: the name of a tag to add
-  * At least one tag name must be given.
+* `<tag>`: the name of a tag to add.
 
 **Examples:**
 {: #tagc-examples}
@@ -728,11 +726,7 @@ Removes specified tags from a jobseeker while preserving other tags.
 
 **Format:**{: #untagj-format} `untagj <index> <tag>...`
 
-* `<index>`: the index of the jobseeker to remove the tag from
-  * must be a positive integer, from 1 to the size of the currently displayed jobseeker list,
-    inclusive
-  * `<tag>`: the name of a tag to add
-    * At least one tag name must be given.
+* `<tag>`: the name of a tag to remove.
 
 **Examples:**
 {: #untagj-examples}
@@ -740,18 +734,13 @@ Removes specified tags from a jobseeker while preserving other tags.
 * `untagj 1 java` removes `java` from the 1st displayed jobseeker.
 * `untagj 2 python teamwork` removes `python` and `teamwork` from the 2nd displayed jobseeker.
 
-
 #### Removing client tags: `untagc`
 
 Removes specified tags from a client while preserving other tags.
 
 **Format:**{: #untagc-format} `untagc <index> <tag>...`
 
-* `<index>`: the index of the client to remove the tag from 
-  * must be a positive integer, from 1 to the size of the currently displayed client list,
-    inclusive
-* `<tag>`: the name of a tag to add
-  * At least one tag name must be given.
+* `<tag>`: the name of a tag to remove.
 
 **Examples:**
 {: #untagc-examples}
