@@ -1,0 +1,31 @@
+@startuml
+!include style.puml
+!pragma layout smetana
+left to right direction
+skinparam arrowColor LOGIC_COLOR_T4
+skinparam classBackgroundColor LOGIC_COLOR
+skinparam ArrowFontStyle plain
+skinparam classAttributeFontColor #FFFFFF
+skinparam classAttributeIconSize 0
+skinparam genericDisplay old
+
+abstract class Command
+abstract class AbstractTagCommand {
+    - targetIndex: Index
+    - tags: Set<Tag>
+    - operation: TagOperation
+    # getTarget(displayedPersons, invalidIndexMessage)
+    # getUpdatedTags(target): Optional<Set<Tag>>
+}
+show AbstractTagCommand members
+class TagJobseekerCommand
+class UntagJobseekerCommand
+class TagClientCommand
+class UntagClientCommand
+
+AbstractTagCommand --|> Command
+TagJobseekerCommand --|> AbstractTagCommand
+UntagJobseekerCommand --|> AbstractTagCommand
+TagClientCommand --|> AbstractTagCommand
+UntagClientCommand --|> AbstractTagCommand
+@enduml

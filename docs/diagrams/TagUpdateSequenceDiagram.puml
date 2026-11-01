@@ -1,0 +1,39 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+skinparam defaultFontSize 14
+
+box Logic LOGIC_COLOR_T1
+participant "command:\nAbstractTagCommand" as Command LOGIC_COLOR
+end box
+box Model MODEL_COLOR_T1
+participant "target:Person" as Target MODEL_COLOR
+end box
+participant "updatedTags:\nHashSet<Tag>" as Tags #666666
+
+[-> Command : getUpdatedTags(target)
+activate Command
+Command -> Target : getTags()
+activate Target
+Target --> Command : existingTags
+deactivate Target
+create Tags
+Command -> Tags : <<create>> HashSet(existingTags)
+alt operation == ADD
+    Command -> Tags : addAll(tags)
+    activate Tags
+    Tags --> Command : hasChanges
+    deactivate Tags
+else operation == REMOVE
+    Command -> Tags : removeAll(tags)
+    activate Tags
+    Tags --> Command : hasChanges
+    deactivate Tags
+end
+alt hasChanges
+    [<-- Command : Optional.of(updatedTags)
+else !hasChanges
+    [<-- Command : Optional.empty()
+end
+deactivate Command
+@enduml

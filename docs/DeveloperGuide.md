@@ -184,9 +184,9 @@ Jobseeker qualifications follow the same omitted/empty distinction: `q/` supplie
 4. The command calls `Model.setJobseeker()` and resets the filter using `Model.PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS`. Editing a hidden jobseeker therefore keeps that jobseeker hidden and returns the view to the normal list.
 5. After the command returns, `LogicManager` saves the address book through `Storage`. Parsing or execution failures skip saving; a storage failure is reported as a `CommandException` after the model has been updated.
 
-### Tag/untag feature
+### Tag/Untag feature
 
-The tag/untag commands add or remove tags for a jobseeker or client identified by their one-based index in the currently displayed list. Each command accepts `INDEX TAG [MORE_TAGS]...`, with tags separated by one or more ASCII whitespace characters. Use ordinary spaces (`U+0020`) when entering commands; Unicode spaces such as EM SPACE (`U+2003`) are not supported as separators.
+The tag/untag commands add or remove tags for a jobseeker or client identified by their one-based index in the currently displayed list. Each command accepts `INDEX TAG [MORE_TAGS]...` and requires at least one tag.
 
 | Command | Command class | Parser class |
 | --- | --- | --- |
@@ -197,43 +197,55 @@ The tag/untag commands add or remove tags for a jobseeker or client identified b
 
 #### Structure and parsing
 
-The following class diagram shows the commands, their parsers, and their dependencies:
+The following diagrams separate the command and parser hierarchies. Only members relevant to shared tag handling are shown.
 
-![Tag and untag command and parser classes](images/TagUntagClassDiagram.png)
+![Tag and untag command hierarchy](images/TagCommandHierarchyDiagram.png)
 
-`AddressBookParser` selects the parser using the command word. Each parser splits the arguments into an index and tag names, then uses `ParserUtil.parseIndex()` and `ParserUtil.parseTags()` to validate them. Missing or invalid arguments cause a `ParseException` before command execution. Tags are collected into a `Set<Tag>`, so duplicate inputs are collapsed.
+The four concrete commands extend `AbstractTagCommand`, which extends `Command`. It stores the target `Index`, a defensive copy of the requested tags, and the `ADD` or `REMOVE` operation. It also provides shared target lookup and tag-set updates; the concrete commands construct and save the replacement jobseeker or client.
 
-The shared `TagCommandParser` uses Java's default `\s+` regular expression, which matches ASCII space, tab, line feed, vertical tab, form feed, and carriage return. It does not enable Unicode character classes. An EM SPACE between two tag names therefore remains part of a single tag and causes validation to fail with "Tag names should be alphanumeric".
+![Tag and untag parser hierarchy](images/TagParserClassDiagram.png)
 
-Each command extends `Command` and stores the target `Index` and a defensive copy of the supplied tags. Each parser implements `Parser<T>`, where `T` is its corresponding command class.
+The four concrete parsers extend `TagCommandParser<T>`, which implements `Parser<T>`. `AddressBookParser` selects a concrete parser using the command word. The shared parser splits the arguments into an index and tag names, validates them using `ParserUtil.parseIndex()` and `ParserUtil.parseTags()`, and creates the corresponding command through its supplied command factory. Missing or invalid arguments cause a `ParseException` before execution.
 
-#### Adding tags
+Arguments are split using Java's default `\s+`, which recognises ASCII whitespace. Ordinary spaces (`U+0020`) are supported; Unicode spaces such as EM SPACE (`U+2003`) are not recognised as separators. An EM SPACE between tag names remains part of a single tag and causes tag validation to fail.
 
-The sequence diagram below illustrates `tagj 1 java`:
+Tag names must contain only ASCII letters and digits. `Tag.equals()` compares names case-sensitively, so `Java` and `java` are distinct tags for both addition and removal. Parsed tags are collected into a `Set<Tag>`, collapsing repeated identical inputs.
 
-![Sequence for adding a tag to a jobseeker](images/TagSequenceDiagram.png)
+#### Execution
 
-1. `LogicManager` obtains a `TagJobseekerCommand` from `AddressBookParser` and calls `execute(model)`.
-2. The command reads `Model.getFilteredJobseekerList()` and checks that the index refers to a displayed jobseeker. An index outside this list causes a `CommandException`.
-3. The command copies the target's existing tags into a `HashSet` and calls `addAll(tagsToAdd)`. Existing tags are retained and duplicate tags are ignored.
-4. If no tags were added, the command returns `MESSAGE_NO_CHANGE` without replacing the jobseeker.
-5. Otherwise, it creates a replacement `Jobseeker` with the updated tags, calls `Model.setJobseeker(target, updatedJobseeker)`, and returns a success `CommandResult` describing the updated jobseeker.
+All four commands follow the same flow:
 
-#### Removing tags
+1. `LogicManager` calls the command's `execute(model)` method.
+2. The command uses the inherited `getTarget()` helper to resolve the index against the corresponding filtered list. An index outside that list causes a `CommandException`.
+3. The inherited `getUpdatedTags()` helper copies the target's tags into a `HashSet` and applies the requested operation:
 
-The sequence diagram below illustrates `untagj 1 java`:
+   | Operation | Set operation | No-change condition |
+   | --- | --- | --- |
+   | Add | `addAll(tags)` | All requested tags already exist |
+   | Remove | `removeAll(tags)` | None of the requested tags exist |
 
-![Sequence for removing a tag from a jobseeker](images/UntagSequenceDiagram.png)
+4. If the operation has no effect, the command returns `MESSAGE_NO_CHANGE` without replacing the contact.
+5. Otherwise, the concrete command creates a replacement contact with the updated tags, calls `Model.setJobseeker()` or `Model.setClient()`, and returns a success `CommandResult` describing the updated contact.
 
-`UntagJobseekerCommand` follows the same flow, but calls `removeAll(tagsToRemove)` on a copy of the existing tags. Tags that were not requested for removal are retained, and requested tags that are absent are ignored. If none of the requested tags exist, the command returns `MESSAGE_NO_CHANGE` without replacing the jobseeker. Otherwise, it replaces the jobseeker and returns a success `CommandResult`.
+`getUpdatedTags()` returns `Optional.empty()` when there is no change. An optional containing an empty set instead means that all tags were successfully removed, so the contact must still be replaced.
 
-#### Client commands, filtering, and persistence
+The first sequence diagram shows execution of `tagj 1 java` after parsing, assuming a valid displayed index. The self-calls to `getTarget()` and `getUpdatedTags()` use methods inherited from `AbstractTagCommand`. The `...` in `getTarget()` omits the invalid-index message, while the constructor's `...` represents unchanged non-tag fields. Result construction and message formatting are omitted.
 
-`TagClientCommand` and `UntagClientCommand` follow the same steps using `Model.getFilteredClientList()`, a replacement `Client`, and `Model.setClient()`.
+![Jobseeker tag command execution](images/TagCommandExecutionDiagram.png)
 
-All four commands preserve the target's name, phone, email, address, remark, and hidden status. They retain the current filter, so indices refer to the current view, including search results or a hidden-person list. Tagging or untagging a hidden person does not unhide them.
+The referenced interaction below expands `getUpdatedTags()` for either operation. The `command` lifeline represents an instance of any concrete tag/untag command, viewed through its shared superclass; the call is the inherited self-call shown above, not a separate command object.
 
-After a command returns normally, including a no-change result, `LogicManager` saves the address book through `Storage`. Parsing and execution errors propagate without reaching that save step. Storage interactions are omitted from the sequence diagrams to focus on parsing and tag updates.
+![Shared tag update for addition and removal](images/TagUpdateSequenceDiagram.png)
+
+`UntagJobseekerCommand` follows the same execution flow with the `REMOVE` operation. The client commands use `Model.getFilteredClientList()`, a replacement `Client`, and `Model.setClient()` in place of their jobseeker equivalents. Parsing and invalid-index error paths are described above rather than repeated in the diagrams.
+
+#### Filtering and persistence
+
+All four commands preserve all non-tag fields, including highest qualification for jobseekers, available jobs for clients, and hidden status. Tagging or untagging a hidden contact does not unhide them.
+
+The current filter remains active, and indices refer to the displayed list, including search results or a hidden-contact list. A contact remains visible only if it still matches that filter; for example, removing a tag can make it disappear from search results that matched that tag.
+
+After a command returns normally, including a no-change result, `LogicManager` saves the address book through `Storage`. Parsing and execution errors propagate without reaching that save step. Storage interactions are omitted from the sequence diagrams to focus on command execution and tag updates.
 
 ### Clipboard feature
 
