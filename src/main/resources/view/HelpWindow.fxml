@@ -127,6 +127,18 @@
                                                          <SectionHyperlink minHeight="-Infinity" text="Deleting a client" wrapText="true" />
                                                       </children>
                                                    </HBox>
+                                                   <HBox alignment="BASELINE_LEFT">
+                                                      <children>
+                                                         <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                         <SectionHyperlink minHeight="-Infinity" text="Clearing all jobseekers" wrapText="true" />
+                                                      </children>
+                                                   </HBox>
+                                                   <HBox alignment="BASELINE_LEFT">
+                                                      <children>
+                                                         <Label styleClass="bullet" text="◦" wrapText="true" />
+                                                         <SectionHyperlink minHeight="-Infinity" text="Clearing all clients" wrapText="true" />
+                                                      </children>
+                                                   </HBox>
                                                 </children>
                                              </VBox>
                                           </content>

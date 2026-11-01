@@ -30,7 +30,7 @@
          <children>
             <HBox alignment="BASELINE_LEFT">
                <children>
-                  <Label text="1. " />
+                  <Label minWidth="-Infinity" text="1. " />
                   <TextFlow styleClass="body">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bold" text="When using multiple screens" />
@@ -43,7 +43,7 @@
             </HBox>
             <HBox alignment="BASELINE_LEFT">
                <children>
-                  <Label text="2. " />
+                  <Label minWidth="-Infinity" text="2. " />
                   <TextFlow styleClass="body">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bold" text="If you minimize the Help Window" />
