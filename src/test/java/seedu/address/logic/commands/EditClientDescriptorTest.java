@@ -14,11 +14,16 @@ import java.util.function.Consumer;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.EditClientCommand.EditClientDescriptor;
+import seedu.address.model.job.Job;
 import seedu.address.model.person.Client;
 import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.ClientBuilder;
 
+/**
+ * Tests {@code EditClientDescriptor}, which holds the fields to change in an edit client command.
+ * Covers edit detection, equality, copying, defensive copies of tags, and the string representation.
+ */
 public class EditClientDescriptorTest {
     @Test
     public void newDescriptor_hasNoEdits() {
@@ -79,5 +84,41 @@ public class EditClientDescriptorTest {
         assertEquals(copy, copy);
         assertNotEquals(copy, null);
         assertNotEquals(copy, new EditJobseekerCommand.EditJobseekerDescriptor());
+    }
+
+    /**
+     * Sets every field because an empty descriptor prints all its values as null, which would not
+     * reveal a field whose value is printed under the wrong label.
+     */
+    @Test
+    public void toStringMethod_allFieldsSet_listsEveryField() {
+        Client client = new ClientBuilder().withTags("priority").withRemark("Hiring now").build();
+        Set<Job> availableJobs = Set.of(new Job("Software Engineer"));
+        EditClientDescriptor descriptor = new EditClientDescriptor();
+        descriptor.setName(client.getName());
+        descriptor.setPhone(client.getPhone());
+        descriptor.setEmail(client.getEmail());
+        descriptor.setAddress(client.getAddress());
+        descriptor.setTags(client.getTags());
+        descriptor.setRemark(client.getRemark());
+        descriptor.setAvailableJobs(availableJobs);
+
+        String expected = EditClientDescriptor.class.getCanonicalName()
+                + "{name=" + client.getName()
+                + ", phone=" + client.getPhone()
+                + ", email=" + client.getEmail()
+                + ", address=" + client.getAddress()
+                + ", tags=" + client.getTags()
+                + ", remark=" + client.getRemark()
+                + ", availableJobs=" + availableJobs + "}";
+        assertEquals(expected, descriptor.toString());
+    }
+
+    @Test
+    public void toStringMethod_noFieldsSet_printsNullValues() {
+        String expected = EditClientDescriptor.class.getCanonicalName()
+                + "{name=null, phone=null, email=null, address=null, tags=null, remark=null,"
+                + " availableJobs=null}";
+        assertEquals(expected, new EditClientDescriptor().toString());
     }
 }

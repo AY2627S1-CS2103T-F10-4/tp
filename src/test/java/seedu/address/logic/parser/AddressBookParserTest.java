@@ -6,6 +6,14 @@ import static seedu.address.commons.core.InputLimits.MAX_COMMAND_LENGTH;
 import static seedu.address.logic.Messages.MESSAGE_COMMAND_TOO_LONG;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
@@ -15,6 +23,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.commands.AddClientCommand;
 import seedu.address.logic.commands.AddJobseekerCommand;
 import seedu.address.logic.commands.ClearClientCommand;
 import seedu.address.logic.commands.ClearJobseekerCommand;
@@ -48,6 +57,7 @@ import seedu.address.logic.commands.UntagJobseekerCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
+import seedu.address.model.person.Client;
 import seedu.address.model.person.Jobseeker;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.model.tag.Tag;
@@ -118,11 +128,19 @@ public class AddressBookParserTest {
     }
 
     @Test
-    public void parseCommand_add() throws Exception {
+    public void parseCommand_addj() throws Exception {
         Jobseeker jobseeker = new JobseekerBuilder().build();
         AddJobseekerCommand command = (AddJobseekerCommand) parser.parseCommand(
                 PersonUtil.getAddJobseekerCommand(jobseeker));
         assertEquals(new AddJobseekerCommand(jobseeker), command);
+    }
+
+    @Test
+    public void parseCommand_addc() throws Exception {
+        Client client = new ClientBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_AMY).withAddress(VALID_ADDRESS_AMY).build();
+        assertEquals(new AddClientCommand(client), parser.parseCommand(AddClientCommand.COMMAND_WORD
+                + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY));
     }
 
     @Test

@@ -103,4 +103,57 @@ public class ModelManagerTest {
         assertEquals(List.of(ALICE), hiddenModelManager.getFilteredJobseekerList());
         assertEquals(List.of(ADRIAN), hiddenModelManager.getFilteredClientList());
     }
+
+    @Test
+    public void setAddressBook_nullAddressBook_throwsNullPointerException() {
+        // EP: null address book
+        assertThrows(NullPointerException.class, () -> modelManager.setAddressBook(null));
+    }
+
+    @Test
+    public void setAddressBook_validAddressBook_replacesExistingData() {
+        // EP: no people
+        assertAddressBookReplacedBy(new AddressBook()); // Boundary value
+
+        // EP: only jobseekers
+        assertAddressBookReplacedBy(new AddressBookBuilder().withJobseeker(BENSON).build());
+
+        // EP: only clients
+        assertAddressBookReplacedBy(new AddressBookBuilder().withClient(BRENDA).build());
+
+        // EP: both jobseekers and clients
+        assertAddressBookReplacedBy(new AddressBookBuilder().withJobseeker(BENSON)
+                .withClient(BRENDA).build());
+    }
+
+    /**
+     * The filter set by the constructor must keep applying to the new data, or replacing the data would
+     * reveal people who were hidden.
+     */
+    @Test
+    public void setAddressBook_hiddenPeople_onlyUnhiddenShown() {
+        // EP: both hidden and unhidden people
+        modelManager.setAddressBook(new AddressBookBuilder()
+                .withJobseeker(ALICE).withJobseeker(new JobseekerBuilder(BENSON).withHidden(true).build())
+                .withClient(ADRIAN).withClient(new ClientBuilder(BRENDA).withHidden(true).build())
+                .build());
+
+        assertEquals(List.of(ALICE), modelManager.getFilteredJobseekerList());
+        assertEquals(List.of(ADRIAN), modelManager.getFilteredClientList());
+    }
+
+    /**
+     * Asserts that setting {@code replacement} on a model that already holds people removes those people,
+     * from both the address book and the filtered lists that the GUI displays.
+     */
+    private void assertAddressBookReplacedBy(AddressBook replacement) {
+        AddressBook existingData = new AddressBookBuilder().withJobseeker(ALICE).withClient(ADRIAN).build();
+        modelManager = new ModelManager(existingData, new UserPrefs());
+
+        modelManager.setAddressBook(replacement);
+
+        assertEquals(replacement, modelManager.getAddressBook());
+        assertEquals(replacement.getJobseekerList(), modelManager.getFilteredJobseekerList());
+        assertEquals(replacement.getClientList(), modelManager.getFilteredClientList());
+    }
 }
