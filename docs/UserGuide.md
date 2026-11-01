@@ -271,7 +271,7 @@ At least one of the fields `<name>`, `<phone number>`, `<email>`, `<address>`, `
 * Separate tags with spaces after one `t/`, or use repeated prefixes; mixed syntax is accepted.
 * Duplicate tags are stored once; tags are case-sensitive and must be alphanumeric.
 * Omit `t/` to preserve existing tags. A single empty `t/` clears them; empty prefixes mixed with other tags are rejected.
-* Editing preserves hidden status and returns the view to the normal jobseeker list.
+* Editing preserves hidden status, and the current filter stays active.
   An edited hidden jobseeker remains hidden.
 
 **Examples:**
