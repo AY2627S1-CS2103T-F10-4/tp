@@ -420,7 +420,7 @@ The search is case-insensitive and is inclusive, as in:
 * inputting `hans` or `Hans` both matches `Hans Gruber`
 * inputting `Hans Bo` matches both `Hans Gruber` and `Bo Yang`.
 
-For more information on hidden jobseekers, see [Hiding a jobseekers: `hidej`](#hiding-a-jobseeker-hidej).
+For more information on hidden jobseekers, see [Hiding a jobseeker: `hidej`](#hiding-a-jobseeker-hidej).
 
 To search among hidden jobseekers, see [Finding hidden jobseekers: `findhj`](#finding-hidden-jobseekers-findhj).
 
@@ -488,7 +488,7 @@ See [Finding jobseekers: `findj` - Notes](#findj-notes).
 * `findc roy` returns `Roy Balakrishnan`.
 * `findc irfan@example.com` returns `Irfan Ibrahim`.
 * `findc colleagues` returns `Roy Balakrishnan`, who is tagged `colleagues`.
-* `findc engineer` returns `Roy Balakrishnan`, after `editc 2 j/Software Engineer` adds that job opening.
+* `findc engineer` returns `Roy Balakrishnan`, after `editc 2 j/Software Engineer` sets that job opening.
 
 #### Finding jobseekers and clients: `find`
 
@@ -517,7 +517,8 @@ The notes are the same as [`findj`](#findj-notes) for jobseekers and [`findc`](#
 
 * `find colleagues` returns the jobseeker `Bernice Yu` and the client `Roy Balakrishnan`, who are both tagged `colleagues`.
 * `find alex roy` returns the jobseeker `Alex Yeoh` and the client `Roy Balakrishnan`.
-* `find engineer` returns every client with a job opening such as `Software Engineer`.
+* `find engineer` returns every client with a job opening such as `Software Engineer`,
+  and every jobseeker with a qualification such as `Bachelor of Engineering`.
 * `find diploma engineer` returns every jobseeker with a qualification such as `Diploma in IT`,
   and every client with a job opening such as `Software Engineer`.
 
@@ -685,7 +686,7 @@ Each contact can have multiple tags or none.
 
 * Tag names must contain only letters (`A–Z`, `a–z`) and digits (`0–9`), with no spaces or punctuation.
 * Tags are case-sensitive: `Java` and `java` are different tags. To remove a tag, match its case exactly.
-  Searches using `find`, `findj`, and `findc` are case-insensitive.
+  Searches using `find`, `findj`, `findc`, `findhj`, and `findhc` are case-insensitive.
 * Each tag is stored only once per contact. Adding an existing tag or removing a tag the contact
   does not have leaves that tag unchanged.
 
