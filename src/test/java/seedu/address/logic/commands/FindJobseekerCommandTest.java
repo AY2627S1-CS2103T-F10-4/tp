@@ -65,7 +65,7 @@ public class FindJobseekerCommandTest {
      * {@code preparePredicate(" ")} gives a predicate with an empty keyword list.
      */
     @Test
-    public void execute_zeroKeywords_noPersonFound() {
+    public void execute_zeroKeywords_noJobseekerFound() {
         assertFindSuccess(" ", List.of());
     }
 
@@ -74,7 +74,7 @@ public class FindJobseekerCommandTest {
      * Each keyword here matches a different jobseeker: Carl Kurz, Elle Meyer and Fiona Kunz.
      */
     @Test
-    public void execute_multipleNameKeywords_personsFound() {
+    public void execute_multipleNameKeywords_jobseekersFound() {
         assertFindSuccess("Kurz Elle Kunz", List.of(CARL, ELLE, FIONA));
     }
 
@@ -96,7 +96,7 @@ public class FindJobseekerCommandTest {
      * if {@code findj} reverts to matching whole words only.
      */
     @Test
-    public void execute_partialNameKeyword_personsFound() {
+    public void execute_partialNameKeyword_jobseekersFound() {
         assertFindSuccess("eier", List.of(BENSON, DANIEL));
     }
 
@@ -105,7 +105,7 @@ public class FindJobseekerCommandTest {
      * Elle Meyer is one letter away from "Meier" and does not contain {@code "eier"}, so this test case
      * fails if matching is loosened, for example to fuzzy or typo-tolerant matching.
      * On its own, this test case would also pass if nothing were found, so it relies on
-     * {@link #execute_partialNameKeyword_personsFound()} to check that matching still works.
+     * {@link #execute_partialNameKeyword_jobseekersFound()} to check that matching still works.
      */
     @Test
     public void execute_partialNameKeyword_nearMissNotFound() {
@@ -119,7 +119,7 @@ public class FindJobseekerCommandTest {
      * {@code "9435"} appears only in Alice's phone number, 94351253.
      */
     @Test
-    public void execute_partialPhoneKeyword_personFound() {
+    public void execute_partialPhoneKeyword_jobseekerFound() {
         assertFindSuccess("9435", List.of(ALICE));
     }
 
@@ -128,7 +128,7 @@ public class FindJobseekerCommandTest {
      * Daniel's email address, cornelia@example.com.
      */
     @Test
-    public void execute_partialEmailKeyword_personFound() {
+    public void execute_partialEmailKeyword_jobseekerFound() {
         assertFindSuccess("cornelia", List.of(DANIEL));
     }
 
@@ -136,7 +136,7 @@ public class FindJobseekerCommandTest {
      * Checks that tags are searched: {@code "owes"} appears only in Benson's tag "owesMoney".
      */
     @Test
-    public void execute_partialTagKeyword_personFound() {
+    public void execute_partialTagKeyword_jobseekerFound() {
         assertFindSuccess("owes", List.of(BENSON));
     }
 
