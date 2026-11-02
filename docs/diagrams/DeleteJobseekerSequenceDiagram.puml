@@ -1,0 +1,52 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+skinparam defaultFontSize 14
+
+box Logic LOGIC_COLOR_T1
+participant ":AddressBookParser" as abParser LOGIC_COLOR
+participant ":DeleteJobseekerCommandParser" as commandParser LOGIC_COLOR
+participant "command:DeleteJobseekerCommand" as command LOGIC_COLOR
+participant "result:CommandResult" as result LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "model:Model" as Model MODEL_COLOR
+end box
+
+[-> abParser : parseCommand("deletej 2")
+activate abParser
+
+create commandParser
+abParser -> commandParser ++
+commandParser --> abParser --
+
+abParser -> commandParser ++ : parse("2")
+
+create command
+commandParser -> command ++
+command --> commandParser --
+
+commandParser --> abParser -- : command
+commandParser -[hidden]> commandParser
+destroy commandParser
+
+[<-- abParser -- : command
+
+[-> command ++ : execute(model)
+
+command -> Model ++ : getFilteredJobseekerList()
+Model --> command --
+
+command -> Model ++ : deleteJobseeker(jobseeker)
+Model --> command --
+
+create result
+command -> result ++
+result --> command --
+
+[<-- command -- : result
+command -[hidden]> command
+destroy command
+
+@enduml

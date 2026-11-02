@@ -1,0 +1,43 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+skinparam defaultFontSize 14
+
+box Logic LOGIC_COLOR_T1
+participant ":AddressBookParser" as abParser LOGIC_COLOR
+participant "command:ClearClientCommand" as command LOGIC_COLOR
+participant "result:CommandResult" as result LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "model:Model" as Model MODEL_COLOR
+end box
+
+participant "CollectionUtil" as util << class >> UI_COLOR
+
+[-> abParser : parseCommand("clearc")
+activate abParser
+
+create command
+abParser -> command ++
+command --> abParser --
+
+[<-- abParser -- : command
+
+[-> command ++ : execute(model)
+
+command -> util ++ :  << static >>\ngetEmptyUnmodifiableList()
+util --> command -- : emptyList
+
+command -> Model ++ : setClients(emptyList)
+Model --> command --
+
+create result
+command -> result ++
+result --> command --
+
+[<-- command -- : result
+command -[hidden]> command
+destroy command
+
+@enduml
