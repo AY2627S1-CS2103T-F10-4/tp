@@ -3,13 +3,9 @@ layout: page
 title: User Guide
 ---
 
-TalentLink is a **desktop application that HR recruiters in recruitment agencies use to manage 
-their contacts, optimized for use through a Command Line Interface (CLI)** while retaining the 
-benefits of a Graphical User Interface (GUI). If you type quickly, TalentLink can help you 
-manage your jobseeker/client contacts faster than traditional GUI applications. Additionally, 
-TalentLink also provides support for many tasks that recruiters often do on a daily basis, 
-such as recording notes on various jobseekers/clients, searching for jobseekers with particular 
-educational qualifications and determine which jobseekers to link up with each client's job opening.
+TalentLink is a **desktop application that HR recruiters in recruitment agencies use to manage their contacts, optimized for use through a Command Line Interface (CLI)** while retaining the benefits of a Graphical User Interface (GUI). If you type quickly, TalentLink can help you manage your jobseeker/client contacts faster than traditional GUI applications. 
+
+TalentLink provides support for many tasks that recruiters often do on a daily basis, such as keeping track and recording the details of hundreds of potential jobseekers and clients, recording the available job openings of each client, searching for jobseekers/clients that fulfill certain criteria, determining which jobseekers to link up with each client, and also sending the details of suitable jobseekers to the clients.
 
 * Table of Contents
 {:toc}
@@ -94,6 +90,11 @@ educational qualifications and determine which jobseekers to link up with each c
 
   For `editj`, `editc`, `tagj`, `tagc`, `untagj`, and `untagc`, 
   the index must come first, followed by the fields or tags to update.
+* A field value cannot contain a space followed by a prefix (`n/`, `p/`, `e/`, `a/`, `t/`, `r/`, `q/` or `j/`).
+  TalentLink reads that as the start of a new field, often without showing an error.
+
+  For example, `editj 1 r/Speaks n/a` changes the name to `a` and the remark to `Speaks`.
+  To keep `n/a` in the remark, use capitals (`N/A`) or put another character directly before it (`(n/a)`).
 * Extraneous parameters for commands that take no parameters,
   such as `help`, `exit`, `list`, `listj`, `listc`, `clearj`, and `clearc`, are ignored.
 
@@ -133,12 +134,13 @@ Jobseeker contacts contain the following values, and their corresponding constra
 * Email address
   * must follow the conventional format of an email address
 * Physical address
-  * can be any value other than empty
+  * can contain any value (see the restrictions below)
+  * must not be empty
 * Highest qualification
   * optional
-  * can be any value
+  * can contain any value (see the restrictions below)
 * Remarks about the individual
-  * can be any value
+  * can contain any value (see the restrictions below)
 * Tags
   * can have multiple unique tags
   * See [Managing tags](#managing-tags) for more details about tags.
@@ -154,16 +156,20 @@ Client contacts contain the following values, and their corresponding constraint
 * Email address
   * must follow the conventional format of an email address
 * Physical address
-  * can be any value other than empty
+  * can contain any value (see the restrictions below)
+  * must not be empty
 * Job openings
   * optional
   * can have multiple unique job titles
-  * each job title must not be blank
+  * each job title can contain any value (see the limit below) and must not be blank
 * Remarks about the individual
-  * can be any value
+  * can contain any value (see the restrictions below)
 * Tags
   * can have multiple unique tags
   * See [Managing tags](#managing-tags) for more details about tags.
+
+The restrictions: an address, qualification, remark or job title cannot contain a space followed by a prefix such as `n/`.
+See the [notes about the command format](#features) for why, and for how to work around this.
 
 Contacts are identified by their phone number **and** their email address.
 
@@ -195,7 +201,7 @@ However, adding an existing _client_ contact to the jobseeker list is allowed
 * `<email>`: the email address of the jobseeker
 * `<address>`: the address of the jobseeker
 * `<highest qualification>`: the jobseeker's highest qualification, e.g. `Diploma in IT`
-  * Optional free text. Omit `q/` to leave it empty; specify it at most once.
+  * Optional. Omit `q/` to leave it empty; specify it at most once.
 * `<remarks>`: your remarks about this jobseeker
   * Optional. When omitted, the remarks value is treated as empty.
 * `<tag>`: a tag for this jobseeker
@@ -226,7 +232,7 @@ However, adding an existing _jobseeker_ contact to the client list is allowed
 The common contact fields follow [Adding a jobseeker: `addj` - Format](#addj-format).
 Clients have available jobs (`j/`) instead of a highest qualification (`q/`).
 
-* `<job>`: a job title, e.g. `Software Engineer`. Spaces and punctuation are allowed.
+* `<job>`: a job title, e.g. `Software Engineer`. Spaces and punctuation are allowed, but see the limit in [Common info about contacts](#common-info-about-contacts).
 * Jobs are optional. Omit `j/` to leave the list empty. Repeat `j/` to list multiple jobs.
 * Repeated identical titles are stored once; titles are case-sensitive.
 * `j/` alone leaves the list empty. Do not combine an empty `j/` with other `j/` entries.
