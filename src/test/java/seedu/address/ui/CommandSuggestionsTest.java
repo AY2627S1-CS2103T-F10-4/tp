@@ -1,6 +1,7 @@
 package seedu.address.ui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -27,8 +28,7 @@ public class CommandSuggestionsTest {
     public void suggest_hiddenCommandPrefixes_returnsSortedMatches() {
         assertEquals(List.of("listhc", "listhj"), suggestions.suggest("listh"));
         assertEquals(List.of("find", "findc", "findhc", "findhj", "findj"), suggestions.suggest("fin"));
-        // "find" is itself a command, so it counts as complete and gets no suggestions.
-        assertEquals(List.of(), suggestions.suggest("find"));
+        assertEquals(List.of("findc", "findhc", "findhj", "findj"), suggestions.suggest("find"));
         assertEquals(List.of("findhc", "findhj"), suggestions.suggest("  findh"));
     }
 
@@ -67,9 +67,26 @@ public class CommandSuggestionsTest {
 
     @Test
     public void suggest_blankExactUnknownOrArguments_returnsEmpty() {
-        for (String input : List.of("", "  ", "list", "  list", "listc", "LIST", "unknown", "list ",
+        for (String input : List.of("", "  ", "listc", "LIST", "unknown", "list ",
                 "list 3", "addj n/Alice", "add\t")) {
             assertTrue(suggestions.suggest(input).isEmpty(), input);
+        }
+    }
+
+    @Test
+    public void suggest_exactCommand_returnsLongerMatches() {
+        assertEquals(List.of("listc", "listhc", "listhj", "listj"), suggestions.suggest("list"));
+        assertEquals(List.of("listc", "listhc", "listhj", "listj"), suggestions.suggest("  list"));
+        assertEquals(List.of("findc", "findhc", "findhj", "findj"), suggestions.suggest("  find"));
+    }
+
+    @Test
+    public void isExactCommand_matchesOnlyCompleteCommandNames() {
+        for (String input : List.of("list", "  list", "find", "listc", "help")) {
+            assertTrue(suggestions.isExactCommand(input), input);
+        }
+        for (String input : List.of("", "lis", "LIST", "unknown", "list ", "find Alice")) {
+            assertFalse(suggestions.isExactCommand(input), input);
         }
     }
 
