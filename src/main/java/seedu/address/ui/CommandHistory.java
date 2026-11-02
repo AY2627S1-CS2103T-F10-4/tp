@@ -8,7 +8,7 @@ import java.util.List;
  */
 class CommandHistory {
     private final List<String> history = new ArrayList<>(List.of(""));
-    private int historyIndex;
+    private int historyIndex = 1;
     private String draft = "";
 
     /**

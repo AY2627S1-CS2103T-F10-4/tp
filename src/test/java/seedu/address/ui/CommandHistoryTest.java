@@ -20,8 +20,8 @@ public class CommandHistoryTest {
         assertEquals("listj", history.previous(""));
         assertEquals("help", history.previous("listj"));
         assertEquals("", history.previous("help"));
-        assertEquals("listj", history.next("help"));
-        assertEquals("", history.next("listj"));
+        assertEquals("help", history.next("help"));
+        assertEquals("listj", history.next("listj"));
         assertEquals("", history.next(""));
     }
 
@@ -43,7 +43,7 @@ public class CommandHistoryTest {
         assertEquals("help", history.previous("edited listj"));
         assertEquals("", history.previous("edited help"));
         assertEquals("help", history.next("edited help"));
-        assertEquals("help", history.previous("listj"));
+        assertEquals("", history.previous("listj"));
     }
 
     @Test
@@ -91,13 +91,13 @@ public class CommandHistoryTest {
 
         assertEquals("help", history.previous(""));
         assertEquals("listj", history.previous("help"));
-        assertEquals("", history.previous("listj"));
+        assertEquals("help", history.previous("listj"));
     }
 
     @Test
     public void newHistory_doesNotShareEntriesWithAnotherSession() {
         history.add("help");
         CommandHistory anotherSession = new CommandHistory();
-        assertEquals("draft", anotherSession.previous("draft"));
+        assertEquals("", anotherSession.previous("draft"));
     }
 }

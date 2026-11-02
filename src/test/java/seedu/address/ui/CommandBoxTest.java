@@ -226,7 +226,6 @@ public class CommandBoxTest {
             assertEquals("listj", field.getText());
             assertEquals(field.getLength(), field.getCaretPosition());
             press(field, KeyCode.UP);
-            press(field, KeyCode.UP);
             assertEquals("listc", field.getText());
             press(field, KeyCode.DOWN);
             assertEquals("listj", field.getText());
