@@ -187,7 +187,7 @@ Jobseeker qualifications follow the same omitted/empty distinction: `q/` supplie
 2. `createEditedJobseeker()` combines supplied values with the original jobseeker's unchanged fields and preserves `isHidden()`.
 3. If the edited jobseeker has a different identity according to `isSamePerson()`, the command calls `Model.hasJobseeker()` and rejects a duplicate before modifying the model.
 4. The command calls `Model.setJobseeker()` and leaves the current filter unchanged. The edited jobseeker stays displayed only if it still matches that filter. For example, a jobseeker found by name alone drops out of the search results when renamed to a name that no longer matches, while an edited hidden jobseeker stays in the hidden list because `isHidden()` is preserved.
-5. After the command returns, `LogicManager` saves the address book through `Storage`. Parsing or execution failures skip saving; a storage failure is reported as a `CommandException` after the model has been updated.
+5. After the command returns, `LogicManager` saves the address book through `Storage`. Parsing or execution failures skip saving. If saving fails, `LogicManager` restores the address book data from before the command and reports the failure as a `CommandException`.
 
 ### Find feature
 
