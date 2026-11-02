@@ -37,7 +37,7 @@ public class AddClientCommand extends Command {
             + PREFIX_EMAIL + "irfan@example.com "
             + PREFIX_ADDRESS + "Blk 47 Tampines Street 20, #17-35 "
             + PREFIX_REMARK + "immediate "
-            + PREFIX_TAG + "classmates employer";
+            + PREFIX_TAG + "marketing employer";
 
     public static final String MESSAGE_SUCCESS = "New client added: %1$s";
     public static final String MESSAGE_DUPLICATE_CLIENT = "This client already exists in TalentLink.";

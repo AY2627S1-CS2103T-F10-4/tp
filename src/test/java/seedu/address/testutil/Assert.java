@@ -31,4 +31,15 @@ public class Assert {
         Throwable thrownException = Assertions.assertThrows(expectedType, executable);
         Assertions.assertEquals(expectedMessage, thrownException.getMessage());
     }
+
+    /**
+     * Asserts that {@code first} and {@code second} are equal and have the same hash code, as the contract
+     * of {@link Object#hashCode()} requires. They must be separate objects, because an object compared with
+     * itself would pass even if {@code hashCode} ignored its data.
+     */
+    public static void assertEqualWithSameHashCode(Object first, Object second) {
+        Assertions.assertNotSame(first, second);
+        Assertions.assertEquals(first, second);
+        Assertions.assertEquals(first.hashCode(), second.hashCode());
+    }
 }

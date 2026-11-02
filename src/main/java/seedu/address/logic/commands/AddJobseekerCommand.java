@@ -37,7 +37,7 @@ public class AddJobseekerCommand extends Command {
             + PREFIX_EMAIL + "johnd@example.com "
             + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
             + PREFIX_REMARK + "owesMoney "
-            + PREFIX_TAG + "friends colleagues";
+            + PREFIX_TAG + "technology finance";
 
     public static final String MESSAGE_SUCCESS = "New jobseeker added: %1$s";
     public static final String MESSAGE_DUPLICATE_JOBSEEKER = "This jobseeker already exists in TalentLink.";

@@ -6,6 +6,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_JACK;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARTNER;
+import static seedu.address.testutil.Assert.assertEqualWithSameHashCode;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ADRIAN;
 import static seedu.address.testutil.TypicalPersons.ALICE;
@@ -114,6 +115,27 @@ public class AddressBookTest {
         String expected = AddressBook.class.getCanonicalName() + "{jobseekers=" + addressBook.getJobseekerList()
                 + ", clients=" + addressBook.getClientList() + "}";
         assertEquals(expected, addressBook.toString());
+    }
+
+    @Test
+    public void hashCode_equalAddressBooks_sameHashCode() {
+        // EP: no people
+        assertEqualWithSameHashCode(new AddressBook(), new AddressBook()); // Boundary value
+
+        // EP: only jobseekers
+        assertEqualWithSameHashCode(createAddressBook(List.of(ALICE), List.of()),
+                createAddressBook(List.of(ALICE), List.of())); // Boundary value
+
+        // EP: only clients
+        assertEqualWithSameHashCode(createAddressBook(List.of(), List.of(ADRIAN)),
+                createAddressBook(List.of(), List.of(ADRIAN))); // Boundary value
+
+        // EP: both jobseekers and clients
+        assertEqualWithSameHashCode(getTypicalAddressBook(), getTypicalAddressBook());
+    }
+
+    private AddressBook createAddressBook(List<Jobseeker> jobseekers, List<Client> clients) {
+        return new AddressBook(new AddressBookStub(jobseekers, clients));
     }
 
     /**

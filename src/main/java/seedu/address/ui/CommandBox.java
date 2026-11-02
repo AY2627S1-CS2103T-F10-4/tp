@@ -186,8 +186,10 @@ public class CommandBox extends UiPart<Region> {
                     moveSuggestionSelection(event.getCode() == KeyCode.UP ? -1 : 1);
                     break;
                 case TAB:
-                case ENTER:
                     completeSuggestion();
+                    break;
+                case ENTER:
+                    handleCommandEntered();
                     break;
                 case ESCAPE:
                     hideSuggestions();
@@ -229,12 +231,13 @@ public class CommandBox extends UiPart<Region> {
     }
 
     /**
-     * Completes a visible suggestion, or submits the input and records it in session history.
+     * Submits exact commands even with suggestions visible; otherwise completes a visible suggestion.
+     * Records submitted input in session history.
      * Failed submissions retain their input and receive error styling.
      */
     @FXML
     private void handleCommandEntered() {
-        if (suggestionList.isVisible()) {
+        if (suggestionList.isVisible() && !commandSuggestions.isExactCommand(commandTextField.getText())) {
             completeSuggestion();
             return;
         }
@@ -243,6 +246,7 @@ public class CommandBox extends UiPart<Region> {
             return;
         }
 
+        hideSuggestions();
         commandHistory.add(commandText);
         try {
             commandExecutor.execute(commandText);

@@ -1,0 +1,30 @@
+@startuml
+!include style.puml
+!pragma layout smetana
+left to right direction
+skinparam arrowColor LOGIC_COLOR_T4
+skinparam classBackgroundColor LOGIC_COLOR
+skinparam ArrowFontStyle plain
+skinparam classAttributeFontColor #FFFFFF
+skinparam classAttributeIconSize 0
+skinparam genericDisplay old
+
+interface "Parser<T>" as Parser
+class "TagCommandParser<T>" as TagCommandParser {
+    - commandFactory: BiFunction<Index, Set<Tag>, T>
+    + parse(args): T
+}
+show TagCommandParser members
+class ParserUtil
+class TagJobseekerCommandParser
+class UntagJobseekerCommandParser
+class TagClientCommandParser
+class UntagClientCommandParser
+
+TagCommandParser ..|> Parser
+TagCommandParser ..> ParserUtil : validates arguments
+TagJobseekerCommandParser --|> TagCommandParser
+UntagJobseekerCommandParser --|> TagCommandParser
+TagClientCommandParser --|> TagCommandParser
+UntagClientCommandParser --|> TagCommandParser
+@enduml

@@ -25,6 +25,7 @@ import seedu.address.model.tag.Tag;
 class JsonAdaptedJobseeker {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Jobseeker's %s field is missing!";
+    public static final String MESSAGE_NULL_TAG = "Jobseeker's tags list contains a null entry.";
 
     private final String name;
     private final String phone;
@@ -102,6 +103,10 @@ class JsonAdaptedJobseeker {
      * @throws IllegalValueException if there were any data constraints violated in the adapted jobseeker.
      */
     public Jobseeker toModelType() throws IllegalValueException {
+        if (tags.contains(null)) {
+            throw new IllegalValueException(MESSAGE_NULL_TAG);
+        }
+
         final List<Tag> jobseekerTags = new ArrayList<>();
         for (JsonAdaptedTag tag : tags) {
             jobseekerTags.add(tag.toModelType());

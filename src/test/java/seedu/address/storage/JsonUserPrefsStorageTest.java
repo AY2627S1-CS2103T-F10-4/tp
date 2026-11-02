@@ -43,6 +43,21 @@ public class JsonUserPrefsStorageTest {
         assertThrows(DataLoadingException.class, () -> readUserPrefs("NotJsonFormatUserPrefs.json"));
     }
 
+    /**
+     * Null settings must be rejected while reading the file. Jackson sets the field directly, bypassing
+     * the null check in {@code UserPrefs#setGuiSettings}, so they would otherwise crash the app later on.
+     */
+    @Test
+    public void readUserPrefs_nullValues_exceptionThrown() {
+        // EP: JSON that holds no usable prefs
+        assertReadFails("NullUserPrefs.json"); // Boundary value
+        assertReadFails("NullGuiSettingsUserPrefs.json"); // Boundary value
+    }
+
+    private void assertReadFails(String userPrefsFileInTestDataFolder) {
+        assertThrows(DataLoadingException.class, () -> readUserPrefs(userPrefsFileInTestDataFolder));
+    }
+
     private Path addToTestDataPathIfNotNull(String userPrefsFileInTestDataFolder) {
         return userPrefsFileInTestDataFolder != null
                 ? TEST_DATA_FOLDER.resolve(userPrefsFileInTestDataFolder)

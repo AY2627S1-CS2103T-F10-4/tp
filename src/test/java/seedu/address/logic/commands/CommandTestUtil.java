@@ -73,7 +73,7 @@ public class CommandTestUtil {
     public static final String TAG_DESC_EMPLOYER = " " + PREFIX_TAG + VALID_TAG_EMPLOYER;
     public static final String TAG_DESC_PARTNER = " " + PREFIX_TAG + VALID_TAG_PARTNER;
 
-    public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James/"; // '/' not allowed in names
+    public static final String INVALID_NAME_DESC = " " + PREFIX_NAME; // empty string not allowed for names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
     public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + "bob!yahoo"; // missing '@' symbol
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS; // empty string not allowed for addresses
@@ -141,6 +141,14 @@ public class CommandTestUtil {
         assertEquals(expectedAddressBook, actualModel.getAddressBook());
         assertEquals(expectedFilteredList, actualModel.getFilteredJobseekerList());
         assertEquals(expectedFilteredClients, actualModel.getFilteredClientList());
+    }
+
+    /**
+     * Parses {@code userInput} into a {@code PersonContainsKeywordsPredicate}, for testing a find
+     * command without going through its parser.
+     */
+    public static PersonContainsKeywordsPredicate preparePredicate(String userInput) {
+        return new PersonContainsKeywordsPredicate(List.of(userInput.split("\\s+")));
     }
 
     /**
