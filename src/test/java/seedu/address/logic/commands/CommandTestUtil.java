@@ -41,7 +41,7 @@ public class CommandTestUtil {
     public static final String VALID_NAME_JACK = "Jack Tan";
     public static final String VALID_NAME_KATE = "Kate Lim";
     public static final String VALID_PHONE_JACK = "81110008";
-    public static final String VALID_PHONE_KATE = "81110009";
+    public static final String VALID_PHONE_KATE = "+6581110009";
     public static final String VALID_EMAIL_JACK = "jack@example.com";
     public static final String VALID_EMAIL_KATE = "kate@example.com";
     public static final String VALID_ADDRESS_JACK = "8 Tampines Avenue";
