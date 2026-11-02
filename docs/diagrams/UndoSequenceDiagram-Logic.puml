@@ -9,16 +9,16 @@ participant "u:UndoCommand" as UndoCommand LOGIC_COLOR
 end box
 
 box Model MODEL_COLOR_T1
-participant ":Model" as Model MODEL_COLOR
+participant "model:Model" as Model MODEL_COLOR
 end box
-[-> LogicManager : execute(undo)
+[-> LogicManager : execute("undo")
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand(undo)
+LogicManager -> AddressBookParser : parseCommand("undo")
 activate AddressBookParser
 
 create UndoCommand
-AddressBookParser -> UndoCommand
+AddressBookParser -> UndoCommand : UndoCommand()
 activate UndoCommand
 
 UndoCommand --> AddressBookParser
@@ -27,8 +27,14 @@ deactivate UndoCommand
 AddressBookParser --> LogicManager : u
 deactivate AddressBookParser
 
-LogicManager -> UndoCommand : execute()
+LogicManager -> UndoCommand : execute(model)
 activate UndoCommand
+
+UndoCommand -> Model : canUndoAddressBook()
+activate Model
+
+Model --> UndoCommand : true
+deactivate Model
 
 UndoCommand -> Model : undoAddressBook()
 activate Model
@@ -40,6 +46,11 @@ UndoCommand --> LogicManager : result
 deactivate UndoCommand
 UndoCommand -[hidden]-> LogicManager : result
 destroy UndoCommand
+
+note over LogicManager, Model
+  LogicManager then saves through Storage (omitted here) and calls
+  commitAddressBook(), which has no effect as the data matches the current state.
+end note
 
 [<--LogicManager
 deactivate LogicManager

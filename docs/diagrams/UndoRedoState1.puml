@@ -6,7 +6,7 @@ skinparam ClassBackgroundColor #FFFFAA
 
 title After command "deletej 5"
 
-package States <<rectangle>> {
+package States {
     class State1 as "<u>ab0:AddressBook</u>"
     class State2 as "<u>ab1:AddressBook</u>"
     class State3 as "<u>ab2:AddressBook</u>" <<unused>>
@@ -18,7 +18,6 @@ State2 -[hidden]right-> State3
 'Hidden by stereotype, as newer PlantUML versions ignore hiding a class by name.
 hide <<unused>>
 
-class Pointer as "Current State" #FFFFFF
-
-Pointer -up-> State2
-@end
+'The pointer is an int field rather than an object, so a UML note marks the state it points to.
+note bottom of State2 : currentStatePointer
+@enduml
