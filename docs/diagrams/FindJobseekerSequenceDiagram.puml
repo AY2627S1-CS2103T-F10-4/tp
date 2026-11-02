@@ -1,16 +1,13 @@
 @startuml
 !include style.puml
 skinparam ArrowFontStyle plain
-'The DG scales images down to its page width, so a larger font alone only widens the image.
-'Labels are wrapped to keep the diagram narrow, which is what makes the text bigger on the page.
-skinparam defaultFontSize 18
+'LogicManager, AddressBookParser and CommandResult are omitted because the DG's Logic component section shows them.
+'The DG scales images down to its page width, so keep this diagram narrow rather than raising the font size.
+skinparam defaultFontSize 16
 
 box Logic LOGIC_COLOR_T1
-participant ":Logic\nManager" as LogicManager LOGIC_COLOR
-participant ":AddressBook\nParser" as AddressBookParser LOGIC_COLOR
 participant ":FindJobseeker\nCommandParser" as Parser LOGIC_COLOR
 participant "c:FindJobseeker\nCommand" as Command LOGIC_COLOR
-participant "r:Command\nResult" as CommandResult LOGIC_COLOR
 end box
 
 box Model MODEL_COLOR_T1
@@ -18,20 +15,7 @@ participant "m:Model" as Model MODEL_COLOR
 participant "p:PersonContains\nKeywordsPredicate" as Predicate MODEL_COLOR
 end box
 
-[-> LogicManager : execute(\n"findj bob")
-activate LogicManager
-
-LogicManager -> AddressBookParser : parseCommand(\n"findj bob")
-activate AddressBookParser
-
-create Parser
-AddressBookParser -> Parser
-activate Parser
-
-Parser --> AddressBookParser
-deactivate Parser
-
-AddressBookParser -> Parser : parse(" bob")
+[-> Parser : parse(" bob")
 activate Parser
 
 create Predicate
@@ -48,22 +32,16 @@ activate Command
 Command --> Parser : c
 deactivate Command
 
-Parser --> AddressBookParser : c
+[<-- Parser : c
 deactivate Parser
-'Hidden arrow to position the destroy marker below the end of the activation bar.
-Parser -[hidden]-> AddressBookParser
-destroy Parser
 
-AddressBookParser --> LogicManager : c
-deactivate AddressBookParser
-
-LogicManager -> Command : execute(m)
+[-> Command : execute(m)
 activate Command
 
-Command -> Model : updateFiltered\nJobseekerList(...)
+Command -> Model : updateFilteredJobseekerList(...)
 activate Model
 
-loop more unhidden\njobseekers
+loop more unhidden jobseekers
     Model -> Predicate : test(jobseeker)
     activate Predicate
 
@@ -74,22 +52,12 @@ end
 Model --> Command
 deactivate Model
 
-Command -> Model : getFiltered\nJobseekerList()
+Command -> Model : getFilteredJobseekerList()
 activate Model
 
 Model --> Command : matches
 deactivate Model
 
-create CommandResult
-Command -> CommandResult : CommandResult(\n"n jobseeker(s)\nlisted!")
-activate CommandResult
-
-CommandResult --> Command : r
-deactivate CommandResult
-
-Command --> LogicManager : r
+[<-- Command
 deactivate Command
-
-[<-- LogicManager : r
-deactivate LogicManager
 @enduml
