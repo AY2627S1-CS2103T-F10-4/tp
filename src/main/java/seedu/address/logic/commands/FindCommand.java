@@ -26,7 +26,7 @@ public class FindCommand extends AbstractFindCommand {
             + "(for jobseekers) contain any of the specified keywords (case-insensitive) and displays them "
             + "as two lists with index numbers.\n"
             + "Parameters: <keyword>...\n"
-            + "Example: " + COMMAND_WORD + " colleagues engineer diploma";
+            + "Example: " + COMMAND_WORD + " finance engineer diploma";
 
     private static final Logger logger = LogsCenter.getLogger(FindCommand.class);
 
