@@ -30,10 +30,7 @@ else operation == REMOVE
     Tags --> Command : hasChanges
     deactivate Tags
 end
-alt hasChanges
-    [<-- Command : Optional.of(updatedTags)
-else !hasChanges
-    [<-- Command : Optional.empty()
-end
+'A single return, as in the code, so the activation bar ends where the method returns.
+[<-- Command : hasChanges ?\nOptional.of(updatedTags) :\nOptional.empty()
 deactivate Command
 @enduml

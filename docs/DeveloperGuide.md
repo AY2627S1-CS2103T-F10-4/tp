@@ -135,7 +135,7 @@ The `Model` component,
 * stores a `UserPrefs` object that represents the user’s preferences (currently, just the GUI settings). This is exposed to the outside as a `ReadOnlyUserPrefs` object.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The alternative, arguably more object-oriented, design below keeps a unique list of tags in `AddressBook`, and each `Person` references tags from that list. This lets `AddressBook` maintain one `Tag` object per unique tag instead of each `Person` holding its own `Tag` objects.<br>
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The alternative, arguably more object-oriented, design below keeps a unique list of tags in `AddressBook`, and each `Person` references tags from that list. This lets `AddressBook` maintain one `Tag` object per unique tag instead of each `Person` holding its own `Tag` objects. Only the classes relevant to tags are shown.<br>
 
 <img src="images/BetterModelClassDiagram.png" width="450" />
 
@@ -169,7 +169,7 @@ This section describes some noteworthy details on how certain features are imple
 
 The `editj` command updates a jobseeker identified by their one-based index in the currently displayed jobseeker list. `AddressBookParser` delegates to `EditCommandParser`, which creates an `EditJobseekerCommand` containing an `Index` and a defensive copy of an `EditJobseekerDescriptor`.
 
-The following sequence diagram focuses on successful execution of `editj 1 n/Alice r/Available`, after parsing has created the command. Local aliases `target` and `edited` represent the original and replacement jobseekers. Parsing, error paths, and storage details are explained below; `...` indicates omitted parameters.
+The following sequence diagram focuses on successful execution of `editj 1 n/Alice r/Available`. Local aliases `target` and `edited` represent the original and replacement jobseekers. Parsing, error paths, and storage details are explained below; `...` indicates omitted parameters.
 
 ![Sequence for editing a jobseeker](images/EditJobseekerSequenceDiagram.png)
 
@@ -371,7 +371,7 @@ All four commands follow the same flow:
 
 `getUpdatedTags()` returns `Optional.empty()` when there is no change. An optional containing an empty set instead means that all tags were successfully removed, so the contact must still be replaced.
 
-The first sequence diagram shows execution of `tagj 1 java` after parsing, assuming a valid displayed index. The self-calls to `getTarget()` and `getUpdatedTags()` use methods inherited from `AbstractTagCommand`. The `...` in `getTarget()` omits the invalid-index message, while the constructor's `...` represents unchanged non-tag fields. Result construction and message formatting are omitted.
+The first sequence diagram shows execution of `tagj 1 java`, assuming a valid displayed index. The self-calls to `getTarget()` and `getUpdatedTags()` use methods inherited from `AbstractTagCommand`. The `...` in `getTarget()` omits the invalid-index message, while the constructor's `...` represents unchanged non-tag fields. Result construction and message formatting are omitted.
 
 ![Jobseeker tag command execution](images/TagCommandExecutionDiagram.png)
 
