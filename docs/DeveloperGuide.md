@@ -68,20 +68,28 @@ The sections below give more details of each component.
 
 ### UI component
 
-The **API** of this component is specified in [`Ui.java`](https://github.com/AY2627S1-CS2103T-F10-4/tp/tree/master/src/main/java/seedu/address/ui/Ui.java)
+**API** : [`Ui.java`](https://github.com/AY2627S1-CS2103T-F10-4/tp/tree/master/src/main/java/seedu/address/ui/Ui.java)
 
 ![Structure of the UI Component](images/UiClassDiagram.png)
 
-The UI consists of a `MainWindow` and its parts, such as `CommandBox`, `ResultDisplay`, `PersonListPanel`, and `StatusBarFooter`. All of these, including `MainWindow`, inherit from the abstract `UiPart` class, which captures common behavior among classes that represent visible GUI parts.
+`UiManager` implements the `Ui` API. Its `start` method creates and shows the `MainWindow`, then has it fill in its parts. If this fails, `UiManager` shows a fatal error dialog and exits the app.
 
-The `UI` component uses the JavaFX UI framework. The layouts of these UI parts are defined in matching `.fxml` files in `src/main/resources/view`. For example, [`MainWindow.fxml`](https://github.com/AY2627S1-CS2103T-F10-4/tp/tree/master/src/main/resources/view/MainWindow.fxml) specifies the layout of [`MainWindow`](https://github.com/AY2627S1-CS2103T-F10-4/tp/tree/master/src/main/java/seedu/address/ui/MainWindow.java).
+The UI consists of a `MainWindow` and its parts: a `CommandBox`, a `ResultDisplay`, a `StatusBarFooter`, and two `PersonListPanel`s (one for jobseekers and one for clients), each showing its contacts as `PersonCard`s. `MainWindow` also creates a `HelpWindow`, a separate window that displays one `HelpPage` at a time (`HelpPage` is a private nested class of `HelpWindow`, so it has no source file of its own). All of these, including `MainWindow`, inherit from the abstract `UiPart` class, which captures common behavior among classes that represent visible GUI parts.
+
+`CommandBox` delegates recalling past commands to `CommandHistory` and completing command names to `CommandSuggestions`. Neither is a `UiPart`, because they hold no layout of their own. `CommandSuggestions` reads the command names from `CommandCatalogue` in the `Logic` component, so a new command is only suggested once it is added there. `CommandBox` itself has no reference to the `Logic` interface: it submits input through a `CommandExecutor` that `MainWindow` gives it. It still uses `CommandResult`, `CommandException` and `ParseException` from the `Logic` component because they appear in the signature of `CommandExecutor`, but the diagram omits this dependency for simplicity.
+
+For simplicity, the diagram omits the custom JavaFX classes used by the help window: `ExampleCode` (a copyable command snippet in a help page), `SectionHyperlink` (a link to a help page, used in the help window's navigation list and inside help pages), and the `NavigationEvent` that a `SectionHyperlink` fires to ask `HelpWindow` to show that page.
+
+A `SectionHyperlink` uses its own text as the page name, and `HelpPage` looks that name up in its `PAGES` map to find the page's `.fxml` file. The link text must therefore match a key in `PAGES` exactly; otherwise, clicking the link throws a `NullPointerException`. To add a help page, create its `HelpPage_*.fxml` file, add an entry to `PAGES`, and add a `SectionHyperlink` to `HelpWindow.fxml` or to another help page.
+
+The `UI` component uses the JavaFX UI framework. The layouts of the `UiPart`s are defined in `.fxml` files in `src/main/resources/view`, usually named after the class. For example, [`MainWindow.fxml`](https://github.com/AY2627S1-CS2103T-F10-4/tp/tree/master/src/main/resources/view/MainWindow.fxml) specifies the layout of [`MainWindow`](https://github.com/AY2627S1-CS2103T-F10-4/tp/tree/master/src/main/java/seedu/address/ui/MainWindow.java). The exceptions are `PersonCard`, which uses `PersonListCard.fxml`, and `HelpPage`, which has one `HelpPage_*.fxml` file per page.
 
 The `UI` component,
 
-* executes user commands using the `Logic` component.
-* listens for changes to `Model` data so that the UI can be updated with the modified data.
-* keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
-* depends on some classes in the `Model` component because it displays `Person` objects from the model.
+* uses the `Logic` component to execute user commands and to load and save the window's size and position (`GuiSettings`). `MainWindow` makes these calls; `UiManager` only keeps a reference to `Logic` so that it can pass it to `MainWindow`.
+* acts on the `CommandResult` of each command: `MainWindow` shows the feedback in `ResultDisplay` and, when the result asks for it, opens the help window, exits the app, or copies text to the system clipboard.
+* listens for changes to `Model` data through the `ObservableList`s that `Logic` exposes, so that each `PersonListPanel` updates with the modified data.
+* depends on some classes in the `Model` component because it displays `Person` objects, including the fields specific to `Jobseeker` and `Client`.
 
 ### Logic component
 
