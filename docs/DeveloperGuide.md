@@ -406,7 +406,11 @@ The `cpc` and `cpj` commands copy client and jobseeker details to the system cli
 
 Without an index, the command copies all persons in the corresponding currently displayed list. With an index, it copies only the indexed person. The index is one-based and refers to the filtered displayed list; an index outside the displayed list causes a `CommandException`.
 
-The command returns the clipboard text through `CommandResult`, and `MainWindow` performs the actual system clipboard update.
+The command formats and returns the clipboard text as part of `CommandResult`. `MainWindow` performs the actual system clipboard update in response to a non-null `CommandResult.getClipboardText()`.
+
+Given below is an example usage scenario of an indexed client copy-to-clipboard command.
+
+![Client copy command execution](images/CopyClientSequenceDiagram.png)
 
 ### \[Proposed\] Undo/redo feature
 
@@ -937,17 +941,27 @@ testers are expected to do more *exploratory* testing.
 
    1. Download the JAR file and copy it into an empty folder.
 
-   1. Double-click the JAR file.<br>
+   1. Launch the JAR file in a command-line shell of choice by executing command `java -jar talentlink.jar` in the folder containing the JAR file.<br>
       Expected: The GUI opens with a set of sample contacts. The window size may not be optimal.
 
 1. Saving window preferences
 
    1. Resize the window to an optimal size. Move the window to a different location. Close the window.
 
-   1. Relaunch the app by double-clicking the JAR file.<br>
+   1. Relaunch the JAR file in a command-line shell of choice by executing command `java -jar talentlink.jar` in the folder containing the JAR file.<br>
        Expected: The most recent window size and location are retained.
 
-1. _{ more test cases …​ }_
+1. Saving jobseeker and client data
+
+    1. Make any change to the client or jobseeker list via a compatible command.
+
+    1. Relaunch the JAR file in a command-line shell of choice by executing command `java -jar talentlink.jar` in the folder containing the JAR file.<br>
+        Expected: Changes to the contact list are retained even without explicit confirmation to save the data.
+
+1. Exiting the application using the `exit` command
+
+   1. Enter the `exit` command.
+      Expected: The application closes.
 
 ### Deleting a jobseeker
 
