@@ -17,7 +17,9 @@ public class ListCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         model.updateFilteredJobseekerList(Model.PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS);
+        model.jobseekerFilterDescriptionProperty().set("Showing all unhidden jobseekers");
         model.updateFilteredClientList(Model.PREDICATE_SHOW_UNHIDDEN_CLIENTS);
+        model.clientFilterDescriptionProperty().set("Showing all unhidden clients");
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }
