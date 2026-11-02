@@ -108,7 +108,7 @@ educational qualifications and determine which jobseekers to link up with each c
 
 #### Viewing help: `help`
 
-Shows a copy of this help page inside the application.
+Opens a help window inside the application, which contains information about this application and its commands.
 
 **Format:**{: #help-format} `help`
 
@@ -807,7 +807,7 @@ The same indexed-copy behavior as `cpj` applies to clients.
 
 ### Saving the data
 
-TalentLink automatically saves data after every command. You do not need to save manually.
+TalentLink automatically saves data after every successful command. You do not need to save manually.
 
 ### Revisit past commands
 
@@ -815,7 +815,7 @@ Use the up and down arrow keys to revisit commands from your command history.
 
 ### Autocomplete commands
 
-Type part of a command (e.g. `list`) to see suggestions. Use `Up`/`Down` to select one,
+Type part of a command (e.g. `lis`) to see suggestions. Use `Up`/`Down` to select one,
 then `Tab` or `Enter` to complete it.
 Press `Enter` again to run the command, or `Escape` to dismiss suggestions.
 
@@ -831,13 +831,16 @@ Advanced users are welcome to update data directly by editing that data file.
 
 **:exclamation: Caution:**
 
-If your changes make the data file invalid, TalentLink starts with
-empty jobseeker and client lists at the next run.
-The invalid file remains on disk until you run a command (TalentLink saves after every command).
+If your changes make the data file invalid (e.g., if a value entered is outside the acceptable range),
+TalentLink starts with empty jobseeker and client lists at the next run.
+The invalid file remains on disk until a command succeeds. TalentLink then saves the empty lists over it,
+even if the command changes nothing (e.g. `list`, `help` or `exit`), and the contacts in the file are lost.
+To keep the file so that you can repair it, close the window instead of running a command.
 Still, we recommend backing up the file before editing it.
 
-Furthermore, certain edits can cause TalentLink to behave in unexpected ways
-(e.g., if a value entered is outside the acceptable range).
+Furthermore, certain edits can make TalentLink lose data without showing an error.
+For example, if you misspell the name of an optional field in the file (e.g. `remarks` instead of `remark`),
+TalentLink ignores that field and removes it from the file at the next successful command.
 Therefore, edit the data file only if you are confident that you can update it correctly.
 
 </div>
