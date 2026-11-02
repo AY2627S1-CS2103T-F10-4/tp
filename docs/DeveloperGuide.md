@@ -232,7 +232,7 @@ The following sequence diagram shows the find-specific part of how `findj bob` i
 
 The other commands follow the same flow. `findc` uses `PREDICATE_SHOW_UNHIDDEN_CLIENTS` and `updateFilteredClientList()`, while `findhj` and `findhc` use `PREDICATE_SHOW_HIDDEN_JOBSEEKERS` and `PREDICATE_SHOW_HIDDEN_CLIENTS` in place of the unhidden predicates. `find` updates both lists, which has the same effect as running `findj` followed by `findc`. One predicate can filter both lists because `PersonContainsKeywordsPredicate` implements `Predicate<Person>`, and `Jobseeker` and `Client` both extend `Person`.
 
-Find commands have no prefixes, so the parsers do not use `ArgumentTokenizer`: `n/Alice` is a literal keyword rather than a search by name. `String#strip()` and `\p{javaWhitespace}` recognise Unicode whitespace, so an EM SPACE (`U+2003`) separates keywords. This differs from the tag commands, which split on ASCII whitespace only.
+Find commands have no prefixes, so the parsers do not use `ArgumentTokenizer`: `n/Alice` is a literal keyword rather than a search by name. `String#strip()` and `\\p{javaWhitespace}` recognise Java whitespace characters, including EM SPACE (`U+2003`). The shared tag parser uses ASCII whitespace separators instead. However, `AddressBookParser` replaces EM SPACE with an ordinary space before dispatching arguments, so EM SPACE also separates tags in commands entered through the application.
 
 #### Keyword matching
 
@@ -355,7 +355,7 @@ The four concrete commands extend `AbstractTagCommand`, which extends `Command`.
 
 The four concrete parsers extend `TagCommandParser<T>`, which implements `Parser<T>`. `AddressBookParser` selects a concrete parser using the command word. The shared parser splits the arguments into an index and tag names, validates them using `ParserUtil.parseIndex()` and `ParserUtil.parseTags()`, and creates the corresponding command through its supplied command factory. Missing or invalid arguments cause a `ParseException` before execution.
 
-Arguments are split using Java's default `\s+`, which recognises ASCII whitespace. Ordinary spaces (`U+0020`) are supported; Unicode spaces such as EM SPACE (`U+2003`) are not recognised as separators. An EM SPACE between tag names remains part of a single tag and causes tag validation to fail.
+`TagCommandParser` splits arguments using Java's default `\\s+`, which recognises ASCII whitespace. Before arguments reach this parser, `AddressBookParser` replaces EM SPACE (`U+2003`) with an ordinary space (`U+0020`). Consequently, `tagj 1 java python` (with an EM SPACE between the tag names) adds two tags through the application. Calling `TagCommandParser` directly without this preprocessing rejects the same tag arguments. Other Unicode spaces are not normalised by `AddressBookParser` and are not recognised as separators by `TagCommandParser`.
 
 Tag names must contain only ASCII letters and digits. `Tag.equals()` compares names case-sensitively, so `Java` and `java` are distinct tags for both addition and removal. Parsed tags are collected into a `Set<Tag>`, collapsing repeated identical inputs.
 
