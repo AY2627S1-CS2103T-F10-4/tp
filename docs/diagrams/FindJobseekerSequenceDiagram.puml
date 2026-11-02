@@ -1,13 +1,16 @@
 @startuml
 !include style.puml
 skinparam ArrowFontStyle plain
+'The DG scales images down to its page width, so a larger font alone only widens the image.
+'Labels are wrapped to keep the diagram narrow, which is what makes the text bigger on the page.
+skinparam defaultFontSize 18
 
 box Logic LOGIC_COLOR_T1
-participant ":LogicManager" as LogicManager LOGIC_COLOR
-participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":Logic\nManager" as LogicManager LOGIC_COLOR
+participant ":AddressBook\nParser" as AddressBookParser LOGIC_COLOR
 participant ":FindJobseeker\nCommandParser" as Parser LOGIC_COLOR
 participant "c:FindJobseeker\nCommand" as Command LOGIC_COLOR
-participant "r:CommandResult" as CommandResult LOGIC_COLOR
+participant "r:Command\nResult" as CommandResult LOGIC_COLOR
 end box
 
 box Model MODEL_COLOR_T1
@@ -15,10 +18,10 @@ participant "m:Model" as Model MODEL_COLOR
 participant "p:PersonContains\nKeywordsPredicate" as Predicate MODEL_COLOR
 end box
 
-[-> LogicManager : execute("findj alice bob")
+[-> LogicManager : execute(\n"findj bob")
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand("findj alice bob")
+LogicManager -> AddressBookParser : parseCommand(\n"findj bob")
 activate AddressBookParser
 
 create Parser
@@ -28,18 +31,18 @@ activate Parser
 Parser --> AddressBookParser
 deactivate Parser
 
-AddressBookParser -> Parser : parse(" alice bob")
+AddressBookParser -> Parser : parse(" bob")
 activate Parser
 
 create Predicate
-Parser -> Predicate : PersonContainsKeywordsPredicate(["alice", "bob"])
+Parser -> Predicate : PersonContainsKeywordsPredicate(["bob"])
 activate Predicate
 
 Predicate --> Parser : p
 deactivate Predicate
 
 create Command
-Parser -> Command : FindJobseekerCommand(p)
+Parser -> Command : FindJobseeker\nCommand(p)
 activate Command
 
 Command --> Parser : c
@@ -57,10 +60,10 @@ deactivate AddressBookParser
 LogicManager -> Command : execute(m)
 activate Command
 
-Command -> Model : updateFilteredJobseekerList(...)
+Command -> Model : updateFiltered\nJobseekerList(...)
 activate Model
 
-loop more unhidden jobseekers
+loop more unhidden\njobseekers
     Model -> Predicate : test(jobseeker)
     activate Predicate
 
@@ -71,14 +74,14 @@ end
 Model --> Command
 deactivate Model
 
-Command -> Model : getFilteredJobseekerList()
+Command -> Model : getFiltered\nJobseekerList()
 activate Model
 
 Model --> Command : matches
 deactivate Model
 
 create CommandResult
-Command -> CommandResult : CommandResult("n jobseeker(s) listed!")
+Command -> CommandResult : CommandResult(\n"n jobseeker(s)\nlisted!")
 activate CommandResult
 
 CommandResult --> Command : r

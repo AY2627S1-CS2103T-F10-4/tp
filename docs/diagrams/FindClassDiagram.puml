@@ -6,21 +6,28 @@ skinparam ArrowFontStyle plain
 skinparam classAttributeFontColor #FFFFFF
 skinparam classAttributeIconSize 0
 skinparam genericDisplay old
+'Larger text stays readable when the wide diagram is scaled down to fit the page.
+skinparam packageFontSize 22
+skinparam classFontSize 20
+skinparam classStereotypeFontSize 20
+skinparam classAttributeFontSize 18
+skinparam ArrowFontSize 18
 'Wider gap keeps the "predicate 1" role clear of the Logic border.
-skinparam nodesep 100
+skinparam nodesep 130
 
 package Logic {
     class "<<interface>>\nParser<T>" as Parser
-    abstract class "AbstractFindCommandParser<T>" as AbstractFindCommandParser {
-        - commandFactory: Function<PersonContainsKeywordsPredicate, T>
+    'The commandFactory type is wrapped because its length sets the width of the whole diagram.
+    class "{abstract}\nAbstractFindCommandParser<T>" as AbstractFindCommandParser {
+        - commandFactory: Function<\n\tPersonContainsKeywordsPredicate, T>
         - messageUsage: String
         + parse(args): T
     }
     show AbstractFindCommandParser members
     class FindXYZCommandParser
 
-    abstract class Command
-    abstract class AbstractFindCommand
+    class "{abstract}\nCommand" as Command
+    class "{abstract}\nAbstractFindCommand" as AbstractFindCommand
     class FindXYZCommand
 }
 

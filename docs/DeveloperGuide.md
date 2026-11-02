@@ -289,7 +289,7 @@ The five parsers extend `AbstractFindCommandParser<T>`, which contains all of th
 
 #### Parsing and execution
 
-The following sequence diagram shows how `findj alice bob` is parsed and executed. The `...` argument of `updateFilteredJobseekerList(...)` is the combined predicate described in step 4 below. Storage interactions are omitted.
+The following sequence diagram shows how `findj bob` is parsed and executed. The `...` argument of `updateFilteredJobseekerList(...)` is the combined predicate described in step 4 below. Storage interactions are omitted.
 
 ![Sequence for finding jobseekers](images/FindJobseekerSequenceDiagram.png)
 
