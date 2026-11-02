@@ -27,6 +27,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_REMARK_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_EMPLOYER;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARTNER;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
@@ -121,6 +122,45 @@ public class AddClientCommandParserTest {
             assertParseFailure(parser, args,
                     "Missing required fields: n/ (name), p/ (phone), e/ (email), a/ (address).");
         }
+    }
+
+    /**
+     * Clients share {@code Name} with jobseekers, but go through their own parser.
+     */
+    @Test
+    public void parse_nameWithSlash_success() {
+        // EP: the letter before '/' is not a prefix
+        assertNameParsedWhole("Raj s/o Kumar");
+
+        // EP: the letter before '/' is a prefix in the wrong case, as prefixes are case-sensitive
+        assertNameParsedWhole("ABC P/L");
+        assertNameParsedWhole("John Smith T/A Smith Plumbing");
+
+        // EP: '/' next to a space, so there is no letter to form a prefix with
+        assertNameParsedWhole("ABC / XYZ Holdings");
+    }
+
+    private void assertNameParsedWhole(String name) {
+        Client expected = new ClientBuilder(AMY).withName(name).withRemark("").withTags().build();
+        assertParseSuccess(parser, " n/" + name + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
+                new AddClientCommand(expected));
+    }
+
+    /**
+     * Documents known limitations, covered in the user guide: a lowercase word such as "p/l" or "t/a"
+     * cannot be told apart from the prefix it starts with.
+     */
+    @Test
+    public void parse_lowercasePrefixInName_readAsPrefix() {
+        // EP: prefix of a required field, so the command is rejected as a repeated prefix
+        assertParseFailure(parser, " n/ABC p/l" + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE));
+
+        // EP: prefix of an optional field, so the rest of the name silently becomes tags
+        Client expected = new ClientBuilder(AMY).withName("John Smith").withRemark("")
+                .withTags("a", "Smith", "Plumbing").build();
+        assertParseSuccess(parser, " n/John Smith t/a Smith Plumbing" + PHONE_DESC_AMY + EMAIL_DESC_AMY
+                + ADDRESS_DESC_AMY, new AddClientCommand(expected));
     }
 
     @Test

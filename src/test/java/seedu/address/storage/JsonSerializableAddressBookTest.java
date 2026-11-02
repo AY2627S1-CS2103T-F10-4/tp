@@ -65,4 +65,35 @@ public class JsonSerializableAddressBookTest {
                 dataFromFile::toModelType);
     }
 
+    /**
+     * A JSON null in either list arrives as a null entry, which must be rejected as invalid data. Otherwise
+     * it causes a {@code NullPointerException}, which skips the fallback for invalid files at startup.
+     */
+    @Test
+    public void toModelType_nullEntry_throwsIllegalValueException() throws Exception {
+        // EP: null jobseeker entry
+        assertNullEntryRejected("{\"jobseekers\": [null]}"); // Boundary value
+        String validJobseeker = JsonUtil.toJsonString(new JsonAdaptedJobseeker(TypicalPersons.ALICE));
+        assertNullEntryRejected("{\"jobseekers\": [" + validJobseeker + ", null]}");
+
+        // EP: null client entry
+        assertNullEntryRejected("{\"clients\": [null]}"); // Boundary value
+        String validClient = JsonUtil.toJsonString(new JsonAdaptedClient(TypicalPersons.ADRIAN));
+        assertNullEntryRejected("{\"clients\": [" + validClient + ", null]}");
+    }
+
+    @Test
+    public void toModelType_emptyLists_returnsEmptyAddressBook() throws Exception {
+        // EP: lists with no entries
+        String json = "{\"jobseekers\": [], \"clients\": []}";
+        JsonSerializableAddressBook data = JsonUtil.fromJsonString(json, JsonSerializableAddressBook.class);
+        assertEquals(new AddressBook(), data.toModelType()); // Boundary value
+    }
+
+    private void assertNullEntryRejected(String json) throws Exception {
+        JsonSerializableAddressBook data = JsonUtil.fromJsonString(json, JsonSerializableAddressBook.class);
+        assertThrows(IllegalValueException.class, JsonSerializableAddressBook.MESSAGE_NULL_PERSON,
+                data::toModelType);
+    }
+
 }

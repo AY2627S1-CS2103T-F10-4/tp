@@ -68,20 +68,28 @@ The sections below give more details of each component.
 
 ### UI component
 
-The **API** of this component is specified in [`Ui.java`](https://github.com/AY2627S1-CS2103T-F10-4/tp/tree/master/src/main/java/seedu/address/ui/Ui.java)
+**API** : [`Ui.java`](https://github.com/AY2627S1-CS2103T-F10-4/tp/tree/master/src/main/java/seedu/address/ui/Ui.java)
 
 ![Structure of the UI Component](images/UiClassDiagram.png)
 
-The UI consists of a `MainWindow` and its parts, such as `CommandBox`, `ResultDisplay`, `PersonListPanel`, and `StatusBarFooter`. All of these, including `MainWindow`, inherit from the abstract `UiPart` class, which captures common behavior among classes that represent visible GUI parts.
+`UiManager` implements the `Ui` API. Its `start` method creates and shows the `MainWindow`, then has it fill in its parts. If this fails, `UiManager` shows a fatal error dialog and exits the app.
 
-The `UI` component uses the JavaFX UI framework. The layouts of these UI parts are defined in matching `.fxml` files in `src/main/resources/view`. For example, [`MainWindow.fxml`](https://github.com/AY2627S1-CS2103T-F10-4/tp/tree/master/src/main/resources/view/MainWindow.fxml) specifies the layout of [`MainWindow`](https://github.com/AY2627S1-CS2103T-F10-4/tp/tree/master/src/main/java/seedu/address/ui/MainWindow.java).
+The UI consists of a `MainWindow` and its parts: a `CommandBox`, a `ResultDisplay`, a `StatusBarFooter`, and two `PersonListPanel`s (one for jobseekers and one for clients), each showing its contacts as `PersonCard`s. `MainWindow` also creates a `HelpWindow`, a separate window that displays one `HelpPage` at a time (`HelpPage` is a private nested class of `HelpWindow`, so it has no source file of its own). All of these, including `MainWindow`, inherit from the abstract `UiPart` class, which captures common behavior among classes that represent visible GUI parts.
+
+`CommandBox` delegates recalling past commands to `CommandHistory` and completing command names to `CommandSuggestions`. Neither is a `UiPart`, because they hold no layout of their own. `CommandSuggestions` reads the command names from `CommandCatalogue` in the `Logic` component, so a new command is only suggested once it is added there. `CommandBox` itself has no reference to the `Logic` interface: it submits input through a `CommandExecutor` that `MainWindow` gives it. It still uses `CommandResult`, `CommandException` and `ParseException` from the `Logic` component because they appear in the signature of `CommandExecutor`, but the diagram omits this dependency for simplicity.
+
+For simplicity, the diagram omits the custom JavaFX classes used by the help window: `ExampleCode` (a copyable command snippet in a help page), `SectionHyperlink` (a link to a help page, used in the help window's navigation list and inside help pages), and the `NavigationEvent` that a `SectionHyperlink` fires to ask `HelpWindow` to show that page.
+
+A `SectionHyperlink` uses its own text as the page name, and `HelpPage` looks that name up in its `PAGES` map to find the page's `.fxml` file. The link text must therefore match a key in `PAGES` exactly; otherwise, clicking the link throws a `NullPointerException`. To add a help page, create its `HelpPage_*.fxml` file, add an entry to `PAGES`, and add a `SectionHyperlink` to `HelpWindow.fxml` or to another help page.
+
+The `UI` component uses the JavaFX UI framework. The layouts of the `UiPart`s are defined in `.fxml` files in `src/main/resources/view`, usually named after the class. For example, [`MainWindow.fxml`](https://github.com/AY2627S1-CS2103T-F10-4/tp/tree/master/src/main/resources/view/MainWindow.fxml) specifies the layout of [`MainWindow`](https://github.com/AY2627S1-CS2103T-F10-4/tp/tree/master/src/main/java/seedu/address/ui/MainWindow.java). The exceptions are `PersonCard`, which uses `PersonListCard.fxml`, and `HelpPage`, which has one `HelpPage_*.fxml` file per page.
 
 The `UI` component,
 
-* executes user commands using the `Logic` component.
-* listens for changes to `Model` data so that the UI can be updated with the modified data.
-* keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
-* depends on some classes in the `Model` component because it displays `Person` objects from the model.
+* uses the `Logic` component to execute user commands and to load and save the window's size and position (`GuiSettings`). `MainWindow` makes these calls; `UiManager` only keeps a reference to `Logic` so that it can pass it to `MainWindow`.
+* acts on the `CommandResult` of each command: `MainWindow` shows the feedback in `ResultDisplay` and, when the result asks for it, opens the help window, exits the app, or copies text to the system clipboard.
+* listens for changes to `Model` data through the `ObservableList`s that `Logic` exposes, so that each `PersonListPanel` updates with the modified data.
+* depends on some classes in the `Model` component because it displays `Person` objects, including the fields specific to `Jobseeker` and `Client`.
 
 ### Logic component
 
@@ -114,7 +122,7 @@ How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name, e.g., `AddJobseekerCommandParser`). The parser uses the other classes shown above to parse the user command and create an `XYZCommand` object (e.g., `AddJobseekerCommand`). The `AddressBookParser` returns that object as a `Command` object.
 * All `XYZCommandParser` classes, such as `AddJobseekerCommandParser` and `TagJobseekerCommandParser`, implement the `Parser` interface so they can be treated similarly where appropriate, for example during testing.
 
-* Parser dependencies vary by command. Tag/untag parsers split whitespace-separated arguments and use `ParserUtil.parseIndex()` and `ParserUtil.parseTags()` directly; they do not use `ArgumentTokenizer`, `ArgumentMultimap`, or `CliSyntax`.
+* Parser dependencies vary by command. Tag/untag parsers split ASCII whitespace-separated arguments and use `ParserUtil.parseIndex()` and `ParserUtil.parseTags()` directly; they do not use `ArgumentTokenizer`, `ArgumentMultimap`, or `CliSyntax`.
 
 ### Model component
 **API** : [`Model.java`](https://github.com/AY2627S1-CS2103T-F10-4/tp/tree/master/src/main/java/seedu/address/model/Model.java)
@@ -184,9 +192,9 @@ Jobseeker qualifications follow the same omitted/empty distinction: `q/` supplie
 4. The command calls `Model.setJobseeker()` and resets the filter using `Model.PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS`. Editing a hidden jobseeker therefore keeps that jobseeker hidden and returns the view to the normal list.
 5. After the command returns, `LogicManager` saves the address book through `Storage`. Parsing or execution failures skip saving; a storage failure is reported as a `CommandException` after the model has been updated.
 
-### Tag/untag feature
+### Tag/Untag feature
 
-The tag/untag commands add or remove tags for a jobseeker or client identified by their one-based index in the currently displayed list. Each command accepts `INDEX TAG [MORE_TAGS]...`, with tags separated by whitespace.
+The tag/untag commands add or remove tags for a jobseeker or client identified by their one-based index in the currently displayed list. Each command accepts `INDEX TAG [MORE_TAGS]...` and requires at least one tag.
 
 | Command | Command class | Parser class |
 | --- | --- | --- |
@@ -197,41 +205,55 @@ The tag/untag commands add or remove tags for a jobseeker or client identified b
 
 #### Structure and parsing
 
-The following class diagram shows the commands, their parsers, and their dependencies:
+The following diagrams separate the command and parser hierarchies. Only members relevant to shared tag handling are shown.
 
-![Tag and untag command and parser classes](images/TagUntagClassDiagram.png)
+![Tag and untag command hierarchy](images/TagCommandHierarchyDiagram.png)
 
-`AddressBookParser` selects the parser using the command word. Each parser splits the arguments into an index and tag names, then uses `ParserUtil.parseIndex()` and `ParserUtil.parseTags()` to validate them. Missing or invalid arguments cause a `ParseException` before command execution. Tags are collected into a `Set<Tag>`, so duplicate inputs are collapsed.
+The four concrete commands extend `AbstractTagCommand`, which extends `Command`. It stores the target `Index`, a defensive copy of the requested tags, and the `ADD` or `REMOVE` operation. It also provides shared target lookup and tag-set updates; the concrete commands construct and save the replacement jobseeker or client.
 
-Each command extends `Command` and stores the target `Index` and a defensive copy of the supplied tags. Each parser implements `Parser<T>`, where `T` is its corresponding command class.
+![Tag and untag parser hierarchy](images/TagParserClassDiagram.png)
 
-#### Adding tags
+The four concrete parsers extend `TagCommandParser<T>`, which implements `Parser<T>`. `AddressBookParser` selects a concrete parser using the command word. The shared parser splits the arguments into an index and tag names, validates them using `ParserUtil.parseIndex()` and `ParserUtil.parseTags()`, and creates the corresponding command through its supplied command factory. Missing or invalid arguments cause a `ParseException` before execution.
 
-The sequence diagram below illustrates `tagj 1 java`:
+Arguments are split using Java's default `\s+`, which recognises ASCII whitespace. Ordinary spaces (`U+0020`) are supported; Unicode spaces such as EM SPACE (`U+2003`) are not recognised as separators. An EM SPACE between tag names remains part of a single tag and causes tag validation to fail.
 
-![Sequence for adding a tag to a jobseeker](images/TagSequenceDiagram.png)
+Tag names must contain only ASCII letters and digits. `Tag.equals()` compares names case-sensitively, so `Java` and `java` are distinct tags for both addition and removal. Parsed tags are collected into a `Set<Tag>`, collapsing repeated identical inputs.
 
-1. `LogicManager` obtains a `TagJobseekerCommand` from `AddressBookParser` and calls `execute(model)`.
-2. The command reads `Model.getFilteredJobseekerList()` and checks that the index refers to a displayed jobseeker. An index outside this list causes a `CommandException`.
-3. The command copies the target's existing tags into a `HashSet` and calls `addAll(tagsToAdd)`. Existing tags are retained and duplicate tags are ignored.
-4. If no tags were added, the command returns `MESSAGE_NO_CHANGE` without replacing the jobseeker.
-5. Otherwise, it creates a replacement `Jobseeker` with the updated tags, calls `Model.setJobseeker(target, updatedJobseeker)`, and returns a success `CommandResult` describing the updated jobseeker.
+#### Execution
 
-#### Removing tags
+All four commands follow the same flow:
 
-The sequence diagram below illustrates `untagj 1 java`:
+1. `LogicManager` calls the command's `execute(model)` method.
+2. The command uses the inherited `getTarget()` helper to resolve the index against the corresponding filtered list. An index outside that list causes a `CommandException`.
+3. The inherited `getUpdatedTags()` helper copies the target's tags into a `HashSet` and applies the requested operation:
 
-![Sequence for removing a tag from a jobseeker](images/UntagSequenceDiagram.png)
+   | Operation | Set operation | No-change condition |
+   | --- | --- | --- |
+   | Add | `addAll(tags)` | All requested tags already exist |
+   | Remove | `removeAll(tags)` | None of the requested tags exist |
 
-`UntagJobseekerCommand` follows the same flow, but calls `removeAll(tagsToRemove)` on a copy of the existing tags. Tags that were not requested for removal are retained, and requested tags that are absent are ignored. If none of the requested tags exist, the command returns `MESSAGE_NO_CHANGE` without replacing the jobseeker. Otherwise, it replaces the jobseeker and returns a success `CommandResult`.
+4. If the operation has no effect, the command returns `MESSAGE_NO_CHANGE` without replacing the contact.
+5. Otherwise, the concrete command creates a replacement contact with the updated tags, calls `Model.setJobseeker()` or `Model.setClient()`, and returns a success `CommandResult` describing the updated contact.
 
-#### Client commands, filtering, and persistence
+`getUpdatedTags()` returns `Optional.empty()` when there is no change. An optional containing an empty set instead means that all tags were successfully removed, so the contact must still be replaced.
 
-`TagClientCommand` and `UntagClientCommand` follow the same steps using `Model.getFilteredClientList()`, a replacement `Client`, and `Model.setClient()`.
+The first sequence diagram shows execution of `tagj 1 java` after parsing, assuming a valid displayed index. The self-calls to `getTarget()` and `getUpdatedTags()` use methods inherited from `AbstractTagCommand`. The `...` in `getTarget()` omits the invalid-index message, while the constructor's `...` represents unchanged non-tag fields. Result construction and message formatting are omitted.
 
-All four commands preserve the target's name, phone, email, address, remark, and hidden status. They retain the current filter, so indices refer to the current view, including search results or a hidden-person list. Tagging or untagging a hidden person does not unhide them.
+![Jobseeker tag command execution](images/TagCommandExecutionDiagram.png)
 
-After a command returns normally, including a no-change result, `LogicManager` saves the address book through `Storage`. Parsing and execution errors propagate without reaching that save step. Storage interactions are omitted from the sequence diagrams to focus on parsing and tag updates.
+The referenced interaction below expands `getUpdatedTags()` for either operation. The `command` lifeline represents an instance of any concrete tag/untag command, viewed through its shared superclass; the call is the inherited self-call shown above, not a separate command object.
+
+![Shared tag update for addition and removal](images/TagUpdateSequenceDiagram.png)
+
+`UntagJobseekerCommand` follows the same execution flow with the `REMOVE` operation. The client commands use `Model.getFilteredClientList()`, a replacement `Client`, and `Model.setClient()` in place of their jobseeker equivalents. Parsing and invalid-index error paths are described above rather than repeated in the diagrams.
+
+#### Filtering and persistence
+
+All four commands preserve all non-tag fields, including highest qualification for jobseekers, available jobs for clients, and hidden status. Tagging or untagging a hidden contact does not unhide them.
+
+The current filter remains active, and indices refer to the displayed list, including search results or a hidden-contact list. A contact remains visible only if it still matches that filter; for example, removing a tag can make it disappear from search results that matched that tag.
+
+After a command returns normally, including a no-change result, `LogicManager` saves the address book through `Storage`. Parsing and execution errors propagate without reaching that save step. Storage interactions are omitted from the sequence diagrams to focus on command execution and tag updates.
 
 ### Clipboard feature
 

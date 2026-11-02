@@ -54,6 +54,27 @@ public class JsonAddressBookStorageTest {
     }
 
     @Test
+    public void read_jsonNull_exceptionThrown() {
+        // EP: JSON that holds no address book
+        assertThrows(DataLoadingException.class, () -> readAddressBook("nullAddressBook.json")); // Boundary value
+    }
+
+    /**
+     * Checks the whole read path, because {@code DataLoadingException} is what lets the app fall back to
+     * an empty address book at startup.
+     */
+    @Test
+    public void read_nullListEntries_exceptionThrown() {
+        // EP: JSON with a null entry in a list
+        assertReadFails("nullPersonEntryAddressBook.json"); // Boundary value
+        assertReadFails("nullTagEntryAddressBook.json"); // Boundary value
+    }
+
+    private void assertReadFails(String fileInTestDataFolder) {
+        assertThrows(DataLoadingException.class, () -> readAddressBook(fileInTestDataFolder));
+    }
+
+    @Test
     public void readAddressBook_invalidPersonAddressBook_throwDataLoadingException() {
         assertThrows(DataLoadingException.class, () -> readAddressBook("invalidPersonAddressBook.json"));
     }

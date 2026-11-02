@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 import seedu.address.commons.exceptions.DataLoadingException;
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.JsonUtil;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
@@ -41,7 +42,15 @@ public class JsonUserPrefsStorage {
      * @throws DataLoadingException if the file format is not as expected.
      */
     public Optional<UserPrefs> readUserPrefs(Path prefsFilePath) throws DataLoadingException {
-        return JsonUtil.readJsonFile(prefsFilePath, UserPrefs.class);
+        Optional<UserPrefs> userPrefs = JsonUtil.readJsonFile(prefsFilePath, UserPrefs.class);
+
+        // Jackson sets fields without calling UserPrefs#setGuiSettings, so null must be rejected here
+        if (userPrefs.isPresent() && userPrefs.get().getGuiSettings() == null) {
+            throw new DataLoadingException(
+                    new IllegalValueException(prefsFilePath + " has null GUI settings"));
+        }
+
+        return userPrefs;
     }
 
     /**
