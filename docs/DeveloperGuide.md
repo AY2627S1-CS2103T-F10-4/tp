@@ -427,7 +427,7 @@ The feature would change five existing parts of the app:
 * `LogicManager#execute()` calls `Model#commitAddressBook()` after each successful save. Individual commands do not commit.
 * `AddressBookParser` gains `undo` and `redo`. So does `CommandCatalogue`, which lists the command names offered for completion, as its class comment asks for the two to be kept in sync.
 
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+Given below is an example usage scenario and how the undo/redo mechanism behaves at each step. The object diagrams show the contents of `addressBookStateList`: each object is a saved state, and the note marks the state at `currentStatePointer`.
 
 Step 1. The user launches the application. The `VersionedAddressBook` is initialized with the app's initial address book data as its only state, and `currentStatePointer` points to that state. The history is held only in memory, so it starts afresh on every launch.
 
