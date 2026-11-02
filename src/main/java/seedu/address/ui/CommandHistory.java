@@ -18,7 +18,7 @@ class CommandHistory {
      * @param command Non-null submitted input, preserved exactly as entered.
      */
     void add(String command) {
-        if (!command.isBlank() && (history.isEmpty() || !history.getLast().equals(command))) {
+        if (!command.isBlank() && !history.getLast().equals(command)) {
             history.add(command);
         }
         historyIndex = history.size();
