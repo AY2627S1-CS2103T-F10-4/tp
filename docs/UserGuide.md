@@ -3,13 +3,9 @@ layout: page
 title: User Guide
 ---
 
-TalentLink is a **desktop application that HR recruiters in recruitment agencies use to manage 
-their contacts, optimized for use through a Command Line Interface (CLI)** while retaining the 
-benefits of a Graphical User Interface (GUI). If you type quickly, TalentLink can help you 
-manage your jobseeker/client contacts faster than traditional GUI applications. Additionally, 
-TalentLink also provides support for many tasks that recruiters often do on a daily basis, 
-such as recording notes on various jobseekers/clients, searching for jobseekers with particular 
-educational qualifications and determine which jobseekers to link up with each client's job opening.
+TalentLink is a **desktop application that HR recruiters in recruitment agencies use to manage their contacts, optimized for use through a Command Line Interface (CLI)** while retaining the benefits of a Graphical User Interface (GUI). If you type quickly, TalentLink can help you manage your jobseeker/client contacts faster than traditional GUI applications. 
+
+TalentLink provides support for many tasks that recruiters often do on a daily basis, such as keeping track and recording the details of hundreds of potential jobseekers and clients, recording the available job openings of each client, searching for jobseekers/clients that fulfill certain criteria, determining which jobseekers to link up with each client, and also sending the details of suitable jobseekers to the clients.
 
 * Table of Contents
 {:toc}
@@ -94,6 +90,11 @@ educational qualifications and determine which jobseekers to link up with each c
 
   For `editj`, `editc`, `tagj`, `tagc`, `untagj`, and `untagc`, 
   the index must come first, followed by the fields or tags to update.
+* A field value cannot contain a space followed by a prefix (`n/`, `p/`, `e/`, `a/`, `t/`, `r/`, `q/` or `j/`).
+  TalentLink reads that as the start of a new field, often without showing an error.
+
+  For example, `editj 1 r/Speaks n/a` changes the name to `a` and the remark to `Speaks`.
+  To keep `n/a` in the remark, use capitals (`N/A`) or put another character directly before it (`(n/a)`).
 * Extraneous parameters for commands that take no parameters,
   such as `help`, `exit`, `list`, `listj`, `listc`, `clearj`, and `clearc`, are ignored.
 
@@ -108,7 +109,7 @@ educational qualifications and determine which jobseekers to link up with each c
 
 #### Viewing help: `help`
 
-Shows a copy of this help page inside the application.
+Opens a help window inside the application, which contains information about this application and its commands.
 
 **Format:**{: #help-format} `help`
 
@@ -122,7 +123,7 @@ Exits the program.
 
 #### Common info about contacts
 
-Jobseeker contacts contains the following values, and their corresponding constraints:
+Jobseeker contacts contain the following values, and their corresponding constraints:
 
 * Name
   * can contain any characters except `/` (e.g. `Beyoncé` and `Zoë` are allowed)
@@ -131,16 +132,20 @@ Jobseeker contacts contains the following values, and their corresponding constr
   * contains only digits
   * must be at least 3 digits long
 * Email address
-  * must follow the conventional format of email address
+  * must follow the conventional format of an email address
 * Physical address
-  * can be any value other than empty
+  * can contain any value (see the restrictions below)
+  * must not be empty
+* Highest qualification
+  * optional
+  * can contain any value (see the restrictions below)
 * Remarks about the individual
-  * can be any value
+  * can contain any value (see the restrictions below)
 * Tags
   * can have multiple unique tags
   * See [Managing tags](#managing-tags) for more details about tags.
 
-Client contacts contains the following values, and their corresponding constraints:
+Client contacts contain the following values, and their corresponding constraints:
 
 * Name
   * can contain any characters except `/` (e.g. `Ben & Jerry's`, `Pokémon` and `7-Eleven` are allowed)
@@ -149,22 +154,30 @@ Client contacts contains the following values, and their corresponding constrain
   * contains only digits
   * must be at least 3 digits long
 * Email address
-  * must follow the conventional format of email address
+  * must follow the conventional format of an email address
 * Physical address
-  * can be any value other than empty
+  * can contain any value (see the restrictions below)
+  * must not be empty
+* Job openings
+  * optional
+  * can have multiple unique job titles
+  * each job title can contain any value (see the limit below) and must not be blank
 * Remarks about the individual
-  * can be any value
+  * can contain any value (see the restrictions below)
 * Tags
   * can have multiple unique tags
   * See [Managing tags](#managing-tags) for more details about tags.
+
+The restrictions: an address, qualification, remark or job title cannot contain a space followed by a prefix such as `n/`.
+See the [notes about the command format](#features) for why, and for how to work around this.
 
 Contacts are identified by their phone number **and** their email address.
 
 The `q/` field is only accepted by `addj` and `editj`; `j/` is only accepted by `addc` and `editc`.
 Using either field with the wrong contact type is rejected, even when its value is empty.
 
-* Contacts with the same phone number and email address are treated as the same contacts,
-  even if their other fields differs.
+* Contacts with the same phone number and email address are treated as the same contact,
+  even if their other fields differ.
 
 * If contacts only have **either** the same phone number or email address,
   they are treated as different contacts.
@@ -188,7 +201,7 @@ However, adding an existing _client_ contact to the jobseeker list is allowed
 * `<email>`: the email address of the jobseeker
 * `<address>`: the address of the jobseeker
 * `<highest qualification>`: the jobseeker's highest qualification, e.g. `Diploma in IT`
-  * Optional free text. Omit `q/` to leave it empty; specify it at most once.
+  * Optional. Omit `q/` to leave it empty; specify it at most once.
 * `<remarks>`: your remarks about this jobseeker
   * Optional. When omitted, the remarks value is treated as empty.
 * `<tag>`: a tag for this jobseeker
@@ -219,7 +232,7 @@ However, adding an existing _jobseeker_ contact to the client list is allowed
 The common contact fields follow [Adding a jobseeker: `addj` - Format](#addj-format).
 Clients have available jobs (`j/`) instead of a highest qualification (`q/`).
 
-* `<job>`: a job title, e.g. `Software Engineer`. Spaces and punctuation are allowed.
+* `<job>`: a job title, e.g. `Software Engineer`. Spaces and punctuation are allowed, but see the limit in [Common info about contacts](#common-info-about-contacts).
 * Jobs are optional. Omit `j/` to leave the list empty. Repeat `j/` to list multiple jobs.
 * Repeated identical titles are stored once; titles are case-sensitive.
 * `j/` alone leaves the list empty. Do not combine an empty `j/` with other `j/` entries.
@@ -264,7 +277,7 @@ At least one of the fields `<name>`, `<phone number>`, `<email>`, `<address>`, `
 * Separate tags with spaces after one `t/`, or use repeated prefixes; mixed syntax is accepted.
 * Duplicate tags are stored once; tags are case-sensitive and must be alphanumeric.
 * Omit `t/` to preserve existing tags. A single empty `t/` clears them; empty prefixes mixed with other tags are rejected.
-* Editing preserves hidden status and returns the view to the normal jobseeker list.
+* Editing preserves hidden status, and the current filter stays active.
   An edited hidden jobseeker remains hidden.
 
 **Examples:**
@@ -420,7 +433,7 @@ The search is case-insensitive and is inclusive, as in:
 * inputting `hans` or `Hans` both matches `Hans Gruber`
 * inputting `Hans Bo` matches both `Hans Gruber` and `Bo Yang`.
 
-For more information on hidden jobseekers, see [Hiding a jobseekers: `hidej`](#hiding-a-jobseeker-hidej).
+For more information on hidden jobseekers, see [Hiding a jobseeker: `hidej`](#hiding-a-jobseeker-hidej).
 
 To search among hidden jobseekers, see [Finding hidden jobseekers: `findhj`](#finding-hidden-jobseekers-findhj).
 
@@ -488,7 +501,7 @@ See [Finding jobseekers: `findj` - Notes](#findj-notes).
 * `findc roy` returns `Roy Balakrishnan`.
 * `findc irfan@example.com` returns `Irfan Ibrahim`.
 * `findc colleagues` returns `Roy Balakrishnan`, who is tagged `colleagues`.
-* `findc engineer` returns `Roy Balakrishnan`, after `editc 2 j/Software Engineer` adds that job opening.
+* `findc engineer` returns `Roy Balakrishnan`, after `editc 2 j/Software Engineer` sets that job opening.
 
 #### Finding jobseekers and clients: `find`
 
@@ -517,7 +530,8 @@ The notes are the same as [`findj`](#findj-notes) for jobseekers and [`findc`](#
 
 * `find colleagues` returns the jobseeker `Bernice Yu` and the client `Roy Balakrishnan`, who are both tagged `colleagues`.
 * `find alex roy` returns the jobseeker `Alex Yeoh` and the client `Roy Balakrishnan`.
-* `find engineer` returns every client with a job opening such as `Software Engineer`.
+* `find engineer` returns every client with a job opening such as `Software Engineer`,
+  and every jobseeker with a qualification such as `Bachelor of Engineering`.
 * `find diploma engineer` returns every jobseeker with a qualification such as `Diploma in IT`,
   and every client with a job opening such as `Software Engineer`.
 
@@ -685,7 +699,7 @@ Each contact can have multiple tags or none.
 
 * Tag names must contain only letters (`A–Z`, `a–z`) and digits (`0–9`), with no spaces or punctuation.
 * Tags are case-sensitive: `Java` and `java` are different tags. To remove a tag, match its case exactly.
-  Searches using `find`, `findj`, and `findc` are case-insensitive.
+  Searches using `find`, `findj`, `findc`, `findhj`, and `findhc` are case-insensitive.
 * Each tag is stored only once per contact. Adding an existing tag or removing a tag the contact
   does not have leaves that tag unchanged.
 
@@ -799,7 +813,7 @@ The same indexed-copy behavior as `cpj` applies to clients.
 
 ### Saving the data
 
-TalentLink automatically saves data after every command. You do not need to save manually.
+TalentLink automatically saves data after every successful command. You do not need to save manually.
 
 ### Revisit past commands
 
@@ -807,7 +821,7 @@ Use the up and down arrow keys to revisit commands from your command history.
 
 ### Autocomplete commands
 
-Type part of a command (e.g. `list`) to see suggestions. Use `Up`/`Down` to select one,
+Type part of a command (e.g. `lis`) to see suggestions. Use `Up`/`Down` to select one,
 then `Tab` or `Enter` to complete it.
 Press `Enter` again to run the command, or `Escape` to dismiss suggestions.
 
@@ -823,13 +837,16 @@ Advanced users are welcome to update data directly by editing that data file.
 
 **:exclamation: Caution:**
 
-If your changes make the data file invalid, TalentLink starts with
-empty jobseeker and client lists at the next run.
-The invalid file remains on disk until you run a command (TalentLink saves after every command).
+If your changes make the data file invalid (e.g., if a value entered is outside the acceptable range),
+TalentLink starts with empty jobseeker and client lists at the next run.
+The invalid file remains on disk until a command succeeds. TalentLink then saves the empty lists over it,
+even if the command changes nothing (e.g. `list`, `help` or `exit`), and the contacts in the file are lost.
+To keep the file so that you can repair it, close the window instead of running a command.
 Still, we recommend backing up the file before editing it.
 
-Furthermore, certain edits can cause TalentLink to behave in unexpected ways
-(e.g., if a value entered is outside the acceptable range).
+Furthermore, certain edits can make TalentLink lose data without showing an error.
+For example, if you misspell the name of an optional field in the file (e.g. `remarks` instead of `remark`),
+TalentLink ignores that field and removes it from the file at the next successful command.
 Therefore, edit the data file only if you are confident that you can update it correctly.
 
 </div>
