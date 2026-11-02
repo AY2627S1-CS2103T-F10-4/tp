@@ -7,7 +7,6 @@ skinparam classBackgroundColor LOGIC_COLOR
 skinparam ArrowFontStyle plain
 skinparam classAttributeFontColor #FFFFFF
 skinparam classAttributeIconSize 0
-skinparam genericDisplay old
 
 class "<<interface>>\nParser<T>" as Parser
 class "TagCommandParser<T>" as TagCommandParser {
