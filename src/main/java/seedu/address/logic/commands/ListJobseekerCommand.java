@@ -18,6 +18,7 @@ public class ListJobseekerCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         model.updateFilteredJobseekerList(Model.PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS);
+        model.jobseekerFilterDescriptionProperty().set("Showing all unhidden jobseekers");
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

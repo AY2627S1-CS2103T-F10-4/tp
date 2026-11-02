@@ -91,6 +91,16 @@ public class AddJobseekerCommandTest {
      */
     private class ModelStub implements Model {
         @Override
+        public javafx.beans.property.StringProperty jobseekerFilterDescriptionProperty() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public javafx.beans.property.StringProperty clientFilterDescriptionProperty() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public ReadOnlyUserPrefs getUserPrefs() {
             throw new AssertionError("This method should not be called.");
         }
