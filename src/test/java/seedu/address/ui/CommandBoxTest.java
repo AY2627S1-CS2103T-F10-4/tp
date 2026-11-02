@@ -122,6 +122,27 @@ public class CommandBoxTest {
     }
 
     @Test
+    public void submit_emptyInput_resetsHistoryBrowsingWithoutAddingEntry() throws Exception {
+        runOnFxThread(() -> {
+            TextField field = createField(command -> new CommandResult("Success"));
+            field.setText("listc");
+            submit(field);
+            field.setText("listj");
+            submit(field);
+
+            field.setText("draft");
+            press(field, KeyCode.UP);
+            press(field, KeyCode.UP);
+            assertEquals("listc", field.getText());
+
+            field.setText("");
+            submit(field);
+            press(field, KeyCode.UP);
+            assertEquals("listj", field.getText());
+        });
+    }
+
+    @Test
     public void inputLengthFilter_truncatesAndWarnsOnCharactersBeyondMaximum() throws Exception {
         runOnFxThread(() -> {
             TextField field = createField(command -> new CommandResult("Success"));
