@@ -1,0 +1,44 @@
+@startuml
+!include style.puml
+skinparam arrowColor LOGIC_COLOR_T4
+skinparam classBackgroundColor LOGIC_COLOR
+skinparam ArrowFontStyle plain
+skinparam classAttributeFontColor #FFFFFF
+skinparam classAttributeIconSize 0
+skinparam genericDisplay old
+'Wider gap keeps the "predicate 1" role clear of the Logic border.
+skinparam nodesep 100
+
+package Logic {
+    class "<<interface>>\nParser<T>" as Parser
+    abstract class "AbstractFindCommandParser<T>" as AbstractFindCommandParser {
+        - commandFactory: Function<PersonContainsKeywordsPredicate, T>
+        - messageUsage: String
+        + parse(args): T
+    }
+    show AbstractFindCommandParser members
+    class FindXYZCommandParser
+
+    abstract class Command
+    abstract class AbstractFindCommand
+    class FindXYZCommand
+}
+
+package Model {
+    class PersonContainsKeywordsPredicate MODEL_COLOR {
+        - keywords: List<String>
+        + test(person): boolean
+    }
+    show PersonContainsKeywordsPredicate members
+}
+
+FindXYZCommandParser -up-|> AbstractFindCommandParser
+AbstractFindCommandParser .up.|> Parser
+
+FindXYZCommand -up-|> AbstractFindCommand
+AbstractFindCommand -up-|> Command
+
+AbstractFindCommandParser .right.> AbstractFindCommand : creates
+AbstractFindCommandParser .right.> PersonContainsKeywordsPredicate : creates
+AbstractFindCommand -right-> "predicate 1" PersonContainsKeywordsPredicate
+@enduml

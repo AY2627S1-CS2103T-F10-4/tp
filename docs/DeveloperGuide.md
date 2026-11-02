@@ -103,9 +103,6 @@ The sequence diagram below illustrates the interactions within the `Logic` compo
 
 ![Interactions Inside the Logic Component for the `deletec 1` Command](images/DeleteClientSequenceDiagram.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteClientCommandParser` should end at the destroy marker (X), but due to a limitation of PlantUML, it continues to the end of the diagram.
-</div>
-
 How the `Logic` component works:
 
 1. When `Logic` is called upon to execute a command, the command is passed to an `AddressBookParser` object, which in turn creates a parser that matches the command (e.g., `DeleteClientCommandParser`) and uses it to parse the command.
@@ -268,6 +265,89 @@ Without an index, the command copies all persons in the corresponding currently 
 
 The command returns the clipboard text through `CommandResult`, and `MainWindow` performs the actual system clipboard update.
 
+### Find feature
+
+The find commands list the contacts that match at least one of the given keywords. Each command accepts `<keyword>...` and requires at least one keyword. The commands differ only in which contacts they search.
+
+| Command | Command class | Parser class | Contacts searched |
+| --- | --- | --- | --- |
+| `find` | `FindCommand` | `FindCommandParser` | Unhidden jobseekers and unhidden clients |
+| `findj` | `FindJobseekerCommand` | `FindJobseekerCommandParser` | Unhidden jobseekers |
+| `findc` | `FindClientCommand` | `FindClientCommandParser` | Unhidden clients |
+| `findhj` | `FindHiddenJobseekerCommand` | `FindHiddenJobseekerCommandParser` | Hidden jobseekers |
+| `findhc` | `FindHiddenClientCommand` | `FindHiddenClientCommandParser` | Hidden clients |
+
+#### Structure
+
+The following class diagram shows how these classes relate. `FindXYZCommand` and `FindXYZCommandParser` are placeholders for any command and parser class in the table above. Only members relevant to shared find handling are shown.
+
+![Find command and parser classes](images/FindClassDiagram.png)
+
+The five commands extend `AbstractFindCommand`, which stores the `PersonContainsKeywordsPredicate` and implements `equals()` and `toString()`. Each concrete command only implements `execute()`, which chooses the list(s) to filter and whether to search hidden or unhidden contacts. `equals()` compares classes using `getClass()` because `findj alice` and `findc alice` have equal predicates but search different lists, so they must not be equal.
+
+The five parsers extend `AbstractFindCommandParser<T>`, which contains all of the parsing logic. Each concrete parser only passes its command's constructor (e.g., `FindJobseekerCommand::new`) and usage message to the superclass.
+
+#### Parsing and execution
+
+The following sequence diagram shows how `findj alice bob` is parsed and executed. The `...` argument of `updateFilteredJobseekerList(...)` is the combined predicate described in step 4 below. Storage interactions are omitted.
+
+![Sequence for finding jobseekers](images/FindJobseekerSequenceDiagram.png)
+
+1. `AddressBookParser` selects `FindJobseekerCommandParser` using the command word and calls `parse()`, which the parser inherits from `AbstractFindCommandParser`.
+2. `parse()` removes leading and trailing whitespace with `String#strip()` and splits the rest on `\p{javaWhitespace}+`. If no keywords remain, it throws a `ParseException` containing the command's usage message.
+3. `parse()` wraps the keywords in a `PersonContainsKeywordsPredicate` and passes it to `commandFactory`, which creates the command.
+4. `LogicManager` calls the command's `execute(model)` method. The command combines `Model.PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS` with the keyword predicate using `Predicate#and()` and passes the result to `Model#updateFilteredJobseekerList()`.
+5. The `FilteredList` in `ModelManager` tests each jobseeker against the combined predicate. `and()` does not evaluate the keyword predicate for a hidden jobseeker, as the first predicate is already false.
+6. The command counts the jobseekers left in the filtered list and returns a `CommandResult` reporting that number.
+
+The other commands follow the same flow. `findc` uses `PREDICATE_SHOW_UNHIDDEN_CLIENTS` and `updateFilteredClientList()`, while `findhj` and `findhc` use `PREDICATE_SHOW_HIDDEN_JOBSEEKERS` and `PREDICATE_SHOW_HIDDEN_CLIENTS` in place of the unhidden predicates. `find` updates both lists, which has the same effect as running `findj` followed by `findc`. One predicate can filter both lists because `PersonContainsKeywordsPredicate` implements `Predicate<Person>`, and `Jobseeker` and `Client` both extend `Person`.
+
+Find commands have no prefixes, so the parsers do not use `ArgumentTokenizer`: `n/Alice` is a literal keyword rather than a search by name. `String#strip()` and `\p{javaWhitespace}` recognise Unicode whitespace, so an EM SPACE (`U+2003`) separates keywords. This differs from the tag commands, which split on ASCII whitespace only.
+
+#### Keyword matching
+
+`PersonContainsKeywordsPredicate#test()` returns true if any keyword appears in any searchable field of the contact, ignoring case. The searchable fields are:
+
+* the name, phone number, email and each tag of any contact
+* the highest qualification of a jobseeker
+* each job opening of a client
+
+Addresses and remarks are not searched. The following details affect which contacts match:
+
+* Keywords match partial words because the predicate uses `String#contains()`. For example, `9435` matches the phone number `94351253`.
+* Each field is checked on its own, so a keyword cannot match across two fields, two tags or two job openings. For example, `Yeoh8743` does not match a jobseeker named `Alex Yeoh` whose phone number is `87438807`.
+* Text is lowercased using `Locale.ROOT` so that results do not depend on the computer's locale. Under a Turkish locale, for example, `ALICE` would otherwise become `alıce` and would not match `alice`.
+
+#### Filtering and persistence
+
+A find command replaces the filter of the list(s) it searches and does not modify any contact. `findj` and `findhj` leave the client list's filter unchanged, and `findc` and `findhc` leave the jobseeker list's filter unchanged. Each `PersonListPanel` observes its filtered list, so the displayed results update as soon as the filter changes.
+
+Only find and list commands change a filter, so a search stays active until the next such command on that list. While it is active, other commands resolve indices against the search results, and a contact that is added or edited appears in the list only if it matches the filter.
+
+Filters are held only in memory by `ModelManager`. `LogicManager` saves the address book after a find command, as it does after any successful command, but filters are not part of the saved data. The app therefore shows the unhidden contacts of each type on the next launch.
+
+#### Design considerations:
+
+**Aspect: How the five find commands share code:**
+
+* **Alternative 1 (current choice):** One command class and one parser class per command word, with shared logic in abstract superclasses.
+  * Pros: Follows the one-parser-per-command structure of the other commands. Each `execute()` is short, with no branching on which contacts to search.
+  * Cons: Adds ten small classes, and the `execute()` methods are similar to one another.
+
+* **Alternative 2:** One command class and one parser class, with a parameter that selects the contacts to search.
+  * Pros: Fewer classes.
+  * Cons: `execute()` must branch on that parameter, and the parser no longer follows the structure of the other commands' parsers.
+
+**Aspect: How a keyword matches a field:**
+
+* **Alternative 1 (current choice):** Case-insensitive substring match.
+  * Pros: Recruiters can search with part of a phone number, email or job title.
+  * Cons: Short keywords can return unrelated contacts. For example, `li` matches `Charlotte Oliveiro`.
+
+* **Alternative 2:** Case-insensitive whole-word match, using `StringUtil.containsWordIgnoreCase()`.
+  * Pros: Fewer unrelated results.
+  * Cons: Partial phone numbers and emails no longer match. For example, `9435` would not match `94351253`.
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
@@ -310,10 +390,6 @@ than attempting to perform the undo.
 The following sequence diagram shows how an undo operation goes through the `Logic` component:
 
 ![UndoSequenceDiagram](images/UndoSequenceDiagram-Logic.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `UndoCommand` should end at the destroy marker (X), but due to a limitation of PlantUML, it continues to the end of the diagram.
-
-</div>
 
 Similarly, how an undo operation goes through the `Model` component is shown below:
 
