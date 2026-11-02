@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.util.logging.Logger;
 
+import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
@@ -72,6 +73,16 @@ public class LogicManager implements Logic {
     @Override
     public ObservableList<Client> getFilteredClientList() {
         return model.getFilteredClientList();
+    }
+
+    @Override
+    public ReadOnlyStringProperty jobseekerFilterDescriptionProperty() {
+        return model.jobseekerFilterDescriptionProperty();
+    }
+
+    @Override
+    public ReadOnlyStringProperty clientFilterDescriptionProperty() {
+        return model.clientFilterDescriptionProperty();
     }
 
     @Override

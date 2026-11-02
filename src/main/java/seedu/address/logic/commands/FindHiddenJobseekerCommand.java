@@ -39,6 +39,8 @@ public class FindHiddenJobseekerCommand extends AbstractFindCommand {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         model.updateFilteredJobseekerList(Model.PREDICATE_SHOW_HIDDEN_JOBSEEKERS.and(predicate));
+        model.jobseekerFilterDescriptionProperty().set(
+                "Showing hidden jobseekers matching \"" + predicate.getSearchText() + "\"");
         int matchCount = model.getFilteredJobseekerList().size();
         // FINE, not INFO: LogicManager already logs the command text at INFO, so this only adds detail
         // that is useful when debugging search results.

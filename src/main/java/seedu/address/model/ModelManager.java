@@ -6,6 +6,8 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
@@ -19,6 +21,10 @@ import seedu.address.model.person.Jobseeker;
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
+    private final StringProperty jobseekerFilterDescription =
+            new SimpleStringProperty("Showing all unhidden jobseekers");
+    private final StringProperty clientFilterDescription =
+            new SimpleStringProperty("Showing all unhidden clients");
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
     private final FilteredList<Jobseeker> filteredJobseekers;
@@ -49,6 +55,16 @@ public class ModelManager implements Model {
     @Override
     public ReadOnlyUserPrefs getUserPrefs() {
         return userPrefs;
+    }
+
+    @Override
+    public StringProperty jobseekerFilterDescriptionProperty() {
+        return jobseekerFilterDescription;
+    }
+
+    @Override
+    public StringProperty clientFilterDescriptionProperty() {
+        return clientFilterDescription;
     }
 
     @Override

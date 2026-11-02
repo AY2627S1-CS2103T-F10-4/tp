@@ -2,8 +2,10 @@ package seedu.address.ui;
 
 import java.util.logging.Logger;
 
+import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
@@ -19,12 +21,15 @@ public class PersonListPanel<T extends Person> extends UiPart<Region> {
 
     @FXML
     private ListView<T> personListView;
+    @FXML
+    private Label filterDescription;
 
     /**
      * Creates a {@code PersonListPanel} with the given list of person subtypes.
      */
-    public PersonListPanel(ObservableList<T> personList) {
+    public PersonListPanel(ObservableList<T> personList, ReadOnlyStringProperty description) {
         super(FXML);
+        filterDescription.textProperty().bind(description);
         personListView.setItems(personList);
         personListView.setCellFactory(listView -> new PersonListViewCell());
     }

@@ -90,6 +90,11 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
         return keywords.equals(otherPersonContainsKeywordsPredicate.keywords);
     }
 
+    /** Returns the search keywords for display. */
+    public String getSearchText() {
+        return String.join(" ", keywords);
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this).add("keywords", keywords).toString();
