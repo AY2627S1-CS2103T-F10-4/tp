@@ -9,7 +9,13 @@ title: Developer Guide
 
 ## **Acknowledgements**
 
-* _{List the sources of reused or adapted ideas, code, documentation, and third-party libraries here, with links to the originals.}_
+* TalentLink is based on [AddressBook-Level3](https://github.com/se-edu/addressbook-level3) (AB3), created by the [SE-EDU initiative](https://se-education.org). Its code and documentation, including this guide, were adapted from AB3.
+* Third-party libraries and tools used include:
+  * [JavaFX](https://openjfx.io/) for the GUI
+  * [Jackson](https://github.com/FasterXML/jackson) for reading and writing JSON data files
+  * [JUnit 5](https://junit.org/) for automated testing
+  * [PlantUML](https://plantuml.com/) for the UML diagrams in this guide
+* AI tools [Claude](https://www.anthropic.com/claude) and [Codex](https://openai.com/codex/) were used during development, to help with writing and reviewing code, tests and documentation.
 
 --------------------------------------------------------------------------------------------------------------------
 
