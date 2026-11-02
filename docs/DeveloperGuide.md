@@ -420,7 +420,7 @@ The proposed `undo` and `redo` commands are not implemented yet. They would reve
 
 These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively. `Model#canUndoAddressBook()` and `Model#canRedoAddressBook()` report whether there is a state to move to. `Model#getCurrentStatePointer()` and `Model#setCurrentStatePointer()` let `LogicManager` put the pointer back after a failed save.
 
-The feature would change four existing parts of the app:
+The feature would change five existing parts of the app:
 
 * `ModelManager` holds a `VersionedAddressBook` in place of its `AddressBook`. Its filtered lists are built once from this object, so `undo()` and `redo()` update it in place with `resetData()` rather than replacing it.
 * `Model` gains the methods above, so `ModelStub` in `AddJobseekerCommandTest` must implement them too.
@@ -429,7 +429,7 @@ The feature would change four existing parts of the app:
 
 Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
 
-Step 1. The user launches the application. The `VersionedAddressBook` is initialized with the address book data loaded from storage as its only state, and `currentStatePointer` points to that state. The history is held only in memory, so it starts afresh on every launch.
+Step 1. The user launches the application. The `VersionedAddressBook` is initialized with the app's initial address book data as its only state, and `currentStatePointer` points to that state. The history is held only in memory, so it starts afresh on every launch.
 
 ![UndoRedoState0](images/UndoRedoState0.png)
 

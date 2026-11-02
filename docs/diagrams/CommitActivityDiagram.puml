@@ -19,7 +19,8 @@ else ([else])
         :Restore previous data
         and pointer position;
     else ([else])
-        if () then ([data changed])
+        if () then ([differs from
+current state])
             :Purge states after
             currentStatePointer;
             :Save data to
