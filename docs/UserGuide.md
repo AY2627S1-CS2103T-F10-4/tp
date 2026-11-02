@@ -30,14 +30,14 @@ TalentLink provides support for many tasks that recruiters often do on a daily b
 
     ```bat
     cd /D HOME
-    java -jar addressbook.jar
+    java -jar talentlink.jar
     ```
 
     **Linux and macOS**
 
     ```bash
     cd HOME
-    java -jar addressbook.jar
+    java -jar talentlink.jar
     ```
 
     A GUI similar to the one below should appear in a few seconds.
@@ -829,7 +829,7 @@ Press `Enter` again to run the command, or `Escape` to dismiss suggestions.
 
 ### Editing the data file
 
-TalentLink data is saved automatically as a JSON file `data/addressbook.json`, relative to the terminal's
+TalentLink data is saved automatically as a JSON file `data/talentlink.json`, relative to the terminal's
 current working directory when the application is launched. Following the Quick Start instructions makes
 this directory the same as the folder containing the JAR file. Launching the JAR from a different working
 directory uses a different data-file location.
