@@ -121,6 +121,22 @@ public class EditCommandParserTest {
     }
 
     @Test
+    public void parse_nameWithSlash_success() {
+        assertParseSuccess(parser, "1 n/Raj s/o Kumar", new EditJobseekerCommand(INDEX_FIRST_PERSON,
+                new EditJobseekerDescriptorBuilder().withName("Raj s/o Kumar").build()));
+    }
+
+    /**
+     * Documents a known limitation, covered in the user guide: lowercase "a/l" cannot be told apart from the
+     * address prefix. Editing does not require an address, so the rest of the name becomes the new address.
+     */
+    @Test
+    public void parse_lowercaseAddressMarkerInName_splitIntoAddress() {
+        assertParseSuccess(parser, "1 n/Muthu a/l Raju", new EditJobseekerCommand(INDEX_FIRST_PERSON,
+                new EditJobseekerDescriptorBuilder().withName("Muthu").withAddress("l Raju").build()));
+    }
+
+    @Test
     public void parse_allFieldsSpecified_success() {
         Index targetIndex = INDEX_SECOND_PERSON;
         String userInput = targetIndex.getOneBased() + PHONE_DESC_BOB + TAG_DESC_HUSBAND

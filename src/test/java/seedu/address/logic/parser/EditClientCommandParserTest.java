@@ -120,6 +120,15 @@ public class EditClientCommandParserTest {
                 Name.MESSAGE_CONSTRAINTS);
     }
 
+    /**
+     * Documents a known limitation, covered in the user guide: lowercase "p/l" cannot be told apart from
+     * the phone prefix, so "l" is read as the new phone number and rejected.
+     */
+    @Test
+    public void parse_lowercasePhoneMarkerInName_failure() {
+        assertParseFailure(parser, "1 n/ABC p/l", Phone.MESSAGE_CONSTRAINTS);
+    }
+
     @Test
     public void parse_allFieldsSpecified_success() {
         Index targetIndex = INDEX_SECOND_PERSON;

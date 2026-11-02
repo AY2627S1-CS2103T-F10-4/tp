@@ -125,7 +125,8 @@ Exits the program.
 Jobseeker contacts contains the following values, and their corresponding constraints:
 
 * Name
-  * can contain any characters except `/` (e.g. `Beyoncé` and `Zoë` are allowed)
+  * can contain any characters (e.g. `Beyoncé`, `Zoë` and `Raj s/o Kumar` are allowed)
+  * write names that contain prefixes (like `P/L`, `T/A` and `A/L`) in capitals, because lowercase `p/`, `t/` and `a/` are read as the phone, tag and address prefixes respectively
   * must not be blank
 * Phone number
   * contains only digits
@@ -143,7 +144,8 @@ Jobseeker contacts contains the following values, and their corresponding constr
 Client contacts contains the following values, and their corresponding constraints:
 
 * Name
-  * can contain any characters except `/` (e.g. `Ben & Jerry's`, `Pokémon` and `7-Eleven` are allowed)
+  * can contain any characters (e.g. `Ben & Jerry's`, `Pokémon` and `7-Eleven` are allowed)
+  * write names that contain prefixes (like `P/L`, `T/A` and `A/L`) in capitals, because lowercase `p/`, `t/` and `a/` are read as the phone, tag and address prefixes respectively
   * must not be blank
 * Phone number
   * contains only digits
