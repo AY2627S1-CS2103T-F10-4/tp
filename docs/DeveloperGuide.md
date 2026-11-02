@@ -412,85 +412,108 @@ The command returns the clipboard text through `CommandResult`, and `MainWindow`
 
 #### Proposed Implementation
 
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
+The proposed `undo` and `redo` commands are not implemented yet. They would reverse and reapply changes to the contact data, using a `VersionedAddressBook` that extends `AddressBook` with an undo/redo history. The history is stored internally as an `addressBookStateList` and a `currentStatePointer`, and is changed by the following operations:
 
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
+* `VersionedAddressBook#commit()` — Saves the current address book data as a new state, unless the data already matches the state at `currentStatePointer`.
+* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
+* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
 
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
+These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively. `Model#canUndoAddressBook()` and `Model#canRedoAddressBook()` report whether there is a state to move to. `Model#getCurrentStatePointer()` and `Model#setCurrentStatePointer()` let `LogicManager` put the pointer back after a failed save.
 
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+The feature would change five existing parts of the app:
 
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
+* `ModelManager` holds a `VersionedAddressBook` in place of its `AddressBook`. Its filtered lists are built once from this object, so `undo()` and `redo()` update it in place with `resetData()` rather than replacing it.
+* `Model` gains the methods above, so `ModelStub` in `AddJobseekerCommandTest` must implement them too.
+* `LogicManager#execute()` calls `Model#commitAddressBook()` after each successful save. Individual commands do not commit.
+* `AddressBookParser` gains `undo` and `redo`. So does `CommandCatalogue`, which lists the command names offered for completion, as its class comment asks for the two to be kept in sync.
+
+Given below is an example usage scenario and how the undo/redo mechanism behaves at each step. The object diagrams show the contents of `addressBookStateList`: each object is a saved state, and the note marks the state at `currentStatePointer`.
+
+Step 1. The user launches the application. The `VersionedAddressBook` is initialized with the app's initial address book data as its only state, and `currentStatePointer` points to that state. The history is held only in memory, so it starts afresh on every launch.
 
 ![UndoRedoState0](images/UndoRedoState0.png)
 
-Step 2. The user executes `deletej 5` command to delete the 5th jobseeker in the jobseeker list. The `deletej` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `deletej 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
+Step 2. The user executes `deletej 5` to delete the 5th jobseeker in the displayed jobseeker list. After saving, `LogicManager` calls `Model#commitAddressBook()`. The data now differs from the current state, so it is added to `addressBookStateList`, and `currentStatePointer` moves to this new state.
 
 ![UndoRedoState1](images/UndoRedoState1.png)
 
-Step 3. The user executes `addj n/David …​` to add a new jobseeker. The `addj` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
+Step 3. The user executes `addj n/David …​` to add a new jobseeker. `LogicManager` again calls `Model#commitAddressBook()`, which adds another state to `addressBookStateList`.
 
 ![UndoRedoState2](images/UndoRedoState2.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If parsing, execution or saving fails, `LogicManager` never reaches `Model#commitAddressBook()`, so no state is added to `addressBookStateList`.
 
 </div>
 
-Step 4. The user now decides that adding the jobseeker was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
+Step 4. The user now decides that adding the jobseeker was a mistake, and executes the `undo` command. The command calls `Model#undoAddressBook()`, which moves `currentStatePointer` one state to the left and restores the address book to that state. `LogicManager` then saves the restored data as it does after any command, so the undo is also written to the save file. `LogicManager`'s call to `Model#commitAddressBook()` has no effect, because the data matches the current state.
 
 ![UndoRedoState3](images/UndoRedoState3.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If `currentStatePointer` is at index 0, there are no previous states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check for this, and throws a `CommandException` rather than attempting the undo.
 
 </div>
 
-The following sequence diagram shows how an undo operation goes through the `Logic` component:
+The following sequence diagram shows how a successful undo goes through the `Logic` component:
 
 ![UndoSequenceDiagram](images/UndoSequenceDiagram-Logic.png)
 
-Similarly, how an undo operation goes through the `Model` component is shown below:
+Similarly, how an undo goes through the `Model` component is shown below:
 
 ![UndoSequenceDiagram](images/UndoSequenceDiagram-Model.png)
 
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
+The `redo` command does the opposite: it calls `Model#redoAddressBook()`, which moves `currentStatePointer` one state to the right and restores the address book to that state.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If `currentStatePointer` is at index `addressBookStateList.size() - 1`, there are no undone states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check for this, and throws a `CommandException` rather than attempting the redo.
 
 </div>
 
-Step 5. The user then decides to execute the command `listj`. Commands that do not modify the address book, such as `listj`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
+Step 5. The user then executes `listj`. This command does not change the contact data, so the call to `Model#commitAddressBook()` has no effect, and `addressBookStateList` and `currentStatePointer` remain unchanged. The same applies to find and copy commands, and to commands that return a no-change result, such as tagging a jobseeker with a tag they already have. A command that reports success without changing the data, such as `clearj` on an empty list, also adds no state, so a following `undo` reverses the last actual change.
 
-![UndoRedoState4](images/UndoRedoState4.png)
-
-Step 6. The user executes `clearj`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `addj n/David …​` command. This is the behavior that most modern desktop applications follow.
+Step 6. The user executes `clearj`. The data now differs from the current state, and `currentStatePointer` is not at the end of `addressBookStateList`, so `Model#commitAddressBook()` purges all states after the pointer before adding the new one. It no longer makes sense to redo the `addj n/David …​` command, and most modern desktop applications behave the same way.
 
 ![UndoRedoState5](images/UndoRedoState5.png)
 
 The following activity diagram summarizes what happens when a user executes a new command:
 
-<img src="images/CommitActivityDiagram.png" width="250" />
+<img src="images/CommitActivityDiagram.png" width="350" />
+
+#### Filtering and persistence
+
+Filters are not part of the address book data, so `undo` and `redo` leave the active filters and their descriptions unchanged. A restored contact therefore appears only if it matches the current filter, as with the `editj` command. For example, undoing `deletej` during a search restores the jobseeker to the data, but if they do not match the search, the jobseeker stays out of view until a find or list command changes the filter.
+
+If saving fails, `LogicManager` already restores the data from before the command through `Model#setAddressBook()`. That call does not change the history, which is enough for most commands because they have not committed yet. `undo` and `redo` are the exception, as they have already moved `currentStatePointer`. `LogicManager` must therefore also call `Model#getCurrentStatePointer()` before executing a command, and pass the result to `Model#setCurrentStatePointer()` when a save fails, or the pointer and the data would no longer match.
 
 #### Design considerations:
 
 **Aspect: How undo & redo execute:**
 
-* **Alternative 1 (current choice):** Saves the entire address book.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
+* **Alternative 1 (proposed choice):** Save the entire address book as a state.
+  * Pros: Easy to implement, and later commands that change data need no undo logic of their own.
+  * Cons: Uses more memory as the contact lists grow and as each change adds a state, since the history has no size limit. The cost is limited because states can share `Person` objects, which are immutable, and copy only the two lists.
 
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-  * Pros: Will use less memory (e.g. for `deletej`, just save the jobseeker being deleted).
-  * Cons: We must ensure that the implementation of each individual command is correct.
+* **Alternative 2:** Each command knows how to undo and redo itself.
+  * Pros: Uses less memory (e.g. for `deletej`, just save the jobseeker being deleted).
+  * Cons: All 16 commands that change data need correct undo and redo logic, and each new one adds to this.
 
-_{more aspects and alternatives to be added}_
+**Aspect: Where the state is committed:**
 
-### \[Proposed\] Data archiving
+* **Alternative 1 (proposed choice):** `LogicManager` commits after each successful save, and `commit()` ignores data that matches the current state.
+  * Pros: Needs one call only. Failed saves, read-only commands, no-change results, `undo` and `redo` all add no state, without any command having to handle them.
+  * Cons: Compares the address book data after every command, including read-only ones.
 
-_{Explain here how the data archiving feature will be implemented}_
+* **Alternative 2:** Each command that changes data calls `Model#commitAddressBook()` itself.
+  * Pros: Which commands can be undone is explicit in each command's code.
+  * Cons: Commands run before the save, so a failed save would leave a state in the history for data that was rolled back. Each of the 16 commands must also remember the call, and the 8 tag, untag, hide and unhide commands must skip it on a no-change result.
+
+**Aspect: How jobseeker and client changes share a history:**
+
+* **Alternative 1 (proposed choice):** One history and one `undo` command, covering both lists.
+  * Pros: Matches what the user expects, as `undo` always reverses the latest change. A state already holds both lists.
+  * Cons: Undoing an older jobseeker change also undoes any later client changes.
+
+* **Alternative 2:** Separate histories, with `undoj` and `undoc` commands.
+  * Pros: Follows the naming of the other commands, and each list can be undone independently.
+  * Cons: Needs two histories, and the user must remember which list they changed last.
 
 
 --------------------------------------------------------------------------------------------------------------------
