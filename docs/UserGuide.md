@@ -82,7 +82,7 @@ TalentLink provides support for many tasks that recruiters often do on a daily b
   For example, `n/<name> [t/<tag>]` can be written as `n/John Doe t/friend` or as `n/John Doe`.
 * Items followed by `...` can appear more than once. Every other items must only appear once.
 
-  For example, `[t/<tag>]...` may be omitted, or written as `t/friend` or `t/friend t/family`.
+  For example, `[t/<tag>]...` may be omitted, or written as `t/technology` or `t/technology t/finance`.
 * Prefixed parameters can be in any order.
 
   For example, if the command specifies `n/<name> p/<phone number>`, `p/<phone number> n/<name>`
@@ -467,7 +467,7 @@ To search among hidden jobseekers, see [Finding hidden jobseekers: `findhj`](#fi
 * `findj alex david` returns `Alex Yeoh` and `David Li`.
 * `findj li` returns `Charlotte Oliveiro` and `David Li`, since `li` appears inside both names.
 * `findj 9103` returns `David Li`, whose phone number is `91031282`.
-* `findj friends` returns `Alex Yeoh` and `Bernice Yu`, who are both tagged `friends`.
+* `findj technology` returns `Alex Yeoh` and `Bernice Yu`, who are both tagged `technology`.
 * `findj diploma` returns `Alex Yeoh`, after `editj 1 q/Diploma in IT` sets that qualification.
 
 #### Finding clients: `findc`
@@ -502,7 +502,7 @@ See [Finding jobseekers: `findj` - Notes](#findj-notes).
 
 * `findc roy` returns `Roy Balakrishnan`.
 * `findc irfan@example.com` returns `Irfan Ibrahim`.
-* `findc colleagues` returns `Roy Balakrishnan`, who is tagged `colleagues`.
+* `findc finance` returns `Roy Balakrishnan`, who is tagged `finance`.
 * `findc engineer` returns `Roy Balakrishnan`, after `editc 2 j/Software Engineer` sets that job opening.
 
 #### Finding jobseekers and clients: `find`
@@ -530,7 +530,7 @@ The notes are the same as [`findj`](#findj-notes) for jobseekers and [`findc`](#
 **Examples:**
 {: #find-examples}
 
-* `find colleagues` returns the jobseeker `Bernice Yu` and the client `Roy Balakrishnan`, who are both tagged `colleagues`.
+* `find finance` returns the jobseeker `Bernice Yu` and the client `Roy Balakrishnan`, who are both tagged `finance`.
 * `find alex roy` returns the jobseeker `Alex Yeoh` and the client `Roy Balakrishnan`.
 * `find engineer` returns every client with a job opening such as `Software Engineer`,
   and every jobseeker with a qualification such as `Bachelor of Engineering`.
