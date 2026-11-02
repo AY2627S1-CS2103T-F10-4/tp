@@ -182,6 +182,36 @@ public class AddJobseekerCommandParserTest {
                 new AddJobseekerCommand(expectedJobseeker));
     }
 
+    /**
+     * Checks the tokenizer and {@code Name} together: each name must arrive whole, not split at the '/'.
+     */
+    @Test
+    public void parse_nameWithSlash_success() {
+        // EP: the letter before '/' is not a prefix
+        assertNameParsedWhole("Raj s/o Kumar");
+        assertNameParsedWhole("Priya d/o Kumar");
+
+        // EP: the letter before '/' is a prefix in the wrong case, as prefixes are case-sensitive
+        assertNameParsedWhole("Muthu A/L Raju");
+        assertNameParsedWhole("Siti A/P Raju");
+    }
+
+    private void assertNameParsedWhole(String name) {
+        Jobseeker expected = new JobseekerBuilder(AMY).withName(name).withRemark("").withTags().build();
+        assertParseSuccess(parser, " " + PREFIX_NAME + name + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
+                new AddJobseekerCommand(expected));
+    }
+
+    /**
+     * Documents a known limitation, covered in the user guide: lowercase "a/l" cannot be told apart from the
+     * address prefix. Adding requires an address, so this is rejected as a repeated prefix.
+     */
+    @Test
+    public void parse_lowercaseAddressMarkerInName_failure() {
+        assertParseFailure(parser, " " + PREFIX_NAME + "Muthu a/l Raju" + PHONE_DESC_AMY + EMAIL_DESC_AMY
+                + ADDRESS_DESC_AMY, Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
+    }
+
     @Test
     public void parse_singleRequiredFieldMissing_listsOnlyMissingField() {
         assertParseFailure(parser, PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,

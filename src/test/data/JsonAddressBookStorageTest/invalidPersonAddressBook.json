@@ -1,6 +1,6 @@
 {
   "jobseekers": [ {
-    "name": "Person with invalid name field: Hans/Muster",
+    "name": " Person with invalid name field: leading space",
     "phone": "9482424",
     "email": "hans@example.com",
     "address": "4th street"

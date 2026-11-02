@@ -21,26 +21,41 @@ public class NameTest {
 
     @Test
     public void isValidName() {
-        // null name
+        // EP: null
         assertThrows(NullPointerException.class, () -> Name.isValidName(null));
 
-        // tests for invalid names
-        assertFalse(Name.isValidName("")); // empty string
-        assertFalse(Name.isValidName(" ")); // spaces only
-        assertFalse(Name.isValidName("/")); // only the reserved '/' character
-        assertFalse(Name.isValidName("peter/jack")); // '/' in the middle
-        assertFalse(Name.isValidName("peter/")); // '/' at the end
-        assertFalse(Name.isValidName(" peter")); // leading whitespace
+        // EP: blank
+        assertFalse(Name.isValidName("")); // Boundary value
+        assertFalse(Name.isValidName(" ")); // Boundary value
 
-        // tests for valid names
+        // EP: leading whitespace
+        assertFalse(Name.isValidName(" peter"));
+
+        // EP: '/' at either end of the name
+        assertTrue(Name.isValidName("/")); // Boundary value
+        assertTrue(Name.isValidName("/peter")); // Boundary value
+        assertTrue(Name.isValidName("peter/")); // Boundary value
+
+        // EP: '/' next to whitespace
+        assertTrue(Name.isValidName("ABC / XYZ Holdings"));
+
+        // EP: '/' between two non-whitespace characters
+        assertTrue(Name.isValidName("a/b")); // Boundary value
+        assertTrue(Name.isValidName("peter/jack"));
+        assertTrue(Name.isValidName("Raj s/o Kumar"));
+        assertTrue(Name.isValidName("Priya D/O Kumar"));
+        assertTrue(Name.isValidName("Muthu A/L Raju"));
+        assertTrue(Name.isValidName("Raj s/o Kumar s/o Bala")); // more than one '/'
+
+        // EP: letters and digits only
         assertTrue(Name.isValidName("peter jack")); // alphabets only
         assertTrue(Name.isValidName("12345")); // numbers only
         assertTrue(Name.isValidName("peter the 2nd")); // alphanumeric characters
         assertTrue(Name.isValidName("Capital Tan")); // with capital letters
         assertTrue(Name.isValidName("David Roger Jackson Ray Jr 2nd")); // long names
 
-        // tests for valid names with special and non-ascii characters
-        assertTrue(Name.isValidName("^")); // only non-alphanumeric characters
+        // EP: special and non-ASCII characters
+        assertTrue(Name.isValidName("^")); // Boundary value
         assertTrue(Name.isValidName("Hershey's")); // apostrophe
         assertTrue(Name.isValidName("McDonald's Pte. Ltd.")); // apostrophe and full stops
         assertTrue(Name.isValidName("X Æ A-Xii")); // non-ASCII letter and hyphen
