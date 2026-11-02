@@ -12,14 +12,14 @@
       <TextFlow styleClass="h2">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Copying displayed clients: " />
-            <Label styleClass="code" text="cpj" />
+            <Label styleClass="code" text="cpc" />
          </children>
       </TextFlow>
       <Label text="Copies the details of displayed clients to the system clipboard." />
       <HBox alignment="BASELINE_LEFT">
          <children>
             <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="bold" text="Format: " />
-            <ExampleCode code="cpj [index]" />
+            <ExampleCode code="cpc [index]" />
          </children>
       </HBox>
       <VBox styleClass="body">
