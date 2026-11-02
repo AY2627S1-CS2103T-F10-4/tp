@@ -1,0 +1,50 @@
+@startuml
+!include style.puml
+skinparam arrowColor LOGIC_COLOR_T4
+skinparam classBackgroundColor LOGIC_COLOR
+skinparam ArrowFontStyle plain
+skinparam classAttributeFontColor #FFFFFF
+skinparam classAttributeIconSize 0
+'Larger text stays readable when the wide diagram is scaled down to fit the page.
+skinparam packageFontSize 22
+skinparam classFontSize 20
+skinparam classStereotypeFontSize 20
+skinparam classAttributeFontSize 18
+skinparam ArrowFontSize 18
+'Wider gap keeps the "predicate 1" role clear of the Logic border.
+skinparam nodesep 130
+
+package Logic {
+    class "<<interface>>\nParser<T>" as Parser
+    'The commandFactory type is wrapped because its length sets the width of the whole diagram.
+    class "{abstract}\nAbstractFindCommandParser<T>" as AbstractFindCommandParser {
+        - commandFactory: Function<\n\tPersonContainsKeywordsPredicate, T>
+        - messageUsage: String
+        + parse(args): T
+    }
+    show AbstractFindCommandParser members
+    class FindXYZCommandParser
+
+    class "{abstract}\nCommand" as Command
+    class "{abstract}\nAbstractFindCommand" as AbstractFindCommand
+    class FindXYZCommand
+}
+
+package Model {
+    class PersonContainsKeywordsPredicate MODEL_COLOR {
+        - keywords: List<String>
+        + test(person): boolean
+    }
+    show PersonContainsKeywordsPredicate members
+}
+
+FindXYZCommandParser -up-|> AbstractFindCommandParser
+AbstractFindCommandParser .up.|> Parser
+
+FindXYZCommand -up-|> AbstractFindCommand
+AbstractFindCommand -up-|> Command
+
+AbstractFindCommandParser .right.> AbstractFindCommand : creates
+AbstractFindCommandParser .right.> PersonContainsKeywordsPredicate : creates
+AbstractFindCommand -right-> "predicate 1" PersonContainsKeywordsPredicate
+@enduml

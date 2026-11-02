@@ -11,12 +11,13 @@ box Model MODEL_COLOR_T1
 participant "model:Model" as Model MODEL_COLOR
 end box
 
+[-> Logic : execute("editj 1 n/Alice r/Available")
+activate Logic
 note over Logic, Command
-  After parsing editj 1 n/Alice r/Available,
-  LogicManager receives an EditJobseekerCommand.
+  After parsing the input, LogicManager
+  receives an EditJobseekerCommand.
   This diagram shows successful execution.
 end note
-activate Logic
 Logic -> Command : execute(model)
 activate Command
 Command -> Model : getFilteredJobseekerList()
@@ -37,11 +38,9 @@ note over Command, Model
 end note
 Command -> Model : setJobseeker(target, edited)
 Model --> Command
-Command -> Model : updateFilteredJobseekerList(...)
-Model --> Command
 note over Command, Model
-  Show unhidden jobseekers.
-  An edited hidden jobseeker stays hidden.
+  The current filter stays active, so the edited
+  jobseeker stays displayed only if it still matches.
 end note
 Command --> Logic : success result
 deactivate Command
@@ -49,5 +48,6 @@ note over Logic, Model
   LogicManager saves through Storage before returning the result.
   Parsing and storage interactions are omitted here.
 end note
+[<-- Logic
 deactivate Logic
 @enduml

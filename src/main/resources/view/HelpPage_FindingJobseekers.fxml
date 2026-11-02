@@ -229,13 +229,13 @@
                   <Label styleClass="bullet" text="•" />
                   <TextFlow>
                      <children>
-                        <ExampleCode code="findj friends" />
+                        <ExampleCode code="findj technology" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" returns " />
                         <Label styleClass="code" text="Alex Yeoh" />
                         <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" and " />
                         <Label layoutX="159.0" layoutY="14.0" styleClass="code" text="Bernice Yu" />
                         <Text layoutX="138.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=", who are both tagged " />
-                        <Label layoutX="237.0" layoutY="14.0" styleClass="code" text="friends" />
+                        <Label layoutX="237.0" layoutY="14.0" styleClass="code" text="technology" />
                         <Text layoutX="304.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
                      </children>
                   </TextFlow>

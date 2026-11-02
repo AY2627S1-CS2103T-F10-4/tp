@@ -7,9 +7,8 @@ skinparam classBackgroundColor LOGIC_COLOR
 skinparam ArrowFontStyle plain
 skinparam classAttributeFontColor #FFFFFF
 skinparam classAttributeIconSize 0
-skinparam genericDisplay old
 
-interface "Parser<T>" as Parser
+class "<<interface>>\nParser<T>" as Parser
 class "TagCommandParser<T>" as TagCommandParser {
     - commandFactory: BiFunction<Index, Set<Tag>, T>
     + parse(args): T

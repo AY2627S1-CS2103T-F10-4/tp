@@ -18,6 +18,7 @@ public class ListHiddenClientCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         model.updateFilteredClientList(Model.PREDICATE_SHOW_HIDDEN_CLIENTS);
+        model.clientFilterDescriptionProperty().set("Showing all hidden clients");
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

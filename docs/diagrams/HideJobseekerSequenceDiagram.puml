@@ -1,0 +1,56 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+'LogicManager and CommandResult are omitted because the DG's Logic component section shows them.
+'Parsing is omitted too, as it follows the same flow as deletec 1 in that section.
+skinparam defaultFontSize 16
+
+box Logic LOGIC_COLOR_T1
+participant "c:HideJobseeker\nCommand" as Command LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+participant "h:Jobseeker" as Hidden MODEL_COLOR
+end box
+
+[-> Command : execute(m)
+activate Command
+
+Command -> Model : getFilteredJobseekerList()
+activate Model
+
+Model --> Command : displayed
+deactivate Model
+
+Command -> Command : getTarget(displayed, ...)
+activate Command
+
+Command --> Command : t
+deactivate Command
+
+Command -> Command : isAlreadyApplied(t)
+activate Command
+
+Command --> Command : alreadyApplied
+deactivate Command
+
+'A single return after the frame, so the activation bar ends where the method returns.
+opt !alreadyApplied
+    create Hidden
+    Command -> Hidden : Jobseeker(..., true)
+    activate Hidden
+
+    Hidden --> Command : h
+    deactivate Hidden
+
+    Command -> Model : setJobseeker(t, h)
+    activate Model
+
+    Model --> Command
+    deactivate Model
+end
+
+[<-- Command : no-change or success result
+deactivate Command
+@enduml

@@ -26,7 +26,7 @@ public class FindCommand extends AbstractFindCommand {
             + "(for jobseekers) contain any of the specified keywords (case-insensitive) and displays them "
             + "as two lists with index numbers.\n"
             + "Parameters: <keyword>...\n"
-            + "Example: " + COMMAND_WORD + " colleagues engineer diploma";
+            + "Example: " + COMMAND_WORD + " finance engineer diploma";
 
     private static final Logger logger = LogsCenter.getLogger(FindCommand.class);
 
@@ -44,7 +44,11 @@ public class FindCommand extends AbstractFindCommand {
         requireNonNull(model);
         // The same predicate filters both lists, which is exactly what findj followed by findc would do.
         model.updateFilteredJobseekerList(Model.PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS.and(predicate));
+        model.jobseekerFilterDescriptionProperty().set(
+                "Showing unhidden jobseekers matching \"" + predicate.getSearchText() + "\"");
         model.updateFilteredClientList(Model.PREDICATE_SHOW_UNHIDDEN_CLIENTS.and(predicate));
+        model.clientFilterDescriptionProperty().set(
+                "Showing unhidden clients matching \"" + predicate.getSearchText() + "\"");
         int jobseekerMatchCount = model.getFilteredJobseekerList().size();
         int clientMatchCount = model.getFilteredClientList().size();
         // FINE, not INFO: LogicManager already logs the command text at INFO, so this only adds detail

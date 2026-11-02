@@ -65,7 +65,7 @@ public class AddressBookParser {
         if (userInput.length() > InputLimits.MAX_COMMAND_LENGTH) {
             throw new ParseException(MESSAGE_COMMAND_TOO_LONG);
         }
-        final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
+        final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.replace('\u2003', ' ').trim());
         if (!matcher.matches()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
         }

@@ -12,6 +12,7 @@ participant "model:Model" as Model MODEL_COLOR
 participant "replacement:Jobseeker" as Replacement MODEL_COLOR
 end box
 
+[-> Logic : execute("tagj 1 java")
 activate Logic
 Logic -> Command : execute(model)
 activate Command
@@ -28,17 +29,17 @@ activate Command
 ref over Command : Shared tag update (next diagram)
 Command --> Command : updatedTags
 deactivate Command
-alt updatedTags.isEmpty()
-    Command --> Logic : no-change result
-else updatedTags.isPresent()
+'A single return after the frame, so the activation bar ends where the method returns.
+opt updatedTags.isPresent()
     create Replacement
     Command -> Replacement : <<create>> Jobseeker(...,\nupdatedTags.get(), ...)
     Command -> Model : setJobseeker(target, replacement)
     activate Model
     Model --> Command
     deactivate Model
-    Command --> Logic : success result
 end
+Command --> Logic : no-change or success result
 deactivate Command
+[<-- Logic
 deactivate Logic
 @enduml
