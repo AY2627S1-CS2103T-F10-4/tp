@@ -201,6 +201,39 @@ public class MainAppTest {
         assertInvalidDataIgnoredAndKept("null"); // Boundary value
     }
 
+    /**
+     * The message is tied to the sample data actually being shown, so it must still appear when the
+     * save fails: the sample data is then loaded again on the next launch, and still needs explaining.
+     */
+    @Test
+    public void getStartupMessage_sampleDataLoaded_explainsHowToClear() throws Exception {
+        // EP: no data file
+        initModelManager(createStorage());
+        assertEquals(MainApp.MESSAGE_SAMPLE_DATA_LOADED, mainApp.getStartupMessage());
+
+        // EP: no data file, and saving the sample data fails
+        MainApp saveFailingApp = new MainApp();
+        Files.deleteIfExists(getDataFile());
+        initModelManager(saveFailingApp, new SaveFailingStorageManager(getDataFile(), getPrefsFile()));
+        assertEquals(MainApp.MESSAGE_SAMPLE_DATA_LOADED, saveFailingApp.getStartupMessage());
+    }
+
+    /**
+     * Guards against showing the message on every launch, and against telling a recruiter whose lists are
+     * empty, or whose lists hold their own real contacts, that they are looking at sample data.
+     */
+    @Test
+    public void getStartupMessage_sampleDataNotLoaded_isEmpty() throws Exception {
+        // EP: valid data file
+        assertStartupMessageEmpty(getTypicalAddressBook());
+        assertStartupMessageEmpty(new AddressBook()); // Boundary value
+
+        // EP: content that is not JSON
+        Files.writeString(getDataFile(), NOT_JSON);
+        initModelManager(createStorage());
+        assertEquals("", mainApp.getStartupMessage());
+    }
+
     @Test
     public void initModelManager_anyDataFile_usesGivenPrefs() throws Exception {
         // EP: no data file
@@ -242,10 +275,22 @@ public class MainAppTest {
      * {@code NoSuchMethodException}.
      */
     private Model initModelManager(Storage storage) throws ReflectiveOperationException {
+        return initModelManager(mainApp, storage);
+    }
+
+    private Model initModelManager(MainApp app, Storage storage) throws ReflectiveOperationException {
         Method method = MainApp.class.getDeclaredMethod("initModelManager",
                 Storage.class, ReadOnlyUserPrefs.class);
         method.setAccessible(true);
-        return (Model) method.invoke(mainApp, storage, getCustomPrefs());
+        return (Model) method.invoke(app, storage, getCustomPrefs());
+    }
+
+    private void assertStartupMessageEmpty(AddressBook addressBook) throws Exception {
+        Storage storage = createStorage();
+        storage.saveAddressBook(addressBook);
+
+        initModelManager(storage);
+        assertEquals("", mainApp.getStartupMessage());
     }
 
     private void assertInvalidPrefsReplacedByDefaults(String fileContent) throws Exception {
