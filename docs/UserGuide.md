@@ -43,7 +43,7 @@ TalentLink provides support for many tasks that recruiters often do on a daily b
     A GUI similar to the one below should appear in a few seconds.
     The app contains some sample data for you to get used to the UI.
     When sample data is loaded, a message reminds you that `clearj` and `clearc` can be used to remove it.
-    ![Ui sample](images/Ui.png)
+    ![Ui sample](images/StartingUi.png)
 
 1.  Type a command in the command box and press Enter to execute it.
     For example, type **`help`** and press Enter to open the help window.
