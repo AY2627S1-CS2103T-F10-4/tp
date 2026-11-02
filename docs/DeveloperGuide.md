@@ -51,7 +51,7 @@ The bulk of the app's work is done by the following four components:
 
 **How the architecture components interact with each other**
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `deletej 1`.
 
 <img src="images/ArchitectureSequenceDiagram.png" width="574" />
 
@@ -108,7 +108,7 @@ How the `Logic` component works:
 1. When `Logic` is called upon to execute a command, the command is passed to an `AddressBookParser` object, which in turn creates a parser that matches the command (e.g., `DeleteClientCommandParser`) and uses it to parse the command.
 1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteClientCommand`) which is executed by the `LogicManager`.
 1. The command can communicate with the `Model` when it is executed (e.g. to delete a client).<br>
-   Note that although this is shown as a single step in the diagram above for simplicity, the code can require several interactions between the command object and the `Model` to complete the operation.
+   As the diagram above shows, this can take several interactions between the command object and the `Model`.
 1. The result of the command execution is encapsulated as a `CommandResult` object which is returned from `Logic`.
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
@@ -135,7 +135,7 @@ The `Model` component,
 * stores a `UserPrefs` object that represents the user’s preferences (currently, just the GUI settings). This is exposed to the outside as a `ReadOnlyUserPrefs` object.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The alternative, arguably more object-oriented, design below keeps a unique list of tags in `AddressBook`, and each `Person` references tags from that list. This lets `AddressBook` maintain one `Tag` object per unique tag instead of each `Person` holding its own `Tag` objects.<br>
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The alternative, arguably more object-oriented, design below keeps a unique list of tags in `AddressBook`, and each `Person` references tags from that list. This lets `AddressBook` maintain one `Tag` object per unique tag instead of each `Person` holding its own `Tag` objects. Only the classes relevant to tags are shown.<br>
 
 <img src="images/BetterModelClassDiagram.png" width="450" />
 
@@ -169,7 +169,7 @@ This section describes some noteworthy details on how certain features are imple
 
 The `editj` command updates a jobseeker identified by their one-based index in the currently displayed jobseeker list. `AddressBookParser` delegates to `EditCommandParser`, which creates an `EditJobseekerCommand` containing an `Index` and a defensive copy of an `EditJobseekerDescriptor`.
 
-The following sequence diagram focuses on successful execution of `editj 1 n/Alice r/Available`, after parsing has created the command. Local aliases `target` and `edited` represent the original and replacement jobseekers. Parsing, error paths, and storage details are explained below; `...` indicates omitted parameters.
+The following sequence diagram focuses on successful execution of `editj 1 n/Alice r/Available`. Local aliases `target` and `edited` represent the original and replacement jobseekers. Parsing, error paths, and storage details are explained below; `...` indicates omitted parameters.
 
 ![Sequence for editing a jobseeker](images/EditJobseekerSequenceDiagram.png)
 
@@ -187,7 +187,7 @@ Jobseeker qualifications follow the same omitted/empty distinction: `q/` supplie
 2. `createEditedJobseeker()` combines supplied values with the original jobseeker's unchanged fields and preserves `isHidden()`.
 3. If the edited jobseeker has a different identity according to `isSamePerson()`, the command calls `Model.hasJobseeker()` and rejects a duplicate before modifying the model.
 4. The command calls `Model.setJobseeker()` and leaves the current filter unchanged. The edited jobseeker stays displayed only if it still matches that filter. For example, a jobseeker found by name alone drops out of the search results when renamed to a name that no longer matches, while an edited hidden jobseeker stays in the hidden list because `isHidden()` is preserved.
-5. After the command returns, `LogicManager` saves the address book through `Storage`. Parsing or execution failures skip saving; a storage failure is reported as a `CommandException` after the model has been updated.
+5. After the command returns, `LogicManager` saves the address book through `Storage`. Parsing or execution failures skip saving. If saving fails, `LogicManager` restores the address book data from before the command and reports the failure as a `CommandException`.
 
 ### Find feature
 
@@ -371,7 +371,7 @@ All four commands follow the same flow:
 
 `getUpdatedTags()` returns `Optional.empty()` when there is no change. An optional containing an empty set instead means that all tags were successfully removed, so the contact must still be replaced.
 
-The first sequence diagram shows execution of `tagj 1 java` after parsing, assuming a valid displayed index. The self-calls to `getTarget()` and `getUpdatedTags()` use methods inherited from `AbstractTagCommand`. The `...` in `getTarget()` omits the invalid-index message, while the constructor's `...` represents unchanged non-tag fields. Result construction and message formatting are omitted.
+The first sequence diagram shows execution of `tagj 1 java`, assuming a valid displayed index. The self-calls to `getTarget()` and `getUpdatedTags()` use methods inherited from `AbstractTagCommand`. The `...` in `getTarget()` omits the invalid-index message, while the constructor's `...` represents unchanged non-tag fields. Result construction and message formatting are omitted.
 
 ![Jobseeker tag command execution](images/TagCommandExecutionDiagram.png)
 
@@ -908,6 +908,7 @@ Use case ends.
 * **Command** The type of task to be executed by the TalentLink app; parameters required differ by command
 * **CLI** Command-Line Interface; a text-based interface users interact with to deliver commands to TalentLink
 * **GUI** Graphical User Interface; a visual interface that allows users to interact with, view, and manage information
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Instructions for manual testing**
