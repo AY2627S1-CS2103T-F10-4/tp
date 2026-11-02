@@ -272,6 +272,60 @@ Filters are held only in memory by `ModelManager`. `LogicManager` saves the addr
   * Pros: Fewer unrelated results.
   * Cons: Partial phone numbers and emails no longer match. For example, `9435` would not match `94351253`.
 
+### Hide/Unhide feature
+
+The hide and unhide commands set whether a jobseeker or client is hidden. A hidden contact stays in the address book, but only `listhj`, `listhc`, `findhj` and `findhc` display it. Each command accepts `<index>`, the contact's one-based index in the currently displayed list.
+
+| Command | Command class | Parser class |
+| --- | --- | --- |
+| `hidej` | `HideJobseekerCommand` | `HideJobseekerCommandParser` |
+| `hidec` | `HideClientCommand` | `HideClientCommandParser` |
+| `unhidej` | `UnhideJobseekerCommand` | `UnhideJobseekerCommandParser` |
+| `unhidec` | `UnhideClientCommand` | `UnhideClientCommandParser` |
+
+#### Structure
+
+The hidden status is the `isHidden` field of `Person`, which `Jobseeker` and `Client` inherit. The following class diagram shows how the command classes relate. Only members relevant to shared hide handling are shown.
+
+![Hide and unhide command classes](images/HideClassDiagram.png)
+
+The four commands extend `AbstractHideCommand`, which stores the target `Index` and a `HideOperation`. It provides three helpers:
+
+* `getTarget()` resolves the index against a displayed list, throwing a `CommandException` if the index is outside that list.
+* `shouldBeHidden()` returns the hidden status that the operation gives a contact: `true` for `HIDE` and `false` for `UNHIDE`.
+* `isAlreadyApplied()` returns true if a contact already has that status.
+
+Each concrete command passes its operation to the superclass and implements `execute()`, which chooses the list to read, creates the replacement contact and passes it to the `Model`. `AbstractHideCommand#equals()` compares classes using `getClass()` because `hidej 1` and `hidec 1` have equal indices but act on different lists, so they must not be equal.
+
+#### Parsing and execution
+
+Parsing follows the flow shown for `deletec 1` in the [`Logic` component](#logic-component). `AddressBookParser` selects the parser using the command word, and `parse()` calls `ParserUtil.parseIndex()` and creates the command with the resulting `Index`. If the argument is not a single positive integer that fits in an `int`, `parse()` throws a `ParseException` containing the command's usage message. Each parser implements `Parser<T>` directly, as `parse()` is only these two steps, so there is no shared parser superclass like those of the find and tag parsers.
+
+The following sequence diagram shows how `hidej 1` is executed. `LogicManager` and `CommandResult` work as shown for `deletec 1`, so they are omitted: arrows at the left edge of the diagram lead to or from `LogicManager`. The `...` in `getTarget(displayed, ...)` is the invalid-index message. In `Jobseeker(..., true)`, the `...` is the target's other fields and `true` is the result of `shouldBeHidden()`. Storage interactions are also omitted.
+
+![Sequence for hiding a jobseeker](images/HideJobseekerSequenceDiagram.png)
+
+1. `LogicManager` calls the command's `execute(m)` method. The command gets the displayed jobseeker list from the `Model`, and the inherited `getTarget()` returns the target jobseeker `t`.
+2. The inherited `isAlreadyApplied()` compares `t.isHidden()` with `shouldBeHidden()`. If they are equal, the command returns `MESSAGE_NO_CHANGE` without modifying the model. This is not an error.
+3. Otherwise, the command creates a replacement jobseeker `h`. It copies all of the target's fields except the hidden status, which comes from `shouldBeHidden()`. A replacement is needed because `Person` objects are immutable.
+4. `Model#setJobseeker()` replaces `t` with `h` in the address book's `UniquePersonList`. The `FilteredList` in `ModelManager` observes that list, so it tests `h` against its current predicate. `h` fails the predicate and leaves the displayed list.
+5. The command returns a `CommandResult` containing the success message.
+
+The other commands follow the same flow. `hidec` and `unhidec` use `getFilteredClientList()`, a replacement `Client` and `setClient()`. `unhidej` and `unhidec` use the `UNHIDE` operation, so `shouldBeHidden()` returns `false`.
+
+#### Filtering and persistence
+
+Hide and unhide commands do not change a filter. Only find and list commands do, and each builds its filter on one of the four hidden-status predicates in `Model`, such as `PREDICATE_SHOW_UNHIDDEN_JOBSEEKERS`. A displayed list therefore contains either only unhidden contacts or only hidden contacts, which decides what the commands do to a displayed contact:
+
+| Displayed list | `hidej`/`hidec` | `unhidej`/`unhidec` |
+| --- | --- | --- |
+| Unhidden contacts, e.g. on launch or after `listj` or `findc` | Hides the contact, which leaves the displayed list | No change |
+| Hidden contacts, e.g. after `listhj` or `findhc` | No change | Unhides the contact, which leaves the displayed list |
+
+When a contact leaves the displayed list, the contacts below it move up, so their indices decrease by one. `PersonCard` shows a "Hidden" badge when `isHidden()` is true, so the badge appears only in hidden lists.
+
+After a command returns normally, including a no-change result, `LogicManager` saves the address book through `Storage`. `JsonAdaptedJobseeker` and `JsonAdaptedClient` save the status under the JSON key `hidden`. A missing or null value loads as unhidden, so save files written before this feature existed still load. Filters are not saved, so the app shows the unhidden contacts of each type on the next launch, and hidden contacts stay hidden.
+
 ### Tag/Untag feature
 
 The tag/untag commands add or remove tags for a jobseeker or client identified by their one-based index in the currently displayed list. Each command accepts `INDEX TAG [MORE_TAGS]...` and requires at least one tag.

@@ -1,0 +1,36 @@
+@startuml
+!include style.puml
+skinparam arrowColor LOGIC_COLOR_T4
+skinparam classBackgroundColor LOGIC_COLOR
+skinparam ArrowFontStyle plain
+skinparam classAttributeFontColor #FFFFFF
+skinparam classAttributeIconSize 0
+'Wider gap keeps the "operation 1" role clear of the AbstractHideCommand box.
+skinparam nodesep 80
+
+class "{abstract}\nCommand" as Command
+class "{abstract}\nAbstractHideCommand" as AbstractHideCommand {
+    - targetIndex: Index
+    # getTarget(displayedPersons, invalidIndexMessage)
+    # shouldBeHidden(): boolean
+    # isAlreadyApplied(target): boolean
+}
+show AbstractHideCommand members
+class "<<enumeration>>\nHideOperation" as HideOperation {
+    HIDE
+    UNHIDE
+}
+'Fields only, as an enumeration's values need no empty methods compartment below them.
+show HideOperation fields
+class HideJobseekerCommand
+class HideClientCommand
+class UnhideJobseekerCommand
+class UnhideClientCommand
+
+AbstractHideCommand -up-|> Command
+HideJobseekerCommand -up-|> AbstractHideCommand
+HideClientCommand -up-|> AbstractHideCommand
+UnhideJobseekerCommand -up-|> AbstractHideCommand
+UnhideClientCommand -up-|> AbstractHideCommand
+AbstractHideCommand -right-> "operation 1" HideOperation
+@enduml
