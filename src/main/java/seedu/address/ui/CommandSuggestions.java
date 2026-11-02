@@ -28,20 +28,25 @@ class CommandSuggestions {
 
     /**
      * Returns sorted, case-sensitive matches while the user is entering a command name.
-     * Ignores leading whitespace; blank input, exact commands and input containing arguments have no suggestions.
+     * Ignores leading whitespace; blank input and input containing arguments have no suggestions.
+     * Exact matches are excluded, but longer command names remain available.
      *
      * @param input Non-null text currently in the command field.
      * @return An immutable list of matching command names.
      */
     List<String> suggest(String input) {
         String prefix = input.stripLeading();
-        if (prefix.isEmpty() || prefix.chars().anyMatch(Character::isWhitespace)
-                || commandWords.contains(prefix)) {
+        if (prefix.isEmpty() || prefix.chars().anyMatch(Character::isWhitespace)) {
             return List.of();
         }
         return commandWords.stream()
-                .filter(word -> word.startsWith(prefix))
+                .filter(word -> word.startsWith(prefix) && !word.equals(prefix))
                 .sorted()
                 .toList();
+    }
+
+    /** Returns whether the input is a complete command name, ignoring leading whitespace. */
+    boolean isExactCommand(String input) {
+        return commandWords.contains(input.stripLeading());
     }
 }

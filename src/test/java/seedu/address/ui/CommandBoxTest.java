@@ -409,12 +409,47 @@ public class CommandBoxTest {
             field.setText("add");
             assertEquals(List.of("addc", "addj"), suggestions.getItems());
             assertEquals("addc", suggestions.getSelectionModel().getSelectedItem());
-            for (String input : List.of("xyz", "", "list", "listc", "addj n/Alice")) {
+            for (String input : List.of("xyz", "", "listc", "addj n/Alice")) {
                 field.setText("lis");
                 field.setText(input);
                 assertFalse(suggestions.isVisible());
                 assertFalse(suggestions.isManaged());
             }
+        });
+    }
+
+    @Test
+    public void suggestions_exactCommand_enterAndActionExecuteTypedInput() throws Exception {
+        runOnFxThread(() -> {
+            List<String> executed = new ArrayList<>();
+            CommandBox box = new CommandBox(command -> {
+                executed.add(command);
+                return new CommandResult("Success");
+            });
+            TextField field = (TextField) box.getRoot().lookup("#commandTextField");
+            ListView<?> suggestions = (ListView<?>) box.getRoot().lookup("#suggestionList");
+            for (String input : List.of("list", "  list", "find", "  find")) {
+                for (boolean useKeyPress : List.of(true, false)) {
+                    field.setText(input);
+                    assertTrue(suggestions.isVisible());
+                    press(field, KeyCode.DOWN);
+                    executed.clear();
+                    if (useKeyPress) {
+                        press(field, KeyCode.ENTER);
+                    } else {
+                        submit(field);
+                    }
+                    assertEquals(List.of(input), executed);
+                    assertEquals("", field.getText());
+                    assertFalse(suggestions.isVisible());
+                }
+            }
+            field.setText("list");
+            executed.clear();
+            press(field, KeyCode.TAB);
+            assertEquals("listc", field.getText());
+            assertTrue(executed.isEmpty());
+            assertFalse(suggestions.isVisible());
         });
     }
 
