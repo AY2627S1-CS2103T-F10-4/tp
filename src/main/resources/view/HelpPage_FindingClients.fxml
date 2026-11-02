@@ -169,11 +169,11 @@
                   <Label styleClass="bullet" text="•" />
                   <TextFlow>
                      <children>
-                        <ExampleCode code="findc colleagues" />
+                        <ExampleCode code="findc finance" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" returns " />
                         <Label layoutX="159.0" layoutY="14.0" styleClass="code" text="Roy Balakrishnan" />
                         <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=", who is tagged " />
-                        <Label styleClass="code" text="colleagues" />
+                        <Label styleClass="code" text="finance" />
                         <Text layoutX="304.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
                      </children>
                   </TextFlow>
