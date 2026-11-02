@@ -34,6 +34,9 @@ deactivate Command
 
 [<-- Parser : c
 deactivate Parser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+Parser -[hidden]-> Command
+destroy Parser
 
 [-> Command : execute(m)
 activate Command
@@ -60,4 +63,7 @@ deactivate Model
 
 [<-- Command
 deactivate Command
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+Command -[hidden]-> Model
+destroy Command
 @enduml
