@@ -19,7 +19,7 @@
       <HBox alignment="BASELINE_LEFT">
          <children>
             <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="bold" text="Format: " />
-            <ExampleCode code="tagj &lt;iunndex&gt; &lt;tag&gt;..." />
+            <ExampleCode code="untagj &lt;index&gt; &lt;tag&gt;..." />
          </children>
       </HBox>
       <VBox styleClass="body">
