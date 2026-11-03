@@ -12,7 +12,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -30,6 +32,7 @@ import seedu.address.model.tag.Tag;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index must be a positive integer.";
+    private static final Logger logger = LogsCenter.getLogger(ParserUtil.class);
 
     /**
      * Checks required add-command prefixes in name, phone, email, address order.
@@ -53,6 +56,7 @@ public class ParserUtil {
             missing.add(PREFIX_ADDRESS + " (address)");
         }
         if (!missing.isEmpty()) {
+            logger.fine("Required add-command fields missing: " + missing);
             throw new ParseException(String.format(MESSAGE_MISSING_REQUIRED_FIELDS, String.join(", ", missing)));
         }
     }
