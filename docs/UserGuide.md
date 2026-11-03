@@ -796,7 +796,7 @@ Copies the details of displayed jobseekers to the system clipboard.
 **Examples:**
 {: #cpj-examples}
 
-* `findj java` followed by `cpj 2` copies the second displayed jobseeker.
+* `findj technology` followed by `cpj 2` copies the second displayed jobseeker, `Bernice Yu`.
 
 #### Copying displayed clients: `cpc`
 
@@ -814,7 +814,7 @@ The same indexed-copy behavior as `cpj` applies to clients.
 **Examples:**
 {: #cpc-examples}
 
-* `findc technology` followed by `cpc 1` copies the first displayed client.
+* `findc finance` followed by `cpc 1` copies the first displayed client, `Roy Balakrishnan`.
 
 ### Saving the data
 
