@@ -39,6 +39,8 @@ public class FindClientCommand extends AbstractFindCommand {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         model.updateFilteredClientList(Model.PREDICATE_SHOW_UNHIDDEN_CLIENTS.and(predicate));
+        model.clientFilterDescriptionProperty().set(
+                "Showing unhidden clients matching \"" + predicate.getSearchText() + "\"");
         int matchCount = model.getFilteredClientList().size();
         // FINE, not INFO: LogicManager already logs the command text at INFO, so this only adds detail
         // that is useful when debugging search results.

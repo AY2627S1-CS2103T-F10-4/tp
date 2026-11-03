@@ -5,7 +5,6 @@ skinparam classBackgroundColor LOGIC_COLOR
 skinparam ArrowFontStyle plain
 skinparam classAttributeFontColor #FFFFFF
 skinparam classAttributeIconSize 0
-skinparam genericDisplay old
 'Larger text stays readable when the wide diagram is scaled down to fit the page.
 skinparam packageFontSize 22
 skinparam classFontSize 20

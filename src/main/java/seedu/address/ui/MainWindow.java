@@ -123,10 +123,12 @@ public class MainWindow extends UiPart<Stage> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        clientListPanel = new PersonListPanel<>(logic.getFilteredClientList());
+        clientListPanel = new PersonListPanel<>(logic.getFilteredClientList(),
+                logic.clientFilterDescriptionProperty());
         clientListPanelPlaceholder.getChildren().add(clientListPanel.getRoot());
 
-        jobseekerListPanel = new PersonListPanel<>(logic.getFilteredJobseekerList());
+        jobseekerListPanel = new PersonListPanel<>(logic.getFilteredJobseekerList(),
+                logic.jobseekerFilterDescriptionProperty());
         jobseekerListPanelPlaceholder.getChildren().add(jobseekerListPanel.getRoot());
 
         resultDisplay = new ResultDisplay();
@@ -137,6 +139,13 @@ public class MainWindow extends UiPart<Stage> {
 
         CommandBox commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+    }
+
+    /**
+     * Shows {@code message} in the result display. Must be called after {@link #fillInnerParts()}.
+     */
+    void showMessage(String message) {
+        resultDisplay.setFeedbackToUser(message);
     }
 
     /**

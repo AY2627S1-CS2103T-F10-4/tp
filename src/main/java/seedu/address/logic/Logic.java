@@ -1,5 +1,6 @@
 package seedu.address.logic;
 
+import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.commands.CommandResult;
@@ -21,6 +22,12 @@ public interface Logic {
      * @throws ParseException If an error occurs during parsing.
      */
     CommandResult execute(String commandText) throws CommandException, ParseException;
+
+    /** Returns the active jobseeker filter description. */
+    ReadOnlyStringProperty jobseekerFilterDescriptionProperty();
+
+    /** Returns the active client filter description. */
+    ReadOnlyStringProperty clientFilterDescriptionProperty();
 
     /** Returns an unmodifiable view of the filtered list of jobseekers. */
     ObservableList<Jobseeker> getFilteredJobseekerList();

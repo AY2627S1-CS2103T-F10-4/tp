@@ -63,9 +63,9 @@
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="For example, " />
                   <Label layoutX="206.0" layoutY="14.0" styleClass="code" text="[t/&lt;tag&gt;]..." />
                   <Text layoutX="10.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" may be omitted, or written as " />
-                  <Label layoutX="206.0" layoutY="14.0" styleClass="code" text="t/friend" />
+                  <Label layoutX="206.0" layoutY="14.0" styleClass="code" text="t/technology" />
                   <Text layoutX="222.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" or " />
-                  <Label layoutX="284.0" layoutY="66.0" styleClass="code" text="t/friend t/family" />
+                  <Label layoutX="284.0" layoutY="66.0" styleClass="code" text="t/technology t/finance" />
                   <Text layoutX="770.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
                </children>
             </TextFlow>

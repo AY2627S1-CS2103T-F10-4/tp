@@ -35,9 +35,8 @@ activate Command
 Command --> Command : alreadyApplied
 deactivate Command
 
-alt alreadyApplied
-    [<-- Command : no-change result
-else else
+'A single return after the frame, so the activation bar ends where the method returns.
+opt !alreadyApplied
     create Hidden
     Command -> Hidden : Jobseeker(..., true)
     activate Hidden
@@ -50,8 +49,8 @@ else else
 
     Model --> Command
     deactivate Model
-
-    [<-- Command : success result
 end
+
+[<-- Command : no-change or success result
 deactivate Command
 @enduml

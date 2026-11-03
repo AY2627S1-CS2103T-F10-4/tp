@@ -3,21 +3,24 @@
 skinparam ClassFontColor #000000
 skinparam ClassBorderColor #000000
 skinparam ClassBackgroundColor #FFFFAA
+skinparam roundCorner 0
 
-title After command "delete 5"
+title After command "deletej 5"
 
-package States <<rectangle>> {
-    class State1 as "<u>ab0:AddressBook</u>"
-    class State2 as "<u>ab1:AddressBook</u>"
-    class State3 as "<u>ab2:AddressBook</u>"
-}
+class State1 as "<u>ab0:AddressBook</u>"
+class State2 as "<u>ab1:AddressBook</u>"
+class State3 as "<u>ab2:AddressBook</u>" <<unused>>
 
 State1 -[hidden]right-> State2
 State2 -[hidden]right-> State3
 
-hide State3
+'Hidden by stereotype, as newer PlantUML versions ignore hiding a class by name.
+hide <<unused>>
 
-class Pointer as "Current State" #FFFFFF
-
-Pointer -up-> State2
-@end
+'The pointer is an int field rather than an object, so a UML note marks the state it points to.
+'PlantUML draws a note with only one link as a wedge, so a hidden link to Spacer keeps the connector dashed.
+class Spacer <<unused>>
+note "currentStatePointer" as Pointer
+State2 .. Pointer
+Pointer -[hidden]right- Spacer
+@enduml

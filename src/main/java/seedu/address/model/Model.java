@@ -3,6 +3,7 @@ package seedu.address.model;
 import java.util.List;
 import java.util.function.Predicate;
 
+import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.Client;
@@ -96,6 +97,12 @@ public interface Model {
      * @see AddressBook#removeClient(Client)
      */
     void deleteClient(Client target);
+
+    /** Returns the active jobseeker filter description. */
+    StringProperty jobseekerFilterDescriptionProperty();
+
+    /** Returns the active client filter description. */
+    StringProperty clientFilterDescriptionProperty();
 
     /** Returns an unmodifiable view of the filtered list containing only jobseekers. */
     ObservableList<Jobseeker> getFilteredJobseekerList();

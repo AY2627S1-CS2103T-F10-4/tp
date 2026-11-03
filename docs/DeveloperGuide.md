@@ -9,7 +9,13 @@ title: Developer Guide
 
 ## **Acknowledgements**
 
-* _{List the sources of reused or adapted ideas, code, documentation, and third-party libraries here, with links to the originals.}_
+* TalentLink is based on [AddressBook-Level3](https://github.com/se-edu/addressbook-level3) (AB3), created by the [SE-EDU initiative](https://se-education.org). Its code and documentation, including this guide, were adapted from AB3.
+* Third-party libraries and tools used include:
+  * [JavaFX](https://openjfx.io/) for the GUI
+  * [Jackson](https://github.com/FasterXML/jackson) for reading and writing JSON data files
+  * [JUnit 5](https://junit.org/) for automated testing
+  * [PlantUML](https://plantuml.com/) for the UML diagrams in this guide
+* AI tools [Claude](https://www.anthropic.com/claude) and [Codex](https://openai.com/codex/) were used during development, to help with writing and reviewing code, tests and documentation.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -51,7 +57,7 @@ The bulk of the app's work is done by the following four components:
 
 **How the architecture components interact with each other**
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `deletej 1`.
 
 <img src="images/ArchitectureSequenceDiagram.png" width="574" />
 
@@ -108,7 +114,7 @@ How the `Logic` component works:
 1. When `Logic` is called upon to execute a command, the command is passed to an `AddressBookParser` object, which in turn creates a parser that matches the command (e.g., `DeleteClientCommandParser`) and uses it to parse the command.
 1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteClientCommand`) which is executed by the `LogicManager`.
 1. The command can communicate with the `Model` when it is executed (e.g. to delete a client).<br>
-   Note that although this is shown as a single step in the diagram above for simplicity, the code can require several interactions between the command object and the `Model` to complete the operation.
+   As the diagram above shows, this can take several interactions between the command object and the `Model`.
 1. The result of the command execution is encapsulated as a `CommandResult` object which is returned from `Logic`.
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
@@ -135,7 +141,7 @@ The `Model` component,
 * stores a `UserPrefs` object that represents the user’s preferences (currently, just the GUI settings). This is exposed to the outside as a `ReadOnlyUserPrefs` object.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The alternative, arguably more object-oriented, design below keeps a unique list of tags in `AddressBook`, and each `Person` references tags from that list. This lets `AddressBook` maintain one `Tag` object per unique tag instead of each `Person` holding its own `Tag` objects.<br>
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The alternative, arguably more object-oriented, design below keeps a unique list of tags in `AddressBook`, and each `Person` references tags from that list. This lets `AddressBook` maintain one `Tag` object per unique tag instead of each `Person` holding its own `Tag` objects. Only the classes relevant to tags are shown.<br>
 
 <img src="images/BetterModelClassDiagram.png" width="450" />
 
@@ -169,7 +175,7 @@ This section describes some noteworthy details on how certain features are imple
 
 The `editj` command updates a jobseeker identified by their one-based index in the currently displayed jobseeker list. `AddressBookParser` delegates to `EditCommandParser`, which creates an `EditJobseekerCommand` containing an `Index` and a defensive copy of an `EditJobseekerDescriptor`.
 
-The following sequence diagram focuses on successful execution of `editj 1 n/Alice r/Available`, after parsing has created the command. Local aliases `target` and `edited` represent the original and replacement jobseekers. Parsing, error paths, and storage details are explained below; `...` indicates omitted parameters.
+The following sequence diagram focuses on successful execution of `editj 1 n/Alice r/Available`. Local aliases `target` and `edited` represent the original and replacement jobseekers. Parsing, error paths, and storage details are explained below; `...` indicates omitted parameters.
 
 ![Sequence for editing a jobseeker](images/EditJobseekerSequenceDiagram.png)
 
@@ -187,7 +193,7 @@ Jobseeker qualifications follow the same omitted/empty distinction: `q/` supplie
 2. `createEditedJobseeker()` combines supplied values with the original jobseeker's unchanged fields and preserves `isHidden()`.
 3. If the edited jobseeker has a different identity according to `isSamePerson()`, the command calls `Model.hasJobseeker()` and rejects a duplicate before modifying the model.
 4. The command calls `Model.setJobseeker()` and leaves the current filter unchanged. The edited jobseeker stays displayed only if it still matches that filter. For example, a jobseeker found by name alone drops out of the search results when renamed to a name that no longer matches, while an edited hidden jobseeker stays in the hidden list because `isHidden()` is preserved.
-5. After the command returns, `LogicManager` saves the address book through `Storage`. Parsing or execution failures skip saving; a storage failure is reported as a `CommandException` after the model has been updated.
+5. After the command returns, `LogicManager` saves the address book through `Storage`. Parsing or execution failures skip saving. If saving fails, `LogicManager` restores the address book data from before the command and reports the failure as a `CommandException`.
 
 ### Find feature
 
@@ -226,7 +232,7 @@ The following sequence diagram shows the find-specific part of how `findj bob` i
 
 The other commands follow the same flow. `findc` uses `PREDICATE_SHOW_UNHIDDEN_CLIENTS` and `updateFilteredClientList()`, while `findhj` and `findhc` use `PREDICATE_SHOW_HIDDEN_JOBSEEKERS` and `PREDICATE_SHOW_HIDDEN_CLIENTS` in place of the unhidden predicates. `find` updates both lists, which has the same effect as running `findj` followed by `findc`. One predicate can filter both lists because `PersonContainsKeywordsPredicate` implements `Predicate<Person>`, and `Jobseeker` and `Client` both extend `Person`.
 
-Find commands have no prefixes, so the parsers do not use `ArgumentTokenizer`: `n/Alice` is a literal keyword rather than a search by name. `String#strip()` and `\p{javaWhitespace}` recognise Unicode whitespace, so an EM SPACE (`U+2003`) separates keywords. This differs from the tag commands, which split on ASCII whitespace only.
+Find commands have no prefixes, so the parsers do not use `ArgumentTokenizer`: `n/Alice` is a literal keyword rather than a search by name. `String#strip()` and `\\p{javaWhitespace}` recognise Java whitespace characters, including EM SPACE (`U+2003`). The shared tag parser uses ASCII whitespace separators instead. However, `AddressBookParser` replaces EM SPACE with an ordinary space before dispatching arguments, so EM SPACE also separates tags in commands entered through the application.
 
 #### Keyword matching
 
@@ -349,7 +355,7 @@ The four concrete commands extend `AbstractTagCommand`, which extends `Command`.
 
 The four concrete parsers extend `TagCommandParser<T>`, which implements `Parser<T>`. `AddressBookParser` selects a concrete parser using the command word. The shared parser splits the arguments into an index and tag names, validates them using `ParserUtil.parseIndex()` and `ParserUtil.parseTags()`, and creates the corresponding command through its supplied command factory. Missing or invalid arguments cause a `ParseException` before execution.
 
-Arguments are split using Java's default `\s+`, which recognises ASCII whitespace. Ordinary spaces (`U+0020`) are supported; Unicode spaces such as EM SPACE (`U+2003`) are not recognised as separators. An EM SPACE between tag names remains part of a single tag and causes tag validation to fail.
+`TagCommandParser` splits arguments using Java's default `\\s+`, which recognises ASCII whitespace. Before arguments reach this parser, `AddressBookParser` replaces EM SPACE (`U+2003`) with an ordinary space (`U+0020`). Consequently, `tagj 1 java python` (with an EM SPACE between the tag names) adds two tags through the application. Calling `TagCommandParser` directly without this preprocessing rejects the same tag arguments. Other Unicode spaces are not normalised by `AddressBookParser` and are not recognised as separators by `TagCommandParser`.
 
 Tag names must contain only ASCII letters and digits. `Tag.equals()` compares names case-sensitively, so `Java` and `java` are distinct tags for both addition and removal. Parsed tags are collected into a `Set<Tag>`, collapsing repeated identical inputs.
 
@@ -371,7 +377,7 @@ All four commands follow the same flow:
 
 `getUpdatedTags()` returns `Optional.empty()` when there is no change. An optional containing an empty set instead means that all tags were successfully removed, so the contact must still be replaced.
 
-The first sequence diagram shows execution of `tagj 1 java` after parsing, assuming a valid displayed index. The self-calls to `getTarget()` and `getUpdatedTags()` use methods inherited from `AbstractTagCommand`. The `...` in `getTarget()` omits the invalid-index message, while the constructor's `...` represents unchanged non-tag fields. Result construction and message formatting are omitted.
+The first sequence diagram shows execution of `tagj 1 java`, assuming a valid displayed index. The self-calls to `getTarget()` and `getUpdatedTags()` use methods inherited from `AbstractTagCommand`. The `...` in `getTarget()` omits the invalid-index message, while the constructor's `...` represents unchanged non-tag fields. Result construction and message formatting are omitted.
 
 ![Jobseeker tag command execution](images/TagCommandExecutionDiagram.png)
 
@@ -406,85 +412,108 @@ The command returns the clipboard text through `CommandResult`, and `MainWindow`
 
 #### Proposed Implementation
 
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
+The proposed `undo` and `redo` commands are not implemented yet. They would reverse and reapply changes to the contact data, using a `VersionedAddressBook` that extends `AddressBook` with an undo/redo history. The history is stored internally as an `addressBookStateList` and a `currentStatePointer`, and is changed by the following operations:
 
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
+* `VersionedAddressBook#commit()` — Saves the current address book data as a new state, unless the data already matches the state at `currentStatePointer`.
+* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
+* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
 
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
+These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively. `Model#canUndoAddressBook()` and `Model#canRedoAddressBook()` report whether there is a state to move to. `Model#getCurrentStatePointer()` and `Model#setCurrentStatePointer()` let `LogicManager` put the pointer back after a failed save.
 
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+The feature would change five existing parts of the app:
 
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
+* `ModelManager` holds a `VersionedAddressBook` in place of its `AddressBook`. Its filtered lists are built once from this object, so `undo()` and `redo()` update it in place with `resetData()` rather than replacing it.
+* `Model` gains the methods above, so `ModelStub` in `AddJobseekerCommandTest` must implement them too.
+* `LogicManager#execute()` calls `Model#commitAddressBook()` after each successful save. Individual commands do not commit.
+* `AddressBookParser` gains `undo` and `redo`. So does `CommandCatalogue`, which lists the command names offered for completion, as its class comment asks for the two to be kept in sync.
+
+Given below is an example usage scenario and how the undo/redo mechanism behaves at each step. The object diagrams show the contents of `addressBookStateList`: each object is a saved state, and the note marks the state at `currentStatePointer`.
+
+Step 1. The user launches the application. The `VersionedAddressBook` is initialized with the app's initial address book data as its only state, and `currentStatePointer` points to that state. The history is held only in memory, so it starts afresh on every launch.
 
 ![UndoRedoState0](images/UndoRedoState0.png)
 
-Step 2. The user executes `deletej 5` command to delete the 5th jobseeker in the jobseeker list. The `deletej` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `deletej 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
+Step 2. The user executes `deletej 5` to delete the 5th jobseeker in the displayed jobseeker list. After saving, `LogicManager` calls `Model#commitAddressBook()`. The data now differs from the current state, so it is added to `addressBookStateList`, and `currentStatePointer` moves to this new state.
 
 ![UndoRedoState1](images/UndoRedoState1.png)
 
-Step 3. The user executes `addj n/David …​` to add a new jobseeker. The `addj` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
+Step 3. The user executes `addj n/David …​` to add a new jobseeker. `LogicManager` again calls `Model#commitAddressBook()`, which adds another state to `addressBookStateList`.
 
 ![UndoRedoState2](images/UndoRedoState2.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If parsing, execution or saving fails, `LogicManager` never reaches `Model#commitAddressBook()`, so no state is added to `addressBookStateList`.
 
 </div>
 
-Step 4. The user now decides that adding the jobseeker was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
+Step 4. The user now decides that adding the jobseeker was a mistake, and executes the `undo` command. The command calls `Model#undoAddressBook()`, which moves `currentStatePointer` one state to the left and restores the address book to that state. `LogicManager` then saves the restored data as it does after any command, so the undo is also written to the save file. `LogicManager`'s call to `Model#commitAddressBook()` has no effect, because the data matches the current state.
 
 ![UndoRedoState3](images/UndoRedoState3.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If `currentStatePointer` is at index 0, there are no previous states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check for this, and throws a `CommandException` rather than attempting the undo.
 
 </div>
 
-The following sequence diagram shows how an undo operation goes through the `Logic` component:
+The following sequence diagram shows how a successful undo goes through the `Logic` component:
 
 ![UndoSequenceDiagram](images/UndoSequenceDiagram-Logic.png)
 
-Similarly, how an undo operation goes through the `Model` component is shown below:
+Similarly, how an undo goes through the `Model` component is shown below:
 
 ![UndoSequenceDiagram](images/UndoSequenceDiagram-Model.png)
 
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
+The `redo` command does the opposite: it calls `Model#redoAddressBook()`, which moves `currentStatePointer` one state to the right and restores the address book to that state.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If `currentStatePointer` is at index `addressBookStateList.size() - 1`, there are no undone states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check for this, and throws a `CommandException` rather than attempting the redo.
 
 </div>
 
-Step 5. The user then decides to execute the command `listj`. Commands that do not modify the address book, such as `listj`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
+Step 5. The user then executes `listj`. This command does not change the contact data, so the call to `Model#commitAddressBook()` has no effect, and `addressBookStateList` and `currentStatePointer` remain unchanged. The same applies to find and copy commands, and to commands that return a no-change result, such as tagging a jobseeker with a tag they already have. A command that reports success without changing the data, such as `clearj` on an empty list, also adds no state, so a following `undo` reverses the last actual change.
 
-![UndoRedoState4](images/UndoRedoState4.png)
-
-Step 6. The user executes `clearj`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `addj n/David …​` command. This is the behavior that most modern desktop applications follow.
+Step 6. The user executes `clearj`. The data now differs from the current state, and `currentStatePointer` is not at the end of `addressBookStateList`, so `Model#commitAddressBook()` purges all states after the pointer before adding the new one. It no longer makes sense to redo the `addj n/David …​` command, and most modern desktop applications behave the same way.
 
 ![UndoRedoState5](images/UndoRedoState5.png)
 
 The following activity diagram summarizes what happens when a user executes a new command:
 
-<img src="images/CommitActivityDiagram.png" width="250" />
+<img src="images/CommitActivityDiagram.png" width="350" />
+
+#### Filtering and persistence
+
+Filters are not part of the address book data, so `undo` and `redo` leave the active filters and their descriptions unchanged. A restored contact therefore appears only if it matches the current filter, as with the `editj` command. For example, undoing `deletej` during a search restores the jobseeker to the data, but if they do not match the search, the jobseeker stays out of view until a find or list command changes the filter.
+
+If saving fails, `LogicManager` already restores the data from before the command through `Model#setAddressBook()`. That call does not change the history, which is enough for most commands because they have not committed yet. `undo` and `redo` are the exception, as they have already moved `currentStatePointer`. `LogicManager` must therefore also call `Model#getCurrentStatePointer()` before executing a command, and pass the result to `Model#setCurrentStatePointer()` when a save fails, or the pointer and the data would no longer match.
 
 #### Design considerations:
 
 **Aspect: How undo & redo execute:**
 
-* **Alternative 1 (current choice):** Saves the entire address book.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
+* **Alternative 1 (proposed choice):** Save the entire address book as a state.
+  * Pros: Easy to implement, and later commands that change data need no undo logic of their own.
+  * Cons: Uses more memory as the contact lists grow and as each change adds a state, since the history has no size limit. The cost is limited because states can share `Person` objects, which are immutable, and copy only the two lists.
 
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-  * Pros: Will use less memory (e.g. for `deletej`, just save the jobseeker being deleted).
-  * Cons: We must ensure that the implementation of each individual command is correct.
+* **Alternative 2:** Each command knows how to undo and redo itself.
+  * Pros: Uses less memory (e.g. for `deletej`, just save the jobseeker being deleted).
+  * Cons: All 16 commands that change data need correct undo and redo logic, and each new one adds to this.
 
-_{more aspects and alternatives to be added}_
+**Aspect: Where the state is committed:**
 
-### \[Proposed\] Data archiving
+* **Alternative 1 (proposed choice):** `LogicManager` commits after each successful save, and `commit()` ignores data that matches the current state.
+  * Pros: Needs one call only. Failed saves, read-only commands, no-change results, `undo` and `redo` all add no state, without any command having to handle them.
+  * Cons: Compares the address book data after every command, including read-only ones.
 
-_{Explain here how the data archiving feature will be implemented}_
+* **Alternative 2:** Each command that changes data calls `Model#commitAddressBook()` itself.
+  * Pros: Which commands can be undone is explicit in each command's code.
+  * Cons: Commands run before the save, so a failed save would leave a state in the history for data that was rolled back. Each of the 16 commands must also remember the call, and the 8 tag, untag, hide and unhide commands must skip it on a no-change result.
+
+**Aspect: How jobseeker and client changes share a history:**
+
+* **Alternative 1 (proposed choice):** One history and one `undo` command, covering both lists.
+  * Pros: Matches what the user expects, as `undo` always reverses the latest change. A state already holds both lists.
+  * Cons: Undoing an older jobseeker change also undoes any later client changes.
+
+* **Alternative 2:** Separate histories, with `undoj` and `undoc` commands.
+  * Pros: Follows the naming of the other commands, and each list can be undone independently.
+  * Cons: Needs two histories, and the user must remember which list they changed last.
 
 
 --------------------------------------------------------------------------------------------------------------------
@@ -520,41 +549,46 @@ TalentLink helps these recruiters with daily tasks such as recording notes on ea
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                  | I want to …​                                                                     | So that I can…​                                                                                                 |
-|----------|------------------------------------------|----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
-| `* * *`  | new user                                 | explore the app with sample data                                                 | gain a quick overview and understanding of the App                                                              |
-| `* * *`  | new user                                 | see usage instructions                                                           | understand how to use the App                                                                                   |
-| `* * *`  | user                                     | add a new jobseeker/client                                                       |                                                                                                                 |
-| `* * *`  | user                                     | delete a jobseeker/client                                                        | remove contacts that I no longer need                                                                           |
-| `* * *`  | user                                     | archive/unarchive a jobseeker/client                                             | remove contacts that I likely no longer need from the main contact list, and retrieve them again if I need them |
-| `* * *`  | user                                     | display all the jobseekers/clients in the list                                   |                                                                                                                 |
-| `* * *`  | user                                     | display all the archived jobseekers/clients in the list                          |                                                                                                                 |
-| `* * *`  | user with multiple jobseekers in the App | record interview notes of jobseekers                                             | retrieve and refer to the interview notes later when I need it                                                  |
-| `* * *`  | user with many contacts in the App       | tag jobseekers/clients by keywords                                               | categorise them                                                                                                 |
-| `* * *`  | user with many contacts in the App       | find jobseekers/clients by name/keywords/tags                                    | locate details of jobseekers/clients without having to go through the entire list                               |
-| `* * *`  | user                                     | attach personal notes to jobseekers/clients                                      | remember additional details about them                                                                          |
-| `* * *`  | user                                     | edit details of my jobseekers/clients with ease                                  | update my jobseekers/clients' details if there are any changes                                                  |
-| `* * *`  | user with multiple jobseekers in the App | record down the job postings that each jobseeker has given explicit consent to   | avoid accidentally sending my jobseekers' details to my clients without their explicit permission               |
-| `* *`    | intermediate user                        | see summarised usage instructions                                                | quickly refresh my memory when I forget how to use the App                                                      |
-| `* *`    | user with many archived contacts         | delete all the archived contacts from the app                                    | remove unwanted clutter in the App if I do not need the information anymore                                     |
-| `* *`    | user with multiple contacts in the App   | delete all the contacts from the app                                             | reset the data                                                                                                  |
-| `* *`    | user with many contacts in the App       | sort jobseekers/clients by name/tags/industry/skills/qualifications              | locate certain types of jobseekers/clients more easily                                                          |
-| `* *`    | user                                     | rank jobseekers according to skills/qualifications                               | determine which jobseeker to interview next and send to my client                                               |
-| `* *`    | user                                     | receive alerts when adding a jobseeker/client with a name that already exists    | avoid creating duplicate jobseekers/clients                                                                     |
-| `* *`    | user                                     | undo the previous action                                                         | undo an accidental action that I made                                                                           |
-| `* *`    | user                                     | access and modify the previous command                                           | rerun the previous command but with slight modifications, after undoing an accidental action                    |
-| `* *`    | user                                     | filter jobseekers according to the types of jobs they want to apply for          | determine which jobseeker to interview/send to my client next for a particular job posting                      |
-| `* *`    | user                                     | customise the colours of my jobseekers/clients by tag                            | spot relevant jobseekers/clients easily when scrolling                                                          |
-| `* *`    | expert user                              | perform frequently used commands instantly                                       | save time from having to type out the entire command                                                            |
-| `* *`    | expert user                              | autocomplete my current command based on the app's recommendations               | save time from having to type out the entire command                                                            |
-| `*`      | frequent user                            | customise the layouts of my contacts                                             | scroll through my contacts more efficiently                                                                     |
-| `*`      | user                                     | export my jobseekers' resumes / stored details within the App                    | send these details to my clients easily                                                                         |
-| `*`      | expert user                              | copy the details of all displayed or one selected contact to the clipboard      |                                                                                                                 |
-| `*`      | user                                     | determine which jobseekers have given consent to apply to a specified job        | compare between jobseekers and determine which one to send to my client                                         |
-| `*`      | user working with many clients           | flag/rank clients based on urgency of job postings                               | determine which client to prioritise                                                                            |
-| `*`      | expert user                              | modify the keywords of commands                                                  | easier to remember and faster to type                                                                           |
-| `*`      | expert user                              | chain, select and modify commands                                                | avoid having to type the same commands over and over again                                                      |
-| `*`      | expert user                              | access the most commonly viewed jobseekers/clients (within a recent time period) | work more efficiently, since I would more likely need a contact that I viewed/was working on recently           |
+| Priority | As a …​                                      | I want to …​                                                                     | So that I can…​                                                                                                 |
+|----------|----------------------------------------------|----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
+| `* * *`  | new user                                     | explore the app with sample data                                                 | gain a quick overview and understanding of the App                                                              |
+| `* * *`  | new user                                     | see usage instructions                                                           | understand how to use the App                                                                                   |
+| `* * *`  | user                                         | add a new jobseeker/client                                                       |                                                                                                                 |
+| `* * *`  | user                                         | delete a jobseeker/client                                                        | remove contacts that I no longer need                                                                           |
+| `* * *`  | user                                         | archive/unarchive a jobseeker/client                                             | remove contacts that I likely no longer need from the main contact list, and retrieve them again if I need them |
+| `* * *`  | user                                         | display all the jobseekers/clients in the list                                   |                                                                                                                 |
+| `* * *`  | user                                         | display all the archived jobseekers/clients in the list                          |                                                                                                                 |
+| `* * *`  | user with many contacts in the App           | tag jobseekers/clients by keywords                                               | categorise them                                                                                                 |
+| `* * *`  | user with many contacts in the App           | find jobseekers/clients by name/keywords/tags                                    | locate details of jobseekers/clients without having to go through the entire list                               |
+| `* * *`  | user                                         | record the details of each jobseeker/client (e.g. contact info)                  |                                                                                                                 |
+| `* * *`  | user                                         | record the job vacancies associated with each client                             | keep track of the job vacancies which I need to fill up                                                         |
+| `* * *`  | user                                         | attach personal notes to jobseekers/clients                                      | remember additional details about them                                                                          |
+| `* * *`  | user                                         | edit details of my jobseekers/clients with ease                                  | update my jobseekers/clients' details if there are any changes                                                  |
+| `* * *`  | user with multiple contacts in the App       | match jobseekers to clients' job postings and record it within the app           |                                                                                                                 |
+| `* * *`  | user with multiple contacts in the App       | record down the job postings that each jobseeker has given explicit consent to   | avoid accidentally sending my jobseekers' details to my clients without their explicit permission               |
+| `* *`    | intermediate user                            | see summarised usage instructions                                                | quickly refresh my memory when I forget how to use the App                                                      |
+| `* *`    | user with many archived contacts             | delete all the archived contacts from the app                                    | remove unwanted clutter in the App if I do not need the information anymore                                     |
+| `* *`    | user with multiple contacts in the App       | delete all the contacts from the app                                             | reset the data                                                                                                  |
+| `* *`    | user with many contacts in the App           | sort jobseekers/clients by name/tags/industry/skills/qualifications              | locate certain types of jobseekers/clients more easily                                                          |
+| `* *`    | user                                         | rank jobseekers according to skills/qualifications                               | determine which jobseeker to interview next and send to my client                                               |
+| `* *`    | user with multiple jobseekers in the App     | schedule and record interview timings within the app                             | easily keep track of the upcoming interviews that I have with my jobseekers                                     |
+| `* *`    | user with multiple jobseekers in the App     | record interview notes of jobseekers                                             | retrieve and refer to the interview notes later when I need it                                                  |
+| `* *`    | user                                         | copy the details of all displayed or one selected client to the clipboard        | send the client/job vacancy's details to my jobseekers                                                          |
+| `* *`    | user                                         | copy the details of all displayed or one selected jobseeker to the clipboard     | send the shortlisted jobseekers' details to my clients                                                          |
+| `* *`    | user                                         | receive alerts when adding a jobseeker/client that potentially already exists    | avoid creating duplicate jobseekers/clients                                                                     |
+| `* *`    | user                                         | undo the previous action                                                         | undo an accidental action that I made                                                                           |
+| `* *`    | user                                         | access and modify the previous command                                           | rerun the previous command but with slight modifications, after undoing an accidental action                    |
+| `* *`    | user                                         | filter jobseekers according to the types of jobs they want to apply for          | determine which jobseeker to interview/send to my client next for a particular job posting                      |
+| `* *`    | user                                         | customise the colours of my jobseekers/clients by tag                            | spot relevant jobseekers/clients easily when scrolling                                                          |
+| `* *`    | expert user                                  | perform frequently used commands instantly                                       | save time from having to type out the entire command                                                            |
+| `* *`    | expert user                                  | autocomplete my current command based on the app's recommendations               | save time from having to type out the entire command                                                            |
+| `*`      | frequent user                                | customise the layouts of my contacts                                             | scroll through my contacts more efficiently                                                                     |
+| `*`      | user                                         | store and export my jobseekers' resumes within the App                           | send my jobseekers' resumes to my clients easily                                                                |
+| `*`      | user                                         | determine which jobseekers have given consent to apply to a specified job        | compare between jobseekers and determine which one to send to my client                                         |
+| `*`      | user working with many clients               | flag/rank clients based on urgency of job postings                               | determine which client to prioritise                                                                            |
+| `*`      | expert user                                  | modify the keywords of commands                                                  | easier to remember and faster to type                                                                           |
+| `*`      | expert user                                  | chain, select and modify commands                                                | avoid having to type the same commands over and over again                                                      |
+| `*`      | expert user                                  | access the most commonly viewed jobseekers/clients (within a recent time period) | work more efficiently, since I would more likely need a contact that I viewed/was working on recently           |
 
 
 ### Use cases
@@ -908,6 +942,7 @@ Use case ends.
 * **Command** The type of task to be executed by the TalentLink app; parameters required differ by command
 * **CLI** Command-Line Interface; a text-based interface users interact with to deliver commands to TalentLink
 * **GUI** Graphical User Interface; a visual interface that allows users to interact with, view, and manage information
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Instructions for manual testing**
