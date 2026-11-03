@@ -9,8 +9,10 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -195,6 +197,18 @@ public class ParserUtil {
             }
         }
         return tags;
+    }
+
+    /**
+     * Parses tags for an edit command, distinguishing absent tags from a request to clear them.
+     */
+    public static Optional<Set<Tag>> parseTagsForEdit(Collection<String> tags) throws ParseException {
+        requireNonNull(tags);
+        if (tags.isEmpty()) {
+            return Optional.empty();
+        }
+        Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
+        return Optional.of(parseSpaceSeparatedTags(tagSet));
     }
 
     /**
