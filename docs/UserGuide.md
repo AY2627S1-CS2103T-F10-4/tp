@@ -5,7 +5,7 @@ title: User Guide
 
 TalentLink is a **desktop application that HR recruiters in recruitment agencies use to manage their contacts, optimized for use through a Command Line Interface (CLI)** while retaining the benefits of a Graphical User Interface (GUI). If you type quickly, TalentLink can help you manage your jobseeker/client contacts faster than traditional GUI applications. 
 
-TalentLink provides support for many tasks that recruiters often do on a daily basis, such as keeping track and recording the details of hundreds of potential jobseekers and clients, recording the available job openings of each client, searching for jobseekers/clients that fulfill certain criteria, determining which jobseekers to link up with each client, and also sending the details of suitable jobseekers to the clients.
+TalentLink provides support for many tasks that recruiters often do on a daily basis, such as keeping track and recording the details of hundreds of potential jobseekers and clients, recording the available job openings of each client, searching for jobseekers/clients that fulfill certain criteria, and copying jobseeker details to share with clients.
 
 * Table of Contents
 {:toc}
@@ -796,7 +796,7 @@ Copies the details of displayed jobseekers to the system clipboard.
 **Examples:**
 {: #cpj-examples}
 
-* `findj java` followed by `cpj 2` copies the second displayed jobseeker.
+* `findj technology` followed by `cpj 2` copies the second displayed jobseeker, `Bernice Yu`.
 
 #### Copying displayed clients: `cpc`
 
@@ -814,7 +814,7 @@ The same indexed-copy behavior as `cpj` applies to clients.
 **Examples:**
 {: #cpc-examples}
 
-* `findc technology` followed by `cpc 1` copies the first displayed client.
+* `findc finance` followed by `cpc 1` copies the first displayed client, `Roy Balakrishnan`.
 
 ### Saving the data
 
