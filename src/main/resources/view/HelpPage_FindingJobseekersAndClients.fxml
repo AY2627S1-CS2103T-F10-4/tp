@@ -89,13 +89,13 @@
                   <Label styleClass="bullet" text="•" />
                   <TextFlow>
                      <children>
-                        <ExampleCode code="find colleagues" />
+                        <ExampleCode code="find finance" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" returns the jobseeker " />
                         <Label styleClass="code" text="Bernice Yu" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" and the client " />
                         <Label layoutX="300.0" layoutY="14.0" styleClass="code" text="Roy Balakrishnan" />
                         <Text layoutX="385.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text=", who are both tagged " />
-                        <Label layoutX="490.0" layoutY="14.0" styleClass="code" text="colleagues" />
+                        <Label layoutX="490.0" layoutY="14.0" styleClass="code" text="finance" />
                         <Text layoutX="613.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
                      </children>
                   </TextFlow>
