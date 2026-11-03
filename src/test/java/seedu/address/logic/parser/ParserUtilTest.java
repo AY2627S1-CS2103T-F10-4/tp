@@ -207,6 +207,11 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseTagsForEdit_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseTagsForEdit(null));
+    }
+
+    @Test
     public void parseTagsForEdit_singleEmptyValue_returnsEmptyTagSet() throws Exception {
         assertEquals(Optional.of(Set.of()), ParserUtil.parseTagsForEdit(List.of("")));
     }

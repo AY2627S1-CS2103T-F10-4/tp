@@ -203,7 +203,7 @@ public class ParserUtil {
      * Parses tags for an edit command, distinguishing absent tags from a request to clear them.
      */
     public static Optional<Set<Tag>> parseTagsForEdit(Collection<String> tags) throws ParseException {
-        assert tags != null;
+        requireNonNull(tags);
         if (tags.isEmpty()) {
             return Optional.empty();
         }
