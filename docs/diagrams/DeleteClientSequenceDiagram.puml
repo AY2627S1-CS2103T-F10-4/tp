@@ -70,6 +70,9 @@ deactivate CommandResult
 
 DeleteClientCommand --> LogicManager : r
 deactivate DeleteClientCommand
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+DeleteClientCommand -[hidden]-> LogicManager
+destroy DeleteClientCommand
 
 [<--LogicManager
 deactivate LogicManager
