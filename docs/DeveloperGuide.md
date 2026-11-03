@@ -1031,7 +1031,7 @@ After `cpj` and `cpc`, paste into a text editor to check what was copied.
 | Type `lis`, then press Esc. | The suggestions close and `lis` stays in the command box. Clear the box. |
 | Paste more than 1000 characters of any text. | The input is cut off at 1000 characters and the hint above the command box shows a warning. Clear the box. |
 | Enter `help`. | The help window opens. |
-| In the help window, expand `Managing tags` and click `Adding jobseeker tags`. | That page appears on the right. Close the help window. |
+| In the help window, click the arrow beside `Managing tags`, then click `Adding jobseeker tags`. | The section expands, and the `Adding jobseeker tags` page appears on the right. Close the help window. |
 
 ### Saving data between runs
 
