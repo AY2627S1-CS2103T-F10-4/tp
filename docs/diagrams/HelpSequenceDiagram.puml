@@ -1,0 +1,55 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+skinparam defaultFontSize 14
+
+box UI UI_COLOR_T1
+participant ":MainWindow" as window UI_COLOR
+end box
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as logic LOGIC_COLOR
+participant ":AddressBookParser" as abParser LOGIC_COLOR
+participant "command:HelpCommand" as command LOGIC_COLOR
+participant "result:CommandResult" as result LOGIC_COLOR
+end box
+
+[-> window ++ : executeCommand("help")
+
+window -> logic ++ : execute("clearj")
+logic -> abParser ++ : parseCommand("clearj")
+
+create command
+abParser -> command ++
+command --> abParser --
+
+abParser --> logic -- : command
+logic --> window -- : command
+
+window -> command ++ : execute(model)
+
+create result
+note over result
+The created //CommandResult// has its
+//shouldShowHelp// flag set to true,
+so that //MainWindow// is notified
+to show the help window
+end note
+command -> result ++ : CommandResult(..., true, false)
+result --> command --
+
+command --> window -- : result
+command -[hidden]> command
+destroy command
+
+window -> result ++ : isShowHelp()
+result --> window -- : true
+result -[hidden]> result
+destroy result
+
+window -> window ++ : handleHelp()
+window --> window --
+
+[<-- window --
+
+@enduml
