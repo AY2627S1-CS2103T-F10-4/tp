@@ -88,6 +88,14 @@ For simplicity, the diagram omits the custom JavaFX classes used by the help win
 
 A `SectionHyperlink` uses its own text as the page name, and `HelpPage` looks that name up in its `PAGES` map to find the page's `.fxml` file. The link text must therefore match a key in `PAGES` exactly; otherwise, clicking the link throws a `NullPointerException`. To add a help page, create its `HelpPage_*.fxml` file, add an entry to `PAGES`, and add a `SectionHyperlink` to `HelpWindow.fxml` or to another help page.
 
+#### Help window interaction
+
+When the user enters the `help` command, `MainWindow` receives a `CommandResult` requesting that the help window be shown. It displays `HelpWindow`, which loads the default help page. Users can navigate between sections using `SectionHyperlink`; each link fires a `NavigationEvent` that tells `HelpWindow` to display the selected page.
+
+The following sequence diagram illustrates how the help window is opened:
+
+![Sequence diagram for help window](images/HelpSequenceDiagram.png)
+
 The `UI` component uses the JavaFX UI framework. The layouts of the `UiPart`s are defined in `.fxml` files in `src/main/resources/view`, usually named after the class. For example, [`MainWindow.fxml`](https://github.com/AY2627S1-CS2103T-F10-4/tp/tree/master/src/main/resources/view/MainWindow.fxml) specifies the layout of [`MainWindow`](https://github.com/AY2627S1-CS2103T-F10-4/tp/tree/master/src/main/java/seedu/address/ui/MainWindow.java). The exceptions are `PersonCard`, which uses `PersonListCard.fxml`, and `HelpPage`, which has one `HelpPage_*.fxml` file per page.
 
 The `UI` component,
@@ -394,6 +402,21 @@ All four commands preserve all non-tag fields, including highest qualification f
 The current filter remains active, and indices refer to the displayed list, including search results or a hidden-contact list. A contact remains visible only if it still matches that filter; for example, removing a tag can make it disappear from search results that matched that tag.
 
 After a command returns normally, including a no-change result, `LogicManager` saves the address book through `Storage`. Parsing and execution errors propagate without reaching that save step. Storage interactions are omitted from the sequence diagrams to focus on command execution and tag updates.
+
+### Clear feature
+
+The `clearj` and `clearc` commands remove all jobseekers or clients respectively. They clear the selected contact list, including contacts hidden by the current filter, while leaving contacts of the other type unchanged. Since these commands do not take any arguments, they do not require dedicated parser classes.
+
+| Command | Command class |
+| --- | --- |
+| `clearj` | `ClearJobseekerCommand` |
+| `clearc` | `ClearClientCommand` |
+
+The following sequence diagrams illustrate the execution of the clear commands:
+
+![Clear jobseeker command sequence diagram](images/ClearJobseekerSequenceDiagram.png)
+
+![Clear client command sequence diagram](images/ClearClientSequenceDiagram.png)
 
 ### Clipboard feature
 
