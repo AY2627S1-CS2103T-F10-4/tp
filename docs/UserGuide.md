@@ -5,7 +5,7 @@ title: User Guide
 
 TalentLink is a **desktop application that HR recruiters in recruitment agencies use to manage their contacts, optimized for use through a Command Line Interface (CLI)** while retaining the benefits of a Graphical User Interface (GUI). If you type quickly, TalentLink can help you manage your jobseeker/client contacts faster than traditional GUI applications. 
 
-TalentLink provides support for many tasks that recruiters often do on a daily basis, such as keeping track and recording the details of hundreds of potential jobseekers and clients, recording the available job openings of each client, searching for jobseekers/clients that fulfill certain criteria, determining which jobseekers to link up with each client, and also sending the details of suitable jobseekers to the clients.
+TalentLink provides support for many tasks that recruiters often do on a daily basis, such as keeping track and recording the details of hundreds of potential jobseekers and clients, recording the available job openings of each client, searching for jobseekers/clients that fulfill certain criteria, and copying jobseeker details to share with clients.
 
 * Table of Contents
 {:toc}
