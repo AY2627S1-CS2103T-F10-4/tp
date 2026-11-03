@@ -1,0 +1,88 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+skinparam SequenceParticipantFontSize 16
+
+box UI UI_COLOR_T1
+participant ":MainWindow" as MainWindow UI_COLOR
+end box
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant "c:CopyClientCommand" as CopyClientCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+end box
+
+box "External system" UI_COLOR_T1
+participant ":System Clipboard" as Clipboard UI_COLOR
+end box
+
+[-> MainWindow : executeCommand("cpc 1")
+activate MainWindow UI_COLOR
+
+MainWindow -[UI_COLOR]> LogicManager : execute("cpc 1")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("cpc 1")
+activate AddressBookParser
+
+AddressBookParser -> CopyClientCommand : create command with index 1
+activate CopyClientCommand
+
+CopyClientCommand --> AddressBookParser : CopyClientCommand
+deactivate CopyClientCommand
+
+AddressBookParser --> LogicManager : CopyClientCommand
+deactivate AddressBookParser
+
+LogicManager -> CopyClientCommand : execute(m)
+activate CopyClientCommand
+
+CopyClientCommand -> Model : getFilteredClientList()
+activate Model
+
+Model --> CopyClientCommand : displayedClients
+deactivate Model
+
+CopyClientCommand -> CopyClientCommand : select client at index 1
+CopyClientCommand -> CopyClientCommand : format client details
+
+create CommandResult
+CopyClientCommand -> CommandResult : feedback, clipboard text
+activate CommandResult
+
+CommandResult --> CopyClientCommand : r
+deactivate CommandResult
+
+CopyClientCommand --> LogicManager : r
+deactivate CopyClientCommand
+
+LogicManager -[LOGIC_COLOR]> MainWindow : r
+deactivate LogicManager
+
+== Update system clipboard ==
+
+MainWindow -> CommandResult : getClipboardText()
+activate CommandResult
+
+CommandResult --> MainWindow : clipboardText
+deactivate CommandResult
+
+MainWindow -[bold,UI_COLOR]> Clipboard : setContent(clipboardText)
+activate Clipboard UI_COLOR
+
+Clipboard --> MainWindow
+deactivate Clipboard
+
+note over MainWindow, Clipboard
+MainWindow performs the actual clipboard update.
+end note
+
+[<--MainWindow
+deactivate MainWindow
+@enduml

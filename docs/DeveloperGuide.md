@@ -406,7 +406,11 @@ The `cpc` and `cpj` commands copy client and jobseeker details to the system cli
 
 Without an index, the command copies all persons in the corresponding currently displayed list. With an index, it copies only the indexed person. The index is one-based and refers to the filtered displayed list; an index outside the displayed list causes a `CommandException`.
 
-The command returns the clipboard text through `CommandResult`, and `MainWindow` performs the actual system clipboard update.
+The command formats and returns the clipboard text as part of `CommandResult`. `MainWindow` performs the actual system clipboard update in response to a non-null `CommandResult.getClipboardText()`.
+
+Given below is an example usage scenario of an indexed client copy-to-clipboard command.
+
+![Client copy command execution](images/CopyClientSequenceDiagram.png)
 
 ### \[Proposed\] Undo/redo feature
 
