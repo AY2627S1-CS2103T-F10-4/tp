@@ -1,22 +1,25 @@
 @startuml
 !include style.puml
 skinparam ArrowFontStyle plain
+skinparam SequenceParticipantFontSize 16
 
 box UI UI_COLOR_T1
 participant ":MainWindow" as MainWindow UI_COLOR
-participant ":System Clipboard" as Clipboard UI_COLOR
 end box
 
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
-participant ":CopyClientCommandParser" as CopyClientCommandParser LOGIC_COLOR
 participant "c:CopyClientCommand" as CopyClientCommand LOGIC_COLOR
 participant "r:CommandResult" as CommandResult LOGIC_COLOR
 end box
 
 box Model MODEL_COLOR_T1
 participant "m:Model" as Model MODEL_COLOR
+end box
+
+box "External system" UI_COLOR_T1
+participant ":System Clipboard" as Clipboard UI_COLOR
 end box
 
 [-> MainWindow : executeCommand("cpc 1")
@@ -28,30 +31,13 @@ activate LogicManager
 LogicManager -> AddressBookParser : parseCommand("cpc 1")
 activate AddressBookParser
 
-create CopyClientCommandParser
-AddressBookParser -> CopyClientCommandParser
-activate CopyClientCommandParser
-
-CopyClientCommandParser --> AddressBookParser
-deactivate CopyClientCommandParser
-
-AddressBookParser -> CopyClientCommandParser : parse("1")
-activate CopyClientCommandParser
-
-create CopyClientCommand
-CopyClientCommandParser -> CopyClientCommand
+AddressBookParser -> CopyClientCommand : create command with index 1
 activate CopyClientCommand
 
-CopyClientCommand --> CopyClientCommandParser : c
+CopyClientCommand --> AddressBookParser : CopyClientCommand
 deactivate CopyClientCommand
 
-CopyClientCommandParser --> AddressBookParser : c
-deactivate CopyClientCommandParser
-' Hidden arrow to position the destroy marker below the end of the activation bar.
-CopyClientCommandParser -[hidden]-> AddressBookParser
-destroy CopyClientCommandParser
-
-AddressBookParser --> LogicManager : c
+AddressBookParser --> LogicManager : CopyClientCommand
 deactivate AddressBookParser
 
 LogicManager -> CopyClientCommand : execute(m)
@@ -63,8 +49,8 @@ activate Model
 Model --> CopyClientCommand : displayedClients
 deactivate Model
 
-CopyClientCommand -> CopyClientCommand : get client at index 1
-CopyClientCommand -> CopyClientCommand : Messages.format(client)
+CopyClientCommand -> CopyClientCommand : select client at index 1
+CopyClientCommand -> CopyClientCommand : format client details
 
 create CommandResult
 CopyClientCommand -> CommandResult : feedback, clipboard text
@@ -79,17 +65,23 @@ deactivate CopyClientCommand
 LogicManager -[LOGIC_COLOR]> MainWindow : r
 deactivate LogicManager
 
+== Update system clipboard ==
+
 MainWindow -> CommandResult : getClipboardText()
 activate CommandResult
 
 CommandResult --> MainWindow : clipboardText
 deactivate CommandResult
 
-MainWindow -[UI_COLOR]> Clipboard : setContent(clipboardText)
+MainWindow -[bold,UI_COLOR]> Clipboard : setContent(clipboardText)
 activate Clipboard UI_COLOR
 
 Clipboard --> MainWindow
 deactivate Clipboard
+
+note over MainWindow, Clipboard
+MainWindow performs the actual clipboard update.
+end note
 
 [<--MainWindow
 deactivate MainWindow
