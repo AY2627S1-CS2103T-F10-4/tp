@@ -12,7 +12,7 @@ Class MainWindow
 Class HelpWindow
 Class HelpPage
 Class ResultDisplay
-Class "PersonListPanel<T extends Person>" as PersonListPanel
+Class PersonListPanel
 Class PersonCard
 Class StatusBarFooter
 Class CommandBox

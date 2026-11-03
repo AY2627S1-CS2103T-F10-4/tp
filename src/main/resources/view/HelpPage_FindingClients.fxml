@@ -184,11 +184,11 @@
                   <Label styleClass="bullet" text="•" />
                   <TextFlow>
                      <children>
-                        <ExampleCode code="editj 1 q/Diploma in IT" />
+                        <ExampleCode code="editc 2 j/Software Engineer" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text=", then " />
                         <ExampleCode code="findc engineer" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" returns " />
-                        <Label styleClass="code" text="Alex Yeoh" />
+                        <Label styleClass="code" text="Roy Balakrishnan" />
                      </children>
                   </TextFlow>
                </children>

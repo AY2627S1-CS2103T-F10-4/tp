@@ -243,6 +243,7 @@ public class CommandBox extends UiPart<Region> {
         }
         String commandText = commandTextField.getText();
         if (commandText.isEmpty()) {
+            commandHistory.add(commandText);
             return;
         }
 

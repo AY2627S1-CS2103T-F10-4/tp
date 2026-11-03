@@ -416,85 +416,108 @@ Given below is an example usage scenario of an indexed client copy-to-clipboard 
 
 #### Proposed Implementation
 
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
+The proposed `undo` and `redo` commands are not implemented yet. They would reverse and reapply changes to the contact data, using a `VersionedAddressBook` that extends `AddressBook` with an undo/redo history. The history is stored internally as an `addressBookStateList` and a `currentStatePointer`, and is changed by the following operations:
 
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
+* `VersionedAddressBook#commit()` — Saves the current address book data as a new state, unless the data already matches the state at `currentStatePointer`.
+* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
+* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
 
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
+These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively. `Model#canUndoAddressBook()` and `Model#canRedoAddressBook()` report whether there is a state to move to. `Model#getCurrentStatePointer()` and `Model#setCurrentStatePointer()` let `LogicManager` put the pointer back after a failed save.
 
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+The feature would change five existing parts of the app:
 
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
+* `ModelManager` holds a `VersionedAddressBook` in place of its `AddressBook`. Its filtered lists are built once from this object, so `undo()` and `redo()` update it in place with `resetData()` rather than replacing it.
+* `Model` gains the methods above, so `ModelStub` in `AddJobseekerCommandTest` must implement them too.
+* `LogicManager#execute()` calls `Model#commitAddressBook()` after each successful save. Individual commands do not commit.
+* `AddressBookParser` gains `undo` and `redo`. So does `CommandCatalogue`, which lists the command names offered for completion, as its class comment asks for the two to be kept in sync.
+
+Given below is an example usage scenario and how the undo/redo mechanism behaves at each step. The object diagrams show the contents of `addressBookStateList`: each object is a saved state, and the note marks the state at `currentStatePointer`.
+
+Step 1. The user launches the application. The `VersionedAddressBook` is initialized with the app's initial address book data as its only state, and `currentStatePointer` points to that state. The history is held only in memory, so it starts afresh on every launch.
 
 ![UndoRedoState0](images/UndoRedoState0.png)
 
-Step 2. The user executes `deletej 5` command to delete the 5th jobseeker in the jobseeker list. The `deletej` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `deletej 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
+Step 2. The user executes `deletej 5` to delete the 5th jobseeker in the displayed jobseeker list. After saving, `LogicManager` calls `Model#commitAddressBook()`. The data now differs from the current state, so it is added to `addressBookStateList`, and `currentStatePointer` moves to this new state.
 
 ![UndoRedoState1](images/UndoRedoState1.png)
 
-Step 3. The user executes `addj n/David …​` to add a new jobseeker. The `addj` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
+Step 3. The user executes `addj n/David …​` to add a new jobseeker. `LogicManager` again calls `Model#commitAddressBook()`, which adds another state to `addressBookStateList`.
 
 ![UndoRedoState2](images/UndoRedoState2.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If parsing, execution or saving fails, `LogicManager` never reaches `Model#commitAddressBook()`, so no state is added to `addressBookStateList`.
 
 </div>
 
-Step 4. The user now decides that adding the jobseeker was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
+Step 4. The user now decides that adding the jobseeker was a mistake, and executes the `undo` command. The command calls `Model#undoAddressBook()`, which moves `currentStatePointer` one state to the left and restores the address book to that state. `LogicManager` then saves the restored data as it does after any command, so the undo is also written to the save file. `LogicManager`'s call to `Model#commitAddressBook()` has no effect, because the data matches the current state.
 
 ![UndoRedoState3](images/UndoRedoState3.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If `currentStatePointer` is at index 0, there are no previous states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check for this, and throws a `CommandException` rather than attempting the undo.
 
 </div>
 
-The following sequence diagram shows how an undo operation goes through the `Logic` component:
+The following sequence diagram shows how a successful undo goes through the `Logic` component:
 
 ![UndoSequenceDiagram](images/UndoSequenceDiagram-Logic.png)
 
-Similarly, how an undo operation goes through the `Model` component is shown below:
+Similarly, how an undo goes through the `Model` component is shown below:
 
 ![UndoSequenceDiagram](images/UndoSequenceDiagram-Model.png)
 
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
+The `redo` command does the opposite: it calls `Model#redoAddressBook()`, which moves `currentStatePointer` one state to the right and restores the address book to that state.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If `currentStatePointer` is at index `addressBookStateList.size() - 1`, there are no undone states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check for this, and throws a `CommandException` rather than attempting the redo.
 
 </div>
 
-Step 5. The user then decides to execute the command `listj`. Commands that do not modify the address book, such as `listj`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
+Step 5. The user then executes `listj`. This command does not change the contact data, so the call to `Model#commitAddressBook()` has no effect, and `addressBookStateList` and `currentStatePointer` remain unchanged. The same applies to find and copy commands, and to commands that return a no-change result, such as tagging a jobseeker with a tag they already have. A command that reports success without changing the data, such as `clearj` on an empty list, also adds no state, so a following `undo` reverses the last actual change.
 
-![UndoRedoState4](images/UndoRedoState4.png)
-
-Step 6. The user executes `clearj`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `addj n/David …​` command. This is the behavior that most modern desktop applications follow.
+Step 6. The user executes `clearj`. The data now differs from the current state, and `currentStatePointer` is not at the end of `addressBookStateList`, so `Model#commitAddressBook()` purges all states after the pointer before adding the new one. It no longer makes sense to redo the `addj n/David …​` command, and most modern desktop applications behave the same way.
 
 ![UndoRedoState5](images/UndoRedoState5.png)
 
 The following activity diagram summarizes what happens when a user executes a new command:
 
-<img src="images/CommitActivityDiagram.png" width="250" />
+<img src="images/CommitActivityDiagram.png" width="350" />
+
+#### Filtering and persistence
+
+Filters are not part of the address book data, so `undo` and `redo` leave the active filters and their descriptions unchanged. A restored contact therefore appears only if it matches the current filter, as with the `editj` command. For example, undoing `deletej` during a search restores the jobseeker to the data, but if they do not match the search, the jobseeker stays out of view until a find or list command changes the filter.
+
+If saving fails, `LogicManager` already restores the data from before the command through `Model#setAddressBook()`. That call does not change the history, which is enough for most commands because they have not committed yet. `undo` and `redo` are the exception, as they have already moved `currentStatePointer`. `LogicManager` must therefore also call `Model#getCurrentStatePointer()` before executing a command, and pass the result to `Model#setCurrentStatePointer()` when a save fails, or the pointer and the data would no longer match.
 
 #### Design considerations:
 
 **Aspect: How undo & redo execute:**
 
-* **Alternative 1 (current choice):** Saves the entire address book.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
+* **Alternative 1 (proposed choice):** Save the entire address book as a state.
+  * Pros: Easy to implement, and later commands that change data need no undo logic of their own.
+  * Cons: Uses more memory as the contact lists grow and as each change adds a state, since the history has no size limit. The cost is limited because states can share `Person` objects, which are immutable, and copy only the two lists.
 
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-  * Pros: Will use less memory (e.g. for `deletej`, just save the jobseeker being deleted).
-  * Cons: We must ensure that the implementation of each individual command is correct.
+* **Alternative 2:** Each command knows how to undo and redo itself.
+  * Pros: Uses less memory (e.g. for `deletej`, just save the jobseeker being deleted).
+  * Cons: All 16 commands that change data need correct undo and redo logic, and each new one adds to this.
 
-_{more aspects and alternatives to be added}_
+**Aspect: Where the state is committed:**
 
-### \[Proposed\] Data archiving
+* **Alternative 1 (proposed choice):** `LogicManager` commits after each successful save, and `commit()` ignores data that matches the current state.
+  * Pros: Needs one call only. Failed saves, read-only commands, no-change results, `undo` and `redo` all add no state, without any command having to handle them.
+  * Cons: Compares the address book data after every command, including read-only ones.
 
-_{Explain here how the data archiving feature will be implemented}_
+* **Alternative 2:** Each command that changes data calls `Model#commitAddressBook()` itself.
+  * Pros: Which commands can be undone is explicit in each command's code.
+  * Cons: Commands run before the save, so a failed save would leave a state in the history for data that was rolled back. Each of the 16 commands must also remember the call, and the 8 tag, untag, hide and unhide commands must skip it on a no-change result.
+
+**Aspect: How jobseeker and client changes share a history:**
+
+* **Alternative 1 (proposed choice):** One history and one `undo` command, covering both lists.
+  * Pros: Matches what the user expects, as `undo` always reverses the latest change. A state already holds both lists.
+  * Cons: Undoing an older jobseeker change also undoes any later client changes.
+
+* **Alternative 2:** Separate histories, with `undoj` and `undoc` commands.
+  * Pros: Follows the naming of the other commands, and each list can be undone independently.
+  * Cons: Needs two histories, and the user must remember which list they changed last.
 
 
 --------------------------------------------------------------------------------------------------------------------
@@ -907,8 +930,6 @@ Use case ends.
 5. Security
    1. The program must not transmit user data outside the machine.
 
-*{More to be added}*
-
 ### Glossary
 
 * **Mainstream OS**: Windows, Linux, Unix, or macOS
@@ -926,66 +947,131 @@ Use case ends.
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Appendix: Instructions for manual testing**
+## **Appendix: Instructions for Manual Testing**
 
-Given below are instructions to test the app manually.
+Given below is a suggested path through TalentLink's features, with test inputs that you can copy and paste into the app.
+For command formats and rules, see the [User Guide](UserGuide.html).
 
 <div markdown="span" class="alert alert-info">:information_source: **Note:** These instructions only provide a starting point for testers to work on;
 testers are expected to do more *exploratory* testing.
 
 </div>
 
-### Launch and shutdown
+Follow the sections in order, because each one relies on the contacts left by the previous one.
+_Rejected_ below means that no contact changes and the status message explains why.
+A rejected command stays in the command box, so clear the box before pasting the next input.
 
-1. Initial launch
+### Launching the app
 
-   1. Download the JAR file and copy it into an empty folder.
+Copy the JAR file into an empty folder and launch it as described in the [Quick start](UserGuide.html#quick-start).
 
-   1. Launch the JAR file in a command-line shell of choice by executing command `java -jar talentlink.jar` in the folder containing the JAR file.<br>
-      Expected: The GUI opens with a set of sample contacts. The window size may not be optimal.
+Expected: There are 2 clients on the left and 4 jobseekers on the right. The status message says that the lists show sample data.
 
-1. Saving window preferences
+### Adding and editing contacts
 
-   1. Resize the window to an optimal size. Move the window to a different location. Close the window.
+| Input | Expected |
+|-------|----------|
+| `addj n/John Doe p/98765432 e/johnd@example.com a/John street q/Diploma in IT` | John Doe is the 5th jobseeker. |
+| `addj n/Johnny Doe p/98765432 e/johnd@example.com a/Other street` | Rejected as a duplicate of John Doe. |
+| `addj n/Alice Tan p/91234567` | Rejected, with `e/` and `a/` listed as missing. |
+| `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road j/Software Engineer j/QA Tester` | Jane Tan is the 3rd client, with both jobs. |
+| `addc n/Sam Lim p/91234568 e/sam@example.com a/456 Clementi Road q/Diploma in IT` | Rejected, because `q/` is only for jobseekers. |
+| `editj 1 p/91234567 r/Prefers remote work` | Alex Yeoh has the new phone number and remark. |
+| `editj 2 p/91234567 e/alexyeoh@example.com` | Rejected as a duplicate of Alex Yeoh. |
+| `editc 1 j/Software Engineer t/` | Irfan Ibrahim has the job and no tags. |
 
-   1. Relaunch the JAR file in a command-line shell of choice by executing command `java -jar talentlink.jar` in the folder containing the JAR file.<br>
-       Expected: The most recent window size and location are retained.
+### Finding and listing contacts
 
-1. Saving jobseeker and client data
+| Input | Expected |
+|-------|----------|
+| `findj alex david` | The jobseeker list shows Alex Yeoh and David Li, and its heading shows the search keywords. The client list is unchanged. |
+| `findc engineer` | The client list shows Irfan Ibrahim and Jane Tan. |
+| `find finance` | The jobseeker list shows Bernice Yu. The client list shows Roy Balakrishnan. |
+| `listj` | All 5 jobseekers are shown. The client list still shows only Roy Balakrishnan. |
+| `list` | All jobseekers and clients are shown. |
 
-    1. Make any change to the client or jobseeker list via a compatible command.
+### Hiding and unhiding contacts
 
-    1. Relaunch the JAR file in a command-line shell of choice by executing command `java -jar talentlink.jar` in the folder containing the JAR file.<br>
-        Expected: Changes to the contact list are retained even without explicit confirmation to save the data.
+| Input | Expected |
+|-------|----------|
+| `hidej 1` | Alex Yeoh disappears from the jobseeker list. |
+| `hidec 1` | Irfan Ibrahim disappears from the client list. |
+| `find alex irfan` | Both lists are empty. |
+| `listhj` | The jobseeker list shows only Alex Yeoh, and its heading says that hidden jobseekers are shown. |
+| `findhc irfan` | The client list shows only Irfan Ibrahim. |
+| `unhidej 1` | The jobseeker list is empty. |
+| `unhidec 1` | The client list is empty. |
+| `list` | Alex Yeoh and Irfan Ibrahim are back at the top of their lists. |
 
-1. Exiting the application using the `exit` command
+### Tagging contacts
 
-   1. Enter the `exit` command.
-      Expected: The application closes.
+| Input | Expected |
+|-------|----------|
+| `tagj 2 java python` | Bernice Yu gains both tags. |
+| `untagj 2 Java` | Bernice Yu's tags do not change. |
+| `untagj 2 java python` | Bernice Yu loses both tags. |
+| `tagc 2 priority` | Roy Balakrishnan gains the tag. |
+| `untagc 2 priority` | Roy Balakrishnan loses the tag. |
 
-### Deleting a jobseeker
+### Copying contacts
 
-1. Deleting a jobseeker while all jobseekers are being shown
+After `cpj` and `cpc`, paste into a text editor to check what was copied.
 
-   1. Prerequisites: List all jobseekers using the `listj` command, with multiple jobseekers in the list.
+| Input | Expected |
+|-------|----------|
+| `findj bernice david` | The jobseeker list shows Bernice Yu and David Li. |
+| `cpj` | The details of Bernice Yu and David Li are pasted on separate lines. |
+| `cpc 2` | The details of Roy Balakrishnan are pasted. |
+| `list` | All jobseekers and clients are shown. |
 
-   1. Test case: `deletej 1`<br>
-      Expected: The first jobseeker is deleted from the jobseeker list. The status message shows the deleted jobseeker's details. The client list is unchanged.
+### Using the command box and help window
 
-   1. Test case: `deletej 0`<br>
-      Expected: No jobseeker is deleted. The status message shows error details.
+| Action | Expected |
+|--------|----------|
+| Type `lis` without pressing Enter. | Command suggestions appear below the command box. |
+| Press Down, then Tab. | The command box contains `listc`. The command has not run. |
+| Press Enter. | `listc` runs and the command box is cleared. |
+| Press Up, then Down. | Up brings back `listc`. Down clears the command box again. |
+| Type `lis`, then press Esc. | The suggestions close and `lis` stays in the command box. Clear the box. |
+| Paste more than 1000 characters of any text. | The input is cut off at 1000 characters and the hint above the command box shows a warning. Clear the box. |
+| Enter `help`. | The help window opens. |
+| In the help window, click the arrow beside `Managing tags`, then click `Adding jobseeker tags`. | The section expands, and the `Adding jobseeker tags` page appears on the right. Close the help window. |
 
-   1. Other incorrect delete commands to try: `deletej`, `deletej x`, `...` (where x is larger than the jobseeker list size)<br>
-      Expected: Similar to previous.
+### Saving data between runs
 
-1. Deleting a client works the same way: use `listc` and `deletec` in place of `listj` and `deletej`.
+| Input | Expected |
+|-------|----------|
+| `hidej 1` | Alex Yeoh disappears from the jobseeker list. |
+| `exit`, then launch the app again | John Doe and Jane Tan are still listed and Alex Yeoh is still hidden. The status message does not mention sample data. |
+| `listhj` | The jobseeker list shows only Alex Yeoh. |
 
-1. _{ more test cases …​ }_
+### Deleting and clearing contacts
 
-### Saving data
+| Input | Expected |
+|-------|----------|
+| `list` | All unhidden jobseekers and clients are shown. |
+| `deletej 0` | Rejected, with the correct command format shown. |
+| `deletej 99` | Rejected as an invalid index. |
+| `findj david` | The jobseeker list shows only David Li. |
+| `deletej 1` | David Li is deleted, leaving the jobseeker list empty. |
+| `list` | The jobseeker list no longer has David Li. |
+| `deletec 1` | Irfan Ibrahim is deleted. |
+| `clearj` | The jobseeker list is empty. The client list is unchanged. |
+| `listhj` | The jobseeker list is still empty, because Alex Yeoh was cleared too. |
+| `clearc` | The client list is empty. |
+| `exit`, then launch the app again | Both lists are still empty. The status message does not mention sample data. |
 
-1. Dealing with missing/corrupted data files
+### Handling missing and corrupted data files
 
-   1. _{Explain how to simulate missing or corrupted data files and state the expected behavior.}_
+1. Missing data file
 
-1. _{ more test cases …​ }_
+   1. Close the app, delete `data/talentlink.json` and launch the app again.<br>
+      Expected: The sample data and its status message are back.
+
+1. Corrupted data file (see also [Editing the data file](UserGuide.html#editing-the-data-file))
+
+   1. Close the app. In `data/talentlink.json`, change the first `phone` value to `abc`. Launch the app again.<br>
+      Expected: Both lists are empty, and the status message does not mention sample data. The data file has not changed yet.
+
+   1. Enter `list`.<br>
+      Expected: The data file now contains empty lists.

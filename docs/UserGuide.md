@@ -5,7 +5,7 @@ title: User Guide
 
 TalentLink is a **desktop application that HR recruiters in recruitment agencies use to manage their contacts, optimized for use through a Command Line Interface (CLI)** while retaining the benefits of a Graphical User Interface (GUI). If you type quickly, TalentLink can help you manage your jobseeker/client contacts faster than traditional GUI applications. 
 
-TalentLink provides support for many tasks that recruiters often do on a daily basis, such as keeping track and recording the details of hundreds of potential jobseekers and clients, recording the available job openings of each client, searching for jobseekers/clients that fulfill certain criteria, determining which jobseekers to link up with each client, and also sending the details of suitable jobseekers to the clients.
+TalentLink provides support for many tasks that recruiters often do on a daily basis, such as keeping track and recording the details of hundreds of potential jobseekers and clients, recording the available job openings of each client, searching for jobseekers/clients that fulfill certain criteria, and copying jobseeker details to share with clients.
 
 * Table of Contents
 {:toc}
@@ -42,7 +42,8 @@ TalentLink provides support for many tasks that recruiters often do on a daily b
 
     A GUI similar to the one below should appear in a few seconds.
     The app contains some sample data for you to get used to the UI.
-    ![Ui sample](images/Ui.png)
+    When sample data is loaded, a message reminds you that `clearj` and `clearc` can be used to remove it.
+    ![Ui sample](images/StartingUi.png)
 
 1.  Type a command in the command box and press Enter to execute it.
     For example, type **`help`** and press Enter to open the help window.
@@ -130,8 +131,9 @@ Jobseeker contacts contain the following values, and their corresponding constra
   * write names that contain prefixes (like `P/L`, `T/A` and `A/L`) in capitals, because lowercase `p/`, `t/` and `a/` are read as the phone, tag and address prefixes respectively
   * must not be blank
 * Phone number
-  * contains only digits
-  * must be at least 3 digits long
+  * can start with the international prefix `+` or `00` (e.g. `+6591234567` and `006591234567` are allowed)
+  * apart from the prefix, contains only digits, with no spaces
+  * must be 3 to 15 digits long, not counting the prefix
 * Email address
   * must follow the conventional format of an email address
 * Physical address
@@ -153,8 +155,9 @@ Client contacts contain the following values, and their corresponding constraint
   * write names that contain prefixes (like `P/L`, `T/A` and `A/L`) in capitals, because lowercase `p/`, `t/` and `a/` are read as the phone, tag and address prefixes respectively
   * must not be blank
 * Phone number
-  * contains only digits
-  * must be at least 3 digits long
+  * can start with the international prefix `+` or `00` (e.g. `+6591234567` and `006591234567` are allowed)
+  * apart from the prefix, contains only digits, with no spaces
+  * must be 3 to 15 digits long, not counting the prefix
 * Email address
   * must follow the conventional format of an email address
 * Physical address
@@ -793,7 +796,7 @@ Copies the details of displayed jobseekers to the system clipboard.
 **Examples:**
 {: #cpj-examples}
 
-* `findj java` followed by `cpj 2` copies the second displayed jobseeker.
+* `findj technology` followed by `cpj 2` copies the second displayed jobseeker, `Bernice Yu`.
 
 #### Copying displayed clients: `cpc`
 
@@ -811,7 +814,7 @@ The same indexed-copy behavior as `cpj` applies to clients.
 **Examples:**
 {: #cpc-examples}
 
-* `findc technology` followed by `cpc 1` copies the first displayed client.
+* `findc finance` followed by `cpc 1` copies the first displayed client, `Roy Balakrishnan`.
 
 ### Saving the data
 

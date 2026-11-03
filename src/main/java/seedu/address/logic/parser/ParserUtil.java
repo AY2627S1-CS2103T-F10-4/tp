@@ -9,10 +9,14 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Logger;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -30,6 +34,7 @@ import seedu.address.model.tag.Tag;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index must be a positive integer.";
+    private static final Logger logger = LogsCenter.getLogger(ParserUtil.class);
 
     /**
      * Checks required add-command prefixes in name, phone, email, address order.
@@ -53,6 +58,7 @@ public class ParserUtil {
             missing.add(PREFIX_ADDRESS + " (address)");
         }
         if (!missing.isEmpty()) {
+            logger.fine("Required add-command fields missing: " + missing);
             throw new ParseException(String.format(MESSAGE_MISSING_REQUIRED_FIELDS, String.join(", ", missing)));
         }
     }
@@ -191,6 +197,18 @@ public class ParserUtil {
             }
         }
         return tags;
+    }
+
+    /**
+     * Parses tags for an edit command, distinguishing absent tags from a request to clear them.
+     */
+    public static Optional<Set<Tag>> parseTagsForEdit(Collection<String> tags) throws ParseException {
+        requireNonNull(tags);
+        if (tags.isEmpty()) {
+            return Optional.empty();
+        }
+        Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
+        return Optional.of(parseSpaceSeparatedTags(tagSet));
     }
 
     /**

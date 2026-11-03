@@ -7,18 +7,18 @@ import java.util.List;
  * Stores submitted commands and the current browsing position for one command box session.
  */
 class CommandHistory {
-    private final List<String> history = new ArrayList<>();
-    private int historyIndex;
+    private final List<String> history = new ArrayList<>(List.of(""));
+    private int historyIndex = 1;
     private String draft = "";
 
     /**
-     * Records a nonblank submission and resets browsing to the draft position.
-     * Blank submissions reset browsing but are not stored.
+     * Records a nonblank submission unless it duplicates the preceding command, then resets browsing to the draft
+     * position. The initial blank entry and later blank submissions are not stored as commands.
      *
      * @param command Non-null submitted input, preserved exactly as entered.
      */
     void add(String command) {
-        if (!command.isBlank()) {
+        if (!command.isBlank() && !history.getLast().equals(command)) {
             history.add(command);
         }
         historyIndex = history.size();
