@@ -34,7 +34,7 @@ import seedu.address.ui.UiManager;
  */
 public class MainApp extends Application {
 
-    public static final String VERSION = "V0.5.1";
+    public static final String VERSION = "v1.6";
 
     /** Shown at startup when the sample data is loaded, which is when no data file exists yet. */
     static final String MESSAGE_SAMPLE_DATA_LOADED = "Welcome to TalentLink! The lists show sample data.\n"

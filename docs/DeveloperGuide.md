@@ -926,8 +926,6 @@ Use case ends.
 5. Security
    1. The program must not transmit user data outside the machine.
 
-*{More to be added}*
-
 ### Glossary
 
 * **Mainstream OS**: Windows, Linux, Unix, or macOS
@@ -945,56 +943,131 @@ Use case ends.
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Appendix: Instructions for manual testing**
+## **Appendix: Instructions for Manual Testing**
 
-Given below are instructions to test the app manually.
+Given below is a suggested path through TalentLink's features, with test inputs that you can copy and paste into the app.
+For command formats and rules, see the [User Guide](UserGuide.html).
 
 <div markdown="span" class="alert alert-info">:information_source: **Note:** These instructions only provide a starting point for testers to work on;
 testers are expected to do more *exploratory* testing.
 
 </div>
 
-### Launch and shutdown
+Follow the sections in order, because each one relies on the contacts left by the previous one.
+_Rejected_ below means that no contact changes and the status message explains why.
+A rejected command stays in the command box, so clear the box before pasting the next input.
 
-1. Initial launch
+### Launching the app
 
-   1. Download the JAR file and copy it into an empty folder.
+Copy the JAR file into an empty folder and launch it as described in the [Quick start](UserGuide.html#quick-start).
 
-   1. Double-click the JAR file.<br>
-      Expected: The GUI opens with a set of sample contacts. The window size may not be optimal.
+Expected: There are 2 clients on the left and 4 jobseekers on the right. The status message says that the lists show sample data.
 
-1. Saving window preferences
+### Adding and editing contacts
 
-   1. Resize the window to an optimal size. Move the window to a different location. Close the window.
+| Input | Expected |
+|-------|----------|
+| `addj n/John Doe p/98765432 e/johnd@example.com a/John street q/Diploma in IT` | John Doe is the 5th jobseeker. |
+| `addj n/Johnny Doe p/98765432 e/johnd@example.com a/Other street` | Rejected as a duplicate of John Doe. |
+| `addj n/Alice Tan p/91234567` | Rejected, with `e/` and `a/` listed as missing. |
+| `addc n/Jane Tan p/91234567 e/jane@example.com a/123 Clementi Road j/Software Engineer j/QA Tester` | Jane Tan is the 3rd client, with both jobs. |
+| `addc n/Sam Lim p/91234568 e/sam@example.com a/456 Clementi Road q/Diploma in IT` | Rejected, because `q/` is only for jobseekers. |
+| `editj 1 p/91234567 r/Prefers remote work` | Alex Yeoh has the new phone number and remark. |
+| `editj 2 p/91234567 e/alexyeoh@example.com` | Rejected as a duplicate of Alex Yeoh. |
+| `editc 1 j/Software Engineer t/` | Irfan Ibrahim has the job and no tags. |
 
-   1. Relaunch the app by double-clicking the JAR file.<br>
-       Expected: The most recent window size and location are retained.
+### Finding and listing contacts
 
-1. _{ more test cases …​ }_
+| Input | Expected |
+|-------|----------|
+| `findj alex david` | The jobseeker list shows Alex Yeoh and David Li, and its heading shows the search keywords. The client list is unchanged. |
+| `findc engineer` | The client list shows Irfan Ibrahim and Jane Tan. |
+| `find finance` | The jobseeker list shows Bernice Yu. The client list shows Roy Balakrishnan. |
+| `listj` | All 5 jobseekers are shown. The client list still shows only Roy Balakrishnan. |
+| `list` | All jobseekers and clients are shown. |
 
-### Deleting a jobseeker
+### Hiding and unhiding contacts
 
-1. Deleting a jobseeker while all jobseekers are being shown
+| Input | Expected |
+|-------|----------|
+| `hidej 1` | Alex Yeoh disappears from the jobseeker list. |
+| `hidec 1` | Irfan Ibrahim disappears from the client list. |
+| `find alex irfan` | Both lists are empty. |
+| `listhj` | The jobseeker list shows only Alex Yeoh, and its heading says that hidden jobseekers are shown. |
+| `findhc irfan` | The client list shows only Irfan Ibrahim. |
+| `unhidej 1` | The jobseeker list is empty. |
+| `unhidec 1` | The client list is empty. |
+| `list` | Alex Yeoh and Irfan Ibrahim are back at the top of their lists. |
 
-   1. Prerequisites: List all jobseekers using the `listj` command, with multiple jobseekers in the list.
+### Tagging contacts
 
-   1. Test case: `deletej 1`<br>
-      Expected: The first jobseeker is deleted from the jobseeker list. The status message shows the deleted jobseeker's details. The client list is unchanged.
+| Input | Expected |
+|-------|----------|
+| `tagj 2 java python` | Bernice Yu gains both tags. |
+| `untagj 2 Java` | Bernice Yu's tags do not change. |
+| `untagj 2 java python` | Bernice Yu loses both tags. |
+| `tagc 2 priority` | Roy Balakrishnan gains the tag. |
+| `untagc 2 priority` | Roy Balakrishnan loses the tag. |
 
-   1. Test case: `deletej 0`<br>
-      Expected: No jobseeker is deleted. The status message shows error details.
+### Copying contacts
 
-   1. Other incorrect delete commands to try: `deletej`, `deletej x`, `...` (where x is larger than the jobseeker list size)<br>
-      Expected: Similar to previous.
+After `cpj` and `cpc`, paste into a text editor to check what was copied.
 
-1. Deleting a client works the same way: use `listc` and `deletec` in place of `listj` and `deletej`.
+| Input | Expected |
+|-------|----------|
+| `findj bernice david` | The jobseeker list shows Bernice Yu and David Li. |
+| `cpj` | The details of Bernice Yu and David Li are pasted on separate lines. |
+| `cpc 2` | The details of Roy Balakrishnan are pasted. |
+| `list` | All jobseekers and clients are shown. |
 
-1. _{ more test cases …​ }_
+### Using the command box and help window
 
-### Saving data
+| Action | Expected |
+|--------|----------|
+| Type `lis` without pressing Enter. | Command suggestions appear below the command box. |
+| Press Down, then Tab. | The command box contains `listc`. The command has not run. |
+| Press Enter. | `listc` runs and the command box is cleared. |
+| Press Up, then Down. | Up brings back `listc`. Down clears the command box again. |
+| Type `lis`, then press Esc. | The suggestions close and `lis` stays in the command box. Clear the box. |
+| Paste more than 1000 characters of any text. | The input is cut off at 1000 characters and the hint above the command box shows a warning. Clear the box. |
+| Enter `help`. | The help window opens. |
+| In the help window, click the arrow beside `Managing tags`, then click `Adding jobseeker tags`. | The section expands, and the `Adding jobseeker tags` page appears on the right. Close the help window. |
 
-1. Dealing with missing/corrupted data files
+### Saving data between runs
 
-   1. _{Explain how to simulate missing or corrupted data files and state the expected behavior.}_
+| Input | Expected |
+|-------|----------|
+| `hidej 1` | Alex Yeoh disappears from the jobseeker list. |
+| `exit`, then launch the app again | John Doe and Jane Tan are still listed and Alex Yeoh is still hidden. The status message does not mention sample data. |
+| `listhj` | The jobseeker list shows only Alex Yeoh. |
 
-1. _{ more test cases …​ }_
+### Deleting and clearing contacts
+
+| Input | Expected |
+|-------|----------|
+| `list` | All unhidden jobseekers and clients are shown. |
+| `deletej 0` | Rejected, with the correct command format shown. |
+| `deletej 99` | Rejected as an invalid index. |
+| `findj david` | The jobseeker list shows only David Li. |
+| `deletej 1` | David Li is deleted, leaving the jobseeker list empty. |
+| `list` | The jobseeker list no longer has David Li. |
+| `deletec 1` | Irfan Ibrahim is deleted. |
+| `clearj` | The jobseeker list is empty. The client list is unchanged. |
+| `listhj` | The jobseeker list is still empty, because Alex Yeoh was cleared too. |
+| `clearc` | The client list is empty. |
+| `exit`, then launch the app again | Both lists are still empty. The status message does not mention sample data. |
+
+### Handling missing and corrupted data files
+
+1. Missing data file
+
+   1. Close the app, delete `data/talentlink.json` and launch the app again.<br>
+      Expected: The sample data and its status message are back.
+
+1. Corrupted data file (see also [Editing the data file](UserGuide.html#editing-the-data-file))
+
+   1. Close the app. In `data/talentlink.json`, change the first `phone` value to `abc`. Launch the app again.<br>
+      Expected: Both lists are empty, and the status message does not mention sample data. The data file has not changed yet.
+
+   1. Enter `list`.<br>
+      Expected: The data file now contains empty lists.

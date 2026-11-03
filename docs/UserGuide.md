@@ -131,8 +131,9 @@ Jobseeker contacts contain the following values, and their corresponding constra
   * write names that contain prefixes (like `P/L`, `T/A` and `A/L`) in capitals, because lowercase `p/`, `t/` and `a/` are read as the phone, tag and address prefixes respectively
   * must not be blank
 * Phone number
-  * contains only digits
-  * must be at least 3 digits long
+  * can start with the international prefix `+` or `00` (e.g. `+6591234567` and `006591234567` are allowed)
+  * apart from the prefix, contains only digits, with no spaces
+  * must be 3 to 15 digits long, not counting the prefix
 * Email address
   * must follow the conventional format of an email address
 * Physical address
@@ -154,8 +155,9 @@ Client contacts contain the following values, and their corresponding constraint
   * write names that contain prefixes (like `P/L`, `T/A` and `A/L`) in capitals, because lowercase `p/`, `t/` and `a/` are read as the phone, tag and address prefixes respectively
   * must not be blank
 * Phone number
-  * contains only digits
-  * must be at least 3 digits long
+  * can start with the international prefix `+` or `00` (e.g. `+6591234567` and `006591234567` are allowed)
+  * apart from the prefix, contains only digits, with no spaces
+  * must be 3 to 15 digits long, not counting the prefix
 * Email address
   * must follow the conventional format of an email address
 * Physical address
